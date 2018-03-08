@@ -18,8 +18,8 @@ class PacienteController extends Controller
      */
     public function index(){
         $arCargos        = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-        $arEstados       = \App\Estados::orderBy('ds_estado')->get();
-        $arEspecialidade = \App\Especialidades::orderBy('ds_especialidade')->get();
+        $arEstados       = \App\Estado::orderBy('ds_estado')->get();
+        $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
         
         return view('paciente', ['arEstados' => $arEstados, 
                                  'arCargos'=> $arCargos, 
@@ -44,11 +44,11 @@ class PacienteController extends Controller
             $usuario->save();  
             
             
-            $documento = new \App\Documentos($request->all());
+            $documento = new \App\Documento($request->all());
             $documento->save();
             
             
-            $endereco = new \App\Enderecos($request->all());
+            $endereco = new \App\Endereco($request->all());
             $idCidade = \App\Cidades::where(['cd_ibge'=>$request->input('cd_ibge_cidade')])->get(['id'])->first();
             $endereco->cidade_id = $idCidade->id;
             $endereco->save();
@@ -57,14 +57,14 @@ class PacienteController extends Controller
             # telefones ---------------------------------------------
             $arContatos = array();
             
-            $contato1 = new \App\Contatos();
+            $contato1 = new \App\Contato();
             $contato1->tp_contato = $request->input('tp_contato1');
             $contato1->ds_contato = $request->input('ds_contato1');
             $contato1->save();
             $arContatos[] = $contato1->id;
             
             if(!empty($request->input('ds_contato2'))){
-                $contato2 = new \App\Contatos();
+                $contato2 = new \App\Contato();
                 $contato2->tp_contato = $request->input('tp_contato2');
                 $contato2->ds_contato = $request->input('ds_contato2');
                 $contato2->save();
@@ -73,14 +73,14 @@ class PacienteController extends Controller
             
             
             if(!empty($request->input('ds_contato3'))){
-                $contato3 = new \App\Contatos();
+                $contato3 = new \App\Contato();
                 $contato3->tp_contato = $request->input('tp_contato3');
                 $contato3->ds_contato = $request->input('ds_contato3');
                 $contato3->save();
                 $arContatos[] = $contato3->id;
             }
             
-            $paciente  = new \App\Pacientes($request->all());
+            $paciente  = new \App\Paciente($request->all());
             $paciente->users_id = $usuario->id;       
             $paciente->save();
 

@@ -94,7 +94,7 @@ class UsuariosController extends Controller
                 $objGenerico->load('cargo');
             }else if( $usuarios->tp_user == 'PRO' ){
                 $objGenerico = \App\Profissional::where('user_id', '=', $id)->get()->first();
-                $objGenerico->load('especialidades');   
+                $objGenerico->load('especialidade');   
             }else{
                 throw new \Exception("Tipo de usuário não informado!");
             }
@@ -136,7 +136,7 @@ class UsuariosController extends Controller
                 $objGenerico->load('cargo');
             }else if( $usuarios->tp_user == 'PRO' ){
                 $objGenerico = \App\Profissional::where('user_id', '=', $id)->get()->first();
-                $objGenerico->load('especialidades');
+                $objGenerico->load('especialidade');
             }else{
                 throw new \Exception("Tipo de usuário não informado!");
             }
@@ -195,7 +195,7 @@ class UsuariosController extends Controller
                 $profissional = \App\Profissional::findorfail($id);
                 $profissional->update($dados);
                 $profissional->user()->update($dados);
-                $profissional->especialidades()->update($dados);
+                $profissional->especialidade()->update($dados);
                 
                 
                 foreach( $dados['contato_id'] as $indice=>$contato_id){

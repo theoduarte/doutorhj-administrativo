@@ -145,12 +145,10 @@
 					
 					@if ( !empty($objGenerico->cargo->cd_cargo) )
                     <div class="form-group">
-                        <label for="ds_cargo" class="control-label">Qual a sua profissão?<span class="text-danger">*</span></label>
-						<div class="col-5">
-                      	    <div class="ui-widget">
-                                <input  type="text" class="form-control" id="ds_cargo" value="{{$objGenerico->cargo->cd_cargo}} | {{$objGenerico->cargo->ds_cargo}}" >
-								<input type="hidden" name="cargo_id" id="cargo_id" value="{{$objGenerico->cargo->id}}">
-                            </div>
+						<div class="col-9">
+                        	<label for="ds_cargo" class="control-label">Profissão<span class="text-danger">*</span></label>
+                  	        <input  type="text" class="form-control" id="ds_cargo" value="{{$objGenerico->cargo->cd_cargo}} | {{$objGenerico->cargo->ds_cargo}}" >
+							<input type="hidden" name="cargo_id" id="cargo_id" value="{{$objGenerico->cargo->id}}">
                         </div>
                     </div>	
 					@endif

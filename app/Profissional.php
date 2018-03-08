@@ -4,20 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Carbon;
 
 class Profissional extends Model
 {
 	use Sortable;
+	public $table = "profissionais";
 	public $fillable      = ['nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'tp_profissional', 'cs_status'];
 	public $sortable      = ['id', 'nm_primario', 'nm_secundario'];
 	public $dates 	      = ['dt_nascimento'];
 	
 	public function cargo(){
-	    return $this->hasOne(Cargo::class);
-	}
-	
-	public function agendamentos(){
-	    return $this->hasMany(Agendamento::class);
+	    return $this->belongsTo(Cargo::class);
 	}
 
 	public function contatos(){
@@ -33,14 +31,13 @@ class Profissional extends Model
 	}
 	
 	public function especialidade(){
-	    return $this->belongsTo(Especialidade::class, 'profissional_especialidade_id');
+	    return $this->belongsTo(Especialidade::class, 'especialidade_id');
 	}
 	
 	public function user(){
 	    return $this->belongsTo(User::class);
 	}
 	
-/*
 	public function setDtNascimentoAttribute($value)
 	{
 	    $date = new Carbon($value);
@@ -54,5 +51,4 @@ class Profissional extends Model
 	    $date = new Carbon($this->attributes['dt_nascimento']);
 	    return $date->format('d/m/Y');
 	}
-*/
 }

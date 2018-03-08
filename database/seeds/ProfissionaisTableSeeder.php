@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use App\User;
 use App\Pacientes;
 
-class PacientesTableSeeder extends Seeder
+class ProfissionaisTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +13,7 @@ class PacientesTableSeeder extends Seeder
      */
     public function run()
     {
-		for($numero = 1000; $numero<=2000; $numero++){
+		for($numero = 2001; $numero<=3000; $numero++){
 
 			User::create([
 					'id'			 => $numero,
@@ -21,11 +21,11 @@ class PacientesTableSeeder extends Seeder
 					'email'          => 'datacruzsistemas'.$numero.'@gmail.com',
 					'password'       => bcrypt('1234'),
 					'remember_token' => str_random(60),
-					'tp_user'	     => 'PAC',
+					'tp_user'	     => 'PRO',
 					'cs_status'	     => 'A'
 			]);
 				   
-			\DB::table('pacientes')->insert(array (
+			\DB::table('profissionais')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -34,7 +34,7 @@ class PacientesTableSeeder extends Seeder
 					'cs_sexo'=>'M',
 					'dt_nascimento'=> '07/01/1986',
 					'user_id'=> $numero,
-					'cargo_id'=>23183
+					'especialidade_id'=>189
 				),
 			));
 			
@@ -51,11 +51,11 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('endereco_paciente')->insert(array (
+			\DB::table('endereco_profissional')->insert(array (
 				0 => 
 				array (
 					'endereco_id' => $numero,
-					'paciente_id' => $numero,
+					'profissional_id' => $numero,
 				),
 			));
 			
@@ -70,11 +70,11 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('contato_paciente')->insert(array (
+			\DB::table('contato_profissional')->insert(array (
 				0 => 
 				array (
 					'contato_id' => $numero,
-					'paciente_id' => $numero,
+					'profissional_id' => $numero,
 				),
 			));
 			
@@ -88,11 +88,11 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('documento_paciente')->insert(array (
+			\DB::table('documento_profissional')->insert(array (
 				0 => 
 				array (
 					'documento_id' => $numero,
-					'paciente_id' => $numero,
+					'profissional_id' => $numero,
 				),
 			));
 		}
