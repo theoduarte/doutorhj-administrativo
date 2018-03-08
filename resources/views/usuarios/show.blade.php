@@ -21,9 +21,9 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				@if ( $objGenerico->users->tp_user == 'PAC' )
+				@if ( $objGenerico->user->tp_user == 'PAC' )
 					<h4 class="header-title m-t-0 m-b-20">Detalhes do Paciente</h4>
-				@elseif( $objGenerico->users->tp_user == 'PRO' )
+				@elseif( $objGenerico->user->tp_user == 'PRO' )
 					<h4 class="header-title m-t-0 m-b-20">Detalhes do Profissional</h4>
 				@endif
 				
@@ -116,7 +116,7 @@
 						</tr>
 						<tr>
 							<td>E-mail</td>
-							<td>{{$objGenerico->users->email}}</td>
+							<td>{{$objGenerico->user->email}}</td>
 						</tr>
 					</tbody>
 				</table>
