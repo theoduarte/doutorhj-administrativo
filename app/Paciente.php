@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Carbon;
 
 class Paciente extends Model
 {
@@ -16,11 +17,7 @@ class Paciente extends Model
 	public function cargo(){
 	    return $this->belongsTo(Cargo::class);
 	}
-	
-	public function agendamentos(){
-		return $this->hasMany(Agendamento::class);
-	}
-    
+
 	public function contatos(){
 	    return $this->belongsToMany(Contato::class, 'contato_paciente', 'paciente_id', 'contato_id');
 	}
@@ -36,7 +33,7 @@ class Paciente extends Model
 	public function user(){
 	    return $this->belongsTo(User::class, 'user_id');
 	}
-/*
+
 	public function setDtNascimentoAttribute($data)
 	{
 	    $date = new Carbon($data);
@@ -50,5 +47,4 @@ class Paciente extends Model
 	    $date = new Carbon($this->attributes['dt_nascimento']);
 	    return $date->format('d/m/Y');
 	}
-*/
 }

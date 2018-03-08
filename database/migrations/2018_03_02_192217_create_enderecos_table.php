@@ -20,7 +20,7 @@ class CreateEnderecosTable extends Migration
             $table->string('nr_logradouro', 10)->nullable();
             $table->string('te_bairro', 30)->nullable();
             $table->string('nr_cep', 9)->nullable();
-            $table->text('te_complemento_logradouro')->nullable();
+            $table->text('te_complemento')->nullable();
             $table->float('nr_latitude_gps', 8, 2)->default(0.0);
             $table->float('nr_longitute_gps', 8, 2)->default(0.0);
             $table->timestamps();

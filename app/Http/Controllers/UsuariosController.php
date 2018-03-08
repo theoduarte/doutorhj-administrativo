@@ -44,7 +44,7 @@ class UsuariosController extends Controller
                             
                             $query->where('tp_user', '<>', 'ADM');
                             $query->where('tp_user', '<>', 'OPR');
-                        })->paginate(20);
+                        })->sortable()->paginate(20);
         
         Request::flash();
         
@@ -84,27 +84,27 @@ class UsuariosController extends Controller
     public function show($id)
     {
         try{
-            $arEspecialidade = \App\Especialidades::orderBy('ds_especialidade')->get();
-            $arEstados       = \App\Estados::orderBy('ds_estado')->get();
+            $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
+            $arEstados       = \App\Estado::orderBy('ds_estado')->get();
             
             $usuarios = \App\User::findorfail($id);
             
             if( $usuarios->tp_user == 'PAC' ){
-                $objGenerico = \App\Pacientes::where('user_id', '=', $id)->get()->first();
+                $objGenerico = \App\Paciente::where('user_id', '=', $id)->get()->first();
                 $objGenerico->load('cargo');
             }else if( $usuarios->tp_user == 'PRO' ){
-                $objGenerico = \App\Profissionais::where('user_id', '=', $id)->get()->first();
+                $objGenerico = \App\Profissional::where('user_id', '=', $id)->get()->first();
                 $objGenerico->load('especialidades');   
             }else{
                 throw new \Exception("Tipo de usuário não informado!");
             }
             
-            $objGenerico->load('users');
+            $objGenerico->load('user');
             $objGenerico->load('documentos');
             $objGenerico->load('enderecos');
             $objGenerico->load('contatos');
 
-            $cidade = \App\Cidades::findorfail($objGenerico->enderecos->first()->cidade_id);
+            $cidade = \App\Cidade::findorfail($objGenerico->enderecos->first()->cidade_id);
         }catch( Exception $e ){
             print $e->getMessage();
         }
@@ -126,27 +126,27 @@ class UsuariosController extends Controller
     {
         try{
             $arCargos        = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-            $arEstados       = \App\Estados::orderBy('ds_estado')->get();
-            $arEspecialidade = \App\Especialidades::orderBy('ds_especialidade')->get();
+            $arEstados       = \App\Estado::orderBy('ds_estado')->get();
+            $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
             
             $usuarios = \App\User::findorfail($id);
             
             if( $usuarios->tp_user == 'PAC' ){
-                $objGenerico = \App\Pacientes::where('user_id', '=', $id)->get()->first();
+                $objGenerico = \App\Paciente::where('user_id', '=', $id)->get()->first();
                 $objGenerico->load('cargo');
             }else if( $usuarios->tp_user == 'PRO' ){
-                $objGenerico = \App\Profissionais::where('user_id', '=', $id)->get()->first();
+                $objGenerico = \App\Profissional::where('user_id', '=', $id)->get()->first();
                 $objGenerico->load('especialidades');
             }else{
                 throw new \Exception("Tipo de usuário não informado!");
             }
             
-            $objGenerico->load('users');
+            $objGenerico->load('user');
             $objGenerico->load('documentos');
             $objGenerico->load('enderecos');
             $objGenerico->load('contatos');
             
-            $cidade = \App\Cidades::findorfail($objGenerico->enderecos->first()->cidade_id);
+            $cidade = \App\Cidade::findorfail($objGenerico->enderecos->first()->cidade_id);
         }catch( Exception $e ){
             print $e->getMessage();
         }
@@ -168,62 +168,61 @@ class UsuariosController extends Controller
     public function update(\Illuminate\Http\Request $request, $id)
     {
         $dados = Request::all();        
-
+        
         try{
             if( Request::input('tp_usuario') == 'PAC' ){
-                $profissional = \App\Pacientes::findorfail($id);
+                $profissional = \App\Paciente::findorfail($id);
                 $profissional->update($dados);
-                $profissional->users()->update($dados);
+                $profissional->user()->update($dados);
 
                 foreach( $dados['contato_id'] as $indice=>$contato_id){
-                    $contato = \App\Contatos::findorfail($contato_id);
+                    $contato = \App\Contato::findorfail($contato_id);
                     $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
                 }
                 
                 
-                $endereco = \App\Enderecos::findorfail($dados['endereco_id']);
-                if(!empty($dados['cd_cidade_ibge'])) { $dados['cidade_id'] = \App\Cidades::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; }
+                $endereco = \App\Endereco::findorfail($dados['endereco_id']);
+                if(!empty($dados['cd_cidade_ibge'])) { $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; }
                 $endereco->update($dados);
                 $profissional->enderecos()->sync($endereco);
                 
                 
                 foreach( $dados['documentos_id'] as $indice=>$documentos_id){
-                    $documentos = \App\Documentos::findorfail($documentos_id);
+                    $documentos = \App\Documento::findorfail($documentos_id);
                     $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>$dados['te_documento'][$indice]]);
                 }
             }else if( Request::input('tp_usuario') == 'PRO' ){
-                $profissional = \App\Profissionais::findorfail($id);
+                $profissional = \App\Profissional::findorfail($id);
                 $profissional->update($dados);
-                $profissional->users()->update($dados);
+                $profissional->user()->update($dados);
                 $profissional->especialidades()->update($dados);
                 
                 
                 foreach( $dados['contato_id'] as $indice=>$contato_id){
-                    $contato = \App\Contatos::findorfail($contato_id);
+                    $contato = \App\Contato::findorfail($contato_id);
                     $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
                 }
                 
                 
-                $endereco = \App\Enderecos::findorfail($dados['endereco_id']);
-                if(!empty($dados['cd_cidade_ibge'])) { $dados['cidade_id'] = \App\Cidades::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; }
+                $endereco = \App\Endereco::findorfail($dados['endereco_id']);
+                if(!empty($dados['cd_cidade_ibge'])) { $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; }
                 $endereco->update($dados);
                 $profissional->enderecos()->sync($endereco);
                 
                 
                 foreach( $dados['documentos_id'] as $indice=>$documentos_id){
-                    $documentos = \App\Documentos::findorfail($documentos_id);
+                    $documentos = \App\Documento::findorfail($documentos_id);
                     $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>$dados['te_documento'][$indice], 'estado_id'=>(int)$dados['estado_id'][0]]);
                 }
             }else{
-                $request->session()->flash('message', 'Tipo de usuário não informado!');
+                return redirect()->route('usuarios.index')->with('error', 'Tipo de usuário não informado!');
             }
         }catch( Exception $e ){
-            $request->session()->flash('message', $e->getMessage());
+            return redirect()->route('usuarios.index')->with('error', $e->getMessage());
         }
         
-        $request->session()->flash('message', 'Cadastro alterado com sucesso!');
         
-        return redirect('usuarios');
+        return redirect()->route('usuarios.index')->with('success', 'O usuário foi atualizado com sucesso!');
     }
     
     /**
@@ -242,10 +241,10 @@ class UsuariosController extends Controller
         
         try{
             if( $usuario->tp_user == 'PAC' ){
-                $objGenerico = \App\Pacientes::where('user_id', $usuario->id)->get(['id'])->first();
+                $objGenerico = \App\Paciente::where('user_id', $usuario->id)->get(['id'])->first();
                 $idGenerico  = $objGenerico->id;
             }else if( $usuario->tp_user == 'PRO' ){
-                $objGenerico = \App\Profissionais::where('user_id', $usuario->id)->get(['id'])->first();
+                $objGenerico = \App\Profissional::where('user_id', $usuario->id)->get(['id'])->first();
                 $idGenerico  = $objGenerico->id;
             }
     
@@ -264,25 +263,25 @@ class UsuariosController extends Controller
             $objGenerico->contatos()->detach();
             $objGenerico->documentos()->detach();
             
-            \App\Enderecos::destroy($arEnderecos);
-            \App\Contatos::destroy($arContatos);
-            \App\Documentos::destroy($arDocumentos);
+            \App\Endereco::destroy($arEnderecos);
+            \App\Contato::destroy($arContatos);
+            \App\Documento::destroy($arDocumentos);
             
             if( $usuario->tp_user == 'PAC' ){
-                \App\Pacientes::destroy($idGenerico);
+                \App\Paciente::destroy($idGenerico);
             }else if( $usuario->tp_user == 'PRO' ){
-                \App\Profissionais::destroy($idGenerico);
+                \App\Profissional::destroy($idGenerico);
             }
             \App\User::destroy($usuario->id);
             
             DB::commit();
         }catch( Exception $e ){
             DB::rollBack(); 
-            
-            $request->session()->flash('message', $e->getMessage());
+
+            return redirect()->route('usuarios.index')->with('success', $e->getMessage());
         }
         
-        $request->session()->flash('message', 'Usuário apagado com sucesso!');
+        return redirect()->route('usuarios.index')->with('success', 'Usuário apagado com sucesso!');
         
         return redirect('usuarios');
     }

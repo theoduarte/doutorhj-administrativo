@@ -43,7 +43,7 @@
             					<div class="col-4">
             						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
             					</div>
-                				<div  style="width: 100px !important;">
+                				<div  style="width: 120px !important;">
                 					<input type="checkbox"  id="tp_usuario_cliente_paciente" name="tp_usuario_cliente_paciente" value="paciente" @if(old('tp_usuario_cliente_paciente')=='paciente') checked @endif>
                 					<label for="tp_usuario_cliente_paciente" style="cursor: pointer;">Paciente</label>    
             
