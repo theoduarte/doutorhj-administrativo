@@ -1,0 +1,117 @@
+.logo-doutorhj {
+	width: 44px;
+}
+
+.logo {
+    line-height: 70px;
+}
+
+.doutorhj-color1 {
+	color: #1F71B8;
+}
+
+.doutorhj-color2 {
+	color: #BE1823;
+}
+
+.cvx-link-login:hover {
+	color: #1F71B8 !important;
+	text-decoration: underline;
+}
+
+.form-control::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #ccc;
+}
+.form-control::-moz-placeholder { /* Firefox 19+ */
+  color: #ccc;
+}
+.form-control:-ms-input-placeholder { /* IE 10+ */
+  color: #ccc;
+}
+.form-control:-moz-placeholder { /* Firefox 18- */
+  color: #ccc;
+}
+
+.btn-danger {
+    color: #fff ! important;
+}
+
+.table-doutorhj > tbody > tr > td, .table-doutorhj > tbody > tr > th, .table-doutorhj > tfoot > tr > td, .table-doutorhj > tfoot > tr > th, .table-doutorhj > thead > tr > td, .table-doutorhj > thead > tr > th {
+    border-top: 1px solid #dee2e6;
+}
+
+.table-doutorhj td, .table-doutorhj th {
+    padding: 0.25rem;
+}
+
+.table-doutorhj tr th:first-child {
+	width: 60px;
+}
+
+.table-doutorhj tr th:last-child {
+	width: 150px;
+	text-align: center;
+}
+
+.table-doutorhj tr td:last-child {
+	text-align: center;
+}
+
+.table-doutorhj tr th a {
+	color: #3bafda;
+}
+
+.view-doutorhj > tbody > tr > td, .view-doutorhj > tbody > tr > th, .view-doutorhj > tfoot > tr > td, .view-doutorhj > tfoot > tr > th, .view-doutorhj > thead > tr > td, .view-doutorhj > thead > tr > th {
+    border-top: 1px solid #dee2e6;
+}
+
+.breadcrumb-item a {
+	color: #3bafda;
+}
+
+.cvx-pagination .pagination {
+	-webkit-box-pack: end!important;
+    -ms-flex-pack: end!important;
+    justify-content: flex-end!important;
+}
+
+.pagination li a {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #2a3142;
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+}
+
+.pagination li {
+    margin-left: 5px;
+    display: inline-block;
+    float: left;
+}
+
+.pagination li a,
+.pagination li span {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.pagination li span {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    cursor: pointer;
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+}
+
+.pagination li.active span {
+    color: #fff;
+    background-color: #3bafda;
+    border: 1px solid #3bafda;
+}
