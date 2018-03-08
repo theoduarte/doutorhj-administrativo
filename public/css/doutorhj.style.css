@@ -53,6 +53,14 @@
 	text-align: center;
 }
 
+.ms-container .ms-list {
+    border: 1px solid #cfcfcf;
+}
+
+.ms-container {
+    width: 100%;
+}
+
 .table-doutorhj tr td:last-child {
 	text-align: center;
 }

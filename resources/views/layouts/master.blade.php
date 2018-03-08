@@ -27,6 +27,9 @@
     	<!-- Icons CSS -->
     	<link rel="stylesheet" href="/libs/comvex-template/css/icons.css">
     	
+    	<!-- Multi Select css -->
+        <link href="/libs/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
+    	
     	<!-- Template theme CSS -->
     	<link rel="stylesheet" href="/libs/comvex-template/css/style_dark.css">
     	
@@ -387,10 +390,15 @@
         <!-- Sweet Alert Js  -->
         <script src="/libs/sweet-alert/sweetalert2.min.js"></script>
         <script src="/libs/comvex-template/pages/jquery.sweet-alert.init.js"></script>
+        
+        <!-- Multi Select Js Quicksearch Js  -->
+        <script type="text/javascript" src="/libs/multiselect/js/jquery.multi-select.js"></script>
+        <script type="text/javascript" src="/libs/jquery-quicksearch/jquery.quicksearch.js"></script>
 
         <!-- Custom main Js -->
         <script src="/libs/comvex-template/js/jquery.core.js"></script>
         <script src="/libs/comvex-template/js/jquery.app.js"></script>
+        <script src="/libs/comvex-template/js/jquery.form-advanced.init.js"></script>
         
         <script type="text/javascript">
             jQuery(document).ready(function($) {

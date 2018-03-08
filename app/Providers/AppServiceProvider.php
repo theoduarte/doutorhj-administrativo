@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+//      	$this->app->singleton(Permissao::class);
+//     	$this->app->singleton('App\Http\Controllers\PermissaoController', function ($app) {
+//     		return new App\Http\Controllers\PermissaoController($app->make('ObjPermissao'));
+//     	});
     }
 }
