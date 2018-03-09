@@ -81,7 +81,9 @@ class PerfiluserController extends Controller
     {
     	$perfiluser = Perfiluser::findOrFail($id);
     	
-    	return view('perfilusers.show', compact('perfiluser'));
+    	$list_tipo_permissao = [1 => 'Administrador', 2 => 'Gestor', 3 => 'Prestador', 4 => 'Cliente'];
+    	
+    	return view('perfilusers.show', compact('perfiluser', 'list_tipo_permissao'));
     }
 
     /**
@@ -94,7 +96,36 @@ class PerfiluserController extends Controller
     {
     	$perfiluser = Perfiluser::findOrFail($id);
     	
-    	return view('perfilusers.edit', compact('perfiluser'));
+    	//--busca os itens relacionados ao perfil de usuario---------------------
+    	$list_selecionadas_permissaos = Perfiluser::find($id)->load('permissaos');
+    	$list_permisssao_id = array();
+    	
+    	foreach ($list_selecionadas_permissaos->permissaos as $permissao) {
+    		array_push ( $list_permisssao_id, $permissao->id );
+    	}
+    	
+    	//--busca os itens nao relacionados ao perfil de usuario---------------------
+    	//$list_nao_selecionadas_permissaos = Permissao::whereNotIn('permissaos.id', $list_permisssao_id)->get(['id','titulo']);
+    	$list_permissaos = Permissao::orderBy('titulo', 'asc')->pluck('titulo', 'id');
+    	
+    	/* $list_nao_selecionadas_permissaos = DB::table('permissaos')
+    	->join('perfiluser_permissao', function($join) { $join->on('permissaos.id', '=', 'perfiluser_permissao.permissao_id')->on('perfiluser_permissao.perfiluser_id', '=', $id);})
+    	->select('permissaos.*', 'permissaos.id', 'permissaos.titulo')
+    	->get(); */
+    	
+    	//--busca os itens relacionados ao perfil de usuario---------------------
+    	$list_selecionadas_menus = Perfiluser::find($id)->load('menus');
+    	$list_menu_id = array();
+    	 
+    	foreach ($list_selecionadas_menus->menus as $menu) {
+    		array_push ( $list_menu_id, $menu->id );
+    	}
+    	 
+    	//--busca os itens nao relacionados ao perfil de usuario---------------------
+    	//$list_nao_selecionadas_menus = Permissao::whereNotIn('menus.id', $list_permisssao_id)->get(['id','titulo']);
+    	$list_menus = Menu::orderBy('titulo', 'asc')->pluck('titulo', 'id');
+    	
+    	return view('perfilusers.edit', compact('perfiluser', 'list_selecionadas_permissaos', 'list_permissaos', 'list_selecionadas_menus', 'list_menus'));
     }
 
     /**
@@ -110,7 +141,11 @@ class PerfiluserController extends Controller
     	
     	$perfiluser->update($request->all());
     	
-    	return redirect()->route('perfilusers.index')->with('success', 'A Permissão foi editada com sucesso!');
+    	$perfiluser = $this->setPerfiluserRelations($perfiluser, $request);
+    	 
+    	$perfiluser->save();
+    	
+    	return redirect()->route('perfilusers.index')->with('success', 'O Perfil de usuário foi editado com sucesso!');
     }
 
     /**

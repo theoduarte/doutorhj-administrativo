@@ -15,6 +15,9 @@
     	<!-- Sweet Alert css -->
         <link href="/libs/sweet-alert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
     	
+    	<!-- Treeview css -->
+        <link href="/libs/jstree/style.css" rel="stylesheet" type="text/css" />
+    	
     	<!-- Switchery CSS-->
     	<link rel="stylesheet" href="/libs/switchery/switchery.min.css">
     	
@@ -189,7 +192,7 @@
 								
 								<ul class="list-unstyled">
 									@for($j = 0; $j < sizeof($menus_app[$i]->itemmenus); $j++)
-                                    <li><a href="{{ $menus_app[$i]->itemmenus[$j]->url }}">{{ $menus_app[$i]->itemmenus[$j]->titulo }}</a></li>
+                                    <li><a href="/{{ $menus_app[$i]->itemmenus[$j]->url }}">{{ $menus_app[$i]->itemmenus[$j]->titulo }}</a></li>
                                     @endfor
                              	</ul>
                              </li>
@@ -394,11 +397,15 @@
         <!-- Multi Select Js Quicksearch Js  -->
         <script type="text/javascript" src="/libs/multiselect/js/jquery.multi-select.js"></script>
         <script type="text/javascript" src="/libs/jquery-quicksearch/jquery.quicksearch.js"></script>
+        
+        <!-- Tree view js -->
+        <script src="/libs/jstree/jstree.min.js"></script>
 
         <!-- Custom main Js -->
         <script src="/libs/comvex-template/js/jquery.core.js"></script>
         <script src="/libs/comvex-template/js/jquery.app.js"></script>
         <script src="/libs/comvex-template/js/jquery.form-advanced.init.js"></script>
+        <script src="/libs/comvex-template/js/jquery.tree.js"></script>
         
         <script type="text/javascript">
             jQuery(document).ready(function($) {

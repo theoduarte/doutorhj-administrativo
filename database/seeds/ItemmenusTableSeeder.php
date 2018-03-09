@@ -43,7 +43,7 @@ class ItemmenusTableSeeder extends Seeder
             ),
             3 =>
             array (
-                'titulo'        => 'Perfil de Usuário',
+                'titulo'        => 'Perfils de Usuário',
                 //'descricao'     => 'Lista os menus do sistema',
                 'url'           => 'perfilusers',
                 'ic_item_class' => '',

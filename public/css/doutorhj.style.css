@@ -32,6 +32,14 @@
   color: #ccc;
 }
 
+a.jstree-anchor i.ti-check-box {
+	color: #00b19d;
+}
+
+a.jstree-anchor i.ti-na {
+	color: #ef5350;
+}
+
 .btn-danger {
     color: #fff ! important;
 }
