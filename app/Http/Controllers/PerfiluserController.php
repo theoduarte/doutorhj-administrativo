@@ -5,9 +5,24 @@ namespace App\Http\Controllers;
 use App\Perfiluser;
 use Illuminate\Http\Request;
 use App\Menu;
+use Illuminate\Support\Facades\DB;
+use App\Permissao;
 
 class PerfiluserController extends Controller
 {
+	/**
+	 * Instantiate a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		/* $action = \Route::current();
+			$action_name = $action->action['as'];
+	
+			$this->middleware("cvx:$action_name"); */
+	}
+	
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +30,14 @@ class PerfiluserController extends Controller
      */
     public function index()
     {
-        //
+    	$get_term = \Request::get('search_term');
+    	$search_term = UtilController::toStr($get_term);
+    	
+    	$perfilusers = Perfiluser::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    	
+    	$list_tipo_permissao = [1 => 'Administrador', 2 => 'Gestor', 3 => 'Prestador', 4 => 'Cliente'];
+    	
+    	return view('perfilusers.index', compact('perfilusers', 'list_tipo_permissao'));
     }
 
     /**
@@ -25,7 +47,11 @@ class PerfiluserController extends Controller
      */
     public function create()
     {
-        //
+        $list_permissaos = Permissao::orderBy('titulo', 'asc')->pluck('titulo', 'id');
+        
+        $list_menus = Menu::orderBy('titulo', 'asc')->pluck('titulo', 'id');
+        
+        return view('perfilusers.create', compact('list_permissaos', 'list_menus'));
     }
 
     /**
@@ -36,7 +62,13 @@ class PerfiluserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    	$perfiluser = Perfiluser::create($request->all());
+    	
+    	$perfiluser = $this->setPerfiluserRelations($perfiluser, $request);
+    	
+    	$perfiluser->save();
+    	
+    	return redirect()->route('perfilusers.index')->with('success', 'O Perfil de usuário foi cadastrado com sucesso!');
     }
 
     /**
@@ -45,9 +77,11 @@ class PerfiluserController extends Controller
      * @param  \App\Perfiluser  $perfiluser
      * @return \Illuminate\Http\Response
      */
-    public function show(Perfiluser $perfiluser)
+    public function show($id)
     {
-        //
+    	$perfiluser = Perfiluser::findOrFail($id);
+    	
+    	return view('perfilusers.show', compact('perfiluser'));
     }
 
     /**
@@ -56,9 +90,11 @@ class PerfiluserController extends Controller
      * @param  \App\Perfiluser  $perfiluser
      * @return \Illuminate\Http\Response
      */
-    public function edit(Perfiluser $perfiluser)
+    public function edit($id)
     {
-        //
+    	$perfiluser = Perfiluser::findOrFail($id);
+    	
+    	return view('perfilusers.edit', compact('perfiluser'));
     }
 
     /**
@@ -68,9 +104,13 @@ class PerfiluserController extends Controller
      * @param  \App\Perfiluser  $perfiluser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Perfiluser $perfiluser)
+    public function update(Request $request, $id)
     {
-        //
+    	$perfiluser = Perfiluser::findOrFail($id);
+    	
+    	$perfiluser->update($request->all());
+    	
+    	return redirect()->route('perfilusers.index')->with('success', 'A Permissão foi editada com sucesso!');
     }
 
     /**
@@ -79,9 +119,13 @@ class PerfiluserController extends Controller
      * @param  \App\Perfiluser  $perfiluser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Perfiluser $perfiluser)
+    public function destroy($id)
     {
-        //
+    	$perfiluser = Perfiluser::findOrFail($id);
+    	
+    	$perfiluser->delete();
+    	
+    	return redirect()->route('perfilusers.index')->with('success', 'Registro Excluído com sucesso!');
     }
     
     /**
@@ -90,12 +134,11 @@ class PerfiluserController extends Controller
      * @param  \App\Perfiluser  $perfiluser
      * @return \Illuminate\Http\Response
      */
-    private function setMenuRelations(Perfiluser $perfiluser, Request $request)
+    private function setPerfiluserRelations(Perfiluser $perfiluser, Request $request)
     {
-    	$menu = Menu::findOrFail($request->menu_id);
-    	$perfiluser->menu()->associate($menu);
-//     	$perfiluser->menus()->sync($request->causes_list);
-    
-    	return $perfiluser;
+        $perfiluser->permissaos()->sync($request->perfiluser_permissaos);
+        $perfiluser->menus()->sync($request->perfiluser_menus);
+        
+        return $perfiluser;
     }
 }

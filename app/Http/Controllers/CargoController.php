@@ -5,9 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Cargo;
+use App\Permissao;
 
 class CargoController extends Controller
 {
+	/**
+	 * Instantiate a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$action = \Route::current();
+		$action_name = $action->action['as'];
+		//echo "<script>console.log( 'Model action: " .$action->uri . " Controller action: ".$action->action['as']."' );</script>";
+		//$permissao = $this->app->make(Permissao::class);
+	
+		$this->middleware("cvx:$action_name");
+	}
+	
     /**
      * Display a listing of the resource.
      *

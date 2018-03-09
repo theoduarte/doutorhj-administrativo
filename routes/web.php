@@ -45,6 +45,8 @@ Route::resource('cargos','CargoController')->middleware('auth');
 Route::resource('menus','MenuController')->middleware('auth');
 Route::resource('usuarios', 'UsuariosController')->middleware('auth');
 Route::resource('itemmenus','ItemmenuController')->middleware('auth');
+Route::resource('perfilusers','PerfiluserController')->middleware('auth');
+Route::resource('permissaos','PermissaoController')->middleware('auth');
 
 Auth::routes();
 

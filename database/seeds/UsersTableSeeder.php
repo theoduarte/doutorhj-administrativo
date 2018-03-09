@@ -16,10 +16,12 @@ class UsersTableSeeder extends Seeder
     		User::create([
     				'name'           => 'admin',
     				'email'          => 'admin@comvex.com.br',
-    				'password'       => bcrypt('1234'),
+    				'password'       => bcrypt('@prev'),
     				'remember_token' => str_random(60),
 					'tp_user'	     => 'ADM',
-					'cs_status'	     => 'A'
+					'cs_status'	     => 'A',
+    		        'avatar'          => 'users/default.png',
+    		        #'perfiluser_id' => 1
     		]);
     	}
     }
