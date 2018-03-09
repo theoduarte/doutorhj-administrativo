@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('remember_token', 100)->nullable();
 			$table->char('tp_user', 3)->nullable()->comment('ADM=>Administrador OPR=>Operador PAC=>Paciente PRO=>Profissional');
 			$table->char('cs_status', 1)->nullable('A')->comment('A=>Ativo I=>Inativo');
+			$table->text('avatar')->nullable();
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
 			$table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });

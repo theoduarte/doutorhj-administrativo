@@ -45,7 +45,7 @@ class PermissaoController extends Controller
      */
     public function create()
     {
-    	$query = "SELECT last_value FROM public.permissoes_id_seq as nextval";
+    	$query = "SELECT last_value FROM public.permissaos_id_seq as nextval";
     	$nextval = DB::select($query);
     	$next_rid = isset($nextval[0]) ? $nextval[0]->last_value : 0;
     	$code_permission = sprintf( "%010d", decbin($next_rid));

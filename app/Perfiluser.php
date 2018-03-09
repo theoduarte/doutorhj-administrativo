@@ -22,4 +22,9 @@ class Perfiluser extends Model
 	{
 		return $this->belongsToMany('App\Permissao');
 	}
+	
+	public function menus()
+	{
+	    return $this->belongsToMany('App\Menu');
+	}
 }

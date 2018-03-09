@@ -19,7 +19,9 @@ class UsersTableSeeder extends Seeder
     				'password'       => bcrypt('@prev'),
     				'remember_token' => str_random(60),
 					'tp_user'	     => 'ADM',
-					'cs_status'	     => 'A'
+					'cs_status'	     => 'A',
+    		        'avatar'          => 'users/default.png',
+    		        'perfiluser_id' => 1
     		]);
     	}
     }

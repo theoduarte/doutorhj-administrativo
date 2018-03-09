@@ -18,7 +18,7 @@ class Menu extends Model
 		return $this->hasMany('App\Itemmenu');
 	}
 	
-	 public function menu_perfilusers()
+	 public function perfilusers()
 	 {
 	 	return $this->belongsToMany('App\Perfiluser');
 	 }

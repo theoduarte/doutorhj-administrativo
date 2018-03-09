@@ -49,13 +49,19 @@
 					
 					<div class="form-group">
 						<label for="perfiluser_permissao">Permissões<span class="text-danger">*</span></label>
-						<select id="perfiluser_permissao" name="permissaos[]" class="multi-select cvx_select_multiple" multiple="" >
+						<select id="perfiluser_permissao" name="perfiluser_permissaos[]" class="multi-select cvx_select_multiple" multiple="" >
+						@foreach($list_permissaos as $id => $titulo)
+							<option value="{{ $id }}">{{ $titulo }}</option>
+						@endforeach
 						</select>
 					</div>
 					
 					<div class="form-group">
 						<label for="menu_perfiluser">Menus<span class="text-danger">*</span></label>
-						<select id="menu_perfiluser" name="menus[]" class="multi-select cvx_select_multiple" multiple="" >
+						<select id="menu_perfiluser" name="perfiluser_menus[]" class="multi-select cvx_select_multiple" multiple="" >
+						@foreach($list_menus as $id => $titulo)
+							<option value="{{ $id }}">{{ $titulo }}</option>
+						@endforeach
 						</select>
 					</div>
 					

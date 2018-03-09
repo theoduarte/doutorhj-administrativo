@@ -6,6 +6,7 @@ use App\Perfiluser;
 use Illuminate\Http\Request;
 use App\Menu;
 use Illuminate\Support\Facades\DB;
+use App\Permissao;
 
 class PerfiluserController extends Controller
 {
@@ -46,7 +47,11 @@ class PerfiluserController extends Controller
      */
     public function create()
     {
-    	return view('perfilusers.create');
+        $list_permissaos = Permissao::orderBy('titulo', 'asc')->pluck('titulo', 'id');
+        
+        $list_menus = Menu::orderBy('titulo', 'asc')->pluck('titulo', 'id');
+        
+        return view('perfilusers.create', compact('list_permissaos', 'list_menus'));
     }
 
     /**
@@ -59,9 +64,11 @@ class PerfiluserController extends Controller
     {
     	$perfiluser = Perfiluser::create($request->all());
     	
+    	$perfiluser = $this->setPerfiluserRelations($perfiluser, $request);
+    	
     	$perfiluser->save();
     	
-    	return redirect()->route('perfilusers.index')->with('success', 'A Permissão foi cadastrada com sucesso!');
+    	return redirect()->route('perfilusers.index')->with('success', 'O Perfil de usuário foi cadastrado com sucesso!');
     }
 
     /**
@@ -114,7 +121,7 @@ class PerfiluserController extends Controller
      */
     public function destroy($id)
     {
-    	$perfiluser = Cargo::findOrFail($id);
+    	$perfiluser = Perfiluser::findOrFail($id);
     	
     	$perfiluser->delete();
     	
@@ -127,12 +134,11 @@ class PerfiluserController extends Controller
      * @param  \App\Perfiluser  $perfiluser
      * @return \Illuminate\Http\Response
      */
-    private function setMenuRelations(Perfiluser $perfiluser, Request $request)
+    private function setPerfiluserRelations(Perfiluser $perfiluser, Request $request)
     {
-    	$menu = Menu::findOrFail($request->menu_id);
-    	$perfiluser->menu()->associate($menu);
-//     	$perfiluser->menus()->sync($request->causes_list);
-    
-    	return $perfiluser;
+        $perfiluser->permissaos()->sync($request->perfiluser_permissaos);
+        $perfiluser->menus()->sync($request->perfiluser_menus);
+        
+        return $perfiluser;
     }
 }
