@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
-use App\Pacientes;
+use App\Clinicas;
 
-class PacientesTableSeeder extends Seeder
+class ClinicasTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,28 +13,24 @@ class PacientesTableSeeder extends Seeder
      */
     public function run()
     {
-		for($numero = 1000; $numero<=1100; $numero++){
-
+		for($numero = 3000; $numero<=3200; $numero++){
 			User::create([
 					'id'			 => $numero,
-					'name'           => 'Paciente '.$numero,
-					'email'          => 'paciente'.$numero.'@gmail.com',
+					'name'           => 'Prestador '.$numero,
+					'email'          => 'responsavelclinica'.$numero.'@gmail.com',
 					'password'       => bcrypt('1234'),
 					'remember_token' => str_random(60),
-					'tp_user'	     => 'PAC',
+					'tp_user'	     => 'CLI',
 					'cs_status'	     => 'A'
 			]);
 				   
-			\DB::table('pacientes')->insert(array (
+			\DB::table('clinicas')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
-					'nm_primario' => 'FREDERICO',
-					'nm_secundario' => 'GOMES DA CRUZ',
-					'cs_sexo'=>'M',
-					'dt_nascimento'=> '07/01/1986',
-					'user_id'=> $numero,
-					'cargo_id'=>23183
+					'nm_razao_social' => 'BRASILMED '.$numero,
+					'nm_fantasia' => 'BRASILMED LTDA '.$numero,
+					'profissional_id'=>2010
 				),
 			));
 			
@@ -51,11 +47,11 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('endereco_paciente')->insert(array (
+			\DB::table('clinica_endereco')->insert(array (
 				0 => 
 				array (
 					'endereco_id' => $numero,
-					'paciente_id' => $numero,
+					'clinica_id' => $numero,
 				),
 			));
 			
@@ -65,16 +61,16 @@ class PacientesTableSeeder extends Seeder
 				0 => 
 				array (
 					'id' => $numero,
-					'tp_contato' => 'CP',
-					'ds_contato' => '(62)33885724',
+					'tp_contato' => 'FC',
+					'ds_contato' => '(61)99999999',
 				),
 			));
 			
-			\DB::table('contato_paciente')->insert(array (
+			\DB::table('clinica_contato')->insert(array (
 				0 => 
 				array (
 					'contato_id' => $numero,
-					'paciente_id' => $numero,
+					'clinica_id' => $numero,
 				),
 			));
 			
@@ -88,11 +84,11 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('documento_paciente')->insert(array (
+			\DB::table('clinica_documento')->insert(array (
 				0 => 
 				array (
 					'documento_id' => $numero,
-					'paciente_id' => $numero,
+					'clinica_id' => $numero,
 				),
 			));
 		}

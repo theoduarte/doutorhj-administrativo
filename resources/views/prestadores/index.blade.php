@@ -24,21 +24,24 @@
 				<h4 class="m-t-0 header-title">Locais de Atendimento</h4>
 				<p class="text-muted m-b-30 font-13"></p>
 				
-				<div class="row justify-content-between">
+				<div class="row ">
 					<div class="col-12"> 
 						<form class="form-edit-add" role="form" action="{{ route('prestadores.index') }}" method="get" enctype="multipart/form-data">
                     		{{ csrf_field() }}
                 			
+        					<div class="float-right">
+        						<a href="{{ route('prestadores.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar</a>
+        					</div>	
             				<div class="row">
-            					<div class="col-4">
+            					<div  style="width: 529px !important;">
         				            <label for="tp_filtro_razao_social">Filtrar por:</label><br>
-                                    <input type="radio" id="tp_filtro_razao_social" name="tp_filtro" value="razao_social" @if(old('tp_filtro')=='razao_social') checked @endif>
+                                    <input type="radio" id="tp_filtro_razao_social" name="tp_filtro" value="nm_razao_social" @if(old('tp_filtro')=='nm_razao_social') checked @endif>
                                     <label for="tp_filtro_razao_social" style="cursor: pointer;">Razão Social&nbsp;&nbsp;&nbsp;</label>
                             
-                                    <input type="radio" id="tp_filtro_razao_social" name="tp_filtro" value="nome_fantasia" @if(old('tp_filtro')=='nome_fantasia') checked @endif>
-                                    <label for="tp_filtro_razao_social" style="cursor: pointer;">Nome Fantasia&nbsp;&nbsp;</label>
+                                    <input type="radio" id="tp_filtro_nm_fantasia" name="tp_filtro" value="nm_fantasia" @if(old('tp_filtro')=='nm_fantasia') checked @endif>
+                                    <label for="tp_filtro_nm_fantasia" style="cursor: pointer;">Nome Fantasia&nbsp;&nbsp;</label>
                                 </div>
-                				<div  style="width: 200px !important;">
+                				<div style="width: 300px !important;">
                 					<input type="checkbox"  id="tp_usuario_cliente_paciente" name="tp_usuario_cliente_paciente" value="paciente" @if(old('tp_usuario_cliente_paciente')=='paciente') checked @endif>
                 					<label for="tp_usuario_cliente_paciente" style="cursor: pointer;">Consulta em Domicílio</label>    
             
@@ -48,9 +51,11 @@
       							</div>
             				</div>
             				<div class="row">
-            					<div class="col-4">
+            					<div style="width: 510px !important;">
             						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
             					</div>
+                 				<div  style="width: 20px !important;">
+                 				</div>
                  				<div  style="width: 250px !important;">
                 					<input type="checkbox"  id="tp_usuario_cliente_paciente" name="tp_usuario_cliente_paciente" value="paciente" @if(old('tp_usuario_cliente_paciente')=='paciente') checked @endif>
                 					<label for="tp_usuario_cliente_paciente" style="cursor: pointer;">Consultas em Pronto-Socorro</label>    
@@ -69,24 +74,26 @@
 					<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
     					<tr>
     						<th>ID</th>
-    						<th>@sortablelink('nm_razao_social', 'Nome')</th>
-    						<th>@sortablelink('nm_fantasia', 'E-mail')</th>
-    						<th></th>
-    						<th></th>
+    						<th>@sortablelink('nm_razao_social', 'Razão Social')</th>
+    						<th>@sortablelink('nm_fantasia', 'Nome Fantasia')</th>
+    						<th>Responsável</th>
+    						<th>Contato</th>
     						<th>Ações</th>
     					</tr>
+    					@foreach($prestadores as $prestador)
 						<tr>
-    						<td></td>
-    						<td></td>
-    						<td></td>
-                	 		<td></td>
+    						<td>{{$prestador->id}}</td>
+    						<td>{{$prestador->nm_razao_social}}</td>
+    						<td>{{$prestador->nm_fantasia}}</td>
                	 			<td></td>
+                	 		<td>{{$prestador->contatos->first()->ds_contato}}</td>
     						<td>
-    							<a href="{{ route('prestadores.show', $prestadores->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-    							<a href="{{ route('prestadores.edit', $prestadores->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('prestadores.destroy', $prestadores->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o prestador {{$prestadores->nm_razao_social}}?"><i class="ti-trash"></i></a>
+    							<a href="{{ route('prestadores.show', $prestador->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+    							<a href="{{ route('prestadores.edit', $prestador->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+    							<a href="{{ route('prestadores.destroy', $prestador->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o prestador {{$prestador->nm_razao_social}}?"><i class="ti-trash"></i></a>
     						</td>
     					</tr>
+    					@endforeach
 					</table>
                     <tfoot>	
                     	<div class="cvx-pagination">

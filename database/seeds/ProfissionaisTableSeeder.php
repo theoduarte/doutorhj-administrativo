@@ -13,12 +13,12 @@ class ProfissionaisTableSeeder extends Seeder
      */
     public function run()
     {
-		for($numero = 2001; $numero<=3000; $numero++){
+		for($numero = 2001; $numero<=2100; $numero++){
 
 			User::create([
 					'id'			 => $numero,
-					'name'           => 'Frederico Cruz '.$numero,
-					'email'          => 'datacruzsistemas'.$numero.'@gmail.com',
+					'name'           => 'Profissional '.$numero,
+					'email'          => 'profissional'.$numero.'@gmail.com',
 					'password'       => bcrypt('1234'),
 					'remember_token' => str_random(60),
 					'tp_user'	     => 'PRO',

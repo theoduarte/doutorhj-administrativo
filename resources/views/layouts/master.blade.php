@@ -48,6 +48,7 @@
     	<!-- Font Icons CSS-->
     	<link rel="stylesheet" href="https://file.myfontastic.com/da58YPMQ7U5HY8Rb6UxkNf/icons.css">
     	
+    	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">        
     @endpush
     
     @stack('style')
@@ -400,6 +401,11 @@
         <script src="/libs/comvex-template/js/jquery.app.js"></script>
         <script src="/libs/comvex-template/js/jquery.form-advanced.init.js"></script>
         
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        
+        
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 $('.counter').counterUp({
@@ -430,9 +436,9 @@
         </script>
     	
       	<script src="/js/restfulizer.js"></script>
+      	<script src="/js/utilitarios.js"></script>
     @endpush
     
     @stack('scripts')
-    
   </body>
 </html>
