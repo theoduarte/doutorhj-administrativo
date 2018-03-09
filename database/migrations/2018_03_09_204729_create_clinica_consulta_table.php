@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConsultaEspecialidadeTable extends Migration
+class CreateClinicaConsultaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateConsultaEspecialidadeTable extends Migration
      */
     public function up()
     {
-    	Schema::create('consulta_especialidade', function (Blueprint $table) {
+    	Schema::create('clinica_consulta', function (Blueprint $table) {
+    		$table->integer('clinica_id')->unsigned()->nullable();
+    		$table->foreign('clinica_id')->references('id')->on('clinicas')->onDelete('cascade');
     		 
     		$table->integer('consulta_id')->unsigned()->nullable();
     		$table->foreign('consulta_id')->references('id')->on('consultas')->onDelete('cascade');
-    		
-    		$table->integer('especialidade_id')->unsigned()->nullable();
-    		$table->foreign('especialidade_id')->references('id')->on('especialidades')->onDelete('cascade');
     	});
     }
 
@@ -30,6 +29,6 @@ class CreateConsultaEspecialidadeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('consulta_especialidade');
+        Schema::dropIfExists('clinica_consulta');
     }
 }

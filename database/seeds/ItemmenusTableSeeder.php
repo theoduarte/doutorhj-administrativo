@@ -76,6 +76,24 @@ class ItemmenusTableSeeder extends Seeder
                 'ic_item_class' => '',
                 'ordemexibicao' => 2,
                 'menu_id'       => 3,
+            ),
+            7 =>
+            array (
+                'titulo'        => 'Usuários',
+                //'descricao'     => 'Lista os tipos de logs',
+                'url'           => 'usuarios',
+                'ic_item_class' => '',
+                'ordemexibicao' => 2,
+                'menu_id'       => 1,
+            ),
+            8 =>
+            array (
+                'titulo'        => 'Locais de Atendimento',
+                //'descricao'     => 'Lista os tipos de logs',
+                'url'           => 'prestadores',
+                'ic_item_class' => '',
+                'ordemexibicao' => 3,
+                'menu_id'       => 1,
             )
         ));
     }

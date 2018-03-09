@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use TCG\Voyager\Facades\Voyager;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\DB;
 
 class PrestadoresController extends Controller
 {
@@ -14,32 +14,34 @@ class PrestadoresController extends Controller
      */
     public function index()
     {
-        Voyager::canorfail('browse_local_atendimento');
-        $data['add']     = Voyager::can('add_local_atendimento');
-        $data['edit']    = Voyager::can('edit_local_atendimento');
-        $data['read']    = Voyager::can('read_local_atendimento');
-        $data['delete']  = Voyager::can('delete_local_atendimento');
-        
-        $prestadores = \App\Clinicas::select(['id', 'nm_razao_social', 'nm_fantasia'])
-                    ->where(function($query){
-//                         if(!empty(Request::input('nm_busca'))){
-//                             switch (Request::input('tp_filtro')){
-//                                 case "nome" :
-//                                     $query->where('name', 'like', '%'.strtoupper(Request::input('nm_busca')).'%');
-//                                     break;
-//                                 case "email" :
-//                                     $query->where('email', '=', strtolower(Request::input('nm_busca')));
-//                                     break;
-//                                 default:
-//                                     $query->where('name', 'like', '%'.strtoupper(Request::input('nm_busca')).'%');
-                                    
-//                             }
-//                         }
-                    })->paginate(20);
-        
+        $prestadores = \App\Clinica::select(['id', 'nm_razao_social', 'nm_fantasia'])
+                                    ->where(function($query){
+                                        if(!empty(Request::input('nm_busca'))){
+                                            switch (Request::input('tp_filtro')){
+                                                case "nm_razao_social" :
+                                                    $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+                                                    break;
+                                                case "nm_fantasia" :
+                                                    $query->where(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+                                                    break;
+                                                default:
+                                                    $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+                                                    
+                                            }
+                                        }
+                                        
+//                                         $arFiltroIn = array();
+//                                         if(!empty(Request::input('tp_usuario_cliente_paciente'))    ){ $arFiltroIn[] = 'PAC'; }
+//                                         if(!empty(Request::input('tp_usuario_cliente_profissional'))){ $arFiltroIn[] = 'PRO'; }
+//                                         if( count($arFiltroIn)>0 ) { $query->whereIn('tp_user', $arFiltroIn); }
+
+                                    })->sortable()->paginate(20);
+        $prestadores->load('contatos');
+        $prestadores->load('profissional');
+
         Request::flash();
         
-        return view('prestadores.index', [/* 'coEspecialidades'=>$coEspecialidades, */ 'permissoes'=>$data, 'prestadores'=>$prestadores]);
+        return view('prestadores.index', compact('prestadores'));
     }
     
     /**
@@ -49,8 +51,11 @@ class PrestadoresController extends Controller
      */
     public function create()
     {
-        Voyager::canorfail('add_local_atendimento');
+        $estados = \App\Estado::orderBy('ds_estado')->get();
+        $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
         
+        
+        return view('prestadores.create', compact('estados', 'cargos'));
     }
 
     /**
@@ -61,7 +66,6 @@ class PrestadoresController extends Controller
      */
     public function store(Request $request)
     {
-        Voyager::canorfail('add_local_atendimento');
         
     }
 
@@ -73,7 +77,6 @@ class PrestadoresController extends Controller
      */
     public function show($id)
     {
-        Voyager::canorfail('read_local_atendimento');
         
     }
 
@@ -85,7 +88,6 @@ class PrestadoresController extends Controller
      */
     public function edit($id)
     {
-        Voyager::canorfail('edit_local_atendimento');
         
     }
 
@@ -96,9 +98,8 @@ class PrestadoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        Voyager::canorfail('edit_local_atendimento');
         
     }
 
@@ -110,7 +111,6 @@ class PrestadoresController extends Controller
      */
     public function destroy($id)
     {
-        Voyager::canorfail('delete_local_atendimento');
         
     }
 }

@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
 					'tp_user'	     => 'ADM',
 					'cs_status'	     => 'A',
     		        'avatar'          => 'users/default.png',
-    		        'perfiluser_id' => 1
+    		        #'perfiluser_id' => 1
     		]);
     	}
     }

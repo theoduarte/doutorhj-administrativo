@@ -15,7 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::group(['prefix' => 'paciente'], function()
 {
     Route::get('cadastra-paciente', 'PacienteController@index');
@@ -41,6 +40,7 @@ Route::group(['prefix' => 'clinica'], function()
 });
     
 
+Route::resource('prestadores','PrestadoresController')->middleware('auth');
 Route::resource('cargos','CargoController')->middleware('auth');
 Route::resource('menus','MenuController')->middleware('auth');
 Route::resource('usuarios', 'UsuariosController')->middleware('auth');

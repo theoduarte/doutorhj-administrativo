@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEspecialidadeProcedimentoTable extends Migration
+class CreateClinicaProcedimentoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateEspecialidadeProcedimentoTable extends Migration
      */
     public function up()
     {
-    	Schema::create('especialidade_procedimento', function (Blueprint $table) {
+    	Schema::create('clinica_procedimento', function (Blueprint $table) {
     		 
-    		$table->integer('especialidade_id')->unsigned()->nullable();
-    		$table->foreign('especialidade_id')->references('id')->on('especialidades')->onDelete('cascade');
-    		
+    		$table->integer('clinica_id')->unsigned()->nullable();
+    		$table->foreign('clinica_id')->references('id')->on('clinicas')->onDelete('cascade');
+    		 
     		$table->integer('procedimento_id')->unsigned()->nullable();
     		$table->foreign('procedimento_id')->references('id')->on('procedimentos')->onDelete('cascade');
     	});
@@ -30,6 +30,6 @@ class CreateEspecialidadeProcedimentoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('especialidade_procedimento');
+        Schema::dropIfExists('clinica_procedimento');
     }
 }

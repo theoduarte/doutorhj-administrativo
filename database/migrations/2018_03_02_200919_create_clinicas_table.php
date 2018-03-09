@@ -16,7 +16,7 @@ class CreateClinicasTable extends Migration
         Schema::create('clinicas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nm_razao_social', 50)->nullable();
-            $table->string('nm_nome_fantasia', 50)->nullable();
+            $table->string('nm_fantasia', 50)->nullable();
             $table->timestamps();
         });
     }

@@ -20,13 +20,13 @@ class UsuariosController extends Controller
                             if(!empty(Request::input('nm_busca'))){
                                 switch (Request::input('tp_filtro')){
                                     case "nome" :
-                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.Request::input('nm_busca').'%');
+                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
                                         break;
                                     case "email" :
-                                        $query->where(DB::raw('to_str(email)'), '=', Request::input('nm_busca'));
+                                        $query->where(DB::raw('to_str(email)'), '=', UtilController::toStr(Request::input('nm_busca')));
                                         break;
                                     default:
-                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.Request::input('nm_busca').'%');
+                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
                                         
                                 }
                             }
@@ -233,6 +233,8 @@ class UsuariosController extends Controller
      */
     public function destroy(\Illuminate\Http\Request $request, \App\User $usuario)
     {
+        //TODO: VERIFICAR COMO FAZER DELETE CASCADE EM ELOQUENT
+        
         $arEnderecos  = array();
         $arContatos   = array();
         $arDocumentos = array();

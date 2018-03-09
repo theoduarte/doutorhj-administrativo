@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Clinica extends Model
 {
@@ -12,22 +13,30 @@ class Clinica extends Model
     public $sortable = ['id', 'nm_razao_social', 'nm_fantasia'];
 	
     public function cargo(){
-        return $this->hasOne(Cargo::class);
-    }
-    
-    public function agendamentos(){
-        return $this->hasMany(Agendamento::class);
+        return $this->belongsTo(Cargo::class);
     }
     
     public function contatos(){
-        return $this->belongsToMany(Contato::class, 'contato_profissional', 'profissional_id', 'contato_id');
+        return $this->belongsToMany(Contato::class, 'clinica_contato', 'clinica_id', 'contato_id');
     }
     
     public function enderecos(){
-        return $this->belongsToMany(Endereco::class, 'endereco_profissional', 'profissional_id', 'endereco_id');
+        return $this->belongsToMany(Endereco::class, 'clinica_endereco', 'clinica_id', 'endereco_id');
     }
     
     public function documentos(){
-        return $this->belongsToMany(Documento::class, 'documento_profissional', 'profissional_id', 'documento_id');
+        return $this->belongsToMany(Documento::class, 'clinica_documento', 'clinica_id', 'documento_id');
+    }
+    
+    public function consultas(){
+        return $this->belongsToMany(Consulta::class, 'clinica_consulta', 'consulta_id', 'clinica_id');
+    }
+    
+    public function procedimentos(){
+        return $this->belongsToMany(Procedimento::class, 'clinica_procedimento', 'procedimento_id', 'clinica_id');
+    }
+    
+    public function profissional(){
+        return $this->belongsTo(Profissional::class);
     }
 }
