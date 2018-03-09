@@ -83,8 +83,9 @@ class ProfissionaisTableSeeder extends Seeder
 				0 => 
 				array (
 					'id' => $numero,
-					'tp_documento' => 'CNH',
+					'tp_documento' => 'CRM',
 					'te_documento' => '3234235',
+					'estado_id'=>1
 				),
 			));
 			

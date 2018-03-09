@@ -49,22 +49,22 @@
 							<td>Nascimento</td>
 							<td>{{$objGenerico->dt_nascimento}}</td>
 						</tr>
-						@if ( !empty($objGenerico->especialidades->cd_especialidade) )
+						@if ( $objGenerico->especialidade != null )
 						<tr>
 							<td>Especialidade</td>
-							<td>{{$objGenerico->especialidades->cd_especialidade}}-$objGenerico->especialidades->ds_especialidade</td>
+							<td>{{$objGenerico->especialidade->cd_especialidade}} - {{$objGenerico->especialidade->ds_especialidade}}</td>
 						</tr>
 						@endif
-						@if ( !empty($objGenerico->cargo->cd_cargo) )
+						@if ( $objGenerico->cargo != null )
 						<tr>
 							<td>Profissão</td>
-							<td>{{$objGenerico->cargo->cd_cargo}} | {{$objGenerico->cargo->ds_cargo}}</td>
+							<td>{{$objGenerico->cargo->cd_cargo}} - {{$objGenerico->cargo->ds_cargo}}</td>
 						</tr>
 						@endif
 						@foreach( $objGenerico->documentos as $documento )
 						<tr>
 							<td>Documento</td>
-							<td>{{$documento->tp_documento}} | {{$documento->te_documento}}</td>
+							<td>{{$documento->tp_documento}} - {{$documento->te_documento}}</td>
 						</tr>
 						@endforeach 
 						@foreach ( $objGenerico->contatos as $contato )

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Clinica extends Model
 {
@@ -14,11 +15,7 @@ class Clinica extends Model
     public function cargo(){
         return $this->hasOne(Cargo::class);
     }
-    
-    public function agendamentos(){
-        return $this->hasMany(Agendamento::class);
-    }
-    
+
     public function contatos(){
         return $this->belongsToMany(Contato::class, 'contato_profissional', 'profissional_id', 'contato_id');
     }

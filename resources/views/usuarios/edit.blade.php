@@ -128,13 +128,13 @@
 
 
 
-					@if ( !empty($objGenerico->especialidades->cd_especialidade) )
+					@if ( $objGenerico->especialidade != null  )
                     <div class="form-group">
-                    	<div class="col-5">
+                    	<div class="col-9">
                             <label for="cd_especialidade" class="control-label">Especialidade<span class="text-danger">*</span></label>
      						<select id="cd_especialidade" class="form-control" name="cd_especialidade" required autofocus>
                                 @foreach ($arEspecialidade as $json)
-    								<option value="{{ $json->cd_especialidade }}" {{($objGenerico->especialidades->cd_especialidade == $json->cd_especialidade ? 'selected' : '')}}>{{ $json->ds_especialidade }}</option>
+    								<option value="{{ $json->cd_especialidade }}" {{($objGenerico->especialidade->cd_especialidade == $json->cd_especialidade ? 'selected' : '')}}>{{ $json->ds_especialidade }}</option>
                                 @endforeach
 							</select>
                         </div>
@@ -143,7 +143,7 @@
 					
 					
 					
-					@if ( !empty($objGenerico->cargo->cd_cargo) )
+					@if ( $objGenerico->cargo != null )
                     <div class="form-group">
 						<div class="col-9">
                         	<label for="ds_cargo" class="control-label">Profissão<span class="text-danger">*</span></label>

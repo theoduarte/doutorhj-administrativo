@@ -11,7 +11,7 @@ class User extends Authenticatable
     use Notifiable;
     use Sortable;
     
-    public $sortable  = ['id', 'name', 'email'];
+    public $sortable  = ['id', 'name', 'email', 'tp_user', 'cs_status'];
 
     /**
      * The attributes that are mass assignable.
