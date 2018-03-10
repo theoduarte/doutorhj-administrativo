@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Perfiluser;
 use Illuminate\Http\Request;
 use App\Menu;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request as CVXRequest;
 use App\Permissao;
 
 class PerfiluserController extends Controller
@@ -17,10 +19,10 @@ class PerfiluserController extends Controller
 	 */
 	public function __construct()
 	{
-		/* $action = \Route::current();
-			$action_name = $action->action['as'];
-	
-			$this->middleware("cvx:$action_name"); */
+	    $action = Route::current();
+	    $action_name = $action->action['as'];
+	    
+	    $this->middleware("cvx:$action_name");
 	}
 	
     /**
@@ -30,7 +32,7 @@ class PerfiluserController extends Controller
      */
     public function index()
     {
-    	$get_term = \Request::get('search_term');
+        $get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	
     	$perfilusers = Perfiluser::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);

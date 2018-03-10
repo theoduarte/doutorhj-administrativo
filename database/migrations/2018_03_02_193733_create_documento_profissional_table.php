@@ -19,7 +19,7 @@ class CreateDocumentoProfissionalTable extends Migration
         	$table->foreign('documento_id')->references('id')->on('documentos')->onDelete('cascade');
         	 
         	$table->integer('profissional_id')->unsigned()->nullable();
-        	$table->foreign('profissional_id')->references('id')->on('profissionais')->onDelete('cascade');
+        	$table->foreign('profissional_id')->references('id')->on('profissionals')->onDelete('cascade');
         });
     }
 

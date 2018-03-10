@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ItemmenusTableSeeder extends Seeder
 {
@@ -11,9 +12,9 @@ class ItemmenusTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('itemmenus')->delete();
+        DB::table('itemmenus')->delete();
         
-        \DB::table('itemmenus')->insert(array (
+        DB::table('itemmenus')->insert(array (
             0 =>
             array (
                 'titulo'        => 'Cargos',

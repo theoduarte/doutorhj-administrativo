@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
-use App\Pacientes;
+use Illuminate\Support\Facades\DB;
 
 class PacientesTableSeeder extends Seeder
 {
@@ -25,7 +25,7 @@ class PacientesTableSeeder extends Seeder
 					'cs_status'	     => 'A'
 			]);
 				   
-			\DB::table('pacientes')->insert(array (
+			DB::table('pacientes')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -38,7 +38,7 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('enderecos')->insert(array (
+			DB::table('enderecos')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -51,7 +51,7 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('endereco_paciente')->insert(array (
+			DB::table('endereco_paciente')->insert(array (
 				0 => 
 				array (
 					'endereco_id' => $numero,
@@ -61,7 +61,7 @@ class PacientesTableSeeder extends Seeder
 			
 			
 			
-			\DB::table('contatos')->insert(array (
+			DB::table('contatos')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -70,7 +70,7 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('contato_paciente')->insert(array (
+			DB::table('contato_paciente')->insert(array (
 				0 => 
 				array (
 					'contato_id' => $numero,
@@ -79,7 +79,7 @@ class PacientesTableSeeder extends Seeder
 			));
 			
 			
-			\DB::table('documentos')->insert(array (
+			DB::table('documentos')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -88,7 +88,7 @@ class PacientesTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('documento_paciente')->insert(array (
+			DB::table('documento_paciente')->insert(array (
 				0 => 
 				array (
 					'documento_id' => $numero,

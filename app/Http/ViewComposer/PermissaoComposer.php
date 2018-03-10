@@ -2,7 +2,7 @@
 namespace App\Http\ViewComposer;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route;
 
 use App\Menu;
 
@@ -18,7 +18,7 @@ class PermissaoComposer
 	public function compose(View $view)
 	{
 		$can_access = FALSE;
-		$action = \Route::current();
+		$action = Route::current();
 		//echo "<script>console.log( 'Model action: " .$action->uri . " Controller action: ".$action->action['as']."' );</script>";
 		
 		if (isset($action->uri) && $action->uri == 'home') {

@@ -170,7 +170,7 @@ return [
     		
     	//--menu provider--------------------------------	
     	App\Providers\MenuComposerServiceProvider::class,
-    	App\Providers\PermissaoComposerServiceProvider::class,
+//     	App\Providers\PermissaoComposerServiceProvider::class,
 
         /*
          * Application Service Providers...

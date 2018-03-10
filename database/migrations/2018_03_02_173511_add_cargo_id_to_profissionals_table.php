@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddEspecialidadeIdToProfissionaisTable extends Migration
+class AddCargoIdToProfissionalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class AddEspecialidadeIdToProfissionaisTable extends Migration
      */
     public function up()
     {
-    	Schema::table('profissionais', function (Blueprint $table) {
-    		$table->integer('especialidade_id')
+    	Schema::table('profissionals', function (Blueprint $table) {
+    		$table->integer('cargo_id')
     		->unsigned()
     		->nullable()
-    		->after('user_id');
+    		->after('especialidade_id');
     		 
-    		$table->foreign('especialidade_id')->references('id')->on('especialidades');
+    		$table->foreign('cargo_id')->references('id')->on('cargos');
     	});
     }
 
@@ -30,8 +30,9 @@ class AddEspecialidadeIdToProfissionaisTable extends Migration
      */
     public function down()
     {
-    	Schema::table('especialidades', function (Blueprint $table) {
-
+    	Schema::table('profissionals', function (Blueprint $table) {
+    		$table->dropForeign('profissionals_cargo_id_foreign');
+    		$table->dropColumn('cargo_id');
     	});
     }
 }

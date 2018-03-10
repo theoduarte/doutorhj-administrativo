@@ -19,7 +19,7 @@ class CreateEnderecoProfissionalTable extends Migration
     		$table->foreign('endereco_id')->references('id')->on('enderecos')->onDelete('cascade');
     	
     		$table->integer('profissional_id')->unsigned()->nullable();
-    		$table->foreign('profissional_id')->references('id')->on('profissionais')->onDelete('cascade');
+    		$table->foreign('profissional_id')->references('id')->on('profissionals')->onDelete('cascade');
     	});
     }
 

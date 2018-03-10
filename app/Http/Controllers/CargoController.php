@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request as CVXRequest;
 use App\Cargo;
-use App\Permissao;
 
 class CargoController extends Controller
 {
@@ -16,10 +17,8 @@ class CargoController extends Controller
 	 */
 	public function __construct()
 	{
-		$action = \Route::current();
+		$action = Route::current();
 		$action_name = $action->action['as'];
-		//echo "<script>console.log( 'Model action: " .$action->uri . " Controller action: ".$action->action['as']."' );</script>";
-		//$permissao = $this->app->make(Permissao::class);
 	
 		$this->middleware("cvx:$action_name");
 	}
@@ -31,7 +30,7 @@ class CargoController extends Controller
      */
     public function index()
     {
-    	$get_term = \Request::get('search_term');
+        $get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	
     	$cargos = Cargo::where(DB::raw('to_str(ds_cargo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);

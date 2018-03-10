@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Permissao;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //Gate::define
+        Gate::define('show-item', function($has_permission_view) {
+            return $has_permission_view;
+        });
     }
 }

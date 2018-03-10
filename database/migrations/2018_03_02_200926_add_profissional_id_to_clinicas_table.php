@@ -19,7 +19,7 @@ class AddProfissionalIdToClinicasTable extends Migration
     		->nullable()
     		->after('nm_nome_fantasia');
     		 
-    		$table->foreign('profissional_id')->references('id')->on('profissionais');
+    		$table->foreign('profissional_id')->references('id')->on('profissionals');
     	});
     }
 

@@ -401,6 +401,10 @@
         
         <!-- Tree view js -->
         <script src="/libs/jstree/jstree.min.js"></script>
+        
+        <!-- Notification js -->
+        <script src="/libs/notifyjs/dist/notify.min.js"></script>
+        <script src="/libs/notifications/notify-metro.js"></script>
 
         <!-- Custom main Js -->
         <script src="/libs/comvex-template/js/jquery.core.js"></script>

@@ -19,7 +19,7 @@ class AddProfissionalIdToAgendamentosTable extends Migration
     		->nullable()
     		->after('te_observacoes');
     		 
-    		$table->foreign('profissional_id')->references('id')->on('profissionais');
+    		$table->foreign('profissional_id')->references('id')->on('profissionals');
     	});
     }
 

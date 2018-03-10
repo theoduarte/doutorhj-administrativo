@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class EstadosTableSeeder extends Seeder
 {
@@ -14,9 +15,9 @@ class EstadosTableSeeder extends Seeder
     {
         
 
-        \DB::table('estados')->delete();
+        DB::table('estados')->delete();
         
-        \DB::table('estados')->insert(array (
+        DB::table('estados')->insert(array (
             0 => 
             array (
                 'id' => '1',

@@ -19,7 +19,7 @@ class CreateContatoProfissionalTable extends Migration
     		$table->foreign('contato_id')->references('id')->on('contatos')->onDelete('cascade');
     		 
     		$table->integer('profissional_id')->unsigned()->nullable();
-    		$table->foreign('profissional_id')->references('id')->on('profissionais')->onDelete('cascade');
+    		$table->foreign('profissional_id')->references('id')->on('profissionals')->onDelete('cascade');
     	});
     }
 

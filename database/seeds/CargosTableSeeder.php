@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CargosTableSeeder extends Seeder
 {
@@ -14,9 +15,9 @@ class CargosTableSeeder extends Seeder
     {
         
 
-        \DB::table('cargos')->delete();
+        DB::table('cargos')->delete();
         
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '23177',
@@ -3018,7 +3019,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'PROFESSORES DO ENSINO PROFISSIONAL',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '23111',
@@ -6020,7 +6021,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'INSTALADORES E MANTENEDORES ELETROMECÂNICOS DE ELEVADORES, ESCADAS E PORTAS AUTOMÁTICAS',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '23611',
@@ -9022,7 +9023,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'MÉDICO CIRURGIÃO PEDIÁTRICO',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '24112',
@@ -12024,7 +12025,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'CRIADOR DE RÃS ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '25235',
@@ -15026,7 +15027,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'SUPERVISOR DE ORÇAMENTO  ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '24852',
@@ -18028,7 +18029,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'ADMINISTRADOR DE CAMPING ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '26703',
@@ -21030,7 +21031,7 @@ class CargosTableSeeder extends Seeder
                     'ds_cargo' => 'OPERADOR DE FORNO DE INCINERAÇÃO NO TRATAMENTO DE ÁGUA, EFLUENTES E RESÍDUOS INDUSTRIAIS  ',
                 ),
             ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '26150',
@@ -24032,7 +24033,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'AUXILIAR DE COORDENAÇÃO DE ENSINO FUNDAMENTAL DE PRIMEIRA A QUARTA SÉRIES  ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '27659',
@@ -27034,7 +27035,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'GERENTE DE ESTUDOS E PROJETOS ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '26854',
@@ -30036,7 +30037,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'TÉCNICO OPTOMETRISTA',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '28752',
@@ -33038,7 +33039,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'ROMANCISTA',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '28009',
@@ -36040,7 +36041,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'SALTIMBANCO ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '29191',
@@ -39042,7 +39043,7 @@ class CargosTableSeeder extends Seeder
             'ds_cargo' => 'APONTADOR DE TEMPO (PRODUÇÃO) ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '29351',
@@ -42044,7 +42045,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'OPERADOR DE MICROFONE PARA PRODUÇÃO PARA TELEVISÃO E PRODUTORAS DE VÍDEO',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '29096',
@@ -45046,7 +45047,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'TRABALHADOR NA LAVRA DE OURO  ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '31167',
@@ -48048,7 +48049,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'COLETOR NA CULTURA  ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '30469',
@@ -51050,7 +51051,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'OPERADOR DE TEAR MECÂNICO DE MAQUINETA  ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '32160',
@@ -54052,7 +54053,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'MECÂNICO DE APARELHOS DE PRECISÃO  ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '31924',
@@ -57054,7 +57055,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'MESTRE DA INDÚSTRIA DE PRODUTOS ALIMENTÍCIOS ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '33158',
@@ -60056,7 +60057,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'AJUDANTE DE CLASSIFICADOR DE MADEIRA ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '32507',
@@ -63058,7 +63059,7 @@ class CargosTableSeeder extends Seeder
                 'ds_cargo' => 'MECÂNICO DE EMPILHADEIRA ',
             ),
         ));
-        \DB::table('cargos')->insert(array (
+        DB::table('cargos')->insert(array (
             0 => 
             array (
                 'id' => '33677',

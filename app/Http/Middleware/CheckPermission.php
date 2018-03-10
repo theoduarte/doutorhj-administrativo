@@ -23,10 +23,9 @@ class CheckPermission
     	$permissao = new PermissaoController();
     	
     	$has_permission = $permissao->hasPermissao($user_session, $action_name);
-        //dd($has_permission);
         
-        if ($action_name == 'cargos') {
-            //return redirect('/home');
+    	if (!$has_permission) {
+    	    return redirect('/home')->with('error-alert', 'Área restrita. Permissão de acesso negada.');
         }
         
         return $next($request);

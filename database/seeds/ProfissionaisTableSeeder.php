@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
-use App\Pacientes;
+use Illuminate\Support\Facades\DB;
 
 class ProfissionaisTableSeeder extends Seeder
 {
@@ -25,7 +25,7 @@ class ProfissionaisTableSeeder extends Seeder
 					'cs_status'	     => 'A'
 			]);
 				   
-			\DB::table('profissionais')->insert(array (
+			DB::table('profissionais')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -38,7 +38,7 @@ class ProfissionaisTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('enderecos')->insert(array (
+			DB::table('enderecos')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -51,7 +51,7 @@ class ProfissionaisTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('endereco_profissional')->insert(array (
+			DB::table('endereco_profissional')->insert(array (
 				0 => 
 				array (
 					'endereco_id' => $numero,
@@ -61,7 +61,7 @@ class ProfissionaisTableSeeder extends Seeder
 			
 			
 			
-			\DB::table('contatos')->insert(array (
+			DB::table('contatos')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -70,7 +70,7 @@ class ProfissionaisTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('contato_profissional')->insert(array (
+			DB::table('contato_profissional')->insert(array (
 				0 => 
 				array (
 					'contato_id' => $numero,
@@ -79,7 +79,7 @@ class ProfissionaisTableSeeder extends Seeder
 			));
 			
 			
-			\DB::table('documentos')->insert(array (
+			DB::table('documentos')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,
@@ -89,7 +89,7 @@ class ProfissionaisTableSeeder extends Seeder
 				),
 			));
 			
-			\DB::table('documento_profissional')->insert(array (
+			DB::table('documento_profissional')->insert(array (
 				0 => 
 				array (
 					'documento_id' => $numero,

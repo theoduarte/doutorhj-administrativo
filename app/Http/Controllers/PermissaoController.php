@@ -6,6 +6,8 @@ use App\Permissao;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request as CVXRequest;
 
 class PermissaoController extends Controller
 {
@@ -17,10 +19,10 @@ class PermissaoController extends Controller
 	 */
 	public function __construct()
 	{
-		/* $action = \Route::current();
+		$action = Route::current();
 		$action_name = $action->action['as'];
 	
-		$this->middleware("cvx:$action_name"); */
+		$this->middleware("cvx:$action_name");
 	}
 	
     /**
@@ -30,7 +32,7 @@ class PermissaoController extends Controller
      */
     public function index()
     {
-    	$get_term = \Request::get('search_term');
+        $get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	 
     	$permissaos = Permissao::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(url_action)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
@@ -118,7 +120,7 @@ class PermissaoController extends Controller
      */
     public function destroy($id)
     {
-    	$permissao = Cargo::findOrFail($id);
+    	$permissao = Permissao::findOrFail($id);
     	 
     	$permissao->delete();
     	 
@@ -127,8 +129,8 @@ class PermissaoController extends Controller
     
     /**
      * getPerfilCode method
+     * 
      * //retorna o codigo da permissão
-     * @throws NotFoundException
      * @param string $action_name
      * @return integer
      */
@@ -146,7 +148,6 @@ class PermissaoController extends Controller
     /**
      * hasPermissao method
      *
-     * @throws NotFoundException
      * @param string $Permissaos
      * @return boolean
      */
@@ -159,28 +160,60 @@ class PermissaoController extends Controller
     	
     	$permission_code = $this->getPerfilCode($action_name);
     
-    	if ($permissao_code == 0) {
+    	if ($permission_code == 0) {
     		return true;
     	}
     	
-    	$user_id = $user_session.id;
-    
-    	$options['joins'] = array(
-    			array('table' => 'jk_perfilusers_jk_permissaos', 'alias' => 'PfPermissao', 'type' => 'inner', 'conditions' => array( 'JkPermissao.id = PfPermissao.jk_permissao_id AND PfPermissao.jk_permissao_id = '.$permission_code)),
-    			array('table' => 'jk_perfilusers', 'alias' => 'PfUsers', 'type' => 'inner', 'conditions' => array( 'PfPermissao.jk_perfiluser_id = PfUsers.id')),
-    			array('table' => 'users', 'alias' => 'Users', 'type' => 'inner', 'conditions' => array( 'PfUsers.id = Users.jk_perfiluser_id AND Users.id = '.$user_id))
-    	);
-    
-    	$permissao = $this->JkPermissao->find('first', $options);
-    
-    	// 		pr($this->JkPermissao->getDataSource()->showLog());
-    	// 		pr($permissao);
-    	// 		exit();
-    
-    	if (isset($permissao['JkPermissao'])) {
+    	$user_id = $user_session->id;
+    	
+    	$permissao = DB::table('permissaos')
+    	   ->join('perfiluser_permissao', function($join1) use($permission_code) { $join1->on('permissaos.id', '=', 'perfiluser_permissao.permissao_id')->on('perfiluser_permissao.permissao_id', '=', DB::raw($permission_code));})
+           ->join('perfilusers', function($join2) { $join2->on('perfiluser_permissao.perfiluser_id', '=', 'perfilusers.id');})
+           ->join('users', function($join3) use($user_id) { $join3->on('perfilusers.id', '=', 'perfilusers.id')->on('users.id', '=', DB::raw($user_id));})
+           ->select('permissaos.*', 'permissaos.id', 'permissaos.titulo')
+           ->get()->first();
+    	
+    	if(isset($permissao) && $permissao != null) {
     		return true;
     	}
     
     	return false;
+    }
+    
+    /**
+     * hasPermissaoVisualizar method
+     *
+     * @param string $Permissaos
+     * @return boolean
+     */
+    public function hasPermissaoVisualizar(User $user_session, $action_model, $action_type) {
+        
+        //dd($user_session->perfiluser->tipo_permissao);
+        /* if($user_session->perfiluser->tipo_permissao == 1) {
+         return true;
+         } */
+        
+        $action_name = "$action_model.$action_type";
+        
+        $permission_code = $this->getPerfilCode($action_name);
+        
+        if ($permission_code == 0) {
+            return true;
+        }
+        
+        $user_id = $user_session->id;
+        
+        $permissao = DB::table('permissaos')
+        ->join('perfiluser_permissao', function($join1) use($permission_code) { $join1->on('permissaos.id', '=', 'perfiluser_permissao.permissao_id')->on('perfiluser_permissao.permissao_id', '=', DB::raw($permission_code));})
+        ->join('perfilusers', function($join2) { $join2->on('perfiluser_permissao.perfiluser_id', '=', 'perfilusers.id');})
+        ->join('users', function($join3) use($user_id) { $join3->on('perfilusers.id', '=', 'perfilusers.id')->on('users.id', '=', DB::raw($user_id));})
+        ->select('permissaos.*', 'permissaos.id', 'permissaos.titulo')
+        ->get()->first();
+        
+        if(isset($permissao) && $permissao != null) {
+            return true;
+        }
+        
+        return false;
     }
 }

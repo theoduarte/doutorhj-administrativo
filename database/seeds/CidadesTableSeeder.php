@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CidadesTableSeeder extends Seeder
 {
@@ -14,9 +15,9 @@ class CidadesTableSeeder extends Seeder
     {
         
 
-        \DB::table('cidades')->delete();
+        DB::table('cidades')->delete();
         
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'RONDÔNIA',
@@ -5018,7 +5019,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'CEARÁ',
@@ -10020,7 +10021,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'BAHIA',
@@ -15022,7 +15023,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'RIO GRANDE DO NORTE',
@@ -20024,7 +20025,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'BAHIA',
@@ -25026,7 +25027,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'PARANÁ',
@@ -30028,7 +30029,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'SÃO PAULO',
@@ -35030,7 +35031,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'MARANHÃO',
@@ -40032,7 +40033,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'RIO GRANDE DO SUL',
@@ -45034,7 +45035,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'MINAS GERAIS',
@@ -50036,7 +50037,7 @@ class CidadesTableSeeder extends Seeder
                 'sg_cidade' => NULL,
             ),
         ));
-        \DB::table('cidades')->insert(array (
+        DB::table('cidades')->insert(array (
             0 => 
             array (
                 'ds_estado' => 'SANTA CATARINA',

@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use TCG\Voyager\Facades\Voyager;
 use App\Http\Requests\ClinicasRequest;
 use Illuminate\Support\Facades\DB;
+use App\Estado;
+use App\Cargo;
+use App\Documento;
+use App\Endereco;
+use App\Cidade;
+use App\Contato;
+use App\Profissional;
+use App\Clinica;
 
 /**
  * @author Frederico Cruz <frederico.cruz@s1saude.com.br>
@@ -18,8 +25,8 @@ class ClinicaController extends Controller
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index(){
-        $arEstados = \App\Estados::orderBy('ds_estado')->get();
-        $arCargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
+        $arEstados = Estado::orderBy('ds_estado')->get();
+        $arCargos  = Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
         
         return view('clinica', ['arEstados' => $arEstados, 'arCargos'=> $arCargos]);
     }
@@ -48,7 +55,7 @@ class ClinicaController extends Controller
 
 
             # documento da empresa CNPJ
-            $documentoCnpj      = new \App\Documentos();
+            $documentoCnpj      = new Documento();
             $documentoCnpj->tp_documento = 'CNPJ';
             $documentoCnpj->te_documento = $request->input('nr_cnpj');
             $documentoCnpj->save();
@@ -57,8 +64,8 @@ class ClinicaController extends Controller
             
             
             # endereco da empresa
-            $endereco            = new \App\Enderecos($request->all());
-            $idCidade            = \App\Cidades::where(['cd_ibge'=>$request->input('cd_ibge_cidade')])->get(['id'])->first();
+            $endereco            = new Endereco($request->all());
+            $idCidade            = Cidade::where(['cd_ibge'=>$request->input('cd_ibge_cidade')])->get(['id'])->first();
             $endereco->cidade_id = $idCidade->id;
             $endereco->save();
             
@@ -67,14 +74,14 @@ class ClinicaController extends Controller
             # telefones do profissional
             $arContatos = array();
             
-            $contato1             = new \App\Contatos();
+            $contato1             = new Contato();
             $contato1->tp_contato = $request->input('tp_contato1');
             $contato1->ds_contato = $request->input('ds_contato1');
             $contato1->save();
             $arContatos[] = $contato1->id;
             
             if(!empty($request->input('ds_contato2'))){
-                $contato2             = new \App\Contatos();
+                $contato2             = new Contato();
                 $contato2->tp_contato = $request->input('tp_contato2');
                 $contato2->ds_contato = $request->input('ds_contato2');
                 $contato2->save();
@@ -82,7 +89,7 @@ class ClinicaController extends Controller
             }
             
             if(!empty($request->input('ds_contato3'))){
-                $contato3             = new \App\Contatos();
+                $contato3             = new Contato();
                 $contato3->tp_contato = $request->input('tp_contato3');
                 $contato3->ds_contato = $request->input('ds_contato3');
                 $contato3->save();
@@ -92,7 +99,7 @@ class ClinicaController extends Controller
             
             
             # cadastro de profissional responsavel pela clinica
-            $profissional           = new \App\Profissionais($request->all());
+            $profissional           = new Profissional($request->all());
             $profissional->users_id = $usuario->id;
             $profissional->cargo_id = $request->input('cargo_id');
             $profissional->save();
@@ -105,7 +112,7 @@ class ClinicaController extends Controller
             
             
             
-            $clinica                  = new \App\Clinicas($request->all());
+            $clinica                  = new Clinica($request->all());
             $clinica->profissional_id = $profissional->id;
             $clinica->save();
             
@@ -113,14 +120,14 @@ class ClinicaController extends Controller
             # contatos da clínica
             $arContatos = array();
             
-            $contato1             = new \App\Contatos();
+            $contato1             = new Contato();
             $contato1->tp_contato = $request->input('tp_contato1');
             $contato1->ds_contato = $request->input('ds_contato1');
             $contato1->save();
             $arContatos[] = $contato1->id;
             
             if(!empty($request->input('ds_contato2'))){
-                $contato2             = new \App\Contatos();
+                $contato2             = new Contato();
                 $contato2->tp_contato = $request->input('tp_contato2');
                 $contato2->ds_contato = $request->input('ds_contato2');
                 $contato2->save();
@@ -128,7 +135,7 @@ class ClinicaController extends Controller
             }
             
             if(!empty($request->input('ds_contato3'))){
-                $contato3             = new \App\Contatos();
+                $contato3             = new Contato();
                 $contato3->tp_contato = $request->input('tp_contato3');
                 $contato3->ds_contato = $request->input('ds_contato3');
                 $contato3->save();
@@ -137,8 +144,8 @@ class ClinicaController extends Controller
             
             
             # endereco do responsavel
-            $endereco            = new \App\Enderecos($request->all());
-            $idCidade            = \App\Cidades::where(['cd_ibge'=>$request->input('cd_ibge_cidade')])->get(['id'])->first();
+            $endereco            = new Endereco($request->all());
+            $idCidade            = Cidade::where(['cd_ibge'=>$request->input('cd_ibge_cidade')])->get(['id'])->first();
             $endereco->cidade_id = $idCidade->id;
             $endereco->save();
             
@@ -150,7 +157,7 @@ class ClinicaController extends Controller
 //             $arCliDocumento[]   = $documento->id;
             
             
-            $profissional           = new \App\Profissionais($request->all());
+            $profissional           = new Profissional($request->all());
             $profissional->users_id = $usuario->id;
             $profissional->cargo_id = $request->input('cargo_id');
             $profissional->save();
@@ -163,7 +170,7 @@ class ClinicaController extends Controller
             DB::commit(); 
             
             return redirect()->route('home', ['nome' => $request->input('nm_primario')]);
-        }catch (\Exception $e){
+        } catch (\Exception $e){
             DB::rollBack(); 
             
             throw new \Exception($e->getCode().'-'.$e->getMessage());
