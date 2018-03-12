@@ -13,8 +13,6 @@ class ConsultasTableSeeder extends Seeder
      */
     public function run()
     {
-        
-
         DB::table('consultas')->delete();
         
         DB::table('consultas')->insert(array (
@@ -475,7 +473,5 @@ class ConsultasTableSeeder extends Seeder
             'ds_consulta' => 'Consulta Neonatologia (em consultorio)',
             ),
         ));
-        
-        
     }
 }

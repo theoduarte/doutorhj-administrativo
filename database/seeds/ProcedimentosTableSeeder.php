@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\DB;
 
 class ProcedimentosTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -13,8 +12,6 @@ class ProcedimentosTableSeeder extends Seeder
      */
     public function run()
     {
-        
-
         DB::table('procedimentos')->delete();
         
         DB::table('procedimentos')->insert(array (
@@ -22,7 +19,7 @@ class ProcedimentosTableSeeder extends Seeder
             array (
                 'id' => '8381',
                 'cd_procedimento' => '10101012',
-            'ds_procedimento' => 'Em consultório (no horário normal ou preestabelecido)																																			',
+				'ds_procedimento' => 'Em consultório (no horário normal ou preestabelecido)																																			',
             ),
             1 => 
             array (

@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use App\User;
 use Illuminate\Support\Facades\DB;
 
-class ProfissionaisTableSeeder extends Seeder
+class ProfissionalsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -25,7 +25,7 @@ class ProfissionaisTableSeeder extends Seeder
 					'cs_status'	     => 'A'
 			]);
 				   
-			DB::table('profissionais')->insert(array (
+			DB::table('profissionals')->insert(array (
 				0 => 
 				array (
 					'id' => $numero,

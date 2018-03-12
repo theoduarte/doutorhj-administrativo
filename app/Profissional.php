@@ -10,7 +10,6 @@ class Profissional extends Model
 {
 	use Sortable;
 	
-	public $table = "profissionais";
 	public $fillable      = ['nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'tp_profissional', 'cs_status'];
 	public $sortable      = ['id', 'nm_primario', 'nm_secundario'];
 	public $dates 	      = ['dt_nascimento'];
