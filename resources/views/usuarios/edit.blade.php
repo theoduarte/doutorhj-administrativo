@@ -37,7 +37,7 @@
 
         $( "#nr_cep" ).blur(function() {
         	$.ajax({
-        	  url: "/paciente/consulta-cep/cep/"+this.value,
+        	  url: "/consulta-cep/cep/"+this.value,
         	  context: document.body
         	}).done(function(resposta) {
         	  $( this ).addClass( "done" );
@@ -80,13 +80,11 @@
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
 			<div class="card-box">
-			
 				@if(  $objGenerico->user->tp_user == 'PAC')
 					<h4 class="header-title m-t-0">Editar Paciente</h4>
 				@elseif(  $objGenerico->user->tp_user == 'PRO')
 					<h4 class="header-title m-t-0">Editar Profissional</h4>
 				@endif
-			
 				
 				<form action="{{ route('usuarios.update', $objGenerico->id) }}" method="post">
 					<input type="hidden" name="_method" value="PUT">
