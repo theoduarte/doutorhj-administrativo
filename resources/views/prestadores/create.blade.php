@@ -18,7 +18,6 @@
 		</div>
 	</div>
 	
-	
 	<form action="{{ route('prestadores.store') }}" method="post">
     	<div class="row">
 	        <div class="col-12">
@@ -36,13 +35,21 @@
                                 Precificação de Procedimentos
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#precificacaoConsulta" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                Precificação de Consultas
+                            </a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="prestador">
                         	@include('prestadores/tab_dados_prestador')
                         </div>
                         <div class="tab-pane fade" id="precificacaoProcedimento">
-                         	@include('prestadores/precificacao')
+                         	@include('prestadores/precificacaoProcedimento')
+                        </div>
+                        <div class="tab-pane fade" id="precificacaoConsulta">
+                         	@include('prestadores/precificacaoConsulta')
                         </div>
                     </div>
                 </div>

@@ -11,4 +11,5 @@ class Procedimento extends Model
 	
 	public $fillable = ['cd_procedimento', 'ds_procedimento'];
     public $sortable = ['id', 'cd_procedimento', 'ds_procedimento'];
+    
 }

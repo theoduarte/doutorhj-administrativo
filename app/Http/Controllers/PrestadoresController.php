@@ -55,7 +55,6 @@ class PrestadoresController extends Controller
         $estados = \App\Estado::orderBy('ds_estado')->get();
         $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
         
-        
         return view('prestadores.create', compact('estados', 'cargos'));
     }
 
@@ -67,9 +66,6 @@ class PrestadoresController extends Controller
      */
     public function store(PrestadoresRequest $request)
     {
-        dd($request->all());
-        
-        
         DB::beginTransaction();
         
         try{
@@ -137,6 +133,28 @@ class PrestadoresController extends Controller
             $clinica->profissional()->associate($profissional);
             $clinica->save();            
             
+            if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
+                foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){
+                    $atendimento = new \App\Atendimento();
+                    $atendimento->procedimento()->associate($idProcedimento);
+                    $atendimento->clinica_id = $clinica->id;
+                    $atendimento->ds_preco = $arProcedimento[1];
+                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arProcedimento[2])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->save();
+                }
+            }
+            
+            if(is_array($request->input('precosConsultas')) and count($request->input('precosConsultas')) > 0){
+                foreach( $request->input('precosConsultas') as $idConsulta => $arConsulta ){
+                    $atendimento = new \App\Atendimento();
+                    $atendimento->consulta()->associate($idConsulta);
+                    $atendimento->clinica_id = $clinica->id;
+                    $atendimento->ds_preco = $arConsulta[1];
+                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arConsulta[2])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->save();
+                }
+            }
+            
             DB::commit();
             
             return redirect()->route('prestadores.index')->with('success', 'O prestador foi cadastrado com sucesso!');
@@ -193,8 +211,9 @@ class PrestadoresController extends Controller
     }
     
     /**
+     * Consulta para alimentar autocomplete
      * 
-     * @param unknown $term
+     * @param string $term
      * @return \Illuminate\Http\JsonResponse
      */
     public function getProcedimentos($term){
@@ -205,6 +224,25 @@ class PrestadoresController extends Controller
         {
             $arResultado[] = [ 'id' => $query->id, 
                                'value' => $query->ds_procedimento ];
+        }
+        
+        return Response()->json($arResultado);
+    }
+    
+    /**
+     * Consulta para alimentar autocomplete
+     * 
+     * @param string $term
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getConsultas($term){
+        $arResultado = array();
+        $consultas = \App\Consulta::where(DB::raw('to_str(ds_consulta)'), 'like', '%'.UtilController::toStr($term).'%')->get();
+        
+        foreach ($consultas as $query)
+        {
+            $arResultado[] = [ 'id' => $query->id, 
+                               'value' => $query->ds_consulta ];
         }
         
         return Response()->json($arResultado);

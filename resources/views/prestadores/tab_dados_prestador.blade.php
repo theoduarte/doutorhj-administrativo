@@ -202,7 +202,7 @@
     					<option value="CC" {{(old('tp_contato3') == 'CC' ? 'selected' : '')}}>Celular Comercial</option>
     					<option value="FX" {{(old('tp_contato3') == 'FX' ? 'selected' : '')}}>FAX</option>
     				</select>
-                </div> 
+                </div>
     	        <div class="col-2">
     				<input id="ds_contato3" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato3" value="{{ old('ds_contato3') }}" >
                 </div>
