@@ -32,8 +32,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#precificacao" data-toggle="tab" aria-expanded="false" class="nav-link">
-                                Precificação
+                            <a href="#precificacaoProcedimento" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                Precificação de Procedimentos
                             </a>
                         </li>
                     </ul>
@@ -41,7 +41,7 @@
                         <div class="tab-pane fade active show" id="prestador">
                         	@include('prestadores/tab_dados_prestador')
                         </div>
-                        <div class="tab-pane fade" id="precificacao">
+                        <div class="tab-pane fade" id="precificacaoProcedimento">
                          	@include('prestadores/precificacao')
                         </div>
                     </div>

@@ -4,4 +4,4 @@
 	
 	$('.mascaraCep').mask('00000-000');
 	
-	$(".mascaraMonetaria").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+	$(".mascaraMonetaria").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});

@@ -67,6 +67,9 @@ class PrestadoresController extends Controller
      */
     public function store(PrestadoresRequest $request)
     {
+        dd($request->all());
+        
+        
         DB::beginTransaction();
         
         try{
@@ -191,13 +194,19 @@ class PrestadoresController extends Controller
     
     /**
      * 
-     * @param unknown $consulta
+     * @param unknown $term
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function consultaProcedimentos($consulta){
-        $procedimento = \App\Procedimento::where(function(){
-            
-        })->get();
+    public function getProcedimentos($term){
+        $arResultado = array();
+        $procedimentos = \App\Procedimento::where(DB::raw('to_str(ds_procedimento)'), 'like', '%'.UtilController::toStr($term).'%')->get();
         
-        return $procedimento;
+        foreach ($procedimentos as $query)
+        {
+            $arResultado[] = [ 'id' => $query->id, 
+                               'value' => $query->ds_procedimento ];
+        }
+        
+        return Response()->json($arResultado);
     }
 }

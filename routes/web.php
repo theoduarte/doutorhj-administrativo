@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,8 +24,8 @@ Route::resource('usuarios', 'UsuariosController')->middleware('auth');
 Route::resource('itemmenus','ItemmenuController')->middleware('auth');
 Route::resource('perfilusers','PerfiluserController')->middleware('auth');
 Route::resource('permissaos','PermissaoController')->middleware('auth');
-Route::get('procedimentos/consulta/{consulta}', 'PrestadoresController@consultaProcedimentos')->middleware('auth');
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
+Route::get('procedimentos/consulta/{consulta}', 'PrestadoresController@getProcedimentos')->middleware('auth');
 
 Auth::routes();
 
