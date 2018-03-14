@@ -30,7 +30,7 @@ class PrestadoresRequest extends FormRequest
             'cd_cidade_ibge'=> 'required',
             'dt_nascimento' => 'required|max:10|date_format:"d/m/Y"',
             'tp_documento'  => 'required|max:3',
-            'te_documento'  => 'required|max:15',
+            'te_documento'  => 'required|max:30',
             'tp_contato1'   => 'required|max:2',
             'ds_contato1'   => 'required|max:15|min:10',
             'nr_cep'        => 'max:9|min:8',

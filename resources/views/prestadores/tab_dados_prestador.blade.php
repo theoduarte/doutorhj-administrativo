@@ -182,9 +182,9 @@
                 <div class="col-2">
     				<select id="tp_contato2" name="tp_contato2" class="form-control">
     					<option value="" selected="selected"></option>
-    					<option value="FC" {{(old('tp_contato1') == 'FC' ? 'selected' : '')}}>Telefone Comercial</option>
-    					<option value="CC" {{(old('tp_contato1') == 'CC' ? 'selected' : '')}}>Celular Comercial</option>
-    					<option value="FX" {{(old('tp_contato1') == 'FX' ? 'selected' : '')}}>FAX</option>
+    					<option value="FC" {{(old('tp_contato2') == 'FC' ? 'selected' : '')}}>Telefone Comercial</option>
+    					<option value="CC" {{(old('tp_contato2') == 'CC' ? 'selected' : '')}}>Celular Comercial</option>
+    					<option value="FX" {{(old('tp_contato2') == 'FX' ? 'selected' : '')}}>FAX</option>
     				</select>
                 </div> 
     	        <div class="col-2">
@@ -198,9 +198,9 @@
                 <div class="col-2">
     				<select id="tp_contato3" name="tp_contato3" class="form-control">
     					<option value="" selected="selected"></option>
-    					<option value="FC" {{(old('tp_contato1') == 'FC' ? 'selected' : '')}}>Telefone Comercial</option>
-    					<option value="CC" {{(old('tp_contato1') == 'CC' ? 'selected' : '')}}>Celular Comercial</option>
-    					<option value="FX" {{(old('tp_contato1') == 'FX' ? 'selected' : '')}}>FAX</option>
+    					<option value="FC" {{(old('tp_contato3') == 'FC' ? 'selected' : '')}}>Telefone Comercial</option>
+    					<option value="CC" {{(old('tp_contato3') == 'CC' ? 'selected' : '')}}>Celular Comercial</option>
+    					<option value="FX" {{(old('tp_contato3') == 'FX' ? 'selected' : '')}}>FAX</option>
     				</select>
                 </div> 
     	        <div class="col-2">
@@ -311,7 +311,7 @@
     
         <div class="col-3">
             <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{ old('nm_cidade') }}" required  maxlength="50" readonly>
-    		<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ old('cd_ibge_cidade') }}">
+    		<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ old('cd_cidade_ibge') }}">
         </div>
     </div>
     

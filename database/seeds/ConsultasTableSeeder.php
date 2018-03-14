@@ -20,8 +20,7 @@ class ConsultasTableSeeder extends Seeder
             array (
                 'id' => '81',
                 'cd_consulta' => '10109901',
-				'ds_consulta' => 'Consulta Acupuntura (em consultorio)						',
-				'especialidade_id' => 181,
+				'ds_consulta' => 'Consulta Acupuntura (em consultorio)',
             ),
             1 => 
             array (
@@ -40,14 +39,14 @@ class ConsultasTableSeeder extends Seeder
                 'id' => '84',
                 'cd_consulta' => '10109904',
 				'ds_consulta' => 'Consulta Anestesiologista (em consultorio)',
-				'especialidade_id' => 183,
+				
             ),
             4 => 
             array (
                 'id' => '85',
                 'cd_consulta' => '10109905',
 				'ds_consulta' => 'Consulta Angiologia (em consultorio)',
-				'especialidade_id' => 183,
+				
             ),
             5 => 
             array (
@@ -60,21 +59,21 @@ class ConsultasTableSeeder extends Seeder
                 'id' => '87',
                 'cd_consulta' => '10109907',
 				'ds_consulta' => 'Consulta Cardiologia (em consultorio)',
-				'especialidade_id' => 186,
+				
             ),
             7 => 
             array (
                 'id' => '88',
                 'cd_consulta' => '10109908',
 				'ds_consulta' => 'Consulta Cardiologia Pediatrica (em consultorio)',
-				'especialidade_id' => 186,
+				
             ),
             8 => 
             array (
                 'id' => '89',
                 'cd_consulta' => '10109909',
 				'ds_consulta' => 'Consulta Cirurgia Cardiovascular (em consultorio)',
-				'especialidade_id' => 186,
+				
             ),
             9 => 
             array (
@@ -471,7 +470,7 @@ class ConsultasTableSeeder extends Seeder
                 'id' => '155',
                 'cd_consulta' => '10109975',
 				'ds_consulta' => 'Consulta Pediatria (em pronto-socorro)',
-				'especialidade_id' => 226,
+				
 
             ),
             75 => 
