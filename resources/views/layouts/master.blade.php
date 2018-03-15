@@ -52,6 +52,7 @@
     	<link rel="stylesheet" href="https://file.myfontastic.com/da58YPMQ7U5HY8Rb6UxkNf/icons.css">
     	
     	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">        
+    	<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">        
     @endpush
     
     @stack('style')
@@ -418,7 +419,7 @@
 		<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 		<script src="/js/jquery.maskMoney.min.js"></script>
-        
+
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 $('.counter').counterUp({

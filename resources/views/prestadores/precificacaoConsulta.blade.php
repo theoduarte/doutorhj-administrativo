@@ -31,9 +31,12 @@
         
         cell1.innerHTML = $('#consulta_id').val() + '<input type="hidden" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#consulta_id').val() + '">';
         cell2.innerHTML = $('#ds_consulta').val() + '<input type="hidden" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#ds_consulta').val() + '">';
-        cell3.innerHTML = $('#vl_consulta').val() + '<input type="hidden" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#vl_consulta').val() + '">';
+        cell3.innerHTML = '<input type="text" class="form-control mascaraMonetaria" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#vl_consulta').val() + '">';
         cell4.innerHTML = '<button type="button" class="btn ti-trash" onclick="delLinhaConsulta(this)"> Remover</button>';
 
+        $(".mascaraMonetaria").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
+
+    	
         $('#vl_consulta').val(null);
         $('#consulta_id').val(null);
         $('#ds_consulta').val(null);
@@ -69,19 +72,21 @@
 	<div class="row">
 		<div class="col-12">
     		<table id="tblPrecosConsultas" name="tblPrecosConsultas" class="table table-striped table-bordered table-doutorhj">
-        		<tbody>
+        		<thead>
         			<tr>
     					<th>Id</th>
     					<th>Consulta</th>
     					<th>Valor</th>
     					<th>Ação</th>
     				</tr>
+        		</thead>
+        		<tbody>
     				@if( old('precosConsultas') != null )
         				@foreach( old('precosConsultas') as $id => $arConsulta )
         				<tr>
         					<th>{{$id}}<input type="hidden" name="precosConsultas[{{$id}}][]" value="{{$id}}"></th>
         					<th>{{$arConsulta[1]}}<input type="hidden" name="precosConsultas[{{$id}}][]" value="{{$arConsulta[1]}}"></th>
-        					<th>{{$arConsulta[2]}}<input type="hidden" name="precosConsultas[{{$id}}][]" value="{{$arConsulta[2]}}"></th>
+        					<th><input type="text" class="form-control mascaraMonetaria" name="precosConsultas[{{$id}}][]" value="{{$arConsulta[2]}}"></th>
         					<th><button type="button" class="btn ti-trash" onclick="delLinhaConsulta(this)"> Remover</button></th>
         				</tr>
         				@endforeach

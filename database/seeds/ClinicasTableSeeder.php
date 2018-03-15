@@ -13,7 +13,7 @@ class ClinicasTableSeeder extends Seeder
      */
     public function run()
     {
-		for($numero = 3000; $numero<=3200; $numero++){
+		for($numero = 3000; $numero<=3000; $numero++){
 			User::create([
 					'id'			 => $numero,
 					'name'           => 'Prestador '.$numero,
@@ -38,7 +38,7 @@ class ClinicasTableSeeder extends Seeder
 				0 => 
 				array (
 					'id' => $numero,
-					'sg_logradouro' => 'RUA',
+					'sg_logradouro' => 'Rua',
 					'te_endereco' => 'RUA PROPÍCIO DE PINA N.656',
 					'nr_logradouro' => '656',
 					'te_bairro' => 'DOM PEDRO II',
@@ -76,21 +76,40 @@ class ClinicasTableSeeder extends Seeder
 			
 			
 			DB::table('documentos')->insert(array (
-				0 => 
-				array (
-					'id' => $numero,
-					'tp_documento' => 'CNH',
-					'te_documento' => '3234235',
-				),
+			    0 =>
+			    array (
+			        'id' => $numero,
+			        'tp_documento' => 'CNPJ',
+			        'te_documento' => '1069669100163',
+			    ),
 			));
 			
 			DB::table('clinica_documento')->insert(array (
-				0 => 
-				array (
-					'documento_id' => $numero,
-					'clinica_id' => $numero,
-				),
+			    0 =>
+			    array (
+			        'documento_id' => $numero,
+			        'clinica_id' => $numero,
+			    ),
 			));
+			
+			$nrDocProfissional = $numero + 1000;
+			DB::table('documentos')->insert(array (
+			    0 =>
+			    array (
+			        'id' => $nrDocProfissional,
+			        'tp_documento' => 'CNH',
+			        'te_documento' => '10203040',
+			    ),
+			));
+			
+			DB::table('documento_profissional')->insert(array (
+			    0 =>
+			    array (
+			        'documento_id' => $nrDocProfissional,
+			        'profissional_id' => 2010,
+			    ),
+			));
+			
 		}
     }
 }

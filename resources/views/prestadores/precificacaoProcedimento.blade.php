@@ -1,5 +1,5 @@
 <script>
-    $(function(){
+	$(function(){
         $( "#ds_procedimento" ).autocomplete({
         	  source: function( request, response ) {
         	      $.ajax( {
@@ -31,9 +31,11 @@
         
         cell1.innerHTML = $('#procedimento_id').val() + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val() + '][]" value="' + $('#procedimento_id').val() + '">';
         cell2.innerHTML = $('#ds_procedimento').val() + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val() + '][]" value="' + $('#ds_procedimento').val() + '">';
-        cell3.innerHTML = $('#vl_procedimento').val() + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val() + '][]" value="' + $('#vl_procedimento').val() + '">';
+        cell3.innerHTML = '<input type="text" class="form-control mascaraMonetaria" name="precosProcedimentos[' + $('#procedimento_id').val() + '][]" value="' + $('#vl_procedimento').val() + '">';
         cell4.innerHTML = '<button type="button" class="btn ti-trash" onclick="delLinhaProcedimento(this)"> Remover</button>';
 
+    	$(".mascaraMonetaria").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
+    	
         $('#vl_procedimento').val(null);
         $('#procedimento_id').val(null);
         $('#ds_procedimento').val(null);
@@ -65,25 +67,27 @@
 	<div class="row">
 		<div class="col-12">
     		<table id="tblPrecosProcedimentos" name="tblPrecosProcedimentos" class="table table-striped table-bordered table-doutorhj">
-        		<tbody>
+        		<thead>
         			<tr>
     					<th>Id</th>
     					<th>Procedimento</th>
     					<th>Valor</th>
     					<th>Ação</th>
     				</tr>
-    				@if( old('precosProcedimentos') != null )
+    			</thead>
+    			<tbody>
+        			@if( old('precosProcedimentos') != null )
         				@foreach( old('precosProcedimentos') as $id => $arProcedimento )
         				<tr>
         					<th>{{$id}}<input type="hidden" name="precosProcedimentos[{{$id}}][]" value="{{$id}}"></th>
         					<th>{{$arProcedimento[1]}}<input type="hidden" name="precosProcedimentos[{{$id}}][]" value="{{$arProcedimento[1]}}"></th>
-        					<th>{{$arProcedimento[2]}}<input type="hidden" name="precosProcedimentos[{{$id}}][]" value="{{$arProcedimento[2]}}"></th>
+        					<th><input type="text" class="form-control mascaraMonetaria" name="precosProcedimentos[{{$id}}][]" value="{{$arProcedimento[2]}}"></th>
         					<th><button type="button" class="btn ti-trash" onclick="delLinhaProcedimento(this)"> Remover</button></th>
         				</tr>
         				@endforeach
     				@endif
-    			</tbody>
-            </table>
+				</tbody> 
+        	</table>
         </div>
 	</div>
 </div>

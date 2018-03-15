@@ -43,7 +43,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="prestador">
-                        	@include('prestadores/tab_dados_prestador')
+                        	@include('prestadores/tab_dados_prestador_create')
                         </div>
                         <div class="tab-pane fade" id="precificacaoProcedimento">
                          	@include('prestadores/precificacaoProcedimento')

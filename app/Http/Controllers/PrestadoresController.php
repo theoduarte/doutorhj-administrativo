@@ -31,10 +31,10 @@ class PrestadoresController extends Controller
                                             }
                                         }
                                         
-//                                         $arFiltroIn = array();
-//                                         if(!empty(Request::input('tp_usuario_cliente_paciente'))    ){ $arFiltroIn[] = 'PAC'; }
-//                                         if(!empty(Request::input('tp_usuario_cliente_profissional'))){ $arFiltroIn[] = 'PRO'; }
-//                                         if( count($arFiltroIn)>0 ) { $query->whereIn('tp_user', $arFiltroIn); }
+                                        $arFiltroIn = array();
+                                        if(!empty(Request::input('tp_usuario_cliente_paciente'))    ){ $arFiltroIn[] = 'PAC'; }
+                                        if(!empty(Request::input('tp_usuario_cliente_profissional'))){ $arFiltroIn[] = 'PRO'; }
+                                        if( count($arFiltroIn)>0 ) { $query->whereIn('tp_user', $arFiltroIn); }
 
                                     })->sortable()->paginate(20);
         $prestadores->load('contatos');
@@ -184,7 +184,21 @@ class PrestadoresController extends Controller
      */
     public function edit($id)
     {
-           
+        $estados = \App\Estado::orderBy('ds_estado')->get();
+        $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
+
+        $prestador = \App\Clinica::findorfail($id);
+        $prestador->load('enderecos');
+        $prestador->load('contatos');
+        $prestador->load('documentos');
+        $prestador->load('profissional');
+        
+        $user   = \App\User::findorfail($prestador->profissional->user_id);
+        $cargo  = \App\Cargo::findorfail($prestador->profissional->cargo_id);
+        
+        $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id);
+        
+        return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'cidade'));
     }
 
     /**

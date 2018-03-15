@@ -34,6 +34,7 @@ class ProfissionalsTableSeeder extends Seeder
 					'cs_sexo'=>'M',
 					'dt_nascimento'=> '07/01/1986',
 					'user_id'=> $numero,
+				    'cargo_id'=> 23186,
 					'especialidade_id'=>189
 				),
 			));
