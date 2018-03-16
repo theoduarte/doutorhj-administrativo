@@ -195,10 +195,15 @@ class PrestadoresController extends Controller
         
         $user   = \App\User::findorfail($prestador->profissional->user_id);
         $cargo  = \App\Cargo::findorfail($prestador->profissional->cargo_id);
-        
         $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id);
+        $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos;
         
-        return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'cidade'));
+        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $id, 'consulta_id'=> null])->get();
+        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $id, 'procedimento_id'=> null])->get();
+        
+        return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 
+                                                'user', 'cargo', 'cidade', 
+                                                'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
     }
 
     /**
@@ -210,7 +215,21 @@ class PrestadoresController extends Controller
      */
     public function update($id)
     {
+        DB::beginTransaction();
         
+        try{
+            
+            
+            
+            
+            DB::commit();
+            
+            return redirect()->route('prestadores.index')->with('success', 'Prestador alterado com sucesso!');
+        } catch (\Exception $e){
+            DB::rollBack();
+            
+            throw new \Exception($e->getCode().'-'.$e->getMessage());
+        }
     }
 
     /**

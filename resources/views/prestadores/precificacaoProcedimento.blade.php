@@ -86,6 +86,15 @@
         				</tr>
         				@endforeach
     				@endif
+    				
+    				@foreach( $precoprocedimentos as $procedimento )
+        				<tr>
+        					<th>{{$procedimento->id}}       <input type="hidden" name="precosProcedimentos[{{$procedimento->id}}][]" value="{{$procedimento->id}}"></th>
+        					<th>{{$procedimento->ds_preco}} <input type="hidden" name="precosProcedimentos[{{$procedimento->id}}][]" value="{{$procedimento->ds_preco}}"></th>
+        					<th><input type="text" class="form-control mascaraMonetaria" name="precosProcedimentos[{{$procedimento->id}}][]" value="{{$procedimento->vl_atendimento}}"></th>
+        					<th><button type="button" class="btn ti-trash" onclick="delLinhaConsulta(this)"> Remover</button></th>
+        				</tr>
+    				@endforeach  
 				</tbody> 
         	</table>
         </div>

@@ -110,6 +110,29 @@ class ClinicasTableSeeder extends Seeder
 			    ),
 			));
 			
+                        DB::table('atendimentos')->insert(array (
+                                0 =>
+                                array (
+                                        'id' => 1,
+                                        'vl_atendimento'=>2400.40,
+                                        'ds_preco' => 'teste...',
+                                        'clinica_id' => $numero,
+                                        'consulta_id' => null,
+                                        'procedimento_id' => 8381
+                                ),
+                                1 =>
+                                array (
+                                        'id' => 2,
+                                        'vl_atendimento'=>4400.10,
+                                        'ds_preco' => 'teste...',
+                                        'clinica_id' => $numero,
+                                        'consulta_id' => 81,
+                                        'procedimento_id' => null,
+                                ),
+
+                        ));
+
+
 		}
     }
 }

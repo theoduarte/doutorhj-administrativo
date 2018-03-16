@@ -18,7 +18,10 @@
 		</div>
 	</div>
 	
-	<form action="{{ route('prestadores.store') }}" method="post">
+	<form action="{{ route('prestadores.update', $cargo->id) }}" method="post">
+		<input type="hidden" name="_method" value="PUT">
+		{!! csrf_field() !!}
+    	
     	<div class="row">
 	        <div class="col-12">
                 <div class="card-box col-12">

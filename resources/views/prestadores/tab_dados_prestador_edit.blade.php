@@ -126,21 +126,22 @@
     <div class="col-10">
     	<h4>Documentação</h4>
         <div class="form-group{{ $errors->has('tp_documento') ? ' has-error' : '' }}">
+            @foreach( $documentoprofissional as $documento )
             <div class="row">
                 <label for="tp_documento" class="col-12 control-label">Informe um documento do Responsável<span class="text-danger">*</span></label>
                 <div class="col-3">
-        			<select id="tp_documento" name="tp_documento" class="form-control">
-        				<option></option>
-<!--         			<option value="CNH" {{($prestador->documentos->first()->tp_documento == 'CNH' ? 'selected' : '')}}>CNH</option> -->
-<!--         			<option value="RG"  {{($prestador->documentos->first()->tp_documento == 'RG'  ? 'selected' : '')}}>RG</option> -->
-<!--         			<option value="CPF" {{($prestador->documentos->first()->tp_documento == 'CPF' ? 'selected' : '')}}>CPF</option> -->
-<!--         			<option value="TRE" {{($prestador->documentos->first()->tp_documento == 'TRE' ? 'selected' : '')}}>Título de Eleitor</option> -->
+        			<select id="tp_documento[{{$documento->id}}][]" name="tp_documento[{{$documento->id}}][]" class="form-control">
+            			<option value="CNH" {{($documento->tp_documento == 'CNH' ? 'selected' : '')}}>CNH</option>
+            			<option value="RG"  {{($documento->tp_documento == 'RG'  ? 'selected' : '')}}>RG</option>
+            			<option value="CPF" {{($documento->tp_documento == 'CPF' ? 'selected' : '')}}>CPF</option>
+            			<option value="TRE" {{($documento->tp_documento == 'TRE' ? 'selected' : '')}}>Título de Eleitor</option>
         			</select>
                 </div> 
                 <div class="col-3">
-        			<input id="te_documento" type="text" placeholder="" class="form-control" name="te_documento" value="" required >                               
+        			<input id="te_documento[{{$documento->id}}][]" type="text" placeholder="" class="form-control" name="te_documento[{{$documento->id}}][]" value="{{$documento->te_documento}}" required >                               
                 </div> 
             </div>
+            @endforeach
         </div>
     
         <div class="form-group{{ $errors->has('nr_cnpj') ? ' has-error' : '' }}">
