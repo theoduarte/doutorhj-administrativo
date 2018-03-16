@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PrestadoresRequest;
+use App\Http\Requests\EditarPrestadoresRequest;
 
 class PrestadoresController extends Controller
 {
@@ -55,7 +56,10 @@ class PrestadoresController extends Controller
         $estados = \App\Estado::orderBy('ds_estado')->get();
         $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
         
-        return view('prestadores.create', compact('estados', 'cargos'));
+        $precoprocedimentos = null;
+        $precoconsultas = null;
+        
+        return view('prestadores.create', compact('estados', 'cargos', 'precoprocedimentos', 'precoconsultas'));
     }
 
     /**
@@ -199,11 +203,15 @@ class PrestadoresController extends Controller
         $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos;
         
         $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $id, 'consulta_id'=> null])->get();
-        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $id, 'procedimento_id'=> null])->get();
+        $precoprocedimentos->load('procedimento');
+        $precoprocedimentos->load('consulta');
         
-        return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 
-                                                'user', 'cargo', 'cidade', 
-                                                'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
+        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $id, 'procedimento_id'=> null])->get();
+        $precoconsultas->load('procedimento');
+        $precoconsultas->load('consulta');
+        
+        return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
+                                                'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
     }
 
     /**
@@ -213,14 +221,63 @@ class PrestadoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(EditarPrestadoresRequest $request, $idPrestador)
     {
+        $dados = Request::all();  
+        
         DB::beginTransaction();
         
         try{
+            $prestador = \App\Clinica::findorfail((int)$idPrestador);
+            $prestador->update($dados);
+            
+            $endereco = \App\Endereco::findorfail($prestador->enderecos->first()->id);
+            if(!empty($dados['cd_cidade_ibge'])) { 
+                $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; 
+            }
+            $endereco->update($dados);
+            $prestador->enderecos()->sync($endereco);
+            
+            $user = \App\User::findorfail($prestador->profissional->user_id);
+            $user->update($dados);
             
             
+            foreach( $dados['tp_documento'] as $idDocumento=>$tp_documento ){
+                $documento = \App\Documento::findorfail($idDocumento);
+                $documento->update(['tp_documento'=>$tp_documento[0], 'te_documento'=>(int)$dados['te_documento'][$idDocumento][0]]);
+            }
+                     
+            foreach( $dados['tp_contato'] as $idContato=>$tp_contato ){
+                $contato = \App\Contato::findorfail($idContato);
+                $contato->update( ['tp_contato'=>$tp_contato[0], 'ds_contato'=>$dados['ds_contato'][$idContato][0]] );
+            }
+
+                
+            \App\Atendimento::where(['clinica_id'=>$idPrestador])->delete();
             
+            if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
+                foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){
+                    $atendimento = new \App\Atendimento();
+                    $atendimento->procedimento()->associate($idProcedimento);
+                    $atendimento->clinica_id = $idPrestador;
+                    $atendimento->ds_preco = $arProcedimento[2];
+                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arProcedimento[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->save();
+                }
+            }
+            
+            if(is_array($request->input('precosConsultas')) and count($request->input('precosConsultas')) > 0){
+                foreach( $request->input('precosConsultas') as $idConsulta => $arConsulta ){
+                    $atendimento = new \App\Atendimento();
+                    $atendimento->consulta()->associate($idConsulta);
+                    $atendimento->clinica_id = $idPrestador;
+                    $atendimento->ds_preco = $arConsulta[2];
+                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arConsulta[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->save();
+                }
+            }
+            
+            $prestador->save();
             
             DB::commit();
             
@@ -255,8 +312,7 @@ class PrestadoresController extends Controller
         
         foreach ($procedimentos as $query)
         {
-            $arResultado[] = [ 'id' => $query->id, 
-                               'value' => $query->ds_procedimento ];
+            $arResultado[] = [ 'id' => $query->id, 'value' => $query->id.' | '.$query->cd_procedimento .' | '.$query->ds_procedimento ];
         }
         
         return Response()->json($arResultado);
@@ -274,8 +330,7 @@ class PrestadoresController extends Controller
         
         foreach ($consultas as $query)
         {
-            $arResultado[] = [ 'id' => $query->id, 
-                               'value' => $query->ds_consulta ];
+            $arResultado[] = [ 'id' => $query->id, 'value' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta ];
         }
         
         return Response()->json($arResultado);

@@ -128,7 +128,7 @@
         <div class="form-group{{ $errors->has('tp_documento') ? ' has-error' : '' }}">
             @foreach( $documentoprofissional as $documento )
             <div class="row">
-                <label for="tp_documento" class="col-12 control-label">Informe um documento do Responsável<span class="text-danger">*</span></label>
+                <label for="tp_documento" class="col-12 control-label">Documento<span class="text-danger">*</span></label>
                 <div class="col-3">
         			<select id="tp_documento[{{$documento->id}}][]" name="tp_documento[{{$documento->id}}][]" class="form-control">
             			<option value="CNH" {{($documento->tp_documento == 'CNH' ? 'selected' : '')}}>CNH</option>
@@ -160,19 +160,18 @@
     <div class="col-12">
     	<h4>Contato</h4>
         <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
-        	@foreach ( $prestador->contatos as $id=>$contato )
+        	@foreach ( $prestador->contatos as $obContato )
             <div class="row">
                 <label for="tp_contato" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
                 <div class="col-2">
-    				<select id="tp_contato[{{$id}}][]" name="tp_contato[{{$id}}][]" class="form-control">
-    					<option value="" selected="selected"></option>
-    					<option value="FC" {{($contato->tp_contato == 'FC' ? 'selected' : '')}}>Telefone Comercial</option>
-    					<option value="CC" {{($contato->tp_contato == 'CC' ? 'selected' : '')}}>Celular Comercial</option>
-    					<option value="FX" {{($contato->tp_contato == 'FX' ? 'selected' : '')}}>FAX</option>
+    				<select id="tp_contato[{{$obContato->id}}][]" name="tp_contato[{{$obContato->id}}][]" class="form-control">
+    					<option value="FC" {{($obContato->tp_contato == 'FC' ? 'selected' : '')}}>Telefone Comercial</option>
+    					<option value="CC" {{($obContato->tp_contato == 'CC' ? 'selected' : '')}}>Celular Comercial</option>
+    					<option value="FX" {{($obContato->tp_contato == 'FX' ? 'selected' : '')}}>FAX</option>
     				</select>
-                </div> 
+                </div>
     	        <div class="col-2">
-    				<input id="ds_contato[{{$id}}][]" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato[{{$id}}][]" value="{{ $contato->ds_contato }}" required >
+    				<input id="ds_contato[{{$obContato->id}}][]" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato[{{$obContato->id}}][]" value="{{ $obContato->ds_contato }}" required >
                 </div>
             </div>
             @endforeach

@@ -20,4 +20,9 @@ class Atendimento extends Model
 	public function procedimento(){
 	    return $this->belongsTo(Procedimento::class);
 	}
+	
+	public function getVlAtendimentoAttribute($valor){
+	    return number_format( $valor,  2, ',', '.'); 
+	}
+
 }

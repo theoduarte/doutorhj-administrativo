@@ -18,7 +18,7 @@
 		</div>
 	</div>
 	
-	<form action="{{ route('prestadores.update', $cargo->id) }}" method="post">
+	<form action="{{ route('prestadores.update', $prestador->id) }}" method="post">
 		<input type="hidden" name="_method" value="PUT">
 		{!! csrf_field() !!}
     	

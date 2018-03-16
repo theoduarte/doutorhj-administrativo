@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PrestadoresRequest extends FormRequest
+class EditarPrestadoresRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +33,7 @@ class PrestadoresRequest extends FormRequest
             'te_documento'  => 'required|max:30',
             'nr_cep'        => 'max:9|min:8',
             'te_complemento'=> 'max:1000',
-            'email'         => 'required|max:50|min:3|email|unique:users,email',
+            'email'         => 'required|max:50|min:3',
             'password'      => 'required|string|min:6|confirmed',
         ];
     }
