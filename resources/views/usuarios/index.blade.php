@@ -38,6 +38,11 @@
                                     <input type="radio" id="tp_filtro_email" name="tp_filtro" value="email" @if(old('tp_filtro')=='email') checked @endif>
                                     <label for="tp_filtro_email" style="cursor: pointer;">E-mail&nbsp;&nbsp;</label>
                                 </div>
+            				</div>
+            				<div class="row">
+            					<div class="col-4">
+            						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
+            					</div>
                 				<div  style="width: 120px !important;">
                 					<input type="checkbox"  id="tp_usuario_cliente_paciente" name="tp_usuario_cliente_paciente" value="paciente" @if(old('tp_usuario_cliente_paciente')=='paciente') checked @endif>
                 					<label for="tp_usuario_cliente_paciente" style="cursor: pointer;">Paciente</label>    
@@ -46,11 +51,6 @@
                 					<input type="checkbox"  id="tp_usuario_cliente_profissional" name="tp_usuario_cliente_profissional" value="profissional" @if(old('tp_usuario_cliente_profissional')=='profissional') checked @endif>
                 					<label for="tp_usuario_cliente_profissional" style="cursor: pointer;">Profissional</label>
       							</div>
-            				</div>
-            				<div class="row">
-            					<div class="col-4">
-            						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
-            					</div>
       							<div style="width: 160px !important;">
                 					<input type="checkbox"  id="tp_usuario_somente_ativos" name="tp_usuario_somente_ativos" value="ativo" @if(old('tp_usuario_somente_ativos')=='ativo') checked @endif >
                 					<label for="tp_usuario_somente_ativos" style="cursor: pointer;">Clientes Ativos</label>

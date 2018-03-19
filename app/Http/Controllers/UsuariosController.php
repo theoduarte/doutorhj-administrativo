@@ -147,6 +147,13 @@ class UsuariosController extends Controller
             $objGenerico->load('contatos');
             
             $cidade = \App\Cidade::findorfail($objGenerico->enderecos->first()->cidade_id);
+            
+            
+            $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $id, 'consulta_id'=> null])->get();
+            $precoprocedimentos->load('procedimento');
+            
+            $precoconsultas = \App\Atendimento::where(['clinica_id'=> $id, 'procedimento_id'=> null])->get();
+            $precoconsultas->load('consulta');
         }catch( Exception $e ){
             print $e->getMessage();
         }
@@ -155,7 +162,9 @@ class UsuariosController extends Controller
                                       'cidade'         => $cidade,
                                       'arEstados'      => $arEstados,
                                       'arCargos'       => $arCargos,
-                                      'arEspecialidade'=> $arEspecialidade]);
+                                      'arEspecialidade'=> $arEspecialidade,
+                                      'precoprocedimentos' => $precoprocedimentos,
+                                      'precoconsultas' => $precoconsultas]);
     }
 
     /**

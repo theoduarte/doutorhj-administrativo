@@ -320,8 +320,11 @@
     </div>
     <div class="form-group">
         <div class="col-12 col-offset-3">
-            <button type="submit" class="btn btn-primary">
-                Alterar
-            </button>
+            
         </div>
+					
+		<div class="form-group text-right m-b-0">
+			<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Alterar</button>
+			<a href="{{ route('prestadores.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
+		</div>
     </div>
