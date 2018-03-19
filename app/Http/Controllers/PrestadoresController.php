@@ -176,9 +176,30 @@ class PrestadoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($idClinica)
     {
+        $estados = \App\Estado::orderBy('ds_estado')->get();
+        $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
         
+        $prestador = \App\Clinica::findorfail($idClinica);
+        $prestador->load('enderecos');
+        $prestador->load('contatos');
+        $prestador->load('documentos');
+        $prestador->load('profissional');
+        
+        $user   = \App\User::findorfail($prestador->profissional->user_id);
+        $cargo  = \App\Cargo::findorfail($prestador->profissional->cargo_id);
+        $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id);
+        $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos;
+        
+        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->get();
+        $precoprocedimentos->load('procedimento');
+        
+        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->get();
+        $precoconsultas->load('consulta');
+        
+        return view('prestadores.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo',
+                                                'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
     }
 
     /**

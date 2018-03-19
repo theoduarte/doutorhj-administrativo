@@ -16,7 +16,7 @@
             	  
            	      $('input[name="consulta_id"]').val(ui.item.id);
            	      $('input[name="cd_consulta"]').val(ArConsulta[1]);
-           	      $('input[name="descricao"]').val(ArConsulta[2]);
+           	   	  $('input[name="descricao"]').val(ArConsulta[2]);
         	  }
         });
     });
