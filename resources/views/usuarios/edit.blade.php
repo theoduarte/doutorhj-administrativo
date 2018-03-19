@@ -93,30 +93,38 @@
 					<input type="hidden" name="tp_usuario" value="{{$objGenerico->user->tp_user}}">
 					
 					<div class="form-group">
-						<div class="col-5">
-    						<label for="nm_primario">Primeiro nome<span class="text-danger">*</span></label>
-    						<input type="text" id="nm_primario" class="form-control" name="nm_primario" value="{{$objGenerico->nm_primario}}" required placeholder="Primeiro nome"  >
+						<div class="row">
+    						<div class="col-5">
+        						<label for="nm_primario">Primeiro nome<span class="text-danger">*</span></label>
+        						<input type="text" id="nm_primario" class="form-control" name="nm_primario" value="{{$objGenerico->nm_primario}}" required placeholder="Primeiro nome"  >
+    						</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-9">
-    						<label for="nm_primario">Sobrenome<span class="text-danger">*</span></label>
-    						<input type="text" id="nm_secundario" class="form-control" name="nm_secundario" value="{{$objGenerico->nm_secundario}}" required placeholder="" >
+						<div class="row">
+    						<div class="col-9">
+        						<label for="nm_primario">Sobrenome<span class="text-danger">*</span></label>
+        						<input type="text" id="nm_secundario" class="form-control" name="nm_secundario" value="{{$objGenerico->nm_secundario}}" required placeholder="" >
+    						</div>	
 						</div>	
 					</div>
                     <div class="form-group">
-                    	<div class="col-4">
-                        	<label for="cs_sexo" class="control-label">Sexo<span class="text-danger">*</span></label>
-    						<select id="cs_sexo" class="form-control" name="cs_sexo" required autofocus > 
-    							<option value="M"  {{( $objGenerico->cs_sexo == 'M' ) ? 'selected' : ''}} >MASCULINO</option>
-    							<option value="F" {{( $objGenerico->cs_sexo == 'F' ) ? 'selected' : ''}} >FEMININO</option>
-    						</select>
+                    	<div class="row">
+                        	<div class="col-4">
+                            	<label for="cs_sexo" class="control-label">Sexo<span class="text-danger">*</span></label>
+        						<select id="cs_sexo" class="form-control" name="cs_sexo" required autofocus > 
+        							<option value="M"  {{( $objGenerico->cs_sexo == 'M' ) ? 'selected' : ''}} >MASCULINO</option>
+        							<option value="F" {{( $objGenerico->cs_sexo == 'F' ) ? 'selected' : ''}} >FEMININO</option>
+        						</select>
+    						</div>
 						</div>
                     </div>
                     <div class="form-group">
-                    	<div class="col-4">
-                            <label for="dt_nascimento" class="control-label">Data de Nascimento</label>
-                  			<input id="dt_nascimento" type="text" class="form-control mascaraData" name="dt_nascimento" value="{{$objGenerico->dt_nascimento}}" required autofocus >
+                    	<div class="row">
+                        	<div class="col-4">
+                                <label for="dt_nascimento" class="control-label">Data de Nascimento</label>
+                      			<input id="dt_nascimento" type="text" class="form-control mascaraData" name="dt_nascimento" value="{{$objGenerico->dt_nascimento}}" required autofocus >
+                        	</div>
                     	</div>
                     </div>
 
@@ -124,13 +132,15 @@
 
 					@if ( $objGenerico->especialidade != null  )
                     <div class="form-group">
-                    	<div class="col-9">
-                            <label for="cd_especialidade" class="control-label">Especialidade<span class="text-danger">*</span></label>
-     						<select id="cd_especialidade" class="form-control" name="cd_especialidade" required autofocus>
-                                @foreach ($arEspecialidade as $json)
-    								<option value="{{ $json->cd_especialidade }}" {{($objGenerico->especialidade->cd_especialidade == $json->cd_especialidade ? 'selected' : '')}}>{{ $json->ds_especialidade }}</option>
-                                @endforeach
-							</select>
+                    	<div class="row">
+                        	<div class="col-9">
+                                <label for="cd_especialidade" class="control-label">Especialidade<span class="text-danger">*</span></label>
+         						<select id="cd_especialidade" class="form-control" name="cd_especialidade" required autofocus>
+                                    @foreach ($arEspecialidade as $json)
+        								<option value="{{ $json->cd_especialidade }}" {{($objGenerico->especialidade->cd_especialidade == $json->cd_especialidade ? 'selected' : '')}}>{{ $json->ds_especialidade }}</option>
+                                    @endforeach
+    							</select>
+                            </div>
                         </div>
                     </div>	
 					@endif
@@ -139,10 +149,12 @@
 					
 					@if ( $objGenerico->cargo != null )
                     <div class="form-group">
-						<div class="col-9">
-                        	<label for="ds_cargo" class="control-label">Profissão<span class="text-danger">*</span></label>
-                  	        <input  type="text" class="form-control" id="ds_cargo" value="{{$objGenerico->cargo->cd_cargo}} | {{$objGenerico->cargo->ds_cargo}}" >
-							<input type="hidden" name="cargo_id" id="cargo_id" value="{{$objGenerico->cargo->id}}">
+                    	<div class="row">
+    						<div class="col-9">
+                            	<label for="ds_cargo" class="control-label">Profissão<span class="text-danger">*</span></label>
+                      	        <input  type="text" class="form-control" id="ds_cargo" value="{{$objGenerico->cargo->cd_cargo}} | {{$objGenerico->cargo->ds_cargo}}" >
+    							<input type="hidden" name="cargo_id" id="cargo_id" value="{{$objGenerico->cargo->id}}">
+                            </div>
                         </div>
                     </div>	
 					@endif
@@ -211,158 +223,181 @@
 
 
                     <div class="form-group">
-                    	<div class="col-4">
-                            <label for="nr_cep" class="control-label">CEP<span class="text-danger">*</span></label>
-                            <input id="nr_cep" type="text" class="form-control mascaraCep consultaCep" name="nr_cep" value="{{$objGenerico->enderecos->first()->nr_cep}}" required autofocus maxlength="9" >
-                            <input type="hidden" name="endereco_id" value="{{$objGenerico->enderecos->first()->id}}">
+                    	<div class="row">
+                        	<div class="col-4">
+                                <label for="nr_cep" class="control-label">CEP<span class="text-danger">*</span></label>
+                                <input id="nr_cep" type="text" class="form-control mascaraCep consultaCep" name="nr_cep" value="{{$objGenerico->enderecos->first()->nr_cep}}" required autofocus maxlength="9" >
+                                <input type="hidden" name="endereco_id" value="{{$objGenerico->enderecos->first()->id}}">
+                            </div>
                         </div>
                     </div>
 					
 					
 					
                     <div class="form-group">
-                    	<div class="col-4">
-                        	<label for="sg_logradouro" class="control-label">Logradouro<span class="text-danger">*</span></label>
-							<select id="sg_logradouro" name="sg_logradouro" class="form-control" required="required"  >
-								<option value="" selected="selected"></option>
-                                <option value="Aeroporto" {{($objGenerico->enderecos->first()->sg_logradouro == 'Aeroporto' ? 'selected' : '')}}>Aeroporto</option>
-                                <option value="Alameda" {{($objGenerico->enderecos->first()->sg_logradouro == 'Alameda' ? 'selected' : '')}}>Alameda</option>
-                                <option value="Área" {{($objGenerico->enderecos->first()->sg_logradouro == 'Área' ? 'selected' : '')}}>Área</option>
-                                <option value="Avenida" {{($objGenerico->enderecos->first()->sg_logradouro == 'Avenida' ? 'selected' : '')}}>Avenida</option>
-                                <option value="Campo" {{($objGenerico->enderecos->first()->sg_logradouro == 'Campo' ? 'selected' : '')}}>Campo</option>
-                                <option value="Chácara" {{($objGenerico->enderecos->first()->sg_logradouro == 'Chácara' ? 'selected' : '')}}>Chácara</option>
-                                <option value="Colônia" {{($objGenerico->enderecos->first()->sg_logradouro == 'Colônia' ? 'selected' : '')}}>Colônia</option>
-                                <option value="Condomínio" {{($objGenerico->enderecos->first()->sg_logradouro == 'Condomínio' ? 'selected' : '')}}>Condomínio</option>
-                                <option value="Conjunto" {{($objGenerico->enderecos->first()->sg_logradouro == 'Conjunto' ? 'selected' : '')}}>Conjunto</option>
-                                <option value="Distrito" {{($objGenerico->enderecos->first()->sg_logradouro == 'Distrito' ? 'selected' : '')}}>Distrito</option>
-                                <option value="Esplanada" {{($objGenerico->enderecos->first()->sg_logradouro == 'Esplanada' ? 'selected' : '')}}>Esplanada</option>
-                                <option value="Estação" {{($objGenerico->enderecos->first()->sg_logradouro == 'Estação' ? 'selected' : '')}}>Estação</option>
-                                <option value="Estrada" {{($objGenerico->enderecos->first()->sg_logradouro == 'Estrada' ? 'selected' : '')}}>Estrada</option>
-                                <option value="Favela" {{($objGenerico->enderecos->first()->sg_logradouro == 'Favela' ? 'selected' : '')}}>Favela</option>
-                                <option value="Feira" {{($objGenerico->enderecos->first()->sg_logradouro == 'Feira' ? 'selected' : '')}}>Feira</option>
-                                <option value="Jardim" {{($objGenerico->enderecos->first()->sg_logradouro == 'Jardim' ? 'selected' : '')}}>Jardim</option>
-                                <option value="Ladeira" {{($objGenerico->enderecos->first()->sg_logradouro == 'Ladeira' ? 'selected' : '')}}>Ladeira</option>
-                                <option value="Lago" {{($objGenerico->enderecos->first()->sg_logradouro == 'Lago' ? 'selected' : '')}}>Lago</option>
-                                <option value="Lagoa" {{($objGenerico->enderecos->first()->sg_logradouro == 'Lagoa' ? 'selected' : '')}}>Lagoa</option>
-                                <option value="Largo" {{($objGenerico->enderecos->first()->sg_logradouro == 'Largo' ? 'selected' : '')}}>Largo</option>
-                                <option value="Loteamento" {{($objGenerico->enderecos->first()->sg_logradouro == 'Loteamento' ? 'selected' : '')}}>Loteamento</option>
-                                <option value="Morro" {{($objGenerico->enderecos->first()->sg_logradouro == 'Morro' ? 'selected' : '')}}>Morro</option>
-                                <option value="Núcleo" {{($objGenerico->enderecos->first()->sg_logradouro == 'Núcleo' ? 'selected' : '')}}>Núcleo</option>
-                                <option value="Parque" {{($objGenerico->enderecos->first()->sg_logradouro == 'Parque' ? 'selected' : '')}}>Parque</option>
-                                <option value="Passarela" {{($objGenerico->enderecos->first()->sg_logradouro == 'Passarela' ? 'selected' : '')}}>Passarela</option>
-                                <option value="Pátio" {{($objGenerico->enderecos->first()->sg_logradouro == 'Pátio' ? 'selected' : '')}}>Pátio</option>
-                                <option value="Praça" {{($objGenerico->enderecos->first()->sg_logradouro == 'Praça' ? 'selected' : '')}}>Praça</option>
-                                <option value="Quadra" {{($objGenerico->enderecos->first()->sg_logradouro == 'Quadra' ? 'selected' : '')}}>Quadra</option>
-                                <option value="Recanto" {{($objGenerico->enderecos->first()->sg_logradouro == 'Recanto' ? 'selected' : '')}}>Recanto</option>
-                                <option value="Residencial" {{($objGenerico->enderecos->first()->sg_logradouro == 'Residencial' ? 'selected' : '')}}>Residencial</option>
-                                <option value="Rodovia" {{($objGenerico->enderecos->first()->sg_logradouro == 'Rodovia' ? 'selected' : '')}}>Rodovia</option>
-                                <option value="Rua" {{($objGenerico->enderecos->first()->sg_logradouro == 'Rua' ? 'selected' : '')}}>Rua</option>
-                                <option value="Setor" {{($objGenerico->enderecos->first()->sg_logradouro == 'Setor' ? 'selected' : '')}}>Setor</option>
-                                <option value="Sítio" {{($objGenerico->enderecos->first()->sg_logradouro == 'Sítio' ? 'selected' : '')}}>Sítio</option>
-                                <option value="Travessa" {{($objGenerico->enderecos->first()->sg_logradouro == 'Travessa' ? 'selected' : '')}}>Travessa</option>
-                                <option value="Trecho" {{($objGenerico->enderecos->first()->sg_logradouro == 'Trecho' ? 'selected' : '')}}>Trecho</option>
-                                <option value="Trevo" {{($objGenerico->enderecos->first()->sg_logradouro == 'Trevo' ? 'selected' : '')}}>Trevo</option>
-                                <option value="Vale" {{($objGenerico->enderecos->first()->sg_logradouro == 'Vale' ? 'selected' : '')}}>Vale</option>
-                                <option value="Vereda" {{($objGenerico->enderecos->first()->sg_logradouro == 'Vereda' ? 'selected' : '')}}>Vereda</option>
-                                <option value="Via" {{($objGenerico->enderecos->first()->sg_logradouro == 'Via' ? 'selected' : '')}}>Via</option>
-                                <option value="Viaduto" {{($objGenerico->enderecos->first()->sg_logradouro == 'Viaduto' ? 'selected' : '')}}>Viaduto</option>
-                                <option value="Viela" {{($objGenerico->enderecos->first()->sg_logradouro == 'Viela' ? 'selected' : '')}}>Viela</option>
-                                <option value="Vila" {{($objGenerico->enderecos->first()->sg_logradouro == 'Vila' ? 'selected' : '')}}>Vila</option>
-							</select>
+                    	<div class="row">
+                        	<div class="col-4">
+                            	<label for="sg_logradouro" class="control-label">Logradouro<span class="text-danger">*</span></label>
+    							<select id="sg_logradouro" name="sg_logradouro" class="form-control" required="required"  >
+    								<option value="" selected="selected"></option>
+                                    <option value="Aeroporto" {{($objGenerico->enderecos->first()->sg_logradouro == 'Aeroporto' ? 'selected' : '')}}>Aeroporto</option>
+                                    <option value="Alameda" {{($objGenerico->enderecos->first()->sg_logradouro == 'Alameda' ? 'selected' : '')}}>Alameda</option>
+                                    <option value="Área" {{($objGenerico->enderecos->first()->sg_logradouro == 'Área' ? 'selected' : '')}}>Área</option>
+                                    <option value="Avenida" {{($objGenerico->enderecos->first()->sg_logradouro == 'Avenida' ? 'selected' : '')}}>Avenida</option>
+                                    <option value="Campo" {{($objGenerico->enderecos->first()->sg_logradouro == 'Campo' ? 'selected' : '')}}>Campo</option>
+                                    <option value="Chácara" {{($objGenerico->enderecos->first()->sg_logradouro == 'Chácara' ? 'selected' : '')}}>Chácara</option>
+                                    <option value="Colônia" {{($objGenerico->enderecos->first()->sg_logradouro == 'Colônia' ? 'selected' : '')}}>Colônia</option>
+                                    <option value="Condomínio" {{($objGenerico->enderecos->first()->sg_logradouro == 'Condomínio' ? 'selected' : '')}}>Condomínio</option>
+                                    <option value="Conjunto" {{($objGenerico->enderecos->first()->sg_logradouro == 'Conjunto' ? 'selected' : '')}}>Conjunto</option>
+                                    <option value="Distrito" {{($objGenerico->enderecos->first()->sg_logradouro == 'Distrito' ? 'selected' : '')}}>Distrito</option>
+                                    <option value="Esplanada" {{($objGenerico->enderecos->first()->sg_logradouro == 'Esplanada' ? 'selected' : '')}}>Esplanada</option>
+                                    <option value="Estação" {{($objGenerico->enderecos->first()->sg_logradouro == 'Estação' ? 'selected' : '')}}>Estação</option>
+                                    <option value="Estrada" {{($objGenerico->enderecos->first()->sg_logradouro == 'Estrada' ? 'selected' : '')}}>Estrada</option>
+                                    <option value="Favela" {{($objGenerico->enderecos->first()->sg_logradouro == 'Favela' ? 'selected' : '')}}>Favela</option>
+                                    <option value="Feira" {{($objGenerico->enderecos->first()->sg_logradouro == 'Feira' ? 'selected' : '')}}>Feira</option>
+                                    <option value="Jardim" {{($objGenerico->enderecos->first()->sg_logradouro == 'Jardim' ? 'selected' : '')}}>Jardim</option>
+                                    <option value="Ladeira" {{($objGenerico->enderecos->first()->sg_logradouro == 'Ladeira' ? 'selected' : '')}}>Ladeira</option>
+                                    <option value="Lago" {{($objGenerico->enderecos->first()->sg_logradouro == 'Lago' ? 'selected' : '')}}>Lago</option>
+                                    <option value="Lagoa" {{($objGenerico->enderecos->first()->sg_logradouro == 'Lagoa' ? 'selected' : '')}}>Lagoa</option>
+                                    <option value="Largo" {{($objGenerico->enderecos->first()->sg_logradouro == 'Largo' ? 'selected' : '')}}>Largo</option>
+                                    <option value="Loteamento" {{($objGenerico->enderecos->first()->sg_logradouro == 'Loteamento' ? 'selected' : '')}}>Loteamento</option>
+                                    <option value="Morro" {{($objGenerico->enderecos->first()->sg_logradouro == 'Morro' ? 'selected' : '')}}>Morro</option>
+                                    <option value="Núcleo" {{($objGenerico->enderecos->first()->sg_logradouro == 'Núcleo' ? 'selected' : '')}}>Núcleo</option>
+                                    <option value="Parque" {{($objGenerico->enderecos->first()->sg_logradouro == 'Parque' ? 'selected' : '')}}>Parque</option>
+                                    <option value="Passarela" {{($objGenerico->enderecos->first()->sg_logradouro == 'Passarela' ? 'selected' : '')}}>Passarela</option>
+                                    <option value="Pátio" {{($objGenerico->enderecos->first()->sg_logradouro == 'Pátio' ? 'selected' : '')}}>Pátio</option>
+                                    <option value="Praça" {{($objGenerico->enderecos->first()->sg_logradouro == 'Praça' ? 'selected' : '')}}>Praça</option>
+                                    <option value="Quadra" {{($objGenerico->enderecos->first()->sg_logradouro == 'Quadra' ? 'selected' : '')}}>Quadra</option>
+                                    <option value="Recanto" {{($objGenerico->enderecos->first()->sg_logradouro == 'Recanto' ? 'selected' : '')}}>Recanto</option>
+                                    <option value="Residencial" {{($objGenerico->enderecos->first()->sg_logradouro == 'Residencial' ? 'selected' : '')}}>Residencial</option>
+                                    <option value="Rodovia" {{($objGenerico->enderecos->first()->sg_logradouro == 'Rodovia' ? 'selected' : '')}}>Rodovia</option>
+                                    <option value="Rua" {{($objGenerico->enderecos->first()->sg_logradouro == 'Rua' ? 'selected' : '')}}>Rua</option>
+                                    <option value="Setor" {{($objGenerico->enderecos->first()->sg_logradouro == 'Setor' ? 'selected' : '')}}>Setor</option>
+                                    <option value="Sítio" {{($objGenerico->enderecos->first()->sg_logradouro == 'Sítio' ? 'selected' : '')}}>Sítio</option>
+                                    <option value="Travessa" {{($objGenerico->enderecos->first()->sg_logradouro == 'Travessa' ? 'selected' : '')}}>Travessa</option>
+                                    <option value="Trecho" {{($objGenerico->enderecos->first()->sg_logradouro == 'Trecho' ? 'selected' : '')}}>Trecho</option>
+                                    <option value="Trevo" {{($objGenerico->enderecos->first()->sg_logradouro == 'Trevo' ? 'selected' : '')}}>Trevo</option>
+                                    <option value="Vale" {{($objGenerico->enderecos->first()->sg_logradouro == 'Vale' ? 'selected' : '')}}>Vale</option>
+                                    <option value="Vereda" {{($objGenerico->enderecos->first()->sg_logradouro == 'Vereda' ? 'selected' : '')}}>Vereda</option>
+                                    <option value="Via" {{($objGenerico->enderecos->first()->sg_logradouro == 'Via' ? 'selected' : '')}}>Via</option>
+                                    <option value="Viaduto" {{($objGenerico->enderecos->first()->sg_logradouro == 'Viaduto' ? 'selected' : '')}}>Viaduto</option>
+                                    <option value="Viela" {{($objGenerico->enderecos->first()->sg_logradouro == 'Viela' ? 'selected' : '')}}>Viela</option>
+                                    <option value="Vila" {{($objGenerico->enderecos->first()->sg_logradouro == 'Vila' ? 'selected' : '')}}>Vila</option>
+    							</select>
+                            </div>
                         </div>
                     </div>
 
                     
                     <div class="form-group">
-                        <div class="col-7">
-                        	<label for="te_endereco" class="control-label">Endereço<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="te_endereco" value="{{ $objGenerico->enderecos->first()->te_endereco }}" required autofocus maxlength="200" >
+                    	<div class="row">
+                            <div class="col-7">
+                            	<label for="te_endereco" class="control-label">Endereço<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="te_endereco" value="{{ $objGenerico->enderecos->first()->te_endereco }}" required autofocus maxlength="200" >
+                            </div>
                         </div>
                     </div>
 
 
                     <div class="form-group{{ $errors->has('nr_logradouro') ? ' has-error' : '' }}">
-                        <div class="col-2">
-                            <label for="nr_logradouro" class="control-label">Número<span class="text-danger">*</span></label>
-                            <input id="nr_logradouro" type="text" class="form-control" name="nr_logradouro" value="{{ $objGenerico->enderecos->first()->nr_logradouro }}" required autofocus maxlength="50" >
+                    	<div class="row">
+                            <div class="col-2">
+                                <label for="nr_logradouro" class="control-label">Número<span class="text-danger">*</span></label>
+                                <input id="nr_logradouro" type="text" class="form-control" name="nr_logradouro" value="{{ $objGenerico->enderecos->first()->nr_logradouro }}" required autofocus maxlength="50" >
+                            </div>
                         </div>
                     </div>
 					
                     <div class="form-group{{ $errors->has('te_complemento') ? ' has-error' : '' }}">
-                        <div class="col-6">
-                        	<label for="te_complemento" class="control-label">Complemento</label>
-                     		<textarea rows="5" cols="60" id="te_complemento" name="te_complemento" autofocus maxlength="1000"  >{{ $objGenerico->enderecos->first()->te_complemento }}</textarea>								
+                        <div class="row">
+                            <div class="col-6">
+                            	<label for="te_complemento" class="control-label">Complemento</label>
+                         		<textarea rows="5" cols="60" id="te_complemento" name="te_complemento" autofocus maxlength="1000"  >{{ $objGenerico->enderecos->first()->te_complemento }}</textarea>								
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-5">
-                            <label for="te_bairro" class="control-label">Bairro<span class="text-danger">*</span></label>
-                            <input id="te_bairro" type="text" class="form-control" name="te_bairro" value="{{ $objGenerico->enderecos->first()->te_bairro }}" required autofocus maxlength="50" readonly>
+                    	<div class="row">
+                            <div class="col-5">
+                                <label for="te_bairro" class="control-label">Bairro<span class="text-danger">*</span></label>
+                                <input id="te_bairro" type="text" class="form-control" name="te_bairro" value="{{ $objGenerico->enderecos->first()->te_bairro }}" required autofocus maxlength="50" readonly>
+                            </div>
                         </div>
                     </div>
 					
                     <div class="form-group">
-                        <div class="col-5">
-                        	<label for="nm_cidade" class="control-label">Cidade<span class="text-danger">*</span></label>
-                            <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{$cidade->nm_cidade}}" required autofocus maxlength="50" readonly>
-							<input type="hidden" name="cd_cidade_ibge" id="cd_cidade_ibge" value="">
+                    	<div class="row">
+                            <div class="col-5">
+                            	<label for="nm_cidade" class="control-label">Cidade<span class="text-danger">*</span></label>
+                                <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{$cidade->nm_cidade}}" required autofocus maxlength="50" readonly>
+    							<input type="hidden" name="cd_cidade_ibge" id="cd_cidade_ibge" value="">
+                            </div>
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                    	<div class="col-5">
-                        	<label for="sg_estado" class="control-label">Estado<span class="text-danger">*</span></label>
-                        	<select id="sg_estado" class="form-control" name="sg_estado" disabled>
-                                @foreach ($arEstados as $json)
-    								<option value="{{ $json->sg_estado }}" {{($cidade->sg_estado == $json->sg_estado ? 'selected' : '')}}>{{ $json->ds_estado }}</option>
-                                @endforeach
-    						</select>
+                    	<div class="row">
+                        	<div class="col-5">
+                            	<label for="sg_estado" class="control-label">Estado<span class="text-danger">*</span></label>
+                            	<select id="sg_estado" class="form-control" name="sg_estado" disabled>
+                                    @foreach ($arEstados as $json)
+        								<option value="{{ $json->sg_estado }}" {{($cidade->sg_estado == $json->sg_estado ? 'selected' : '')}}>{{ $json->ds_estado }}</option>
+                                    @endforeach
+        						</select>
+    						</div>
 						</div>
 					</div>
                    
 
                     <div class="form-group">
-                        <label for="email" class="col-md-3 control-label">E-mail<span class="text-danger">*</span></label>
-                        <div class="col-7">
-                            <input id="email" type="email" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="email" value="{{$objGenerico->user->email}}" required autofocus maxlength="50" >
+                    	<div class="row">
+                            <div class="col-7">
+                                <label for="email" class="control-label">E-mail<span class="text-danger">*</span></label>
+                                <input id="email" type="email" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="email" value="{{$objGenerico->user->email}}" required autofocus maxlength="50" >
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-4">
-                            <label for="password" class="control-label">Senha<span class="text-danger">*</span></label>
-                            <input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{$objGenerico->user->password}}" autofocus maxlength="50">
-
-                            @if ($errors->has('password'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                            @endif
+                    	<div class="row">
+                            <div class="col-4">
+                                <label for="password" class="control-label">Senha<span class="text-danger">*</span></label>
+                                <input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{$objGenerico->user->password}}" autofocus maxlength="50">
+    
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                        <div class="col-4">
-                            <label for="password_confirmation" class="control-label">Repita a Senha<span class="text-danger">*</span></label>
-                            <input id="password_confirmation" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password_confirmation" value="{{$objGenerico->user->password}}" autofocus maxlength="50">
-
-                            @if ($errors->has('password_confirmation'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                </span>
-                            @endif
+                    	<div class="row">
+                            <div class="col-4">
+                                <label for="password_confirmation" class="control-label">Repita a Senha<span class="text-danger">*</span></label>
+                                <input id="password_confirmation" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password_confirmation" value="{{$objGenerico->user->password}}" autofocus maxlength="50">
+    
+                                @if ($errors->has('password_confirmation'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                        <div class="col-5">
-                         	<label for="cs_status" class="control-label">Situação<span class="text-danger">*</span></label>
-                        </div>
-                        <div class="col-5">
-                            <input type="radio" value="A" name="cs_status" @if( $objGenerico->user->cs_status == 'A' ) checked @endif autofocus style="cursor: pointer;">
-                            <label for="cs_status" style="cursor: pointer;">Ativo</label>
-                            <br>
-                            <input type="radio" value="I" name="cs_status" @if( $objGenerico->user->cs_status == 'I' ) checked @endif autofocus style="cursor: pointer;">
-                            <label for="cs_status" style="cursor: pointer;">Inativo</label>
+                    	<div class="row">
+                            <div class="col-5">
+                             	<label for="cs_statusA" class="control-label">Situação<span class="text-danger">*</span></label>
+                                <br>
+                                <input type="radio" id="cs_statusA" value="A" name="cs_status" @if( $objGenerico->user->cs_status == 'A' ) checked @endif autofocus style="cursor: pointer;">
+                                <label for="cs_statusA" style="cursor: pointer;">Ativo</label>
+             					<br>
+                                <input type="radio" value="I" id="cs_statusI" name="cs_status" @if( $objGenerico->user->cs_status == 'I' ) checked @endif autofocus style="cursor: pointer;">
+                                <label for="cs_statusI" style="cursor: pointer;">Inativo</label>
+                            </div>
                         </div>
                     </div>
 					

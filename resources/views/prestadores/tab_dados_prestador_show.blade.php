@@ -110,6 +110,12 @@
 						</tr>
 					</tbody>
 				</table>
+            	<div class="row">
+            		<div class="form-group">
+            			<a href="{{ route('prestadores.index') }}" class="btn btn-secondary waves-effect m-l-10"><i class="mdi "></i> Voltar</a>
+            		</div>
+            	</div>
+				
 			</div>
 		</div>
 	</div>
