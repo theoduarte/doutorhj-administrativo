@@ -57,14 +57,14 @@
 <div class="form-group{{ $errors->has('nm_razao_social') ? ' has-error' : '' }}">
 	<div class="row">
         <div class="col-6">
-        	<label for="ds_procedimento" class="col-6 control-label">Procedimento<span class="text-danger">*</span></label>
+        	<label for="ds_procedimento" class="control-label">Procedimento<span class="text-danger">*</span></label>
             <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" autofocus maxlength="100">
        		<input type="hidden" name="cd_procedimento" id="cd_procedimento" value="">
        		<input type="hidden" name="procedimento_id" id="procedimento_id" value="">
        		<input type="hidden" name="descricao" id="descricao" value="">
         </div>
         <div class="col-2">
-            <label for="vl_procedimento" class="col-2 control-label">Preço<span class="text-danger">*</span></label>
+            <label for="vl_procedimento" class="control-label">Preço<span class="text-danger">*</span></label>
             <input id="vl_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_procedimento" value="{{ old('vl_procedimento') }}"  maxlength="15">
         </div>
         <div class="col-3">

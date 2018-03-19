@@ -58,14 +58,14 @@
 	<div class="row">
 		<form name="formPrecificacaoConsultas">
             <div class="col-6 ui-widget">
-                <label for="nm_razao_social" class="col-4 control-label">Consulta<span class="text-danger">*</span></label>
+                <label for="nm_razao_social" class="control-label">Consulta<span class="text-danger">*</span></label>
                 <input id="ds_consulta" type="text" class="form-control" name="ds_consulta" value="{{ old('ds_consulta') }}" autofocus maxlength="100">
            		<input type="hidden" name="consulta_id" id="consulta_id" value="">
            		<input type="hidden" name="cd_consulta" id="cd_consulta" value="">
            		<input type="hidden" name="descricao" id="descricao" value="">
             </div>
             <div class="col-2">
-                <label for="vl_consulta" class="col-6 control-label">Preço<span class="text-danger">*</span></label>
+                <label for="vl_consulta" class="control-label">Preço<span class="text-danger">*</span></label>
                 <input id="vl_consulta" type="text" class="form-control mascaraMonetaria" name="vl_consulta" value="{{ old('vl_consulta') }}"  maxlength="15">
             </div>
             <div class="col-3 col-offset-3">
