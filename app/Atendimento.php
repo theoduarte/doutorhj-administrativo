@@ -9,10 +9,10 @@ class Atendimento extends Model
 {
 	use Sortable;
 	
-	public $fillable      = ['id', 'vl_atendimento', 'ds_preco'];
-	public $sortable      = ['id', 'vl_atendimento', 'ds_preco'];
-	public $dates 	      = ['dt_nascimento'];
-
+	public $fillable  = ['id', 'vl_atendimento', 'ds_preco'];
+	public $sortable  = ['id', 'vl_atendimento', 'ds_preco'];
+	public $dates 	  = ['dt_nascimento'];
+    
 	public function consulta(){
 	    return $this->belongsTo(Consulta::class);
 	}
@@ -24,5 +24,4 @@ class Atendimento extends Model
 	public function getVlAtendimentoAttribute($valor){
 	    return number_format( $valor,  2, ',', '.'); 
 	}
-
 }

@@ -12,9 +12,9 @@
         	      },
         	  minLength: 5,
         	  select: function(event, ui) {
-				  ArConsulta = ui.item.value.split(' | ')
+				  ArConsulta = ui.item.id.split(' | ')
             	  
-           	      $('input[name="consulta_id"]').val(ui.item.id);
+           	      $('input[name="consulta_id"]').val(ArConsulta[0]);
            	      $('input[name="cd_consulta"]').val(ArConsulta[1]);
            	   	  $('input[name="descricao"]').val(ArConsulta[2]);
         	  }

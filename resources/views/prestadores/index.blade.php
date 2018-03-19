@@ -58,8 +58,7 @@
     					<tr>
     						<th>ID</th>
     						<th>@sortablelink('nm_razao_social', 'Razão Social')</th>
-    						<th>@sortablelink('nm_fantasia', 'Nome Fantasia')</th>
-    						<th>Responsável</th>
+    						<th>@sortablelink('nm_primario', 'Responsável')</th>
     						<th>Contato</th>
     						<th>Ações</th>
     					</tr>
@@ -67,8 +66,7 @@
 						<tr>
     						<td>{{$prestador->id}}</td>
     						<td>{{$prestador->nm_razao_social}}</td>
-    						<td>{{$prestador->nm_fantasia}}</td>
-               	 			<td>{{$prestador->profissional->nm_primario}}</td>
+    						<td>{{$prestador->profissional->nm_primario}} {{$prestador->profissional->nm_secundario}}</td>
                 	 		<td>
                 	 			@foreach($prestador->contatos as $contato)
                 	 				{{$contato->ds_contato}}

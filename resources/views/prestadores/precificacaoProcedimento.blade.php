@@ -12,9 +12,9 @@
         	  },
         	  minLength : 5,
         	  select: function(event, ui) {
-        		  ArProcedimento = ui.item.value.split(' | ');
+        		  ArProcedimento = ui.item.id.split(' | ');
         		  
-           	      $('input[name="procedimento_id"]').val(ui.item.id);
+           	      $('input[name="procedimento_id"]').val(ArProcedimento[0]);
            	      $('input[name="cd_procedimento"]').val(ArProcedimento[1]);
            	      $('input[name="descricao"]').val(ArProcedimento[2]);
         	  }
