@@ -41,34 +41,17 @@
                                     <input type="radio" id="tp_filtro_nm_fantasia" name="tp_filtro" value="nm_fantasia" @if(old('tp_filtro')=='nm_fantasia') checked @endif>
                                     <label for="tp_filtro_nm_fantasia" style="cursor: pointer;">Nome Fantasia&nbsp;&nbsp;</label>
                                 </div>
-                				<div style="width: 300px !important;">
-                					<input type="checkbox"  id="tp_usuario_cliente_paciente" name="tp_usuario_cliente_paciente" value="paciente" @if(old('tp_usuario_cliente_paciente')=='paciente') checked @endif>
-                					<label for="tp_usuario_cliente_paciente" style="cursor: pointer;">Consulta em Domicílio</label>    
-            
-                					<label for="tp_usuario_cliente_profissional"></label><br>
-                					<input type="checkbox"  id="tp_usuario_cliente_profissional" name="tp_usuario_cliente_profissional" value="profissional" @if(old('tp_usuario_cliente_profissional')=='profissional') checked @endif>
-                					<label for="tp_usuario_cliente_profissional" style="cursor: pointer;">Consulta em Consultório</label>
-      							</div>
             				</div>
             				<div class="row">
             					<div style="width: 510px !important;">
             						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
             					</div>
-                 				<div  style="width: 20px !important;">
-                 				</div>
-                 				<div  style="width: 250px !important;">
-                					<input type="checkbox"  id="tp_usuario_cliente_paciente" name="tp_usuario_cliente_paciente" value="paciente" @if(old('tp_usuario_cliente_paciente')=='paciente') checked @endif>
-                					<label for="tp_usuario_cliente_paciente" style="cursor: pointer;">Consultas em Pronto-Socorro</label>    
-            
-                					<label for="tp_usuario_cliente_profissional"></label><br>
-                					<input type="checkbox"  id="tp_usuario_cliente_profissional" name="tp_usuario_cliente_profissional" value="profissional" @if(old('tp_usuario_cliente_profissional')=='profissional') checked @endif>
-                					<label for="tp_usuario_cliente_profissional" style="cursor: pointer;">Cadastro a confirmar</label>
-      							</div>
                 				<div class="col-1" >
                 					<button type="submit" class="btn btn-primary" id="btnPesquisar">Pesquisar</button>
                 				</div>				
             				</div>
                     	</form>
+                    	<br>
 					</div>
 					
 					<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
@@ -85,8 +68,12 @@
     						<td>{{$prestador->id}}</td>
     						<td>{{$prestador->nm_razao_social}}</td>
     						<td>{{$prestador->nm_fantasia}}</td>
-               	 			<td></td>
-                	 		<td>{{$prestador->contatos->first()->ds_contato}}</td>
+               	 			<td>{{$prestador->profissional->nm_primario}}</td>
+                	 		<td>
+                	 			@foreach($prestador->contatos as $contato)
+                	 				{{$contato->ds_contato}}
+                	 			@endforeach
+                	 		</td>
     						<td>
     							<a href="{{ route('prestadores.show', $prestador->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
     							<a href="{{ route('prestadores.edit', $prestador->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>

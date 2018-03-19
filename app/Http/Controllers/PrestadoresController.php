@@ -16,8 +16,7 @@ class PrestadoresController extends Controller
      */
     public function index()
     {
-        $prestadores = \App\Clinica::select(['id', 'nm_razao_social', 'nm_fantasia'])
-                                    ->where(function($query){
+        $prestadores = \App\Clinica::where(function($query){
                                         if(!empty(Request::input('nm_busca'))){
                                             switch (Request::input('tp_filtro')){
                                                 case "nm_razao_social" :
@@ -127,6 +126,7 @@ class PrestadoresController extends Controller
             # profissional responsavel pela empresa
             $profissional = \App\Profissional::create($request->all());
             $profissional->cargo()->associate((int)$request->input('cargo_id'));
+            $profissional->user()->associate((int)$usuario->id);
             $profissional->documentos()->attach($documentoResp);
             $profissional->save();
             
@@ -135,6 +135,7 @@ class PrestadoresController extends Controller
             $clinica->enderecos()->attach($endereco);
             $clinica->contatos()->attach($arContatos);
             $clinica->profissional()->associate($profissional);
+            $clinica->documentos()->attach($documentoCnpj);
             $clinica->save();            
             
             if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
@@ -142,8 +143,8 @@ class PrestadoresController extends Controller
                     $atendimento = new \App\Atendimento();
                     $atendimento->procedimento()->associate($idProcedimento);
                     $atendimento->clinica_id = $clinica->id;
-                    $atendimento->ds_preco = $arProcedimento[1];
-                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arProcedimento[2])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->ds_preco = $arProcedimento[2];
+                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arProcedimento[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
                     $atendimento->save();
                 }
             }
@@ -153,8 +154,8 @@ class PrestadoresController extends Controller
                     $atendimento = new \App\Atendimento();
                     $atendimento->consulta()->associate($idConsulta);
                     $atendimento->clinica_id = $clinica->id;
-                    $atendimento->ds_preco = $arConsulta[1];
-                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arConsulta[2])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->ds_preco = $arConsulta[2];
+                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arConsulta[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
                     $atendimento->save();
                 }
             }
@@ -181,17 +182,17 @@ class PrestadoresController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+        * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($idClinica)
     {
         $estados = \App\Estado::orderBy('ds_estado')->get();
         $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
 
-        $prestador = \App\Clinica::findorfail($id);
+        $prestador = \App\Clinica::findorfail($idClinica);
         $prestador->load('enderecos');
         $prestador->load('contatos');
         $prestador->load('documentos');
@@ -202,12 +203,10 @@ class PrestadoresController extends Controller
         $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id);
         $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos;
         
-        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $id, 'consulta_id'=> null])->get();
+        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->get();
         $precoprocedimentos->load('procedimento');
-        $precoprocedimentos->load('consulta');
         
-        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $id, 'procedimento_id'=> null])->get();
-        $precoconsultas->load('procedimento');
+        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->get();
         $precoconsultas->load('consulta');
         
         return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
@@ -223,7 +222,7 @@ class PrestadoresController extends Controller
      */
     public function update(EditarPrestadoresRequest $request, $idPrestador)
     {
-        $dados = Request::all();  
+        $dados = Request::all();
         
         DB::beginTransaction();
         
@@ -295,9 +294,13 @@ class PrestadoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idPrestador)
     {
         
+        $atendimento = \App\Atendimento::where('clinica_id', $idPrestador)->delete();
+        $prestador = \App\Clinica::findorfail($idPrestador)->delete();
+        
+        return redirect()->route('prestadores.index')->with('success', 'Prestador excluído com sucesso!');        
     }
     
     /**

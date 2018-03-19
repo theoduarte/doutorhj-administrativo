@@ -106,7 +106,7 @@
             				@foreach( $precoprocedimentos as $procedimento )
                 				<tr>
                 					<th>{{$procedimento->procedimento->id}}       		 <input type="hidden" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->procedimento->id}}"></th>
-                					<th>{{$procedimento->procedimento->cd_procedimento}} <input type="hidden" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->cd_procedimento}}"></th>
+                					<th>{{$procedimento->procedimento->cd_procedimento}} <input type="hidden" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->procedimento->cd_procedimento}}"></th>
                 					<th>{{$procedimento->procedimento->ds_procedimento}} <input type="hidden" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->ds_preco}}"></th>
                 					<th><input type="text" class="form-control mascaraMonetaria" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->vl_atendimento}}"></th>
                 					<th><button type="button" class="btn ti-trash" onclick="delLinhaProcedimento(this)"> Remover</button></th>

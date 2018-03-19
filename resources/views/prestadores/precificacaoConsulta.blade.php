@@ -110,7 +110,7 @@
             				@foreach( $precoconsultas as $consulta )
                 				<tr>
                 					<th>{{$consulta->consulta->id}}		     <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->consulta->id}}"></th>
-                					<th>{{$consulta->consulta->cd_consulta}} <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->cd_consulta}}"></th>
+                					<th>{{$consulta->consulta->cd_consulta}} <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->consulta->cd_consulta}}"></th>
                 					<th>{{$consulta->consulta->ds_consulta}} <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->ds_preco}}"></th>
                 					<th><input type="text" class="form-control mascaraMonetaria" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->vl_atendimento}}"></th>
                 					<th><button type="button" class="btn ti-trash" onclick="delLinhaConsulta(this)"> Remover</button></th>
