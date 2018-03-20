@@ -41,7 +41,7 @@ class PrestadoresController extends Controller
         $prestadores->load('profissional');
 
         Request::flash();
-        
+                
         return view('prestadores.index', compact('prestadores'));
     }
     
@@ -60,7 +60,7 @@ class PrestadoresController extends Controller
         
         return view('prestadores.create', compact('estados', 'cargos', 'precoprocedimentos', 'precoconsultas'));
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -93,6 +93,8 @@ class PrestadoresController extends Controller
             $endereco->cidade()->associate($cidade);
             $endereco->save();
             
+            
+            
             # telefones 
             $arContatos = array();
             
@@ -119,6 +121,7 @@ class PrestadoresController extends Controller
             }
 
 
+            
             # documento do profissional responsavel pela empresa
             $documentoResp = \App\Documento::create($request->all());
             $documentoResp->save();
@@ -136,7 +139,7 @@ class PrestadoresController extends Controller
             $clinica->contatos()->attach($arContatos);
             $clinica->profissional()->associate($profissional);
             $clinica->documentos()->attach($documentoCnpj);
-            $clinica->save();            
+            $clinica->save();         
             
             if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
                 foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){
@@ -181,29 +184,34 @@ class PrestadoresController extends Controller
         $estados = \App\Estado::orderBy('ds_estado')->get();
         $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
         
+        
         $prestador = \App\Clinica::findorfail($idClinica);
         $prestador->load('enderecos');
         $prestador->load('contatos');
         $prestador->load('documentos');
         $prestador->load('profissional');
         
-        $user   = \App\User::findorfail($prestador->profissional->user_id);
-        $cargo  = \App\Cargo::findorfail($prestador->profissional->cargo_id);
-        $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id);
-        $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos;
+        
+        $user   = \App\User::findorfail($prestador->profissional->user_id); 
+        $cargo  = \App\Cargo::findorfail($prestador->profissional->cargo_id); 
+        $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id); 
+        $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos; 
+        
         
         $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->get();
         $precoprocedimentos->load('procedimento');
         
+        
         $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->get();
         $precoconsultas->load('consulta');
+        
         
         return view('prestadores.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo',
                                                 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
     }
 
     /**
-        * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -212,25 +220,33 @@ class PrestadoresController extends Controller
     {
         $estados = \App\Estado::orderBy('ds_estado')->get();
         $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-
+        
+        
         $prestador = \App\Clinica::findorfail($idClinica);
         $prestador->load('enderecos');
         $prestador->load('contatos');
         $prestador->load('documentos');
         $prestador->load('profissional');
         
+        
         $user   = \App\User::findorfail($prestador->profissional->user_id);
         $cargo  = \App\Cargo::findorfail($prestador->profissional->cargo_id);
         $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id);
         $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos;
         
+        
+        
         $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->orderBy('ds_preco', 'asc')
                                                                                                         ->orderBy('vl_atendimento', 'desc')->get();
         $precoprocedimentos->load('procedimento');
         
+        
+        
         $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->orderBy('ds_preco', 'asc')
                                                                                                         ->orderBy('vl_atendimento', 'desc')->get();
         $precoconsultas->load('consulta');
+        
+        
         
         return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
                                                 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
@@ -335,9 +351,9 @@ class PrestadoresController extends Controller
      * @param string $term
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProcedimentos($term){
+    public function getProcedimentos($termo){
         $arResultado = array();
-        $procedimentos = \App\Procedimento::where(DB::raw('to_str(ds_procedimento)'), 'like', '%'.UtilController::toStr($term).'%')->get();
+        $procedimentos = \App\Procedimento::where(DB::raw('to_str(ds_procedimento)'), 'like', '%'.UtilController::toStr($termo).'%')->get();
         
         foreach ($procedimentos as $query)
         {
@@ -350,12 +366,12 @@ class PrestadoresController extends Controller
     /**
      * Consulta para alimentar autocomplete
      * 
-     * @param string $term
+     * @param string $termo
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getConsultas($term){
+    public function getConsultas($termo){
         $arResultado = array();
-        $consultas = \App\Consulta::where(DB::raw('to_str(ds_consulta)'), 'like', '%'.UtilController::toStr($term).'%')->get();
+        $consultas = \App\Consulta::where(DB::raw('to_str(ds_consulta)'), 'like', '%'.UtilController::toStr($termo).'%')->get();
         
         foreach ($consultas as $query)
         {
