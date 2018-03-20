@@ -31,8 +31,6 @@ class PacientesRequest extends FormRequest
             'cargo_id'      => 'required|numeric',
             'tp_documento'  => 'required|max:3',
             'te_documento'  => 'required|max:15',
-            'tp_contato1'   => 'required|max:2',
-            'ds_contato1'   => 'required|max:15',
             'nr_cep'        => 'max:9|min:8',
             'te_complemento'=> 'max:1000',
             'email'         => 'required|max:50|min:3|email|unique:users',

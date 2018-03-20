@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\PacientesEditRequest;
 use App\User;
 
 class UsuariosController extends Controller
@@ -103,7 +104,7 @@ class UsuariosController extends Controller
             $objGenerico->load('documentos');
             $objGenerico->load('enderecos');
             $objGenerico->load('contatos');
-
+            
             $cidade = \App\Cidade::findorfail($objGenerico->enderecos->first()->cidade_id);
         }catch( Exception $e ){
             print $e->getMessage();
@@ -122,20 +123,20 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($idUsuario)
     {
         try{
             $arCargos        = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
             $arEstados       = \App\Estado::orderBy('ds_estado')->get();
             $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
             
-            $usuarios = \App\User::findorfail($id);
+            $usuarios = \App\User::findorfail($idUsuario);
             
             if( $usuarios->tp_user == 'PAC' ){
-                $objGenerico = \App\Paciente::where('user_id', '=', $id)->get()->first();
+                $objGenerico = \App\Paciente::where('user_id', '=', $idUsuario)->get()->first();
                 $objGenerico->load('cargo');
             }else if( $usuarios->tp_user == 'PRO' ){
-                $objGenerico = \App\Profissional::where('user_id', '=', $id)->get()->first();
+                $objGenerico = \App\Profissional::where('user_id', '=', $idUsuario)->get()->first();
                 $objGenerico->load('especialidade');
             }else{
                 throw new \Exception("Tipo de usuário não informado!");
@@ -148,23 +149,23 @@ class UsuariosController extends Controller
             
             $cidade = \App\Cidade::findorfail($objGenerico->enderecos->first()->cidade_id);
             
-            
-            $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $id, 'consulta_id'=> null])->get();
+            $precoprocedimentos = \App\Atendimento::where(['profissional_id'=> $idUsuario, 'consulta_id'=> null])->get();
             $precoprocedimentos->load('procedimento');
             
-            $precoconsultas = \App\Atendimento::where(['clinica_id'=> $id, 'procedimento_id'=> null])->get();
+            $precoconsultas = \App\Atendimento::where(['profissional_id'=> $idUsuario, 'procedimento_id'=> null])->get();
             $precoconsultas->load('consulta');
+            
         }catch( Exception $e ){
             print $e->getMessage();
         }
         
-        return view('usuarios.edit', ['objGenerico'    => $objGenerico, 
-                                      'cidade'         => $cidade,
-                                      'arEstados'      => $arEstados,
-                                      'arCargos'       => $arCargos,
-                                      'arEspecialidade'=> $arEspecialidade,
+        return view('usuarios.edit', ['objGenerico'        => $objGenerico, 
+                                      'cidade'             => $cidade,
+                                      'arEstados'          => $arEstados,
+                                      'arCargos'           => $arCargos,
+                                      'arEspecialidade'    => $arEspecialidade,
                                       'precoprocedimentos' => $precoprocedimentos,
-                                      'precoconsultas' => $precoconsultas]);
+                                      'precoconsultas'     => $precoconsultas]);
     }
 
     /**
@@ -174,13 +175,13 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(\Illuminate\Http\Request $request, $id)
+    public function update(PacientesEditRequest $request, $idUsuario)
     {
         $dados = Request::all();        
         
         try{
             if( Request::input('tp_usuario') == 'PAC' ){
-                $profissional = \App\Paciente::findorfail($id);
+                $profissional = \App\Paciente::findorfail($idUsuario);
                 $profissional->update($dados);
                 $profissional->user()->update($dados);
 
@@ -201,11 +202,10 @@ class UsuariosController extends Controller
                     $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>$dados['te_documento'][$indice]]);
                 }
             }else if( Request::input('tp_usuario') == 'PRO' ){
-                $profissional = \App\Profissional::findorfail($id);
+                $profissional = \App\Profissional::findorfail($idUsuario);
                 $profissional->update($dados);
                 $profissional->user()->update($dados);
                 $profissional->especialidade()->update($dados);
-                
                 
                 foreach( $dados['contato_id'] as $indice=>$contato_id){
                     $contato = \App\Contato::findorfail($contato_id);
@@ -223,13 +223,38 @@ class UsuariosController extends Controller
                     $documentos = \App\Documento::findorfail($documentos_id);
                     $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>$dados['te_documento'][$indice], 'estado_id'=>(int)$dados['estado_id'][0]]);
                 }
+                
+                
+                
+                \App\Atendimento::where(['profissional_id'=>$idUsuario])->delete();
+                
+                if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
+                    foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){
+                        $atendimento = new \App\Atendimento();
+                        $atendimento->profissional()->associate($idUsuario);
+                        $atendimento->procedimento()->associate($idProcedimento);
+                        $atendimento->ds_preco = $arProcedimento[2];
+                        $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arProcedimento[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                        $atendimento->save();
+                    }
+                }
+                
+                if(is_array($request->input('precosConsultas')) and count($request->input('precosConsultas')) > 0){
+                    foreach( $request->input('precosConsultas') as $idConsulta => $arConsulta ){
+                        $atendimento = new \App\Atendimento();
+                        $atendimento->profissional()->associate($idUsuario);
+                        $atendimento->consulta()->associate($idConsulta);
+                        $atendimento->ds_preco = $arConsulta[2];
+                        $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arConsulta[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                        $atendimento->save();
+                    }
+                }
             }else{
                 return redirect()->route('usuarios.index')->with('error', 'Tipo de usuário não informado!');
             }
         }catch( Exception $e ){
             return redirect()->route('usuarios.index')->with('error', $e->getMessage());
         }
-        
         
         return redirect()->route('usuarios.index')->with('success', 'O usuário foi atualizado com sucesso!');
     }
@@ -289,7 +314,7 @@ class UsuariosController extends Controller
         }catch( Exception $e ){
             DB::rollBack(); 
 
-            return redirect()->route('usuarios.index')->with('success', $e->getMessage());
+            return redirect()->route('usuarios.index')->with('error', $e->getMessage());
         }
         
         return redirect()->route('usuarios.index')->with('success', 'Usuário apagado com sucesso!');

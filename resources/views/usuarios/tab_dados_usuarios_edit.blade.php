@@ -2,7 +2,6 @@
     .ui-autocomplete {
         max-height: 200px;
         overflow-y: auto;
-        /* prevent horizontal scrollbar */
         overflow-x: hidden;
     }
     * html .ui-autocomplete {
@@ -12,23 +11,23 @@
 
 <script>
     $( function() {
-            $( function() {
-                var availableTags = [
-                    @foreach ($arCargos as $cargo)
-                        '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
-                    @endforeach
-                ];
-    
-                $( "#ds_cargo" ).autocomplete({
-                  source: availableTags,
-                  select: function (event, ui) {
-                      var id_cargo = ui.item.value.split(' | ');
-                      $("#cargo_id").val(id_cargo[0]); 	
-                  },
-                  delay: 500,
-                  minLength: 4 
-                });
+        $( function() {
+            var availableTags = [
+                @foreach ($arCargos as $cargo)
+                    '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
+                @endforeach
+            ];
+			
+            $( "#ds_cargo" ).autocomplete({
+              source: availableTags,
+              select: function (event, ui) {
+                  var id_cargo = ui.item.value.split(' | ');
+                  $("#cargo_id").val(id_cargo[0]); 	
+              },
+              delay: 500,
+              minLength: 4 
             });
+        });
 
         $( "#nr_cep" ).blur(function() {
         	$.ajax({
@@ -47,11 +46,7 @@
       			  $('#cd_cidade_ibge').val(json.ibge);
       			  
         	  }else{
-      			  $('#te_endereco').val(null);
-      			  $('#te_bairro').val(null);
-      			  $('#nm_cidade').val(null);
-      			  $('#sg_estado').val(null);
-      			  $('#cd_cidade_ibge').val(null);
+      			  $('#cd_cidade_ibge, #sg_estado, #te_endereco, #te_bairro, #nm_cidade').val(null);
               }
         	});
         });
@@ -66,6 +61,12 @@
 					{!! csrf_field() !!}
 					
 					<input type="hidden" name="tp_usuario" value="{{$objGenerico->user->tp_user}}">
+
+                    @if($errors->any())
+                        <div class="col-12 alert alert-danger">
+                            @foreach ($errors->all() as $error)<div class="col-5">{{$error}}</div>@endforeach
+                        </div>
+                    @endif
 					
 					<div class="form-group">
 						<div class="row">

@@ -12,11 +12,11 @@
         	      },
         	  minLength: 5,
         	  select: function(event, ui) {
-				  ArConsulta = ui.item.id.split(' | ')
+				  arConsulta = ui.item.id.split(' | ')
             	  
-           	      $('input[name="consulta_id"]').val(ArConsulta[0]);
-           	      $('input[name="cd_consulta"]').val(ArConsulta[1]);
-           	   	  $('input[name="descricao"]').val(ArConsulta[2]);
+           	      $('input[name="consulta_id"]').val(arConsulta[0]);
+           	      $('input[name="cd_consulta"]').val(arConsulta[1]);
+           	   	  $('input[name="descricao"]').val(arConsulta[2]);
         	  }
         });
     });
@@ -56,23 +56,21 @@
 
 <div class="form-group">
 	<div class="row">
-		<form name="formPrecificacaoConsultas">
-            <div class="col-6 ui-widget">
-                <label for="nm_razao_social" class="control-label">Consulta<span class="text-danger">*</span></label>
-                <input id="ds_consulta" type="text" class="form-control" name="ds_consulta" value="{{ old('ds_consulta') }}" autofocus maxlength="100">
-           		<input type="hidden" name="consulta_id" id="consulta_id" value="">
-           		<input type="hidden" name="cd_consulta" id="cd_consulta" value="">
-           		<input type="hidden" name="descricao" id="descricao" value="">
-            </div>
-            <div class="col-2">
-                <label for="vl_consulta" class="control-label">Preço<span class="text-danger">*</span></label>
-                <input id="vl_consulta" type="text" class="form-control mascaraMonetaria" name="vl_consulta" value="{{ old('vl_consulta') }}"  maxlength="15">
-            </div>
-            <div class="col-3 col-offset-3">
-            	<br>
-                <button type="button" class="btn btn-primary" onclick="addLinhaConsulta();">Adicionar</button>
-            </div>
-        </form>
+        <div class="col-6">
+            <label for="nm_razao_social" class="control-label">Consulta<span class="text-danger">*</span></label>
+            <input id="ds_consulta" type="text" class="form-control" name="ds_consulta" value="{{ old('ds_consulta') }}" autofocus maxlength="100">
+       		<input type="hidden" name="consulta_id" id="consulta_id" value="">
+       		<input type="hidden" name="cd_consulta" id="cd_consulta" value="">
+       		<input type="hidden" name="descricao" id="descricao" value="">
+        </div>
+        <div class="col-2">
+            <label for="vl_consulta" class="control-label">Preço<span class="text-danger">*</span></label>
+            <input id="vl_consulta" type="text" class="form-control mascaraMonetaria" name="vl_consulta" value="{{ old('vl_consulta') }}"  maxlength="15">
+        </div>
+        <div class="col-3">
+        	<br>
+            <button type="button" class="btn btn-primary" onclick="addLinhaConsulta();">Adicionar</button>
+        </div>
 	</div>
 	
 	<br>

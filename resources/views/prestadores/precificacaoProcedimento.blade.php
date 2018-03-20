@@ -12,11 +12,11 @@
         	  },
         	  minLength : 5,
         	  select: function(event, ui) {
-        		  ArProcedimento = ui.item.id.split(' | ');
+        		  arProcedimento = ui.item.id.split(' | ');
         		  
-           	      $('input[name="procedimento_id"]').val(ArProcedimento[0]);
-           	      $('input[name="cd_procedimento"]').val(ArProcedimento[1]);
-           	      $('input[name="descricao"]').val(ArProcedimento[2]);
+           	      $('input[name="procedimento_id"]').val(arProcedimento[0]);
+           	      $('input[name="cd_procedimento"]').val(arProcedimento[1]);
+           	      $('input[name="descricao"]').val(arProcedimento[2]);
         	  }
         });
     });
@@ -54,7 +54,7 @@
     }
 </script>
 
-<div class="form-group{{ $errors->has('nm_razao_social') ? ' has-error' : '' }}">
+<div class="form-group">
 	<div class="row">
         <div class="col-6">
         	<label for="ds_procedimento" class="control-label">Procedimento<span class="text-danger">*</span></label>

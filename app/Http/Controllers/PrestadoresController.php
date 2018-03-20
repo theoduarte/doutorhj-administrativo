@@ -55,8 +55,8 @@ class PrestadoresController extends Controller
         $estados = \App\Estado::orderBy('ds_estado')->get();
         $cargos  = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
         
-        $precoprocedimentos = null;
         $precoconsultas = null;
+        $precoprocedimentos = null;
         
         return view('prestadores.create', compact('estados', 'cargos', 'precoprocedimentos', 'precoconsultas'));
     }
@@ -224,10 +224,12 @@ class PrestadoresController extends Controller
         $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id);
         $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos;
         
-        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->get();
+        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->orderBy('ds_preco', 'asc')
+                                                                                                        ->orderBy('vl_atendimento', 'desc')->get();
         $precoprocedimentos->load('procedimento');
         
-        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->get();
+        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->orderBy('ds_preco', 'asc')
+                                                                                                        ->orderBy('vl_atendimento', 'desc')->get();
         $precoconsultas->load('consulta');
         
         return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
@@ -273,6 +275,8 @@ class PrestadoresController extends Controller
             }
 
                 
+            
+            
             \App\Atendimento::where(['clinica_id'=>$idPrestador])->delete();
             
             if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
@@ -297,6 +301,8 @@ class PrestadoresController extends Controller
                 }
             }
             
+            
+            
             $prestador->save();
             
             DB::commit();
@@ -317,7 +323,6 @@ class PrestadoresController extends Controller
      */
     public function destroy($idPrestador)
     {
-        
         $atendimento = \App\Atendimento::where('clinica_id', $idPrestador)->delete();
         $prestador = \App\Clinica::findorfail($idPrestador)->delete();
         
