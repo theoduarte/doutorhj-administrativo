@@ -90,8 +90,15 @@ class ItemmenusTableSeeder extends Seeder
             8 =>
             array (
                 'titulo'        => 'Locais de Atendimento',
-                //'descricao'     => 'Lista os tipos de logs',
                 'url'           => 'prestadores',
+                'ic_item_class' => '',
+                'ordemexibicao' => 3,
+                'menu_id'       => 1,
+            ),
+            9 =>
+            array (
+                'titulo'        => 'Agenda',
+                'url'           => 'agenda',
                 'ic_item_class' => '',
                 'ordemexibicao' => 3,
                 'menu_id'       => 1,

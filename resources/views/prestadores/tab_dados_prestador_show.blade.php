@@ -110,12 +110,12 @@
 						</tr>
 					</tbody>
 				</table>
-            	<div class="row">
-            		<div class="form-group">
-            			<a href="{{ route('prestadores.index') }}" class="btn btn-secondary waves-effect m-l-10"><i class="mdi "></i> Voltar</a>
-            		</div>
-            	</div>
-				
+
+    			<div class="form-group text-right m-b-0">
+    				<a href="{{ route('prestadores.edit', $prestador->id) }}" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-lead-pencil"></i> Editar</a>
+    				<a href="{{ route('prestadores.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
+    			</div>
+        	
 			</div>
 		</div>
 	</div>

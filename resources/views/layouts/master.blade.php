@@ -52,7 +52,11 @@
     	<link rel="stylesheet" href="https://file.myfontastic.com/da58YPMQ7U5HY8Rb6UxkNf/icons.css">
     	
     	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">        
-    	<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">        
+    	<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    	
+        <link href="/js/plugins/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+        <link href="/js/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+        <link href="/js/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     @endpush
     
     @stack('style')
@@ -452,6 +456,11 @@
     	
       	<script src="/js/restfulizer.js"></script>
       	<script src="/js/utilitarios.js"></script>
+      	
+		<script src="/js/plugins/moment/moment.js"></script>
+        <script src="/js/plugins/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+        <script src="/js/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+        <script src="/js/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
     @endpush
     
     @stack('scripts')
