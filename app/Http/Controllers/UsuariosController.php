@@ -93,7 +93,7 @@ class UsuariosController extends Controller
             if( $usuarios->tp_user == 'PAC' ){
                 $objGenerico = \App\Paciente::where('user_id', '=', $id)->get()->first();
                 $objGenerico->load('cargo');
-            }else if( $usuarios->tp_user == 'PRO' ){
+            }elseif( $usuarios->tp_user == 'PRO' ){
                 $objGenerico = \App\Profissional::where('user_id', '=', $id)->get()->first();
                 $objGenerico->load('especialidade');   
             }else{
@@ -135,7 +135,7 @@ class UsuariosController extends Controller
             if( $usuarios->tp_user == 'PAC' ){
                 $objGenerico = \App\Paciente::where('user_id', '=', $idUsuario)->get()->first();
                 $objGenerico->load('cargo');
-            }else if( $usuarios->tp_user == 'PRO' ){
+            }elseif( $usuarios->tp_user == 'PRO' ){
                 $objGenerico = \App\Profissional::where('user_id', '=', $idUsuario)->get()->first();
                 $objGenerico->load('especialidade');
             }else{
@@ -201,7 +201,7 @@ class UsuariosController extends Controller
                     $documentos = \App\Documento::findorfail($documentos_id);
                     $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>$dados['te_documento'][$indice]]);
                 }
-            }else if( Request::input('tp_usuario') == 'PRO' ){
+            }elseif( Request::input('tp_usuario') == 'PRO' ){
                 $profissional = \App\Profissional::findorfail($idUsuario);
                 $profissional->update($dados);
                 $profissional->user()->update($dados);
@@ -279,7 +279,7 @@ class UsuariosController extends Controller
             if( $usuario->tp_user == 'PAC' ){
                 $objGenerico = \App\Paciente::where('user_id', $usuario->id)->get(['id'])->first();
                 $idGenerico  = $objGenerico->id;
-            }else if( $usuario->tp_user == 'PRO' ){
+            }elseif( $usuario->tp_user == 'PRO' ){
                 $objGenerico = \App\Profissional::where('user_id', $usuario->id)->get(['id'])->first();
                 $idGenerico  = $objGenerico->id;
             }
@@ -305,7 +305,7 @@ class UsuariosController extends Controller
             
             if( $usuario->tp_user == 'PAC' ){
                 \App\Paciente::destroy($idGenerico);
-            }else if( $usuario->tp_user == 'PRO' ){
+            }elseif( $usuario->tp_user == 'PRO' ){
                 \App\Profissional::destroy($idGenerico);
             }
             \App\User::destroy($usuario->id);

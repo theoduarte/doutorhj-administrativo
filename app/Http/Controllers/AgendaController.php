@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
-use App\Consulta;
 
 class AgendaController extends Controller
 {
@@ -16,6 +15,8 @@ class AgendaController extends Controller
     public function index()
     {
         $agenda = \App\Agendamento::where('id', 1)->sortable()->paginate(20);
+        $agenda->load('Clinica');
+        $agenda->load('Paciente');
         
         Request::flash();
         
@@ -91,23 +92,30 @@ class AgendaController extends Controller
     /**
      * Consulta para alimentar autocomplete
      * 
-     * @param unknown $dsLocalAtendimento
+     * @param string $dsLocalAtendimento
      * @return \Illuminate\Http\JsonResponse
      */
     public function getLocalAtendimento($consulta){
-        $arResultado = array();
+        $arJson = array();
         $consultas = \App\Clinica::where(function($query){
-            global $consulta;
-            
-            $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr($consulta).'%');
-            $query->orWhere(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr($consulta).'%');
-        })->get();
+                                            $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr($consulta).'%');
+                                            $query->orWhere(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr($consulta).'%');
+                                        })->get();
+        $consultas->load('documentos');
         
         foreach ($consultas as $query)
         {
-            $arResultado[] = [ 'id' => $query->id.' | '.$query->nm_razao_social ];
+            $nrDocumento = null;
+            foreach($query->documentos as $objDocumento){
+                if( $objDocumento->tp_documento == 'CNPJ' ){
+                    $nrDocumento = $objDocumento->te_documento;
+                }
+            }
+            
+            $teDocumento = (!empty($nrDocumento)) ? ' - CNPJ: ' . $nrDocumento : null;
+            $arJson[] = [ 'id' => $query->id, 'value' => $query->nm_razao_social . $teDocumento];
         }
         
-        return Response()->json($arResultado);
+        return Response()->json($arJson);
     }
 }

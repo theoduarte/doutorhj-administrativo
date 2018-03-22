@@ -236,16 +236,17 @@ class PrestadoresController extends Controller
         
         
         
-        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->orderBy('ds_preco', 'asc')
-                                                                                                        ->orderBy('vl_atendimento', 'desc')->get();
+        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])
+                                                ->orderBy('ds_preco', 'asc')
+                                                ->orderBy('vl_atendimento', 'desc')->get();
         $precoprocedimentos->load('procedimento');
         
         
         
-        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->orderBy('ds_preco', 'asc')
-                                                                                                        ->orderBy('vl_atendimento', 'desc')->get();
+        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])
+                                            ->orderBy('ds_preco', 'asc')
+                                            ->orderBy('vl_atendimento', 'desc')->get();
         $precoconsultas->load('consulta');
-        
         
         
         return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
