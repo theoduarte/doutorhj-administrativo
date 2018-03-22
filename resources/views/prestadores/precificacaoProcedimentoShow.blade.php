@@ -33,7 +33,7 @@
                 					<th>{{$procedimento->procedimento->ds_procedimento}}</th>
                 					<th>{{$procedimento->vl_atendimento}}</th>
                 				</tr>
-            				@endforeach  
+            				@endforeach
         				@endif
     				@endif
 				</tbody> 

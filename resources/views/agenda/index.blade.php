@@ -3,6 +3,18 @@
 @section('title', 'Doutor HJ: Agenda')
 
 @section('container')
+
+<style>
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    * html .ui-autocomplete {
+        height: 200px;
+    }
+</style>
+
 <script>
     $(function(){
         $( "#localAtendimento" ).autocomplete({
@@ -26,6 +38,7 @@
         });
     });
 </script>
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12">
@@ -49,20 +62,20 @@
 				
 				<div class="row ">
 					<div class="col-12"> 
-                    		{{ csrf_field() }}
+                    	{{ csrf_field() }}
         
-            				<div class="row">
-            					<div class="col-8">
-        				            <label for="daterange">Local de Atendimento</label><br>
-									<input type="text" class="form-control input-daterange-timepicker" name="localAtendimento" id="localAtendimento" value="">
-                                </div>
-            				</div>
-            				<div class="row">
-            					<div class="col-6">
-        				            <label for="daterange">Data</label><br>
-									<input type="text" class="form-control input-daterange-timepicker" name="daterange" value="">
-                                </div>
-            				</div>
+            			<div class="row">
+            				<div class="col-8">
+        				        <label for="daterange">Local de Atendimento</label><br>
+								<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="">
+                            </div>
+            			</div>
+            			<div class="row">
+            				<div class="col-6">
+        				        <label for="daterange">Data</label><br>
+								<input type="text" class="form-control input-daterange-timepicker" name="daterange" value="">
+                            </div>
+            			</div>
                     	<br>
 					</div>
 				</div>

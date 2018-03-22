@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use App\Consulta;
 
 class AgendaController extends Controller
 {
@@ -14,8 +15,6 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        
-        
         $agenda = \App\Agendamento::where('id', 1)->sortable()->paginate(20);
         
         Request::flash();
@@ -95,11 +94,13 @@ class AgendaController extends Controller
      * @param unknown $dsLocalAtendimento
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getLocalAtendimento($dsLocalAtendimento){
+    public function getLocalAtendimento($consulta){
         $arResultado = array();
         $consultas = \App\Clinica::where(function($query){
-            $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr($dsLocalAtendimento).'%');
-            $query->orWhere(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr($dsLocalAtendimento).'%');
+            global $consulta;
+            
+            $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr($consulta).'%');
+            $query->orWhere(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr($consulta).'%');
         })->get();
         
         foreach ($consultas as $query)

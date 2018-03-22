@@ -48,7 +48,7 @@
                     	@include('prestadores/tab_dados_prestador_show')
                     </div>
                     <div class="tab-pane fade" id="precificacaoProcedimento">
-                         	@include('prestadores/precificacaoProcedimentoShow')
+                        @include('prestadores/precificacaoProcedimentoShow')
                     </div>
                     <div class="tab-pane fade" id="precificacaoConsulta">
                      	@include('prestadores/precificacaoConsultaShow')
