@@ -10,9 +10,12 @@
         overflow-y : auto;
         overflow-x : hidden;
     }
+    
     * html .ui-autocomplete {
         height     : 200px;
     }
+
+    .ui-dialog .ui-state-error { padding: .3em; }]
 </style>
 
 <script>
@@ -34,6 +37,42 @@
         });
     });
 </script>
+
+
+<script>
+  $( function() {
+    function addUser() {
+		window.alert("OK!");
+    	
+      return true;
+    }
+ 
+    dialog = $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 500,
+      width: 800,
+      modal: true,
+      buttons: {
+        "Create an account": addUser,
+        Cancel: function() {
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+    	  dialog.dialog( "close" ); 
+      }
+    });
+
+
+    $( "#remarcar-consulta" ).button().on( "click", function() {
+    	$('#idPaciente').val($(this).attr('id-paciente'));
+    	$('#divPaciente').html("<b>"+$(this).attr('nm-paciente')+"</b>");
+        
+      	dialog.dialog( "open" );
+    });
+  } );
+</script>
+
 
 <div class="container-fluid">
 	<div class="row">
@@ -60,66 +99,38 @@
 					<div class="col-12">
                     	<form class="form-edit-add" role="form" action="{{ route('agenda.index') }}" method="get" enctype="multipart/form-data">
                     		{{ csrf_field() }}
-        				
+        					
                 			<div class="row">
                 				<div class="col-4">
             				        <label for="localAtendimento">Local de Atendimento:</label>
     								<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="">
     								<input type="hidden" id="clinica_id" name="clinica_id" value="">
                                 </div>
-                                
-                                
-                                
-                                
-                                
-                                
 								<div class="form-group">
-									<div style="height: 16px;"></div>
-                                    <label class="custom-checkbox" style="cursor: pointer;">
+									<div style="height: 20px;"></div>
+									<label class="custom-checkbox" style="cursor: pointer;width:180px;">
                     					<input type="checkbox" id="ckConsultasConfirmadas" name="ckConsultasConfirmadas" 
-                    						value="consultas_confirmadas" @if(old('ckConsultasConfirmadas')=='consultas_confirmadas') checked @endif> Consultas Confirmadas
+                    						value="consultas_confirmadas" @if(old('ckConsultasConfirmadas')=='consultas_confirmadas') checked @endif> Consultas Confirmadas 
                                     </label>
                     				<br>
                                     <label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckConsultasConfirmar" name="ckConsultasConfirmar" 
-                    						value="consultas_confirmar" @if(old('ckConsultasConfirmar')=='consultas_confirmar') checked @endif> Consultas a Confirmar
+                    						value="consultas_confirmar" @if(old('ckConsultasConfirmar')=='consultas_confirmar') checked @endif> Consultas a Confirmar 
                                     </label>
                                 </div>
                 				
                                 <div class="form-group">
-                                	<div style="height: 16px;"></div>
-                                    <label class="custom-checkbox" style="cursor: pointer;">
+                                	<div style="height: 20px;"></div>
+                                	<label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckConsultasConsumadas" name="ckConsultasConsumadas" 
-                    						value="consultas_consumadas" @if(old('ckConsultasConsumadas')=='consultas_consumadas') checked @endif> Consultas Consumadas
+                    						value="consultas_consumadas" @if(old('ckConsultasConsumadas')=='consultas_consumadas') checked @endif> Consultas Consumadas 
                                     </label>
                     				<br>
                                     <label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas" 
-                    						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='consultas_canceladas') checked @endif> Consultas Canceladas
+                    						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='consultas_canceladas') checked @endif> Consultas Canceladas 
                                     </label>
                                 </div>
-                				
-                                <div class="form-group">
-                                	<div style="height: 16px;"></div>
-                                    <label class="custom-checkbox" style="cursor: pointer;">
-                    					<input type="checkbox"  id="ckContatoTelefonicoInicial" name="ckContatoTelefonicoInicial" 
-                    						value="contato_telefonico_inicial" @if(old('ckContatoTelefonicoInicial')=='contato_telefonico_inicial') checked @endif> Primeiro Contato
-                    					
-                                    </label>
-                    				<br>
-                                    <label class="custom-checkbox" style="cursor: pointer;">
-                    					<input type="checkbox"  id="ckContatoTelefonicoFinal" name="ckContatoTelefonicoFinal"
-            								value="contato_telefonico_final" @if(old('ckContatoTelefonicoFinal')=='contato_telefonico_final') checked @endif> Segundo Contato
-                                    </label>
-                                </div> 	
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-            					 			
             				</div>
             				<div class="row">
 								<div class="col-4">
@@ -148,21 +159,21 @@
     					<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
         					<tr>
         						<th>Ticket</th>
-        						<th>@sortablelink('nm_razao_social', 'Local Atendimento')</th>
+        						<th>Prestador</th>
         						<th>@sortablelink('nm_primario', 'Paciente')</th>
-        						<th>Data / Hora</th>
+        						<th>@sortablelink('dt_consulta_primaria', 'Data / Hora')</th>
+        						<th>Situação</th>
         						<th>Ações</th>
         					</tr>
                             @foreach($agenda as $obAgenda)
                             <tr>
                             	<td>C034938</td>
-                            	<td>{{$obAgenda->nm_razao_social}}</td>
+                            	<td>BRASILMED LTDA 3000</td>
                             	<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
-                            	<td></td>
+                            	<td>23/03/2018 09:00</td>
+                            	<td>Confirmado</td>
                             	<td>
-                            		<a href="{{ route('agenda.show', $obAgenda->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-                            		<a href="{{ route('agenda.edit', $obAgenda->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-                            		<a href="{{ route('agenda.destroy', $obAgenda->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o prestador {{$obAgenda->nm_razao_social}}?"><i class="ti-trash"></i></a>
+                            		<a id-paciente="{{$obAgenda->id}}" nm-paciente="{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Remarcar" id="remarcar-consulta"><i class="mdi mdi-eye"></i></a>
                             	</td>
                             </tr>
                             @endforeach
@@ -181,4 +192,17 @@
        </div>
 	</div>
 </div>
+
+<div id="dialog-form" title="Remarcar Consulta">
+  <form id="formRemarcaConsulta" name="formRemarcaConsulta">
+      <div class="col-6">
+          <label for="name">Paciente:</label>
+          <div id="divPaciente"></div>
+          <input type="hidden" id="idPaciente" name="idPaciente" value="">
+          
+      </div>
+      
+  </form>
+</div>
+ 
 @endsection

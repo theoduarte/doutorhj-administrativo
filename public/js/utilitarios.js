@@ -7,4 +7,9 @@ $(document).ready(function() {
         mask: ["(99) 9999-9999", "(99) 99999-9999", ],
         keepStatic: true
     });
+	
+	$(".mascaraCNPJ").inputmask({
+	    mask: ['99.999.999/9999-99'],
+	    keepStatic: true
+	});
 });

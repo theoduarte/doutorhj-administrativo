@@ -68,7 +68,7 @@
             <input id="vl_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_procedimento" value="{{ old('vl_procedimento') }}"  maxlength="15">
         </div>
         <div class="col-3">
-        	<br>
+        	<div style="height: 30px;"></div>
             <button type="button" class="btn btn-primary" onclick="addLinhaProcedimento();">Adicionar</button>
         </div>
 	</div>

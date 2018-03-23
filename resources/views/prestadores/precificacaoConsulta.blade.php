@@ -68,7 +68,7 @@
             <input id="vl_consulta" type="text" class="form-control mascaraMonetaria" name="vl_consulta" value="{{ old('vl_consulta') }}"  maxlength="15">
         </div>
         <div class="col-3">
-        	<br>
+        	<div style="height: 30px;"></div>
             <button type="button" class="btn btn-primary" onclick="addLinhaConsulta();">Adicionar</button>
         </div>
 	</div>

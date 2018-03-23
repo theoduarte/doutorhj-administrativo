@@ -147,13 +147,10 @@
     
         <div class="form-group{{ $errors->has('nr_cnpj') ? ' has-error' : '' }}">
         	<div class="row">
-                <label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
-                <div class="col-2">
-                    <input id="nr_cnpj" type="text" class="form-control" name="nr_cnpj" value="{{ old('nr_cnpj') }}" required >
+                <label for="nr_cnpj" class="col-12 control-label">CNPJ<span class="text-danger">*</span></label>
+                <div class="col-3">
+                    <input id="nr_cnpj" type="text" class="form-control mascaraCNPJ" name="nr_cnpj" value="{{ old('nr_cnpj') }}" required >
                 </div>
-    			<div class="col-2">
-                	<input id="nr_insc_estadual" type="text" class="form-control" name="nr_insc_estadual" value="{{ old('nr_insc_estadual') }}">
-            	</div>
             </div>
         </div>
     </div>

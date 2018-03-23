@@ -81,11 +81,13 @@ class PrestadoresController extends Controller
             $usuario->cs_status = 'A';
             $usuario->save();
             
+            
             # documento da empresa CNPJ
             $documentoCnpj      = new \App\Documento();
             $documentoCnpj->tp_documento = 'CNPJ';   
-            $documentoCnpj->te_documento = $request->input('nr_cnpj');
+            $documentoCnpj->te_documento = UtilController::retiraMascara($request->input('nr_cnpj'));
             $documentoCnpj->save();
+            
             
             # endereco da empresa
             $endereco           = new \App\Endereco($request->all());
@@ -147,7 +149,7 @@ class PrestadoresController extends Controller
                     $atendimento->procedimento()->associate($idProcedimento);
                     $atendimento->clinica_id = $clinica->id;
                     $atendimento->ds_preco = $arProcedimento[2];
-                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arProcedimento[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->vl_atendimento = UtilController::moedaBanco($arProcedimento[3]);
                     $atendimento->save();
                 }
             }
@@ -158,7 +160,7 @@ class PrestadoresController extends Controller
                     $atendimento->consulta()->associate($idConsulta);
                     $atendimento->clinica_id = $clinica->id;
                     $atendimento->ds_preco = $arConsulta[2];
-                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arConsulta[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->vl_atendimento = UtilController::moedaBanco($arConsulta[3]);
                     $atendimento->save();
                 }
             }
@@ -229,6 +231,9 @@ class PrestadoresController extends Controller
         $prestador->load('profissional');
         
         
+        $documentosclinica = $prestador->documentos;
+        
+        
         $user   = \App\User::findorfail($prestador->profissional->user_id);
         $cargo  = \App\Cargo::findorfail($prestador->profissional->cargo_id);
         $cidade = \App\Cidade::findorfail($prestador->enderecos->first()->cidade_id);
@@ -250,7 +255,8 @@ class PrestadoresController extends Controller
         
         
         return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
-                                                'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
+                                                'cidade', 'documentoprofissional', 'precoprocedimentos', 
+                                                'precoconsultas', 'documentosclinica'));
     }
 
     /**
@@ -263,7 +269,7 @@ class PrestadoresController extends Controller
     public function update(EditarPrestadoresRequest $request, $idPrestador)
     {
         $dados = Request::all();
-        
+
         DB::beginTransaction();
         
         try{
@@ -282,10 +288,27 @@ class PrestadoresController extends Controller
             
             
             foreach( $dados['tp_documento'] as $idDocumento=>$tp_documento ){
+                $doc = UtilController::retiraMascara($dados['te_documento'][$idDocumento][0]);
+                
+                if($tp_documento[0] == 'CNPJ'){
+//                     $validator = Validator::make(
+//                                         ['cnpj' => $doc],
+//                                         ['cnpj' => 'required|cnpj']
+//                                    );
+                }
+                if($tp_documento[0] == 'CPF'){
+//                     $validator = Validator::make(
+//                                     ['cpf' => $doc],
+//                                     ['cpf' => 'cpf']
+//                                  );
+                }
+                
                 $documento = \App\Documento::findorfail($idDocumento);
-                $documento->update(['tp_documento'=>$tp_documento[0], 'te_documento'=>(int)$dados['te_documento'][$idDocumento][0]]);
+                $documento->update(['tp_documento'=>$tp_documento[0],
+                                    'te_documento'=>$doc]);
             }
-                     
+            
+            
             foreach( $dados['tp_contato'] as $idContato=>$tp_contato ){
                 $contato = \App\Contato::findorfail($idContato);
                 $contato->update( ['tp_contato'=>$tp_contato[0], 'ds_contato'=>$dados['ds_contato'][$idContato][0]] );
@@ -302,7 +325,7 @@ class PrestadoresController extends Controller
                     $atendimento->procedimento()->associate($idProcedimento);
                     $atendimento->clinica_id = $idPrestador;
                     $atendimento->ds_preco = $arProcedimento[2];
-                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arProcedimento[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->vl_atendimento = UtilController::moedaBanco($arProcedimento[3]);
                     $atendimento->save();
                 }
             }
@@ -313,12 +336,10 @@ class PrestadoresController extends Controller
                     $atendimento->consulta()->associate($idConsulta);
                     $atendimento->clinica_id = $idPrestador;
                     $atendimento->ds_preco = $arConsulta[2];
-                    $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arConsulta[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
+                    $atendimento->vl_atendimento = UtilController::moedaBanco($arConsulta[3]);
                     $atendimento->save();
                 }
             }
-            
-            
             
             $prestador->save();
             

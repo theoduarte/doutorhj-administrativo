@@ -96,8 +96,13 @@ class AgendaController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getLocalAtendimento($consulta){
+        global $consulta;
+        dd($_REQUEST);
+        
         $arJson = array();
         $consultas = \App\Clinica::where(function($query){
+            
+            
                                             $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr($consulta).'%');
                                             $query->orWhere(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr($consulta).'%');
                                         })->get();

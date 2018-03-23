@@ -145,15 +145,15 @@
         </div>
     
         <div class="form-group{{ $errors->has('nr_cnpj') ? ' has-error' : '' }}">
+        	 @foreach( $documentosclinica as $documento )
         	<div class="row">
                 <label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
                 <div class="col-3">
-                    <input id="nr_cnpj" type="text" class="form-control" name="nr_cnpj" value="{{$prestador->documentos->first()->te_documento}}" required >
+                	<input type="hidden" name="tp_documento[{{$documento->id}}][]" value="CNPJ">
+                    <input id="te_documento[{{$documento->id}}][]" type="text" class="form-control mascaraCNPJ" name="te_documento[{{$documento->id}}][]" value="{{$prestador->documentos->first()->te_documento}}" required >
                 </div>
-    			<div class="col-2">
-                	<input id="nr_insc_estadual" type="text" class="form-control" name="nr_insc_estadual" value="">
-            	</div>
             </div>
+            @endforeach
         </div>
     </div>
    	

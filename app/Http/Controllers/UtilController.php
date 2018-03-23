@@ -24,4 +24,30 @@ class UtilController extends Controller
 	
 		return $titulo;
 	}
+	
+	/**
+	 * Retira máscara de CPF, CNPJ, Telefone e outros.
+	 * @param string $input
+	 */
+	public static function retiraMascara($input){
+	    return str_replace(',', '', 
+	               str_replace('/', '', 
+	                   str_replace('.', '', 
+	                       str_replace('-', '', 
+	                           str_replace('.', '', $input)))));
+	}
+	
+	/**
+	 * Trata valor monetário para banco.
+	 * 
+	 * @param string $input
+	 * 
+	 * @return float
+	 */
+	public static function moedaBanco($input){
+	    return str_replace(',', '.',str_replace('.', '', $input));
+	}
+	
+	
+	
 }
