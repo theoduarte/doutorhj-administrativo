@@ -15,7 +15,7 @@
         height     : 200px;
     }
 
-    .ui-dialog .ui-state-error { padding: .3em; }]
+    .ui-dialog .ui-state-error { padding: .3em; }
 </style>
 
 <script>
@@ -36,21 +36,18 @@
         	  }
         });
     });
-</script>
 
-
-<script>
-  $( function() {
-    function addUser() {
-		window.alert("OK!");
+    $( function() {
+      function addUser() {
+		 window.alert("OK!");
     	
-      return true;
-    }
+       return true;
+      }
  
     dialog = $( "#dialog-form" ).dialog({
       autoOpen: false,
-      height: 500,
-      width: 800,
+      height: 400,
+      width: 600,
       modal: true,
       buttons: {
         "Create an account": addUser,
@@ -62,11 +59,13 @@
     	  dialog.dialog( "close" ); 
       }
     });
-
+	
 
     $( "#remarcar-consulta" ).button().on( "click", function() {
-    	$('#idPaciente').val($(this).attr('id-paciente'));
-    	$('#divPaciente').html("<b>"+$(this).attr('nm-paciente')+"</b>");
+//     	$('#idPaciente'.val($(this).attr('id-paciente'));
+    	$('#divPaciente') .html("<b>"+$(this).attr('nm-paciente')+"</b>");
+    	$('#divDtHora')   .html("<b>"+$(this).attr('data-hora')+"</b>");
+    	$('#divPrestador').html("<b>"+$(this).attr('prestador')+"</b>");
         
       	dialog.dialog( "open" );
     });
@@ -102,7 +101,7 @@
         					
                 			<div class="row">
                 				<div class="col-4">
-            				        <label for="localAtendimento">Local de Atendimento:</label>
+            				        <label for="localAtendimento">Prestador:<span class="text-danger">*</span></label>
     								<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="">
     								<input type="hidden" id="clinica_id" name="clinica_id" value="">
                                 </div>
@@ -140,7 +139,7 @@
                                 </div>            					
     							
                 				<div style="width: 210px !important;">
-            				        <label for="data">Data:</label>
+            				        <label for="data">Data:<span class="text-danger">*</span></label>
         							<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="">                
                                 </div>
 
@@ -168,12 +167,19 @@
                             @foreach($agenda as $obAgenda)
                             <tr>
                             	<td>C034938</td>
-                            	<td>BRASILMED LTDA 3000</td>
+                            	<td>{{$obAgenda->clinica->nm_razao_social}}</td>
                             	<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
-                            	<td>23/03/2018 09:00</td>
+                            	<td>{{$obAgenda->dt_consulta_primaria}}</td>
                             	<td>Confirmado</td>
                             	<td>
-                            		<a id-paciente="{{$obAgenda->id}}" nm-paciente="{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Remarcar" id="remarcar-consulta"><i class="mdi mdi-eye"></i></a>
+                            		<a id-paciente    = "{{$obAgenda->paciente->id}}" 
+                            		   id-agendamento = "{{$obAgenda->id}}" 	
+                            		   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" 
+                            		   data-hora	  = "{{$obAgenda->dt_consulta_primaria}}"
+                            		   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}" 
+                            		   
+                            		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
+                            		   title		  = "Remarcar" id ="remarcar-consulta"><i class="mdi mdi-eye"></i></a>
                             	</td>
                             </tr>
                             @endforeach
@@ -194,15 +200,37 @@
 </div>
 
 <div id="dialog-form" title="Remarcar Consulta">
-  <form id="formRemarcaConsulta" name="formRemarcaConsulta">
-      <div class="col-6">
-          <label for="name">Paciente:</label>
-          <div id="divPaciente"></div>
-          <input type="hidden" id="idPaciente" name="idPaciente" value="">
-          
-      </div>
-      
-  </form>
+    <form id="formRemarcaConsulta" name="formRemarcaConsulta">
+    	<div class="row">
+            <div class="col-10">
+                <label for="divPrestador">Prestador:
+                    <input type="hidden" id="idPaciente" name="idPaciente" value="">
+                    <div id="divPrestador"></div>
+                </label>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-7">
+    			<label for="divPaciente">Paciente:<div id="divPaciente"></div></label>
+            </div>
+            <div class="col-4">
+    			<label for="divDtHora">Consulta:<div id="divDtHora"></div></label>
+            </div>
+        </div>
+		<br>
+		<br>
+		<div class="row">
+        	<div class="col-3">    
+                <label>Remarcar para:</label>
+				<input type="text" class="form-control" placeholder="mm/dd/yyyy" id="datepicker">
+            </div>
+        	<div class="col-3">    
+                <label>Hora:</label>
+				<input class="form-control" type="time" name="time">
+            </div>
+        </div>
+    </form>
 </div>
  
 @endsection

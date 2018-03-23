@@ -55,7 +55,8 @@
     	<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     	
     	<!-- Minton -->
-		<link href="../plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+		<link href="plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+		<link href="plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
     @endpush
     
     @stack('style')

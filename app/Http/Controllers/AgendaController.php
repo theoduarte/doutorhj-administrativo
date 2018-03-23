@@ -14,7 +14,7 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        $agenda = \App\Agendamento::where('id', 1)->sortable()->paginate(20);
+        $agenda = \App\Agendamento::where('id', 1)->orderBy('dt_consulta_primaria')->sortable()->paginate(20);
         $agenda->load('Clinica');
         $agenda->load('Paciente');
         

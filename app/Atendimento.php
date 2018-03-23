@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Carbon;
+
 
 class Atendimento extends Model
 {
@@ -11,8 +13,7 @@ class Atendimento extends Model
 	
 	public $fillable  = ['id', 'vl_atendimento', 'ds_preco'];
 	public $sortable  = ['id', 'vl_atendimento', 'ds_preco'];
-	public $dates 	  = ['dt_nascimento'];
-    
+
 	public function consulta(){
 	    return $this->belongsTo(Consulta::class);
 	}

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Carbon;
 
 class Agendamento extends Model
 {
@@ -26,5 +27,11 @@ class Agendamento extends Model
     
     public function clinica(){
         return $this->belongsTo(Clinica::class);
+    }
+    
+    public function getDtConsultaPrimariaAttribute()
+    {
+        $date = new Carbon($this->attributes['dt_consulta_primaria']);
+        return $date->format('d/m/Y g:i A');
     }
 }
