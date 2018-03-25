@@ -61,7 +61,7 @@
 					@foreach($menus as $menu)
 				
 					<tr>
-						<td>{{$menu->id}}</td>
+						<td>{{ sprintf("%04d", $menu->id) }}</td>
 						<td>{{$menu->titulo}}</td>
 						<td><i class="{{$menu->ic_menu_class}}"></i></td>
 						<td>

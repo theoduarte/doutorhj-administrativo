@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View;
 use App\Menu;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class MenuComposer
 {
@@ -18,15 +19,17 @@ class MenuComposer
 
 	public function compose(View $view)
 	{
-	    $user_session = Auth::user();
-	    $user_id = $user_session->id;
+// 	    $user_session = Auth::user();
+// 	    $user_id = $user_session->id;
 	    
-	    $menus_app = Menu::with('itemmenus')
-	    ->join('menu_perfiluser', function($join1) { $join1->on('menus.id', '=', 'menu_perfiluser.menu_id');})
-	    ->join('perfilusers', function($join2) { $join2->on('menu_perfiluser.perfiluser_id', '=', 'perfilusers.id');})
-	    ->join('users', function($join3) use($user_id) { $join3->on('perfilusers.id', '=', 'users.perfiluser_id')->on('users.id', '=', DB::raw($user_id));})
-	    ->select('menus.*', 'menus.id', 'menus.titulo')
-	    ->get();
+// 	    $menus_app = Menu::with('itemmenus')
+// 	    ->join('menu_perfiluser', function($join1) { $join1->on('menus.id', '=', 'menu_perfiluser.menu_id');})
+// 	    ->join('perfilusers', function($join2) { $join2->on('menu_perfiluser.perfiluser_id', '=', 'perfilusers.id');})
+// 	    ->join('users', function($join3) use($user_id) { $join3->on('perfilusers.id', '=', 'users.perfiluser_id')->on('users.id', '=', DB::raw($user_id));})
+// 	    ->select('menus.*', 'menus.id', 'menus.titulo')
+// 	    ->get();
+
+	    $menus_app = Session::get('menus_app');
 	    
 // 	    $options = array();
 // 	    $options['joins'] = array(

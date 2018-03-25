@@ -25,8 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('show-item', function($has_permission_view) {
-            return $has_permission_view;
-        });
+//         Gate::define('show-item', function($has_permission_view) {
+//             return $has_permission_view;
+//         });
     }
 }

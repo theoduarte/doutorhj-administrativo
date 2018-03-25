@@ -63,10 +63,10 @@
 					@foreach($itemmenus as $itemmenu)
 				
 					<tr>
-						<td>{{ $itemmenu->id }}</td>
+						<td>{{ sprintf("%04d", $itemmenu->id) }}</td>
 						<td>{{ $itemmenu->titulo }}</td>
-						<td><i class="{{ $itemmenu->ic_item_class }}"></i></td>
-						<td>{{ $itemmenu->ordemexibicao }}</td>
+						<td><i class="{{ $itemmenu->ic_item_class }}"></i>@if( $itemmenu->ic_item_class == '' ) ---- @endif</td>
+						<td>{{ $itemmenu->ordemexibicao }}º</td>
 						<td>{{ $itemmenu->menu->titulo }}</td>
 						<td>
 							<a href="{{ route('itemmenus.show', $itemmenu->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>

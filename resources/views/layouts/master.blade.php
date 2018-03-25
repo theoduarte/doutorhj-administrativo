@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     
     <link rel="shortcut icon" href="/libs/comvex-template/img/favicon.ico">
     <meta name="description" content="Comvex">
+    <meta name="keywords" content="doutorhj saúde consulta médico sus plano de saúde">
     <meta name="author" content="Theogenes Ferreira Duarte">
   	
     <title>@yield('title', 'Doutor HJ')</title>
@@ -28,10 +29,10 @@
     	<link rel="stylesheet" href="/libs/comvex-template/css/bootstrap.min.css">
     	
     	<!-- Icons CSS -->
-    	<link rel="stylesheet" href="/libs/comvex-template/css/icons.css">
+    	<link href="/libs/comvex-template/css/icons.css"  rel="stylesheet" >
     	
     	<!-- Multi Select css -->
-        <link href="/libs/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
+        <link href="/libs/multiselect/css/multi-select.css" rel="stylesheet"  type="text/css" />
     	
     	<!-- Template theme CSS -->
     	<link rel="stylesheet" href="/libs/comvex-template/css/style_dark.css">
@@ -49,14 +50,16 @@
         <script src="/libs/comvex-template/pages/jquery.sweet-alert.init.js"></script>
     	
     	<!-- Font Icons CSS-->
+    	<!-- 
     	<link rel="stylesheet" href="https://file.myfontastic.com/da58YPMQ7U5HY8Rb6UxkNf/icons.css">
     	
     	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">        
     	<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    	 -->
     	
     	<!-- Minton -->
-		<link href="plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-		<link href="plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+		<link href="/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+		<link href="/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
     @endpush
     
     @stack('style')
@@ -65,6 +68,14 @@
 <body class="fixed-left">
     <!-- Begin page -->
     <div id="wrapper">
+    	<div class="page-loader page-loader-variant-1">
+            <div><img class='cvx-img-responsive' style='margin-top: -20px;margin-left: -18px;' width='330' height='67' src='/libs/home-template/img/logos/logo-doutor-hoje-vertical.svg' alt='' />
+                <div class="offset-top-41 text-center">
+                    <!-- <div class="spinner"></div> -->
+                    <i class="fa fa-spin fa-circle-o-notch text-danger" style="font-size: 300%;"></i>
+                </div>
+            </div>
+        </div>
         <!-- Top Bar Start -->
         <div class="topbar">
             <!-- LOGO -->
@@ -140,22 +151,22 @@
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     	<i class="mdi mdi-account"></i> <span>Profile</span>
+            			     	<i class="mdi mdi-account"></i> <span>Meus Dados</span>
             			     </a>
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     	<i class="mdi mdi-settings"></i> <span>Settings</span>
+            			     	<i class="mdi mdi-settings"></i> <span>Configurações</span>
             			     </a>
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     	<i class="mdi mdi-lock-open"></i> <span>Lock Screen</span>
+            			     	<i class="mdi mdi-lock-open"></i> <span>Bloquear Sessão</span>
             			     </a>
             			     
             			     <!-- item-->
             			     <a href="/logout" class="dropdown-item notify-item">
-            			     	<i class="mdi mdi-logout"></i> <span>Logout</span>
+            			     	<i class="mdi mdi-logout"></i> <span>Sair</span>
             			     </a>
             			</div>
             		</li>
@@ -169,7 +180,7 @@
             		</li>
             		<li class="hide-phone app-search">
             			<form role="search" class="">
-            				<input type="text" placeholder="Search..." class="form-control">
+            				<input type="text" placeholder="Pesquisar..." class="form-control">
             				<a href=""><i class="fa fa-search"></i></a>
             			</form>
             		</li>
@@ -409,6 +420,18 @@
         <!-- Notification js -->
         <script src="/libs/notifyjs/dist/notify.min.js"></script>
         <script src="/libs/notifications/notify-metro.js"></script>
+        
+        <!-- Plugins  -->
+        <script type="text/javascript" src="/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+        <script type="text/javascript" src="/libs/jquery-quicksearch/jquery.quicksearch.js"></script>
+        <script type="text/javascript" src="/libs/select2/js/select2.min.js"></script>
+        <script type="text/javascript" src="/libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+        <script type="text/javascript" src="/libs/bootstrap-inputmask/bootstrap-inputmask.min.js" ></script>
+		
+        <script type="text/javascript" src="/libs/moment/moment.js"></script>
+        <script type="text/javascript" src="/libs/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+
+		<script type="text/javascript" src="/js/jquery.maskMoney.min.js"></script>
 		
         <!-- Custom main Js -->
         <script src="/libs/comvex-template/js/jquery.core.js"></script>
@@ -420,16 +443,18 @@
 		<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-
-		<script src="/js/jquery.maskMoney.min.js"></script>
 		
         <script type="text/javascript">
+ 		
             jQuery(document).ready(function($) {
                 $('.counter').counterUp({
                     delay: 100,
                     time: 1200
                 });
                 $('.circliful-chart').circliful();
+                $(".page-loader-variant-1").fadeOut(200, function(){
+                    $(this).hide();
+                });
             });
 
             // BEGIN SVG WEATHER ICON
@@ -454,20 +479,7 @@
     	
       	<script src="/js/restfulizer.js"></script>
       	<script src="/js/utilitarios.js"></script>
-      	
-        <!-- Plugins  -->
-        <script src="plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-        <script type="text/javascript" src="plugins/multiselect/js/jquery.multi-select.js"></script>
-        <script type="text/javascript" src="plugins/jquery-quicksearch/jquery.quicksearch.js"></script>
-        <script src="plugins/select2/js/select2.min.js" type="text/javascript"></script>
-        <script src="plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
-        <script src="plugins/bootstrap-inputmask/bootstrap-inputmask.min.js" type="text/javascript"></script>
-		
-        <script src="plugins/moment/moment.js"></script>
-        <script src="plugins/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
-        <script src="plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-        <script src="plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-        <script src="assets/pages/jquery.form-advanced.init.js"></script>
+
     @endpush
     
     @stack('scripts')

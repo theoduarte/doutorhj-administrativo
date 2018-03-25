@@ -31696,7 +31696,7 @@ fieldset[disabled] .swiper-slide-caption
 .page-loader-variant-1 .spinner {
   height: 56px;
   width: 56px;
-  background: url("../images/633328.png") no-repeat transparent;
+  background: url("../img/633328.png") no-repeat transparent;
   background-position: -2240px 0;
   animation: 1.5s sprite-animation steps(40) infinite;
   display: inline-block;
@@ -34127,7 +34127,7 @@ fieldset[disabled] .swiper-slide-caption
   opacity: 0;
   visibility: hidden;
   transition: .3s all ease;
-  background: url(../images/preloader.gif) no-repeat rgba(255, 255, 255, 0.8) center center;
+  background: url(../img/preloader.gif) no-repeat rgba(255, 255, 255, 0.8) center center;
   z-index: 6;
 }
 
@@ -40401,7 +40401,7 @@ html:not(.lt-ie10) .not-animated {
 .pswp__button,
 .pswp__button--arrow--left:before,
 .pswp__button--arrow--right:before {
-  background: url(../images/photoswipe-controls.png) 0 0 no-repeat;
+  background: url(../img/photoswipe-controls.png) 0 0 no-repeat;
   background-size: 264px 88px;
   width: 44px;
   height: 44px;
@@ -40412,7 +40412,7 @@ html:not(.lt-ie10) .not-animated {
   .pswp--svg .pswp__button,
   .pswp--svg .pswp__button--arrow--left:before,
   .pswp--svg .pswp__button--arrow--right:before {
-    background-image: url(../images/photoswipe-controls.svg);
+    background-image: url(../img/photoswipe-controls.svg);
   }
   .pswp--svg .pswp__button--arrow--left,
   .pswp--svg .pswp__button--arrow--right {
@@ -40720,7 +40720,7 @@ a.pswp__share--download:hover {
 
 .pswp__preloader--active .pswp__preloader__icn {
   /* We use .gif in browsers that don't support CSS animation */
-  background: url(../images/preloader.gif) 0 0 no-repeat;
+  background: url(../img/preloader.gif) 0 0 no-repeat;
 }
 
 .pswp--css_animation .pswp__preloader--active {
@@ -44428,7 +44428,7 @@ pre .chunk {
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  background: url(../images/preloader.png) no-repeat center center;
+  background: url(../img/preloader.png) no-repeat center center;
   background-position: -648px 0;
   animation: 0.7s sprite-animation steps(12) infinite;
   opacity: 0;

@@ -80,7 +80,7 @@
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="brWeadcrumb-item"><a href="#">Cadastros</a></li>
+					<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
 					<li class="breadcrumb-item active">Agenda</li>
 				</ol>
 				<div class="clearfix"></div>

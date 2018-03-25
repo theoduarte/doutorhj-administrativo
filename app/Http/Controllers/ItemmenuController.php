@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Itemmenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request as CVXRequest;
 use App\Menu;
 
 class ItemmenuController extends Controller
@@ -16,7 +17,7 @@ class ItemmenuController extends Controller
      */
     public function index()
     {
-    	$get_term = \Request::get('search_term');
+        $get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	
     	$itemmenus = Itemmenu::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
