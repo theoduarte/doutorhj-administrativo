@@ -45,19 +45,14 @@
     	<!-- modernizr script -->
     	<script src="/libs/comvex-template/js/modernizr.min.js"></script>
     	
-    	 <!-- Sweet Alert Js  -->
+    	<!-- Sweet Alert Js  -->
         <script src="/libs/sweet-alert/sweetalert2.min.js"></script>
         <script src="/libs/comvex-template/pages/jquery.sweet-alert.init.js"></script>
+		
+		<!-- JQueryUI -->
+    	<link rel="stylesheet" href="/libs/jquery-ui-themes/jquery-ui.css">
     	
-    	<!-- Font Icons CSS-->
-    	<!-- 
-    	<link rel="stylesheet" href="https://file.myfontastic.com/da58YPMQ7U5HY8Rb6UxkNf/icons.css">
-    	
-    	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">        
-    	<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-    	 -->
-    	
-    	<!-- Minton -->
+    	<!-- Datapicker -->
 		<link href="/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 		<link href="/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
     @endpush
@@ -426,7 +421,6 @@
         <script type="text/javascript" src="/libs/jquery-quicksearch/jquery.quicksearch.js"></script>
         <script type="text/javascript" src="/libs/select2/js/select2.min.js"></script>
         <script type="text/javascript" src="/libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
-        <script type="text/javascript" src="/libs/bootstrap-inputmask/bootstrap-inputmask.min.js" ></script>
 		
         <script type="text/javascript" src="/libs/moment/moment.js"></script>
         <script type="text/javascript" src="/libs/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
@@ -439,13 +433,10 @@
         <script src="/libs/comvex-template/js/jquery.form-advanced.init.js"></script>
         <script src="/libs/comvex-template/js/jquery.tree.js"></script>
         
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.js"></script>
+		<script src="/libs/jquery-ui/jquery-ui.js"></script>
 		<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 		
         <script type="text/javascript">
- 		
             jQuery(document).ready(function($) {
                 $('.counter').counterUp({
                     delay: 100,
@@ -474,12 +465,10 @@
                     icons.set(list[i], list[i]);
                 icons.play();
             };
-
         </script>
     	
       	<script src="/js/restfulizer.js"></script>
       	<script src="/js/utilitarios.js"></script>
-
     @endpush
     
     @stack('scripts')

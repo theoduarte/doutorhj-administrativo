@@ -80,7 +80,7 @@ class ItemmenusTableSeeder extends Seeder
             ),
             7 =>
             array (
-                'titulo'        => 'Usuários',
+                'titulo'        => 'Pacientes',
                 //'descricao'     => 'Lista os tipos de logs',
                 'url'           => 'usuarios',
                 'ic_item_class' => '',
@@ -89,7 +89,7 @@ class ItemmenusTableSeeder extends Seeder
             ),
             8 =>
             array (
-                'titulo'        => 'Locais de Atendimento',
+                'titulo'        => 'Clínicas',
                 'url'           => 'prestadores',
                 'ic_item_class' => '',
                 'ordemexibicao' => 3,

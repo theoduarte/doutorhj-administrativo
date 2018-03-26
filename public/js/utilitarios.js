@@ -1,10 +1,13 @@
 $(document).ready(function() {
-	$('.mascaraData').mask('00/00/0000');
+	$(".mascaraData").inputmask({
+        mask: ["99/99/9999"],
+        keepStatic: true
+    });
 	
 	$(".mascaraMonetaria").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
 	
 	$(".mascaraTelefone").inputmask({
-        mask: ["(99) 9999-9999", "(99) 99999-9999", ],
+        mask: ["(99) 9999-9999", "(99) 99999-9999"],
         keepStatic: true
     });
 	

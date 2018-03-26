@@ -57,5 +57,4 @@ class UtilController extends Controller
 	public static function formataMoeda($input){
 	   return number_format( $input,  2, ',', '.'); 
 	}
-	
 }

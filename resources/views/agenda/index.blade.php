@@ -15,61 +15,59 @@
         height     : 200px;
     }
 
-    .ui-dialog .ui-state-error { padding: .3em; }
+    .ui-dialog .ui-state-error {
+        padding: .3em; 
+    }
 </style>
 
 <script>
     $(function(){
         $("#localAtendimento").autocomplete({
-        	  source: function( request, response ) {
-                  $.ajax({
-                      url : "/consultas/localatendimento/"+$('#localAtendimento').val(),
-                      dataType: "json",
-                      success: function(data) {
-                          response(data);
-                      }
-                  });
-        	  },
-        	  minLength: 5,
-        	  select: function(event, ui) {
-    		      $('input[name="clinica_id"]').val(parseInt(ui.item.id));
-        	  }
+            source: function( request, response ) {
+                $.ajax({
+                    url : "/consultas/localatendimento/"+$('#localAtendimento').val(),
+                    dataType: "json",
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 5,
+            select: function(event, ui) {
+    	        $('input[name="clinica_id"]').val(parseInt(ui.item.id));
+            }
         });
-    });
 
-    $( function() {
-      function addUser() {
-		 window.alert("OK!");
-    	
-       return true;
-      }
- 
-    dialog = $( "#dialog-form" ).dialog({
-      autoOpen: false,
-      height: 400,
-      width: 600,
-      modal: true,
-      buttons: {
-        "Create an account": addUser,
-        Cancel: function() {
-          dialog.dialog( "close" );
-        }
-      },
-      close: function() {
-    	  dialog.dialog( "close" ); 
-      }
-    });
-	
-
-    $( "#remarcar-consulta" ).button().on( "click", function() {
-//     	$('#idPaciente'.val($(this).attr('id-paciente'));
-    	$('#divPaciente') .html("<b>"+$(this).attr('nm-paciente')+"</b>");
-    	$('#divDtHora')   .html("<b>"+$(this).attr('data-hora')+"</b>");
-    	$('#divPrestador').html("<b>"+$(this).attr('prestador')+"</b>");
+        function addUser() {
+        	window.alert("OK!");
         
-      	dialog.dialog( "open" );
-    });
-  } );
+        	return true;
+        }
+ 
+        dialog = $( "#dialog-form" ).dialog({
+            autoOpen: false,
+            height: 400,
+            width: 600,
+            modal: true,
+            buttons: {
+                "Create an account": addUser,
+                Cancel: function() {
+                	dialog.dialog( "close" );
+                }
+            },
+            close: function() {
+            	dialog.dialog( "close" ); 
+            }
+        });
+	
+        $( "#remarcar-consulta" ).button().on( "click", function() {
+        	$('#divPaciente') .html("<b>"+$(this).attr('nm-paciente')+"</b>");
+        	$('#divDtHora')   .html("<b>"+$(this).attr('data-hora')+"</b>");
+        	$('#divPrestador').html("<b>"+$(this).attr('prestador')+"</b>");
+            
+          	dialog.dialog( "open" );
+        });
+   });
 </script>
 
 
