@@ -57,4 +57,19 @@ class UtilController extends Controller
 	public static function formataMoeda($input){
 	   return number_format( $input,  2, ',', '.'); 
 	}
+	
+	
+	/**
+	 * Coloca máscara no CPF
+	 * Ex.: formataCpf(00812743199);
+	 * @param string $nrCpf
+	 */
+	public static function formataCpf($nrCpf){
+	    $parte_um     = substr($nrCpf, 0, 3);
+	    $parte_dois   = substr($nrCpf, 3, 3);
+	    $parte_tres   = substr($nrCpf, 6, 3);
+	    $parte_quatro = substr($nrCpf, 9, 2);
+	    
+	    return "$parte_um.$parte_dois.$parte_tres-$parte_quatro";
+	}
 }

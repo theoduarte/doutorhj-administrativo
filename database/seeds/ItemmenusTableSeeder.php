@@ -102,6 +102,14 @@ class ItemmenusTableSeeder extends Seeder
                 'ic_item_class' => '',
                 'ordemexibicao' => 3,
                 'menu_id'       => 1,
+            ),
+            10 =>
+            array (
+                'titulo'        => 'Profissionais',
+                'url'           => 'profissionais',
+                'ic_item_class' => '',
+                'ordemexibicao' => 3,
+                'menu_id'       => 1,
             )
         ));
     }

@@ -16,32 +16,31 @@ class ClientesController extends Controller
      */
     public function index()
     {
-        $usuarios = User::select(['id','name','email', 'cs_status', 'tp_user'])
-                        ->where(function($query){
-                            if(!empty(Request::input('nm_busca'))){
-                                switch (Request::input('tp_filtro')){
-                                    case "nome" :
-                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                                        break;
-                                    case "email" :
-                                        $query->where(DB::raw('to_str(email)'), '=', UtilController::toStr(Request::input('nm_busca')));
-                                        break;
-                                    default:
-                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');       
-                                }
-                            }
-                            
-                            $arFiltroStatusIn = array();
-                            if(!empty(Request::input('tp_usuario_somente_ativos'))  ){ $arFiltroStatusIn[] = 'A'; }
-                            if(!empty(Request::input('tp_usuario_somente_inativos'))){ $arFiltroStatusIn[] = 'I'; }
-                            if( count($arFiltroStatusIn) > 0 ) { $query->whereIn('cs_status', $arFiltroStatusIn); }
-                            
-                            $query->where('tp_user', '=', 'PAC');
-                        })->sortable()->paginate(20);
-        
+        $paciente = \App\Paciente::whereHas('user', function($query){
+                                            if(!empty(Request::input('nm_busca'))){
+                                                switch (Request::input('tp_filtro')){
+                                                    case "nome" :
+                                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+                                                        break;
+                                                    case "email" :
+                                                        $query->where(DB::raw('to_str(email)'), '=', UtilController::toStr(Request::input('nm_busca')));
+                                                        break;
+                                                    default :
+                                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+                                                }
+                                            }
+                
+                                            $arFiltroStatusIn = array();
+                                            if(!empty(Request::input('tp_usuario_somente_ativos'))  ){ $arFiltroStatusIn[] = 'A'; }
+                                            if(!empty(Request::input('tp_usuario_somente_inativos'))){ $arFiltroStatusIn[] = 'I'; }
+                                            if( count($arFiltroStatusIn) > 0 ) { $query->whereIn('cs_status', $arFiltroStatusIn); }      
+                                        })->sortable()->paginate(20);
+        $paciente->load('user');
+        $paciente->load('documentos');
+
         Request::flash();
         
-        return view('clientes.index', compact('usuarios', $usuarios));
+        return view('clientes.index', compact('paciente'));
     }
 
     /**
@@ -80,7 +79,7 @@ class ClientesController extends Controller
             $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
             $arEstados       = \App\Estado::orderBy('ds_estado')->get();
             
-            $usuarios = \App\User::findorfail($id);
+            $usuarios  = \App\User::findorfail($id);
             
             $pacientes = \App\Paciente::where('user_id', '=', $id)->get()->first();
             $pacientes->load('cargo');
@@ -94,13 +93,12 @@ class ClientesController extends Controller
             print $e->getMessage();
         }
 
-        return view('clientes.show', ['pacientes'       => $pacientes, 
-                                      'cidade'          => $cidade, 
+        return view('clientes.show', ['pacientes'       => $pacientes,
+                                      'cidade'          => $cidade,
                                       'arEspecialidade' => $arEspecialidade,
-                                      'arEstados'       => $arEstados
-                                     ]);
+                                      'arEstados'       => $arEstados]);
     }
-
+    
     /** 
      * Show the form for editing the specified resource.
      *
@@ -135,7 +133,7 @@ class ClientesController extends Controller
             print $e->getMessage();
         }
         
-        return view('clientes.edit', ['pacientes'        => $pacientes, 
+        return view('clientes.edit', ['pacientes'          => $pacientes, 
                                       'cidade'             => $cidade,
                                       'arEstados'          => $arEstados,
                                       'arCargos'           => $arCargos,
@@ -241,46 +239,14 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(\Illuminate\Http\Request $request, \App\User $usuario)
+    public function destroy($id)
     {
-        $arEnderecos  = array();
-        $arContatos   = array();
-        $arDocumentos = array();
-        
         DB::beginTransaction();
         
         try{
-            $pacientes = \App\Paciente::where('user_id', $usuario->id)->get(['id'])->first();
-            
-            $idGenerico  = $pacientes->id;
-
-    
-            foreach( $pacientes->enderecos()->get(['id']) as $objEnderecos){
-                $arEnderecos[] = $objEnderecos->id;
-            }
-            
-            foreach( $pacientes->contatos()->get(['id']) as $objContatos){
-                $arContatos[] = $objContatos->id;
-            }
-            
-            foreach( $pacientes->documentos()->get(['id']) as $objDocumentos){
-                $arDocumentos[] = $objDocumentos->id;
-            }
-            $pacientes->enderecos()->detach();
-            $pacientes->contatos()->detach();
-            $pacientes->documentos()->detach();
-            
-            \App\Endereco::destroy($arEnderecos);
-            \App\Contato::destroy($arContatos);
-            \App\Documento::destroy($arDocumentos);
-            
-            if( $usuario->tp_user == 'PAC' ){
-                \App\Paciente::destroy($idGenerico);
-            }elseif( $usuario->tp_user == 'PRO' ){
-                \App\Profissional::destroy($idGenerico);
-            }
-            \App\User::destroy($usuario->id);
-            
+            $pacientes = \App\Paciente::findorfail($id);
+            $pacientes->delete();
+                   
             DB::commit();
         }catch( Exception $e ){
             DB::rollBack(); 
@@ -289,7 +255,5 @@ class ClientesController extends Controller
         }
         
         return redirect()->route('clientes.index')->with('success', 'Usuário apagado com sucesso!');
-        
-        return redirect('usuarios');
     }
 }

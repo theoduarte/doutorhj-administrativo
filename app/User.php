@@ -31,4 +31,13 @@ class User extends Authenticatable
     {
     	return $this->belongsTo('App\Perfiluser');
     }
+    
+    public function paciente(){
+        return $this->hasOne(Paciente::class);
+    }
+    
+    public function profissional(){
+        return $this->hasOne(Profissional::class);
+    }
+    
 }

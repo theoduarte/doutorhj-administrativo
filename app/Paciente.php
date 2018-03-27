@@ -13,7 +13,7 @@ class Paciente extends Model
 	public $fillable      = ['id', 'nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'cargo_id'];
 	public $sortable      = ['id', 'nm_primario', 'nm_secundario'];
 	public $dates 	      = ['dt_nascimento'];
-   
+    
 	public function cargo(){
 	    return $this->belongsTo(Cargo::class);
 	}
@@ -33,7 +33,7 @@ class Paciente extends Model
 	public function user(){
 	    return $this->belongsTo(User::class, 'user_id');
 	}
-
+    
 	public function setDtNascimentoAttribute($data)
 	{
 	    $date = new Carbon($data);
@@ -41,7 +41,7 @@ class Paciente extends Model
         
 	    $this->attributes['dt_nascimento'] = $date;
 	}
-
+    
 	public function getDtNascimentoAttribute()
 	{
 	    $date = new Carbon($this->attributes['dt_nascimento']);

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\User;
 use Illuminate\Support\Facades\DB;
+use App\User;
 
 class ProfissionalsTableSeeder extends Seeder
 {
@@ -14,7 +14,6 @@ class ProfissionalsTableSeeder extends Seeder
     public function run()
     {
 		for($numero = 2001; $numero<=2100; $numero++){
-
 			User::create([
 					'id'			 => $numero,
 					'name'           => 'Profissional '.$numero,
@@ -24,7 +23,7 @@ class ProfissionalsTableSeeder extends Seeder
 					'tp_user'	     => 'PRO',
 					'cs_status'	     => 'A'
 			]);
-				   
+		    
 			DB::table('profissionals')->insert(array (
 				0 => 
 				array (
@@ -87,6 +86,25 @@ class ProfissionalsTableSeeder extends Seeder
 					'tp_documento' => 'CRM',
 					'te_documento' => '3234235',
 					'estado_id'=>1
+				),
+			));
+			
+			$docCNPJ = $numero+1000;
+			DB::table('documentos')->insert(array (
+				0 => 
+				array (
+				    'id' => $docCNPJ,
+					'tp_documento' => 'CNPJ',
+					'te_documento' => '10696691000163',
+					'estado_id'=>1
+				),
+			));
+			
+			DB::table('documento_profissional')->insert(array (
+				0 => 
+				array (
+				    'documento_id' => $docCNPJ,
+					'profissional_id' => $numero,
 				),
 			));
 			

@@ -83,8 +83,8 @@ class PacientesTableSeeder extends Seeder
 				0 => 
 				array (
 					'id' => $numero,
-					'tp_documento' => 'CNH',
-					'te_documento' => '3234235',
+					'tp_documento' => 'CPF',
+					'te_documento' => '00812743199',
 				),
 			));
 			

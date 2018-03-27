@@ -53,7 +53,7 @@
                     	@include('clinicas/tab_dados_prestador_show')
                     </div>
                     <div class="tab-pane fade" id="precificacaoProcedimento">
-                         	@include('clinicas/precificacaoProcedimentoShow')
+                        @include('clinicas/precificacaoProcedimentoShow')
                     </div>
                     <div class="tab-pane fade" id="precificacaoConsulta">
                      	@include('clinicas/precificacaoConsultaShow')

@@ -27,15 +27,8 @@ class ClinicasController extends Controller
                                                     break;
                                                 default:
                                                     $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                                                    
                                             }
                                         }
-                                        
-                                        $arFiltroIn = array();
-                                        if(!empty(Request::input('tp_usuario_cliente_paciente'))    ){ $arFiltroIn[] = 'PAC'; }
-                                        if(!empty(Request::input('tp_usuario_cliente_profissional'))){ $arFiltroIn[] = 'PRO'; }
-                                        if( count($arFiltroIn)>0 ) { $query->whereIn('tp_user', $arFiltroIn); }
-
                                     })->sortable()->paginate(20);
         $prestadores->load('contatos');
         $prestadores->load('profissional');
@@ -266,14 +259,14 @@ class ClinicasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EditarPrestadoresRequest $request, $idPrestador)
+    public function update(EditarPrestadoresRequest $request, $idClinica)
     {
         $dados = Request::all();
 
         DB::beginTransaction();
         
         try{
-            $prestador = \App\Clinica::findorfail((int)$idPrestador);
+            $prestador = \App\Clinica::findorfail((int)$idClinica);
             $prestador->update($dados);
             
             $endereco = \App\Endereco::findorfail($prestador->enderecos->first()->id);
@@ -317,13 +310,13 @@ class ClinicasController extends Controller
                 
             
             
-            \App\Atendimento::where(['clinica_id'=>$idPrestador])->delete();
+            \App\Atendimento::where(['clinica_id'=>$idClinica])->delete();
             
             if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
                 foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){
                     $atendimento = new \App\Atendimento();
                     $atendimento->procedimento()->associate($idProcedimento);
-                    $atendimento->clinica_id = $idPrestador;
+                    $atendimento->clinica_id = $idClinica;
                     $atendimento->ds_preco = $arProcedimento[2];
                     $atendimento->vl_atendimento = UtilController::moedaBanco($arProcedimento[3]);
                     $atendimento->save();
@@ -334,12 +327,13 @@ class ClinicasController extends Controller
                 foreach( $request->input('precosConsultas') as $idConsulta => $arConsulta ){
                     $atendimento = new \App\Atendimento();
                     $atendimento->consulta()->associate($idConsulta);
-                    $atendimento->clinica_id = $idPrestador;
+                    $atendimento->clinica_id = $idClinica;
                     $atendimento->ds_preco = $arConsulta[2];
                     $atendimento->vl_atendimento = UtilController::moedaBanco($arConsulta[3]);
                     $atendimento->save();
                 }
             }
+            
             
             $prestador->save();
             
@@ -359,10 +353,10 @@ class ClinicasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($idPrestador)
+    public function destroy($idClinica)
     {
-        $atendimento = \App\Atendimento::where('clinica_id', $idPrestador)->delete();
-        $prestador = \App\Clinica::findorfail($idPrestador)->delete();
+        $atendimento = \App\Atendimento::where('clinica_id', $idClinica)->delete();
+        $prestador = \App\Clinica::findorfail($idClinica)->delete();
         
         return redirect()->route('clinicas.index')->with('success', 'Prestador excluído com sucesso!');        
     }

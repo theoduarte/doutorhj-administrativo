@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Doutor HJ: Gestão de Clientes')
+@section('title', 'Doutor HJ: Gestão de Profissionais')
 
 @section('container')
 <div class="container-fluid">
@@ -11,7 +11,7 @@
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
-					<li class="breadcrumb-item active">Gestão de Clientes</li>
+					<li class="breadcrumb-item active">Gestão de Profissionais</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
@@ -21,12 +21,12 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				<h4 class="m-t-0 header-title">Clientes</h4>
+				<h4 class="m-t-0 header-title">Profissionais</h4>
 				<p class="text-muted m-b-30 font-13"></p>
 				
 				<div class="row justify-content-between">
 					<div class="col-12"> 
-						<form class="form-edit-add" role="form" action="{{ route('clientes.index') }}" method="get" enctype="multipart/form-data">
+						<form class="form-edit-add" role="form" action="{{ route('profissionais.index') }}" method="get" enctype="multipart/form-data">
                     		{{ csrf_field() }}
                 			
             				<div class="row">
@@ -43,13 +43,13 @@
             					<div class="col-4">
             						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
             					</div>
-      							<div style="width: 160px !important;">
+      							<div style="width: 190px !important;">
                 					<input type="checkbox"  id="tp_usuario_somente_ativos" name="tp_usuario_somente_ativos" value="ativo" @if(old('tp_usuario_somente_ativos')=='ativo') checked @endif >
-                					<label for="tp_usuario_somente_ativos" style="cursor: pointer;">Clientes Ativos</label>
+                					<label for="tp_usuario_somente_ativos" style="cursor: pointer;">Profissionais Ativos</label>
             						
                 					<label for="tp_usuario_somente_inativos"></label><br>
                 					<input type="checkbox"  id="tp_usuario_somente_inativos" name="tp_usuario_somente_inativos" value="inativo" @if(old('tp_usuario_somente_inativos')=='inativo') checked @endif>
-                					<label for="tp_usuario_somente_inativos" style="cursor: pointer;">Clientes Inativos</label>
+                					<label for="tp_usuario_somente_inativos" style="cursor: pointer;">Profissionais Inativos</label>
                 				</div>
                 				<div class="col-1" >
                 					<button type="submit" class="btn btn-primary" id="btnPesquisar">Pesquisar</button>
@@ -64,32 +64,36 @@
 						<th>ID</th>
 						<th>@sortablelink('name', 'Nome')</th>
 						<th>@sortablelink('email', 'E-mail')</th>
-						<th>CPF</th>
+						<th>CNPJ</th>
+						<th>Especialidade</th>
 						<th>Situação</th>
 						<th>Ações</th>
 					</tr>
-					@foreach ($paciente as $usuario)
+					@foreach ($profissionais as $profissional)
 						<tr>
-    						<td>{{$usuario->id}}</td>
-    						<td>{{$usuario->user->name}}</td>
-    						<td>{{$usuario->user->email}}</td>
+    						<td>{{$profissional->id}}</td>
+    						<td>{{$profissional->user->name}}</td>
+    						<td>{{$profissional->user->email}}</td>
                 	 		<td>
-								@foreach( $usuario->documentos as $documento )
-									@if( $documento->tp_documento == 'CPF' )
+								@foreach( $profissional->documentos as $documento )
+									@if( $documento->tp_documento == 'CNPJ' )
 										{{$documento->te_documento}}
 									@endif
 								@endforeach
                 	 		</td>
+                	 		<td>
+								{{$profissional->especialidade->cd_especialidade.' - '.$profissional->especialidade->ds_especialidade}}
+                	 		</td>
                	 			<td>
-                	 			@switch( $usuario->user->cs_status )
+                	 			@switch( $profissional->user->cs_status )
                 	 				@case('A')  Ativo   @Break
                 	 				@case('I')  Inativo @Break
                 	 			@endswitch
                 	 		</td>
     						<td>
-    							<a href="{{ route('clientes.show', $usuario->user->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-    							<a href="{{ route('clientes.edit', $usuario->user->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('clientes.destroy', $usuario->user->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o usuário? {{$usuario->user->name}}"><i class="ti-trash"></i></a>
+    							<a href="{{ route('profissionais.show', $profissional->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+    							<a href="{{ route('profissionais.edit', $profissional->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+    							<a href="{{ route('profissionais.destroy', $profissional->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o usuário? {{$profissional->name}}"><i class="ti-trash"></i></a>
     						</td>
     					</tr>
 					@endforeach
@@ -97,9 +101,9 @@
                 <tfoot>
                 	<div class="cvx-pagination">
                 		<span class="text-primary">
-                			{{ sprintf("%02d", $paciente->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $paciente->count()) }} Registro(s) exibido(s)
+                			{{ sprintf("%02d", $profissionais->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $profissionais->count()) }} Registro(s) exibido(s)
                 		</span>
-                		{!! $paciente->links() !!}
+                		{!! $profissionais->links() !!}
                 	</div>
                 </tfoot>
            </div>
