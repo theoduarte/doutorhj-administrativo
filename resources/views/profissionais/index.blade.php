@@ -93,7 +93,7 @@
     						<td>
     							<a href="{{ route('profissionais.show', $profissional->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
     							<a href="{{ route('profissionais.edit', $profissional->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('profissionais.destroy', $profissional->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o usuário? {{$profissional->name}}"><i class="ti-trash"></i></a>
+    							<a href="{{ route('profissionais.destroy', $profissional->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o usuário? {{$profissional->nm_primario}}"><i class="ti-trash"></i></a>
     						</td>
     					</tr>
 					@endforeach

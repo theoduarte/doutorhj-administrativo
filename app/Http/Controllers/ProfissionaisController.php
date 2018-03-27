@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\PacientesEditRequest;
-use App\User;
-use App\Http\Requests\ProfissionaisEditRequest;
 use App\Http\Requests\ProfissionaisRequest;
+use App\Http\Requests\ProfissionaisEditRequest;
+use App\User;
 
 class ProfissionaisController extends Controller
 {
@@ -184,50 +183,21 @@ class ProfissionaisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(\Illuminate\Http\Request $request, \App\Profissional $profissional)
+    public function destroy($idProfissional)
     {
-        $arEnderecos  = array();
-        $arContatos   = array();
-        $arDocumentos = array();
-        
         DB::beginTransaction();
-
+        
         try{
-            $profissionais = \App\Profissional::where('user_id', $profissional->id)->get(['id'])->first();
+            $pacientes = \App\Profissional::findorfail($idProfissional);
+            $pacientes->delete();
             
-            dd($profissionais);
-            
-//             foreach( $profissionais->enderecos()->get(['id']) as $objEnderecos){
-//                 $arEnderecos[] = $objEnderecos->id;
-//             }
-            
-//             foreach( $profissionais->contatos()->get(['id']) as $objContatos){
-//                 $arContatos[] = $objContatos->id;
-//             }
-            
-//             foreach( $profissionais->documentos()->get(['id']) as $objDocumentos){
-//                 $arDocumentos[] = $objDocumentos->id;
-//             }
-//             $profissionais->enderecos()->detach();
-//             $profissionais->contatos()->detach();
-//             $profissionais->documentos()->detach();
-            
-//             \App\Endereco::destroy($arEnderecos);
-//             \App\Contato::destroy($arContatos);
-//             \App\Documento::destroy($arDocumentos);
-            
-            
-//             \App\Paciente::destroy($profissionais->id);
-            
-//             \App\User::destroy($profissional->id);
-            
-//             DB::commit();
+            DB::commit();
         }catch( Exception $e ){
             DB::rollBack();
             
-            return redirect()->route('profissionais.index')->with('error', $e->getMessage());
+            return redirect()->route('clientes.index')->with('error', $e->getMessage());
         }
         
-        return redirect()->route('profissionais.index')->with('success', 'Usuário apagado com sucesso!');
+        return redirect()->route('clientes.index')->with('success', 'Usuário apagado com sucesso!');
     }
 }
