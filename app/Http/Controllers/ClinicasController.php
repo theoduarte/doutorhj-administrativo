@@ -233,7 +233,7 @@ class ClinicasController extends Controller
         $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos;
         
         
-        
+            
         $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])
                                                 ->orderBy('ds_preco', 'asc')
                                                 ->orderBy('vl_atendimento', 'desc')->get();

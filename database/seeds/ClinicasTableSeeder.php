@@ -16,7 +16,7 @@ class ClinicasTableSeeder extends Seeder
 		for($numero = 3000; $numero<=3000; $numero++){
 			User::create([
 					'id'			 => $numero,
-					'name'           => 'Prestador '.$numero,
+					'name'           => 'Clínica '.$numero,
 					'email'          => 'responsavelclinica'.$numero.'@gmail.com',
 					'password'       => bcrypt('1234'),
 					'remember_token' => str_random(60),
@@ -74,25 +74,25 @@ class ClinicasTableSeeder extends Seeder
 				),
 			));
 			
-			
+			$nrDocProfissional = $numero + 4000;
 			DB::table('documentos')->insert(array (
 			    0 =>
 			    array (
-			        'id' => $numero,
+			        'id' => $nrDocProfissional,
 			        'tp_documento' => 'CNPJ',
-			        'te_documento' => '1069669100163',
+			        'te_documento' => '10696691000163',
 			    ),
 			));
 			
 			DB::table('clinica_documento')->insert(array (
 			    0 =>
 			    array (
-			        'documento_id' => $numero,
+			        'documento_id' => $nrDocProfissional,
 			        'clinica_id' => $numero,
 			    ),
 			));
 			
-			$nrDocProfissional = $numero + 1000;
+			$nrDocProfissional = $numero + 6000;
 			DB::table('documentos')->insert(array (
 			    0 =>
 			    array (
@@ -110,29 +110,27 @@ class ClinicasTableSeeder extends Seeder
 			    ),
 			));
 			
-                        DB::table('atendimentos')->insert(array (
-                                0 =>
-                                array (
-                                        'id' => 1,
-                                        'vl_atendimento'=>2400.40,
-                                        'ds_preco' => 'teste...',
-                                        'clinica_id' => $numero,
-                                        'consulta_id' => null,
-                                        'procedimento_id' => 8381
-                                ),
-                                1 =>
-                                array (
-                                        'id' => 2,
-                                        'vl_atendimento'=>4400.10,
-                                        'ds_preco' => 'teste...',
-                                        'clinica_id' => $numero,
-                                        'consulta_id' => 81,
-                                        'procedimento_id' => null,
-                                ),
+            DB::table('atendimentos')->insert(array (
+                    0 =>
+                    array (
+                            'id' => 1,
+                            'vl_atendimento'=>2400.40,
+                            'ds_preco' => 'teste...',
+                            'clinica_id' => $numero,
+                            'consulta_id' => null,
+                            'procedimento_id' => 8381
+                    ),
+                    1 =>
+                    array (
+                            'id' => 2,
+                            'vl_atendimento'=>4400.10,
+                            'ds_preco' => 'teste...',
+                            'clinica_id' => $numero,
+                            'consulta_id' => 81,
+                            'procedimento_id' => null,
+                    ),
 
-                        ));
-
-
+            ));
 		}
     }
 }

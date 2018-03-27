@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Locais de Atendimento')
+@section('title', 'Clínicas')
 
 @section('container')
 <div class="container-fluid">
@@ -24,12 +24,12 @@
 	<div class="row">
         <div class="col-12">
             <div class="card-box col-12">
-                <h4 class="header-title m-t-0 m-b-30">Locais de Atendimento</h4>
+                <h4 class="header-title m-t-0 m-b-30">Clínicas</h4>
 
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a href="#prestador" data-toggle="tab" aria-expanded="true" class="nav-link active">
-                            Dados do Prestador
+                            Dados da Clínica
                         </a>
                     </li>
                     <li class="nav-item">
