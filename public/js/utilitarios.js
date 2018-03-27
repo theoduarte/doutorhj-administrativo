@@ -15,4 +15,9 @@ $(document).ready(function() {
 	    mask: ['99.999.999/9999-99'],
 	    keepStatic: true
 	});
+	
+	$(".mascaraCPF").inputmask({
+		mask: ['999.999.999-99'],
+		keepStatic: true
+	});
 });

@@ -70,14 +70,11 @@
 					
 					<div class="form-group">
 						<div class="row">
-    						<div class="col-3">
+    						<div class="col-2">
         						<label for="nm_primario">Primeiro nome<span class="text-danger">*</span></label>
         						<input type="text" id="nm_primario" class="form-control" name="nm_primario" value="{{$pacientes->nm_primario}}" required placeholder="Primeiro nome"  >
     						</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="row">
+
     						<div class="col-4">
         						<label for="nm_primario">Sobrenome<span class="text-danger">*</span></label>
         						<input type="text" id="nm_secundario" class="form-control" name="nm_secundario" value="{{$pacientes->nm_secundario}}" required placeholder="" >
@@ -145,18 +142,15 @@
     					            <label for="tp_documento" class="control-label">Documento<span class="text-danger">*</span></label>
         							<select name="tp_documento[]" class="form-control">
     									@if ( trim($documento->tp_documento) != 'CRM')
-        									<option value="CNH" {{ (trim($documento->tp_documento) == 'CNH') ? 'selected' : '' }}>CNH</option>
-        									<option value="RG"  {{ (trim($documento->tp_documento) == 'RG' ) ? 'selected' : '' }}>RG</option>
         									<option value="CPF" {{ (trim($documento->tp_documento) == 'CPF') ? 'selected' : '' }}>CPF</option>
-        									<option value="TRE" {{ (trim($documento->tp_documento) == 'TRE') ? 'selected' : '' }}>Título de Eleitor</option>
-    									@elseif ( trim($documento->tp_documento) == 'CRM')
+        								@elseif ( trim($documento->tp_documento) == 'CRM')
     										<option value="CRM" {{ (trim($documento->tp_documento) == 'CRM') ? 'selected' : '' }}>CRM</option>
     									@endif
     								</select>
                                 </div>
 						        <div class="col-2">
 						        	<label for="te_documento[]" class="control-label">&emsp;</label>
-        							<input type="text" placeholder="" class="form-control" name="te_documento[]" value="{{$documento->te_documento}}" required autofocus >                                   
+        							<input type="text" placeholder="" class="form-control {{ (trim($documento->tp_documento) == 'CPF') ? 'mascaraCPF' : '' }}" name="te_documento[]" value="{{$documento->te_documento}}" required autofocus >                                   
                                 </div> 
                                 @if ( trim($documento->tp_documento) == 'CRM')
                                 <div class="col-1">
