@@ -28,7 +28,6 @@ class ProfissionaisEditRequest extends FormRequest
             'nm_secundario' => 'required|max:50',
             'cs_sexo'       => 'required|max:1',
             'dt_nascimento' => 'required|max:10|date_format:"d/m/Y"',
-            'cargo_id'      => 'required|numeric',
             'tp_documento'  => 'required|max:3',
             'te_documento'  => 'required|max:15',
             'nr_cep'        => 'max:9|min:8',

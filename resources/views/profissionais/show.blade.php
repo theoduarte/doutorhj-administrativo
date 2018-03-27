@@ -47,12 +47,6 @@
 							<td>{{$profissionais->especialidade->cd_especialidade}} - {{$profissionais->especialidade->ds_especialidade}}</td>
 						</tr>
 						@endif
-						@if ( $profissionais->cargo != null )
-						<tr>
-							<td>Profissão</td>
-							<td>{{$profissionais->cargo->cd_cargo}} - {{$profissionais->cargo->ds_cargo}}</td>
-						</tr>
-						@endif
 						@foreach( $profissionais->documentos as $documento )
 						<tr>
 							<td>Documento</td>

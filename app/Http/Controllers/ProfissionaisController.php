@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\ProfissionaisRequest;
 use App\Http\Requests\ProfissionaisEditRequest;
 use App\User;
 
@@ -167,7 +166,7 @@ class ProfissionaisController extends Controller
             
             foreach( $dados['documentos_id'] as $indice=>$documentos_id){
                 $documentos = \App\Documento::findorfail($documentos_id);
-                $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>$dados['te_documento'][$indice], 'estado_id'=>(int)$dados['estado_id'][0]]);
+                $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice]), 'estado_id'=>(int)$dados['estado_id'][0]]);
             }
            
         }catch( Exception $e ){
@@ -195,9 +194,9 @@ class ProfissionaisController extends Controller
         }catch( Exception $e ){
             DB::rollBack();
             
-            return redirect()->route('clientes.index')->with('error', $e->getMessage());
+            return redirect()->route('profissionais.index')->with('error', $e->getMessage());
         }
         
-        return redirect()->route('clientes.index')->with('success', 'Usuário apagado com sucesso!');
+        return redirect()->route('profissionais.index')->with('success', 'Usuário apagado com sucesso!');
     }
 }

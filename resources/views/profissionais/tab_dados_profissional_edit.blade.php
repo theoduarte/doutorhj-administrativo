@@ -118,21 +118,7 @@
                     </div>	
 					@endif
 					
-					
-					
-					@if ( $profissionais->cargo != null )
-                    <div class="form-group">
-                    	<div class="row">
-    						<div class="col-5">
-                            	<label for="ds_cargo" class="control-label">Profissão<span class="text-danger">*</span></label>
-                      	        <input  type="text" class="form-control" id="ds_cargo" value="{{$profissionais->cargo->cd_cargo}} | {{$profissionais->cargo->ds_cargo}}" >
-    							<input type="hidden" name="cargo_id" id="cargo_id" value="{{$profissionais->cargo->id}}">
-                            </div>
-                        </div>
-                    </div>	
-					@endif
-					
-						
+
 					
 					<div class="form-group">
 						@foreach( $profissionais->documentos as $documento )
