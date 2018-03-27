@@ -123,12 +123,6 @@ class ClientesController extends Controller
             
             $cidade = \App\Cidade::findorfail($pacientes->enderecos->first()->cidade_id);
             
-            $precoprocedimentos = \App\Atendimento::where(['profissional_id'=> $idUsuario, 'consulta_id'=> null])->get();
-            $precoprocedimentos->load('procedimento');
-            
-            $precoconsultas = \App\Atendimento::where(['profissional_id'=> $idUsuario, 'procedimento_id'=> null])->get();
-            $precoconsultas->load('consulta');
-            
         }catch( Exception $e ){
             print $e->getMessage();
         }
@@ -137,9 +131,7 @@ class ClientesController extends Controller
                                       'cidade'             => $cidade,
                                       'arEstados'          => $arEstados,
                                       'arCargos'           => $arCargos,
-                                      'arEspecialidade'    => $arEspecialidade,
-                                      'precoprocedimentos' => $precoprocedimentos,
-                                      'precoconsultas'     => $precoconsultas]);
+                                      'arEspecialidade'    => $arEspecialidade]);
     }
 
     /**
@@ -154,77 +146,25 @@ class ClientesController extends Controller
         $dados = Request::all();        
         
         try{
-            if( Request::input('tp_usuario') == 'PAC' ){
-                $profissional = \App\Paciente::findorfail($idUsuario);
-                $profissional->update($dados);
-                $profissional->user()->update($dados);
-
-                foreach( $dados['contato_id'] as $indice=>$contato_id){
-                    $contato = \App\Contato::findorfail($contato_id);
-                    $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
-                }
-                
-                
-                $endereco = \App\Endereco::findorfail($dados['endereco_id']);
-                if(!empty($dados['cd_cidade_ibge'])) { $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; }
-                $endereco->update($dados);
-                $profissional->enderecos()->sync($endereco);
-                
-                
-                foreach( $dados['documentos_id'] as $indice=>$documentos_id){
-                    $documentos = \App\Documento::findorfail($documentos_id);
-                    $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>$dados['te_documento'][$indice]]);
-                }
-            }elseif( Request::input('tp_usuario') == 'PRO' ){
-                $profissional = \App\Profissional::findorfail($idUsuario);
-                $profissional->update($dados);
-                $profissional->user()->update($dados);
-                $profissional->especialidade()->update($dados);
-                
-                foreach( $dados['contato_id'] as $indice=>$contato_id){
-                    $contato = \App\Contato::findorfail($contato_id);
-                    $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
-                }
-                
-                
-                $endereco = \App\Endereco::findorfail($dados['endereco_id']);
-                if(!empty($dados['cd_cidade_ibge'])) { $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; }
-                $endereco->update($dados);
-                $profissional->enderecos()->sync($endereco);
-                
-                
-                foreach( $dados['documentos_id'] as $indice=>$documentos_id){
-                    $documentos = \App\Documento::findorfail($documentos_id);
-                    $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>$dados['te_documento'][$indice], 'estado_id'=>(int)$dados['estado_id'][0]]);
-                }
-                
-                
-                
-                \App\Atendimento::where(['profissional_id'=>$idUsuario])->delete();
-                
-                if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
-                    foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){
-                        $atendimento = new \App\Atendimento();
-                        $atendimento->profissional()->associate($idUsuario);
-                        $atendimento->procedimento()->associate($idProcedimento);
-                        $atendimento->ds_preco = $arProcedimento[2];
-                        $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arProcedimento[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
-                        $atendimento->save();
-                    }
-                }
-                
-                if(is_array($request->input('precosConsultas')) and count($request->input('precosConsultas')) > 0){
-                    foreach( $request->input('precosConsultas') as $idConsulta => $arConsulta ){
-                        $atendimento = new \App\Atendimento();
-                        $atendimento->profissional()->associate($idUsuario);
-                        $atendimento->consulta()->associate($idConsulta);
-                        $atendimento->ds_preco = $arConsulta[2];
-                        $atendimento->vl_atendimento = str_replace(',', '.',str_replace('.', '', $arConsulta[3])); //TODO: VERIFICAR FORMA CORRETA NO LARAVEL.
-                        $atendimento->save();
-                    }
-                }
-            }else{
-                return redirect()->route('clientes.index')->with('error', 'Tipo de usuário não informado!');
+            $profissional = \App\Paciente::findorfail($idUsuario);
+            $profissional->update($dados);
+            $profissional->user()->update($dados);
+            
+            foreach( $dados['contato_id'] as $indice=>$contato_id){
+                $contato = \App\Contato::findorfail($contato_id);
+                $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
+            }
+            
+            
+            $endereco = \App\Endereco::findorfail($dados['endereco_id']);
+            if(!empty($dados['cd_cidade_ibge'])) { $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; }
+            $endereco->update($dados);
+            $profissional->enderecos()->sync($endereco);
+            
+            
+            foreach( $dados['documentos_id'] as $indice=>$documentos_id){
+                $documentos = \App\Documento::findorfail($documentos_id);
+                $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice])]);
             }
         }catch( Exception $e ){
             return redirect()->route('clientes.index')->with('error', $e->getMessage());
