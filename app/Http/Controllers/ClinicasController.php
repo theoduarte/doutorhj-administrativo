@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PrestadoresRequest;
 use App\Http\Requests\EditarPrestadoresRequest;
 
-class PrestadoresController extends Controller
+class ClinicasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,10 +39,10 @@ class PrestadoresController extends Controller
                                     })->sortable()->paginate(20);
         $prestadores->load('contatos');
         $prestadores->load('profissional');
-
+        
         Request::flash();
                 
-        return view('prestadores.index', compact('prestadores'));
+        return view('clinicas.index', compact('prestadores'));
     }
     
     /**
@@ -58,7 +58,7 @@ class PrestadoresController extends Controller
         $precoconsultas = null;
         $precoprocedimentos = null;
         
-        return view('prestadores.create', compact('estados', 'cargos', 'precoprocedimentos', 'precoconsultas'));
+        return view('clinicas.create', compact('estados', 'cargos', 'precoprocedimentos', 'precoconsultas'));
     }
     
     /**
@@ -167,7 +167,7 @@ class PrestadoresController extends Controller
             
             DB::commit();
             
-            return redirect()->route('prestadores.index')->with('success', 'O prestador foi cadastrado com sucesso!');
+            return redirect()->route('clinicas.index')->with('success', 'O prestador foi cadastrado com sucesso!');
         } catch (\Exception $e){
             DB::rollBack();
             
@@ -208,7 +208,7 @@ class PrestadoresController extends Controller
         $precoconsultas->load('consulta');
         
         
-        return view('prestadores.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo',
+        return view('clinicas.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo',
                                                 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
     }
 
@@ -254,7 +254,7 @@ class PrestadoresController extends Controller
         $precoconsultas->load('consulta');
         
         
-        return view('prestadores.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
+        return view('clinicas.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
                                                 'cidade', 'documentoprofissional', 'precoprocedimentos', 
                                                 'precoconsultas', 'documentosclinica'));
     }
@@ -345,7 +345,7 @@ class PrestadoresController extends Controller
             
             DB::commit();
             
-            return redirect()->route('prestadores.index')->with('success', 'Prestador alterado com sucesso!');
+            return redirect()->route('clinicas.index')->with('success', 'Prestador alterado com sucesso!');
         } catch (\Exception $e){
             DB::rollBack();
             
@@ -364,7 +364,7 @@ class PrestadoresController extends Controller
         $atendimento = \App\Atendimento::where('clinica_id', $idPrestador)->delete();
         $prestador = \App\Clinica::findorfail($idPrestador)->delete();
         
-        return redirect()->route('prestadores.index')->with('success', 'Prestador excluído com sucesso!');        
+        return redirect()->route('clinicas.index')->with('success', 'Prestador excluído com sucesso!');        
     }
     
     /**

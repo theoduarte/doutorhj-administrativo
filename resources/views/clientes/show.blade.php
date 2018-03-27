@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Gestão de Usuários')
+@section('title', 'Gestão de Clientes')
 
 @section('container')
 <div class="container-fluid">
@@ -10,8 +10,8 @@
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item"><a href="{{ route('usuarios.index') }}">Lista de Cargos</a></li>
-					<li class="breadcrumb-item active">Detalhes do Cargo</li>
+					<li class="breadcrumb-item"><a href="{{ route('clientes.index') }}">Lista de Clientes</a></li>
+					<li class="breadcrumb-item active">Detalhes do Cliente</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
@@ -21,53 +21,49 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				@if ( $objGenerico->user->tp_user == 'PAC' )
-					<h4 class="header-title m-t-0 m-b-20">Detalhes do Paciente</h4>
-				@elseif( $objGenerico->user->tp_user == 'PRO' )
-					<h4 class="header-title m-t-0 m-b-20">Detalhes do Profissional</h4>
-				@endif
+				<h4 class="header-title m-t-0 m-b-20">Detalhes do Cliente</h4>
 				
 				<table class="table table-bordered table-striped view-doutorhj">
 					<tbody>
 						<tr>
 							<td width="25%">Código</td>
-							<td width="75%">{{ $objGenerico->id }}</td>
+							<td width="75%">{{ $pacientes->id }}</td>
 						</tr>
 						<tr>
 							<td>Primeiro Nome</td>
-							<td>{{$objGenerico->nm_primario}}</td>
+							<td>{{$pacientes->nm_primario}}</td>
 						</tr>
 						<tr>
 							<td>Sobrenome</td>
-							<td>{{$objGenerico->nm_secundario}}</td>
+							<td>{{$pacientes->nm_secundario}}</td>
 						</tr>
 						<tr>
 							<td>Sexo</td>
-							<td>{{( $objGenerico->cs_sexo == 'F' ) ? 'Feminino' : 'Masculino'}}</td>
+							<td>{{( $pacientes->cs_sexo == 'F' ) ? 'Feminino' : 'Masculino'}}</td>
 						</tr>
 						<tr>
 							<td>Nascimento</td>
-							<td>{{$objGenerico->dt_nascimento}}</td>
+							<td>{{$pacientes->dt_nascimento}}</td>
 						</tr>
-						@if ( $objGenerico->especialidade != null )
+						@if ( $pacientes->especialidade != null )
 						<tr>
 							<td>Especialidade</td>
-							<td>{{$objGenerico->especialidade->cd_especialidade}} - {{$objGenerico->especialidade->ds_especialidade}}</td>
+							<td>{{$pacientes->especialidade->cd_especialidade}} - {{$pacientes->especialidade->ds_especialidade}}</td>
 						</tr>
 						@endif
-						@if ( $objGenerico->cargo != null )
+						@if ( $pacientes->cargo != null )
 						<tr>
 							<td>Profissão</td>
-							<td>{{$objGenerico->cargo->cd_cargo}} - {{$objGenerico->cargo->ds_cargo}}</td>
+							<td>{{$pacientes->cargo->cd_cargo}} - {{$pacientes->cargo->ds_cargo}}</td>
 						</tr>
 						@endif
-						@foreach( $objGenerico->documentos as $documento )
+						@foreach( $pacientes->documentos as $documento )
 						<tr>
 							<td>Documento</td>
 							<td>{{$documento->tp_documento}} - {{$documento->te_documento}}</td>
 						</tr>
 						@endforeach 
-						@foreach ( $objGenerico->contatos as $contato )
+						@foreach ( $pacientes->contatos as $contato )
 						<tr>
 							<td>Contato</td>
 							<td>   
@@ -84,27 +80,27 @@
 						@endforeach 
 						<tr>
 							<td>CEP</td>
-							<td>{{$objGenerico->enderecos->first()->nr_cep}}</td>
+							<td>{{$pacientes->enderecos->first()->nr_cep}}</td>
 						</tr>
 						<tr>
 							<td>Logradouro</td>
-							<td>{{$objGenerico->enderecos->first()->sg_logradouro}}</td>
+							<td>{{$pacientes->enderecos->first()->sg_logradouro}}</td>
 						</tr>
 						<tr>
 							<td>Endereço</td>
-							<td>{{ $objGenerico->enderecos->first()->te_endereco }}</td>
+							<td>{{ $pacientes->enderecos->first()->te_endereco }}</td>
 						</tr>
 						<tr>
 							<td>Número</td>
-							<td>{{$objGenerico->enderecos->first()->nr_logradouro}}</td>
+							<td>{{$pacientes->enderecos->first()->nr_logradouro}}</td>
 						</tr>
 						<tr>
 							<td>Complemento</td>
-							<td>{{ $objGenerico->enderecos->first()->te_complemento }}</td>
+							<td>{{ $pacientes->enderecos->first()->te_complemento }}</td>
 						</tr>
 						<tr>
 							<td>Bairro</td>
-							<td>{{ $objGenerico->enderecos->first()->te_bairro }}</td>
+							<td>{{ $pacientes->enderecos->first()->te_bairro }}</td>
 						</tr>
 						<tr>
 							<td>Cidade</td>
@@ -116,14 +112,14 @@
 						</tr>
 						<tr>
 							<td>E-mail</td>
-							<td>{{$objGenerico->user->email}}</td>
+							<td>{{$pacientes->user->email}}</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="form-group text-right m-b-0">
-				<a href="{{ route('usuarios.edit', $objGenerico->id) }}" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-lead-pencil"></i> Editar</a>
-				<a href="{{ route('usuarios.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
+				<a href="{{ route('clientes.edit', $pacientes->id) }}" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-lead-pencil"></i> Editar</a>
+				<a href="{{ route('clientes.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
 			</div>
 		</div>
 	</div>

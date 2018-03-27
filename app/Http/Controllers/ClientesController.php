@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PacientesEditRequest;
 use App\User;
 
-class UsuariosController extends Controller
+class ClientesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,29 +27,21 @@ class UsuariosController extends Controller
                                         $query->where(DB::raw('to_str(email)'), '=', UtilController::toStr(Request::input('nm_busca')));
                                         break;
                                     default:
-                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                                        
+                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');       
                                 }
                             }
-                            
-                            $arFiltroIn = array();
-                            if(!empty(Request::input('tp_usuario_cliente_paciente'))    ){ $arFiltroIn[] = 'PAC'; }
-                            if(!empty(Request::input('tp_usuario_cliente_profissional'))){ $arFiltroIn[] = 'PRO'; }
-                            if( count($arFiltroIn)>0 ) { $query->whereIn('tp_user', $arFiltroIn); }
-                            
                             
                             $arFiltroStatusIn = array();
                             if(!empty(Request::input('tp_usuario_somente_ativos'))  ){ $arFiltroStatusIn[] = 'A'; }
                             if(!empty(Request::input('tp_usuario_somente_inativos'))){ $arFiltroStatusIn[] = 'I'; }
                             if( count($arFiltroStatusIn) > 0 ) { $query->whereIn('cs_status', $arFiltroStatusIn); }
                             
-                            $query->where('tp_user', '<>', 'ADM');
-                            $query->where('tp_user', '<>', 'OPR');
+                            $query->where('tp_user', '=', 'PAC');
                         })->sortable()->paginate(20);
         
         Request::flash();
         
-        return view('usuarios.index', compact('usuarios', $usuarios));
+        return view('clientes.index', compact('usuarios', $usuarios));
     }
 
     /**
@@ -59,7 +51,7 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-        return view('usuarios.create');
+        return view('clientes.create');
     }
 
     /**
@@ -90,27 +82,19 @@ class UsuariosController extends Controller
             
             $usuarios = \App\User::findorfail($id);
             
-            if( $usuarios->tp_user == 'PAC' ){
-                $objGenerico = \App\Paciente::where('user_id', '=', $id)->get()->first();
-                $objGenerico->load('cargo');
-            }elseif( $usuarios->tp_user == 'PRO' ){
-                $objGenerico = \App\Profissional::where('user_id', '=', $id)->get()->first();
-                $objGenerico->load('especialidade');   
-            }else{
-                throw new \Exception("Tipo de usuário não informado!");
-            }
+            $pacientes = \App\Paciente::where('user_id', '=', $id)->get()->first();
+            $pacientes->load('cargo');
+            $pacientes->load('user');
+            $pacientes->load('documentos');
+            $pacientes->load('enderecos');
+            $pacientes->load('contatos');
             
-            $objGenerico->load('user');
-            $objGenerico->load('documentos');
-            $objGenerico->load('enderecos');
-            $objGenerico->load('contatos');
-            
-            $cidade = \App\Cidade::findorfail($objGenerico->enderecos->first()->cidade_id);
+            $cidade = \App\Cidade::findorfail($pacientes->enderecos->first()->cidade_id);
         }catch( Exception $e ){
             print $e->getMessage();
         }
 
-        return view('usuarios.show', ['objGenerico'     => $objGenerico, 
+        return view('clientes.show', ['pacientes'       => $pacientes, 
                                       'cidade'          => $cidade, 
                                       'arEspecialidade' => $arEspecialidade,
                                       'arEstados'       => $arEstados
@@ -132,22 +116,14 @@ class UsuariosController extends Controller
             
             $usuarios = \App\User::findorfail($idUsuario);
             
-            if( $usuarios->tp_user == 'PAC' ){
-                $objGenerico = \App\Paciente::where('user_id', '=', $idUsuario)->get()->first();
-                $objGenerico->load('cargo');
-            }elseif( $usuarios->tp_user == 'PRO' ){
-                $objGenerico = \App\Profissional::where('user_id', '=', $idUsuario)->get()->first();
-                $objGenerico->load('especialidade');
-            }else{
-                throw new \Exception("Tipo de usuário não informado!");
-            }
+            $pacientes = \App\Paciente::where('user_id', '=', $idUsuario)->get()->first();
+            $pacientes->load('cargo');
+            $pacientes->load('user');
+            $pacientes->load('documentos');
+            $pacientes->load('enderecos');
+            $pacientes->load('contatos');
             
-            $objGenerico->load('user');
-            $objGenerico->load('documentos');
-            $objGenerico->load('enderecos');
-            $objGenerico->load('contatos');
-            
-            $cidade = \App\Cidade::findorfail($objGenerico->enderecos->first()->cidade_id);
+            $cidade = \App\Cidade::findorfail($pacientes->enderecos->first()->cidade_id);
             
             $precoprocedimentos = \App\Atendimento::where(['profissional_id'=> $idUsuario, 'consulta_id'=> null])->get();
             $precoprocedimentos->load('procedimento');
@@ -159,7 +135,7 @@ class UsuariosController extends Controller
             print $e->getMessage();
         }
         
-        return view('usuarios.edit', ['objGenerico'        => $objGenerico, 
+        return view('clientes.edit', ['pacientes'        => $pacientes, 
                                       'cidade'             => $cidade,
                                       'arEstados'          => $arEstados,
                                       'arCargos'           => $arCargos,
@@ -250,13 +226,13 @@ class UsuariosController extends Controller
                     }
                 }
             }else{
-                return redirect()->route('usuarios.index')->with('error', 'Tipo de usuário não informado!');
+                return redirect()->route('clientes.index')->with('error', 'Tipo de usuário não informado!');
             }
         }catch( Exception $e ){
-            return redirect()->route('usuarios.index')->with('error', $e->getMessage());
+            return redirect()->route('clientes.index')->with('error', $e->getMessage());
         }
         
-        return redirect()->route('usuarios.index')->with('success', 'O usuário foi atualizado com sucesso!');
+        return redirect()->route('clientes.index')->with('success', 'O usuário foi atualizado com sucesso!');
     }
     
     /**
@@ -267,8 +243,6 @@ class UsuariosController extends Controller
      */
     public function destroy(\Illuminate\Http\Request $request, \App\User $usuario)
     {
-        //TODO: VERIFICAR COMO FAZER DELETE CASCADE EM ELOQUENT
-        
         $arEnderecos  = array();
         $arContatos   = array();
         $arDocumentos = array();
@@ -276,28 +250,25 @@ class UsuariosController extends Controller
         DB::beginTransaction();
         
         try{
-            if( $usuario->tp_user == 'PAC' ){
-                $objGenerico = \App\Paciente::where('user_id', $usuario->id)->get(['id'])->first();
-                $idGenerico  = $objGenerico->id;
-            }elseif( $usuario->tp_user == 'PRO' ){
-                $objGenerico = \App\Profissional::where('user_id', $usuario->id)->get(['id'])->first();
-                $idGenerico  = $objGenerico->id;
-            }
+            $pacientes = \App\Paciente::where('user_id', $usuario->id)->get(['id'])->first();
+            
+            $idGenerico  = $pacientes->id;
+
     
-            foreach( $objGenerico->enderecos()->get(['id']) as $objEnderecos){
+            foreach( $pacientes->enderecos()->get(['id']) as $objEnderecos){
                 $arEnderecos[] = $objEnderecos->id;
             }
             
-            foreach( $objGenerico->contatos()->get(['id']) as $objContatos){
+            foreach( $pacientes->contatos()->get(['id']) as $objContatos){
                 $arContatos[] = $objContatos->id;
             }
             
-            foreach( $objGenerico->documentos()->get(['id']) as $objDocumentos){
+            foreach( $pacientes->documentos()->get(['id']) as $objDocumentos){
                 $arDocumentos[] = $objDocumentos->id;
             }
-            $objGenerico->enderecos()->detach();
-            $objGenerico->contatos()->detach();
-            $objGenerico->documentos()->detach();
+            $pacientes->enderecos()->detach();
+            $pacientes->contatos()->detach();
+            $pacientes->documentos()->detach();
             
             \App\Endereco::destroy($arEnderecos);
             \App\Contato::destroy($arContatos);
@@ -314,10 +285,10 @@ class UsuariosController extends Controller
         }catch( Exception $e ){
             DB::rollBack(); 
 
-            return redirect()->route('usuarios.index')->with('error', $e->getMessage());
+            return redirect()->route('clientes.index')->with('error', $e->getMessage());
         }
         
-        return redirect()->route('usuarios.index')->with('success', 'Usuário apagado com sucesso!');
+        return redirect()->route('clientes.index')->with('success', 'Usuário apagado com sucesso!');
         
         return redirect('usuarios');
     }

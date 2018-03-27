@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Doutor HJ: Gestão de Usuários')
+@section('title', 'Doutor HJ: Gestão de Clientes')
 
 @section('container')
 <div class="container-fluid">
@@ -11,7 +11,7 @@
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
-					<li class="breadcrumb-item active">Gestão de Usuários</li>
+					<li class="breadcrumb-item active">Gestão de Clientes</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
@@ -21,12 +21,12 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				<h4 class="m-t-0 header-title">Gestão de Usuários</h4>
+				<h4 class="m-t-0 header-title">Clientes</h4>
 				<p class="text-muted m-b-30 font-13"></p>
 				
 				<div class="row justify-content-between">
 					<div class="col-12"> 
-						<form class="form-edit-add" role="form" action="{{ route('usuarios.index') }}" method="get" enctype="multipart/form-data">
+						<form class="form-edit-add" role="form" action="{{ route('clientes.index') }}" method="get" enctype="multipart/form-data">
                     		{{ csrf_field() }}
                 			
             				<div class="row">
@@ -43,14 +43,6 @@
             					<div class="col-4">
             						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
             					</div>
-                				<div  style="width: 120px !important;">
-                					<input type="checkbox"  id="tp_usuario_cliente_paciente" name="tp_usuario_cliente_paciente" value="paciente" @if(old('tp_usuario_cliente_paciente')=='paciente') checked @endif>
-                					<label for="tp_usuario_cliente_paciente" style="cursor: pointer;">Paciente</label>    
-            
-                					<label for="tp_usuario_cliente_profissional"></label><br>
-                					<input type="checkbox"  id="tp_usuario_cliente_profissional" name="tp_usuario_cliente_profissional" value="profissional" @if(old('tp_usuario_cliente_profissional')=='profissional') checked @endif>
-                					<label for="tp_usuario_cliente_profissional" style="cursor: pointer;">Profissional</label>
-      							</div>
       							<div style="width: 160px !important;">
                 					<input type="checkbox"  id="tp_usuario_somente_ativos" name="tp_usuario_somente_ativos" value="ativo" @if(old('tp_usuario_somente_ativos')=='ativo') checked @endif >
                 					<label for="tp_usuario_somente_ativos" style="cursor: pointer;">Clientes Ativos</label>
@@ -94,9 +86,9 @@
                 	 			@endswitch
                 	 		</td>
     						<td>
-    							<a href="{{ route('usuarios.show', $usuario->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-    							<a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('usuarios.destroy', $usuario->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o usuário? {{$usuario->name}}"><i class="ti-trash"></i></a>
+    							<a href="{{ route('clientes.show', $usuario->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+    							<a href="{{ route('clientes.edit', $usuario->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+    							<a href="{{ route('clientes.destroy', $usuario->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o usuário? {{$usuario->name}}"><i class="ti-trash"></i></a>
     						</td>
     					</tr>
 					@endforeach

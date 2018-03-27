@@ -10,7 +10,7 @@
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item"><a href="{{ route('prestadores.index') }}">Lista de Prestadores</a></li>
+					<li class="breadcrumb-item"><a href="{{ route('clinicas.index') }}">Lista de Prestadores</a></li>
 					<li class="breadcrumb-item active">Cadastrar Prestador</li>
 				</ol>
 				<div class="clearfix"></div>
@@ -42,16 +42,24 @@
                             Precificação de Consultas
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#corpoClinico" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Precificação de Consultas
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="prestador">
-                    	@include('prestadores/tab_dados_prestador_show')
+                    	@include('clinicas/tab_dados_prestador_show')
                     </div>
                     <div class="tab-pane fade" id="precificacaoProcedimento">
-                         	@include('prestadores/precificacaoProcedimentoShow')
+                         	@include('clinicas/precificacaoProcedimentoShow')
                     </div>
                     <div class="tab-pane fade" id="precificacaoConsulta">
-                     	@include('prestadores/precificacaoConsultaShow')
+                     	@include('clinicas/precificacaoConsultaShow')
+                    </div>
+                    <div class="tab-pane fade" id="corpoClinico">
+                     	@include('clinicas/tab_corpo_clinico')
                     </div>
                 </div>
             </div>

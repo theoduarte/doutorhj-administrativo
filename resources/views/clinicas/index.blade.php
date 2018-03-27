@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Doutor HJ: Locais de Atendimento')
+@section('title', 'Doutor HJ: Clínicas')
 
 @section('container')
 <div class="container-fluid">
@@ -11,7 +11,7 @@
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
-					<li class="breadcrumb-item active">Locais de Atendimento</li>
+					<li class="breadcrumb-item active">Clínicas</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
@@ -21,16 +21,16 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				<h4 class="m-t-0 header-title">Locais de Atendimento</h4>
+				<h4 class="m-t-0 header-title">Clínicas</h4>
 				<p class="text-muted m-b-30 font-13"></p>
 				
 				<div class="row ">
 					<div class="col-12"> 
-						<form class="form-edit-add" role="form" action="{{ route('prestadores.index') }}" method="get" enctype="multipart/form-data">
+						<form class="form-edit-add" role="form" action="{{ route('clinicas.index') }}" method="get" enctype="multipart/form-data">
                     		{{ csrf_field() }}
                 			
         					<div class="float-right">
-        						<a href="{{ route('prestadores.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar</a>
+        						<a href="{{ route('clinicas.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar</a>
         					</div>	
             				<div class="row">
             					<div  style="width: 529px !important;">
@@ -73,9 +73,9 @@
                 	 			@endforeach
                 	 		</td>
     						<td>
-    							<a href="{{ route('prestadores.show', $prestador->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-    							<a href="{{ route('prestadores.edit', $prestador->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('prestadores.destroy', $prestador->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o prestador {{$prestador->nm_razao_social}}?"><i class="ti-trash"></i></a>
+    							<a href="{{ route('clinicas.show', $prestador->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+    							<a href="{{ route('clinicas.edit', $prestador->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+    							<a href="{{ route('clinicas.destroy', $prestador->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o prestador {{$prestador->nm_razao_social}}?"><i class="ti-trash"></i></a>
     						</td>
     					</tr>
     					@endforeach

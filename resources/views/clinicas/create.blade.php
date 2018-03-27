@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Usuários')
+@section('title', 'Clínicas')
 
 @section('container')
 <div class="container-fluid">
@@ -10,34 +10,26 @@
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item"><a href="{{ route('usuarios.index') }}">Lista de Usuários</a></li>
-					<li class="breadcrumb-item active">Cadastrar Usuários</li>
+					<li class="breadcrumb-item"><a href="{{ route('clinicas.index') }}">Lista de Clínicas</a></li>
+					<li class="breadcrumb-item active">Cadastrar Clínicas</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>
 	
-	<form action="{{ route('usuarios.update', $objGenerico->id) }}" method="post">
-		<input type="hidden" name="_method" value="PUT">
-		{!! csrf_field() !!}
-    	
+	<form action="{{ route('clinicas.store') }}" method="post">
     	<div class="row">
 	        <div class="col-12">
                 <div class="card-box col-12">
-                    <h4 class="header-title m-t-0 m-b-30">Usuários</h4>
+                    <h4 class="header-title m-t-0 m-b-30">Clínicas</h4>
     
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a href="#prestador" data-toggle="tab" aria-expanded="true" class="nav-link active">
-                				@if(  $objGenerico->user->tp_user == 'PAC')
-                					Dados do Paciente
-                				@elseif(  $objGenerico->user->tp_user == 'PRO')
-                					Dados do Profissional
-                				@endif
+                                Dados do Prestador
                             </a>
                         </li>
-                        @if(  $objGenerico->user->tp_user == 'PRO')
                         <li class="nav-item">
                             <a href="#precificacaoProcedimento" data-toggle="tab" aria-expanded="false" class="nav-link">
                                 Precificação de Procedimentos
@@ -48,20 +40,25 @@
                                 Precificação de Consultas
                             </a>
                         </li>
-                        @endif
+                        <li class="nav-item">
+                            <a href="#corpoClinico" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                Corpo Clínico
+                            </a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="prestador">
-                        	@include('usuarios/tab_dados_usuarios_edit')
+                        	@include('clinicas/tab_dados_prestador_create')
                         </div>
-                        @if(  $objGenerico->user->tp_user == 'PRO')
-                            <div class="tab-pane fade" id="precificacaoProcedimento">
-                             	@include('prestadores/precificacaoProcedimento')
-                            </div>
-                            <div class="tab-pane fade" id="precificacaoConsulta">
-                             	@include('prestadores/precificacaoConsulta')
-                            </div>
-                        @endif
+                        <div class="tab-pane fade" id="precificacaoProcedimento">
+                         	@include('clinicas/precificacaoProcedimento')
+                        </div>
+                        <div class="tab-pane fade" id="precificacaoConsulta">
+                         	@include('clinicas/precificacaoConsulta')
+                        </div>
+                        <div class="tab-pane fade" id="corpoClinico">
+                         	@include('clinicas/tab_corpo_clinico')
+                        </div>
                     </div>
                 </div>
        		</div>
