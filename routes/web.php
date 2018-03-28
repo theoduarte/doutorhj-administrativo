@@ -7,8 +7,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('clinicas','ClinicasController')->middleware('auth');
-Route::resource('profissionais','ProfissionaisController')->middleware('auth');
+Route::resource('clinicas','ClinicaController')->middleware('auth');
+Route::resource('profissionals','ProfissionalsController')->middleware('auth');
 Route::resource('clientes', 'ClientesController')->middleware('auth');
 Route::resource('cargos','CargoController')->middleware('auth');
 Route::resource('menus','MenuController')->middleware('auth');

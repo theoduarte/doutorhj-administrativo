@@ -66,7 +66,7 @@
 						<tr>
     						<td>{{$prestador->id}}</td>
     						<td>{{$prestador->nm_razao_social}}</td>
-    						<td>{{$prestador->profissional->nm_primario}} {{$prestador->profissional->nm_secundario}}</td>
+    						<td>{{ $prestador->responsavel->user->name }}</td>
                 	 		<td>
                 	 			@foreach($prestador->contatos as $contato)
                 	 				{{$contato->ds_contato}}

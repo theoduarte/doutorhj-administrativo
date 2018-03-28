@@ -17,6 +17,10 @@ class Profissional extends Model
 	public function cargo(){
 	    return $this->belongsTo(Cargo::class);
 	}
+	
+	public function clinica(){
+	    return $this->belongsTo('App\Clinica');
+	}
 
 	public function contatos(){
 	    return $this->belongsToMany(Contato::class, 'contato_profissional', 'profissional_id', 'contato_id');

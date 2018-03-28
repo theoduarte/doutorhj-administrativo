@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateClinicasTable extends Migration
 {
@@ -17,7 +18,8 @@ class CreateClinicasTable extends Migration
             $table->increments('id');
             $table->string('nm_razao_social', 50)->nullable();
             $table->string('nm_fantasia', 50)->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('NOW()'));
+            $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });
     }
 

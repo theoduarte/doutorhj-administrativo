@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
-class CreateContatosTable extends Migration
+class CreateResponsavelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +14,14 @@ class CreateContatosTable extends Migration
      */
     public function up()
     {
-        Schema::create('contatos', function (Blueprint $table) {
+        Schema::create('responsavels', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tp_contato', 5)->nullable();
-            $table->string('ds_contato', 30)->nullable();
+            $table->string('telefone', 20);
+            $table->string('cpf', 20);
+            $table->integer('user_id')
+            ->unsigned()
+            ->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });
@@ -29,6 +34,6 @@ class CreateContatosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contatos');
+        Schema::dropIfExists('responsavels');
     }
 }

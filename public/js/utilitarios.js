@@ -40,13 +40,15 @@ $(document).ready(function() {
 	
 	$('.input-limit-datepicker').daterangepicker({
 	    format: 'DD/MM/YYYY',
-//	    minDate: '06/01/2016',
-//	    maxDate: '06/30/2016',
 	    buttonClasses: ['btn', 'btn-sm'],
 	    applyClass: 'btn-secondary',
 	    cancelClass: 'btn-primary',
 	    dateLimit: {
 	        days: 6
 	    }
+	
+	$(".mascaraCEP").inputmask({
+		mask: ['99.999-999'],
+		keepStatic: true
 	});
 });
