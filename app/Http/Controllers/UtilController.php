@@ -19,7 +19,7 @@ class UtilController extends Controller
 				'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
 				'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ª' => '', 'º' => '' );
 	
-		$titulo = strtolower(strtr( $input, $unwanted_array ));
+		$titulo = strtolower(strtr($input, $unwanted_array));
 	
 		return $titulo;
 	}
@@ -29,7 +29,7 @@ class UtilController extends Controller
 	 * @param string $input
 	 */
 	public static function retiraMascara($input){
-	    return str_replace(',', '', 
+	   return str_replace(',', '', 
 	               str_replace('/', '', 
 	                   str_replace('.', '', 
 	                       str_replace('-', '', 
@@ -55,13 +55,13 @@ class UtilController extends Controller
 	 * @return string
 	 */
 	public static function formataMoeda($input){
-	   return number_format( $input,  2, ',', '.'); 
+	    return number_format( $input,  2, ',', '.'); 
 	}
-	
 	
 	/**
 	 * Coloca máscara no CPF
-	 * Ex.: formataCpf(00812743199);
+	 * Ex.: formataCpf(00812743199); retorna 008.127.431-99
+	 * 
 	 * @param string $nrCpf
 	 */
 	public static function formataCpf($nrCpf){
@@ -71,5 +71,21 @@ class UtilController extends Controller
 	    $parte_quatro = substr($nrCpf, 9, 2);
 	    
 	    return "$parte_um.$parte_dois.$parte_tres-$parte_quatro";
+	}
+	
+	/**
+	 * Coloca máscara no CNPJ
+	 * Ex.: formataCnpj(10696691000163); retorna 10.696.691/0001-63
+	 *
+	 * @param string $nrCpf
+	 */
+	public static function formataCnpj($nrCnpj){
+	    $parte_um     = substr($nrCnpj, 0, 2);
+	    $parte_dois   = substr($nrCnpj, 2, 3);
+	    $parte_tres   = substr($nrCnpj, 5, 3);
+	    $parte_quatro = substr($nrCnpj, 8, 4);
+	    $parte_cinto  = substr($nrCnpj, -2);
+	    
+	    return "$parte_um.$parte_dois.$parte_tres/$parte_quatro-$parte_cinto";
 	}
 }

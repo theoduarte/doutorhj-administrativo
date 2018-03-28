@@ -406,7 +406,7 @@ class ClinicasController extends Controller
         
         foreach ($consultas as $query)  
         {
-            $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta, 'value' => $query->ds_consulta ];
+            $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta, 'value' => $query->cd_consulta.' - '.$query->ds_consulta ];
         }
         
         return Response()->json($arResultado);

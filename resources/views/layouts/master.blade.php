@@ -424,6 +424,15 @@
 		
         <script type="text/javascript" src="/libs/moment/moment.js"></script>
         <script type="text/javascript" src="/libs/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+        
+        
+        
+        
+        <script type="text/javascript" src="/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+        <script type="text/javascript" src="/libs/bootstrap-daterangepicker/daterangepicker.js"></script>
+		
+
+
 
 		<script type="text/javascript" src="/js/jquery.maskMoney.min.js"></script>
 		

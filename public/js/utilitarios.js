@@ -20,4 +20,33 @@ $(document).ready(function() {
 		mask: ['999.999.999-99'],
 		keepStatic: true
 	});
+	
+	$('.input-daterange-datepicker').daterangepicker({
+	    buttonClasses: ['btn', 'btn-sm'],
+	    applyClass: 'btn-secondary',
+	    cancelClass: 'btn-primary'
+	});
+	
+	$('.input-daterange-timepicker').daterangepicker({
+	    timePicker: true,
+	    format: 'DD/MM/YYYY h:mm A',
+	    timePickerIncrement: 30,
+	    timePicker12Hour: true,
+	    timePickerSeconds: false,
+	    buttonClasses: ['btn', 'btn-sm'],
+	    applyClass: 'btn-secondary',
+	    cancelClass: 'btn-primary'
+	});
+	
+	$('.input-limit-datepicker').daterangepicker({
+	    format: 'DD/MM/YYYY',
+//	    minDate: '06/01/2016',
+//	    maxDate: '06/30/2016',
+	    buttonClasses: ['btn', 'btn-sm'],
+	    applyClass: 'btn-secondary',
+	    cancelClass: 'btn-primary',
+	    dateLimit: {
+	        days: 6
+	    }
+	});
 });

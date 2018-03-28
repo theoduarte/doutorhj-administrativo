@@ -16,7 +16,7 @@
     }
 
     .ui-dialog .ui-state-error {
-        padding: .3em; 
+        padding    : .3em;
     }
 </style>
 
@@ -37,6 +37,22 @@
     	        $('input[name="clinica_id"]').val(parseInt(ui.item.id));
             }
         });
+        
+        $("#profissional").autocomplete({
+            source: function( request, response ) {
+                $.ajax({
+                    url : "/agenda/profissional/" + $('#profissional').val(),
+                    dataType: "json",
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 5,
+            select: function(event, ui) {
+    	        $('input[name="profissional_id"]').val(parseInt(ui.item.id));
+            }
+        });
 
         function addUser() {
         	window.alert("OK!");
@@ -45,14 +61,14 @@
         }
  
         dialog = $( "#dialog-form" ).dialog({
-            autoOpen: false,
-            height: 400,
-            width: 600,
-            modal: true,
-            buttons: {
-                "Create an account": addUser,
-                Cancel: function() {
-                	dialog.dialog( "close" );
+            autoOpen : false,
+            height	 : 450,
+            width	 : 700,
+            modal	 : true,
+            buttons	 : {
+                "Remarcar": addUser,
+                Cancel	  : function() {
+                    dialog.dialog( "close" );
                 }
             },
             close: function() {
@@ -98,21 +114,21 @@
                     		{{ csrf_field() }}
         					
                 			<div class="row">
-                				<div class="col-4">
+                				<div class="col-5">
             				        <label for="localAtendimento">Prestador:<span class="text-danger">*</span></label>
-    								<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="">
+    								<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}">
     								<input type="hidden" id="clinica_id" name="clinica_id" value="">
                                 </div>
 								<div class="form-group">
 									<div style="height: 20px;"></div>
 									<label class="custom-checkbox" style="cursor: pointer;width:180px;">
                     					<input type="checkbox" id="ckConsultasConfirmadas" name="ckConsultasConfirmadas" 
-                    						value="consultas_confirmadas" @if(old('ckConsultasConfirmadas')=='consultas_confirmadas') checked @endif> Consultas Confirmadas 
+                    						value="consultas_confirmadas" @if(old('ckConsultasConfirmadas')=='confirmada') checked @endif> Consultas Confirmadas 
                                     </label>
                     				<br>
                                     <label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckConsultasConfirmar" name="ckConsultasConfirmar" 
-                    						value="consultas_confirmar" @if(old('ckConsultasConfirmar')=='consultas_confirmar') checked @endif> Consultas a Confirmar 
+                    						value="consultas_confirmar" @if(old('ckConsultasConfirmar')=='aconfirmar') checked @endif> Consultas a Confirmar 
                                     </label>
                                 </div>
                 				
@@ -120,25 +136,24 @@
                                 	<div style="height: 20px;"></div>
                                 	<label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckConsultasConsumadas" name="ckConsultasConsumadas" 
-                    						value="consultas_consumadas" @if(old('ckConsultasConsumadas')=='consultas_consumadas') checked @endif> Consultas Consumadas 
+                    						value="consultas_consumadas" @if(old('ckConsultasConsumadas')=='consumada') checked @endif> Consultas Consumadas 
                                     </label>
                     				<br>
                                     <label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas" 
-                    						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='consultas_canceladas') checked @endif> Consultas Canceladas 
+                    						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='canceladas') checked @endif> Consultas Canceladas 
                                     </label>
                                 </div>
             				</div>
             				<div class="row">
-								<div class="col-4">
+								<div class="col-5">
             				        <label for="localAtendimento">Paciente:</label>
-    								<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="">
-    								<input type="hidden" id="clinica_id" name="clinica_id" value="">
+    								<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
                                 </div>            					
     							
                 				<div style="width: 210px !important;">
             				        <label for="data">Data:<span class="text-danger">*</span></label>
-        							<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="">                
+        							<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="{{old('data')}}">                
                                 </div>
 
                 				<div class="col-1 col-lg-3">
@@ -157,8 +172,9 @@
         					<tr>
         						<th>Ticket</th>
         						<th>Prestador</th>
-        						<th>@sortablelink('nm_primario', 'Paciente')</th>
-        						<th>@sortablelink('dt_consulta_primaria', 'Data / Hora')</th>
+        						<th>Profissional</th>
+        						<th>Paciente</th>
+        						<th>Data / Hora</th>
         						<th>Situação</th>
         						<th>Ações</th>
         					</tr>
@@ -166,6 +182,7 @@
                             <tr>
                             	<td>C034938</td>
                             	<td>{{$obAgenda->clinica->nm_razao_social}}</td>
+                            	<td>{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
                             	<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
                             	<td>{{$obAgenda->dt_consulta_primaria}}</td>
                             	<td>Confirmado</td>
@@ -175,7 +192,7 @@
                             		   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" 
                             		   data-hora	  = "{{$obAgenda->dt_consulta_primaria}}"
                             		   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}" 
-                            		   
+                            		   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
                             		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
                             		   title		  = "Remarcar" id ="remarcar-consulta"><i class="mdi mdi-eye"></i></a>
                             	</td>
@@ -197,12 +214,14 @@
 	</div>
 </div>
 
+
+<!-- Modal remarcar consulta -->
 <div id="dialog-form" title="Remarcar Consulta">
     <form id="formRemarcaConsulta" name="formRemarcaConsulta">
     	<div class="row">
             <div class="col-10">
                 <label for="divPrestador">Prestador:
-                    <input type="hidden" id="idPaciente" name="idPaciente" value="">
+                    <input type="hidden" id="idClinica" name="idClinica" value="">
                     <div id="divPrestador"></div>
                 </label>
             </div>
@@ -216,19 +235,33 @@
     			<label for="divDtHora">Consulta:<div id="divDtHora"></div></label>
             </div>
         </div>
+		
 		<br>
+    	
+    	<div class="row">
+            <div class="col-12">
+                <label for="profissional">Profissional:</label>
+            	<input type  = "text" 
+            		   class = "form-control" 
+            		   name  = "profissional" 
+            		   id    = "profissional" 
+            		   value = "{{old('profissional')}}">
+           		<input type="hidden" id="profissional_id" name="profissional_id" value="">
+            </div>
+        </div>
+		
 		<br>
+		
 		<div class="row">
         	<div class="col-3">    
                 <label>Remarcar para:</label>
-				<input type="text" class="form-control" placeholder="mm/dd/yyyy" id="datepicker">
+				<input type="text" class="form-control" placeholder="dd/mm/yyyy" id="datepicker-autoclose">
             </div>
-        	<div class="col-3">    
+        	<div class="col-3">
                 <label>Hora:</label>
 				<input class="form-control" type="time" name="time">
             </div>
         </div>
     </form>
 </div>
- 
 @endsection

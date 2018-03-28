@@ -29,6 +29,10 @@ class Agendamento extends Model
         return $this->belongsTo(Clinica::class);
     }
     
+    public function profissional(){
+        return $this->belongsTo(Profissional::class);
+    }
+    
     public function getDtConsultaPrimariaAttribute()
     {
         $date = new Carbon($this->attributes['dt_consulta_primaria']);
