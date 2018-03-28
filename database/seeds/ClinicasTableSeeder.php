@@ -30,7 +30,7 @@ class ClinicasTableSeeder extends Seeder
 					'id' => $numero,
 					'nm_razao_social' => 'BRASILMED '.$numero,
 					'nm_fantasia' => 'BRASILMED LTDA '.$numero,
-					'profissional_id'=>2010
+					'responsavel_id'=>1
 				),
 			));
 			
@@ -92,7 +92,7 @@ class ClinicasTableSeeder extends Seeder
 			    ),
 			));
 			
-			$nrDocProfissional = $numero + 6000;
+			/* $nrDocProfissional = $numero + 6000;
 			DB::table('documentos')->insert(array (
 			    0 =>
 			    array (
@@ -108,7 +108,7 @@ class ClinicasTableSeeder extends Seeder
 			        'documento_id' => $nrDocProfissional,
 			        'profissional_id' => 2010,
 			    ),
-			));
+			)); */
 			
             DB::table('atendimentos')->insert(array (
                     0 =>

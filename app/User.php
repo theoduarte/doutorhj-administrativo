@@ -40,4 +40,10 @@ class User extends Authenticatable
         return $this->hasOne(Profissional::class);
     }
     
+    public function responsavel()
+    {
+        return $this->hasOne('App\Responsavel');
+        
+    }
+    
 }

@@ -6,8 +6,12 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProfissionaisEditRequest;
 use App\User;
+use App\Profissional;
+use App\Especialidade;
+use App\Estado;
+use App\Cargo;
 
-class ProfissionaisController extends Controller
+class ProfissionalsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +20,7 @@ class ProfissionaisController extends Controller
      */
     public function index()
     {
-        $profissionais = \App\Profissional::whereHas('user', function($query){
+        $profissionais = Profissional::whereHas('user', function($query){
                             if(!empty(Request::input('nm_busca'))){
                                 switch (Request::input('tp_filtro')){
                                     case "nome" :
@@ -65,7 +69,7 @@ class ProfissionaisController extends Controller
     {
         $usuarios = User::create($request->all());
         
-        $request->session()->flash('message', 'Cargo cadastrado com sucesso!');
+        $request->session()->flash('message', 'Profissional cadastrado com sucesso!');
         return redirect('/usuarios');
     }
     
@@ -78,12 +82,12 @@ class ProfissionaisController extends Controller
     public function show($id)
     {
         try{
-            $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
-            $arEstados       = \App\Estado::orderBy('ds_estado')->get();
+            $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
+            $arEstados       = Estado::orderBy('ds_estado')->get();
             
-            $usuarios  = \App\User::findorfail($id);
+            $usuarios  = User::findorfail($id);
             
-            $profissionais = \App\Profissional::where('user_id', '=', $id)->get()->first();
+            $profissionais = Profissional::where('user_id', '=', $id)->get()->first();
             $profissionais->load('especialidade');
             $profissionais->load('user');
             $profissionais->load('documentos');
@@ -110,13 +114,13 @@ class ProfissionaisController extends Controller
     public function edit($idUsuario)
     {
         try{
-            $arCargos        = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-            $arEstados       = \App\Estado::orderBy('ds_estado')->get();
-            $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
+            $arCargos        = Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
+            $arEstados       = Estado::orderBy('ds_estado')->get();
+            $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
             
-            $usuarios = \App\User::findorfail($idUsuario);
+            $usuarios = User::findorfail($idUsuario);
             
-            $profissionais = \App\Profissional::where('user_id', '=', $idUsuario)->get()->first();
+            $profissionais = Profissional::where('user_id', '=', $idUsuario)->get()->first();
             $profissionais->load('especialidade');
             $profissionais->load('user');
             $profissionais->load('documentos');

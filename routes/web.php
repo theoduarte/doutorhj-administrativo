@@ -7,8 +7,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('clinicas','ClinicasController')->middleware('auth');
-Route::resource('profissionais','ProfissionaisController')->middleware('auth');
+Route::resource('clinicas','ClinicaController')->middleware('auth');
+Route::resource('profissionals','ProfissionalsController')->middleware('auth');
 Route::resource('clientes', 'ClientesController')->middleware('auth');
 Route::resource('cargos','CargoController')->middleware('auth');
 Route::resource('menus','MenuController')->middleware('auth');
@@ -17,8 +17,8 @@ Route::resource('perfilusers','PerfiluserController')->middleware('auth');
 Route::resource('permissaos','PermissaoController')->middleware('auth');
 Route::resource('agenda','AgendaController')->middleware('auth');
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
-Route::get('consultas/consulta/{consulta}', 'ClinicasController@getConsultas')->middleware('auth');
-Route::get('procedimentos/consulta/{consulta}', 'ClinicasController@getProcedimentos')->middleware('auth');
+Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');
+Route::get('procedimentos/consulta/{consulta}', 'ClinicaController@getProcedimentos')->middleware('auth');
 Route::get('consultas/localatendimento/{consulta}', 'AgendaController@getLocalAtendimento')->middleware('auth'); 
 
 Auth::routes();

@@ -12,8 +12,8 @@ class Clinica extends Model
     public $fillable = ['nm_razao_social', 'nm_fantasia'];
     public $sortable = ['id', 'nm_razao_social', 'nm_fantasia'];
 	
-    public function cargo(){
-        return $this->belongsTo(Cargo::class);
+    public function responsavel(){
+        return $this->belongsTo('App\Responsavel');
     }
     
     public function contatos(){
@@ -36,7 +36,8 @@ class Clinica extends Model
         return $this->belongsToMany(Procedimento::class, 'clinica_procedimento', 'procedimento_id', 'clinica_id');
     }
     
-    public function profissional(){
-        return $this->belongsTo(Profissional::class);
+    public function profissionals()
+    {
+        return $this->hasMany('App\Profissional');
     }
 }

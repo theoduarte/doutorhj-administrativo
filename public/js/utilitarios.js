@@ -20,4 +20,9 @@ $(document).ready(function() {
 		mask: ['999.999.999-99'],
 		keepStatic: true
 	});
+	
+	$(".mascaraCEP").inputmask({
+		mask: ['99.999-999'],
+		keepStatic: true
+	});
 });

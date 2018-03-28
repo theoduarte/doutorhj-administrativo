@@ -22,7 +22,8 @@ class CreateAgendamentosTable extends Migration
             $table->timestamp('dt_consulta_secundaria')->nullable()->comment('SE A DATA E HORA DA PRIMEIRA CONSULTA NÃO ESTIVEREM DISPONÍVEIS SERÁ ADOTADA ESTA DATA E HORA');
             $table->string('bo_consulta_consumada', 1)->default('N')->nullable()->comment('TRUE SE A CONSULTA FOI REALIZADA');
             $table->string('te_observacoes', 100)->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('NOW()'));
+            $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });
     }
 
