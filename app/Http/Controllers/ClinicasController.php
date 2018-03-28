@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PrestadoresRequest;
 use App\Http\Requests\EditarPrestadoresRequest;
+use Validator;
 
 class ClinicasController extends Controller
 {
@@ -284,16 +285,24 @@ class ClinicasController extends Controller
                 $doc = UtilController::retiraMascara($dados['te_documento'][$idDocumento][0]);
                 
                 if($tp_documento[0] == 'CNPJ'){
-//                     $validator = Validator::make(
-//                                         ['cnpj' => $doc],
-//                                         ['cnpj' => 'required|cnpj']
-//                                    );
+                    $validator = Validator::make(
+                                        ['cnpj' => $doc],
+                                        ['cnpj' => 'required|cnpj']
+                                   );
+                    
+                    if ($validator->fails()) {
+                        return redirect('clinicas/'.$idClinica.'/edit')->withErrors($validator)->withInput(); 
+                    }
                 }
                 if($tp_documento[0] == 'CPF'){
-//                     $validator = Validator::make(
-//                                     ['cpf' => $doc],
-//                                     ['cpf' => 'cpf']
-//                                  );
+                    $validator = Validator::make(
+                                    ['cpf' => $doc],    
+                                    ['cpf' => 'cpf']
+                                 );
+                    
+                    if ($validator->fails()) {
+                        return redirect('clinicas/'.$idClinica.'/edit')->withErrors($validator)->withInput();
+                    }
                 }
                 
                 $documento = \App\Documento::findorfail($idDocumento);
@@ -355,10 +364,16 @@ class ClinicasController extends Controller
      */
     public function destroy($idClinica)
     {
-        $atendimento = \App\Atendimento::where('clinica_id', $idClinica)->delete();
-        $prestador = \App\Clinica::findorfail($idClinica)->delete();
+        $clinica = \App\Clinica::findorfail($idClinica);
+        $clinica->forceDelete();
+        $clinica->contatos()->forceDelete();
+        $clinica->enderecos()->forceDelete();
+        $clinica->documentos()->forceDelete();
+        $clinica->user()->forceDelete();
+        \App\Atendimento::where('clinica_id', $idClinica)->delete();
         
-        return redirect()->route('clinicas.index')->with('success', 'Prestador excluído com sucesso!');        
+        
+        return redirect()->route('clinicas.index')->with('success', 'Clínica excluída com sucesso!');        
     }
     
     /**
@@ -389,7 +404,7 @@ class ClinicasController extends Controller
         $arResultado = array();
         $consultas = \App\Consulta::where(DB::raw('to_str(ds_consulta)'), 'like', '%'.UtilController::toStr($termo).'%')->get();
         
-        foreach ($consultas as $query)
+        foreach ($consultas as $query)  
         {
             $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta, 'value' => $query->ds_consulta ];
         }

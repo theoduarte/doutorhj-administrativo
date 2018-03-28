@@ -166,7 +166,9 @@ class ProfissionaisController extends Controller
             
             foreach( $dados['documentos_id'] as $indice=>$documentos_id){
                 $documentos = \App\Documento::findorfail($documentos_id);
-                $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice]), 'estado_id'=>(int)$dados['estado_id'][0]]);
+                $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 
+                                     'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice]), 
+                                     'estado_id'=>(int)$dados['estado_id'][0]]);
             }
            
         }catch( Exception $e ){
@@ -187,8 +189,12 @@ class ProfissionaisController extends Controller
         DB::beginTransaction();
         
         try{
-            $pacientes = \App\Profissional::findorfail($idProfissional);
-            $pacientes->delete();
+            $profissionais = \App\Profissional::findorfail($idProfissional);
+            $profissionais->forceDelete();
+            $profissionais->contatos()->forceDelete();
+            $profissionais->enderecos()->forceDelete();
+            $profissionais->documentos()->forceDelete();
+            $profissionais->user()->forceDelete();
             
             DB::commit();
         }catch( Exception $e ){

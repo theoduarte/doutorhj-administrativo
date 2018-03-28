@@ -179,13 +179,18 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idCliente)
     {
         DB::beginTransaction();
         
         try{
-            $pacientes = \App\Paciente::findorfail($id);
-            $pacientes->delete();
+            $clientes = \App\Paciente::findorfail($idCliente);
+            $clientes->forceDelete();
+            $clientes->contatos()->forceDelete();
+            $clientes->enderecos()->forceDelete();
+            $clientes->documentos()->forceDelete();
+            $clientes->user()->forceDelete();
+            
                    
             DB::commit();
         }catch( Exception $e ){
