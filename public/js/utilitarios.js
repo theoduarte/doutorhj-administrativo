@@ -39,13 +39,17 @@ $(document).ready(function() {
 	});
 	
 	$('.input-limit-datepicker').daterangepicker({
-	    format: 'DD/MM/YYYY',
-	    buttonClasses: ['btn', 'btn-sm'],
-	    applyClass: 'btn-secondary',
-	    cancelClass: 'btn-primary',
-	    dateLimit: {
-	        days: 6
-	    }
+	    format		  : 'DD/MM/YYYY',
+	    buttonClasses : ['btn', 'btn-sm'],
+	    applyClass    : 'btn-secondary',
+	    cancelClass   : 'btn-primary',
+	    dateLimit     : { days: 6 }
+	});
+	
+	jQuery('#datepicker-autoclose').datepicker({
+	    autoclose: true,
+	    todayHighlight: true
+	});
 	
 	$(".mascaraCEP").inputmask({
 		mask: ['99.999-999'],

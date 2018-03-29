@@ -240,13 +240,10 @@
     	
     	<div class="row">
             <div class="col-12">
-                <label for="profissional">Profissional:</label>
-            	<input type  = "text" 
-            		   class = "form-control" 
-            		   name  = "profissional" 
-            		   id    = "profissional" 
-            		   value = "{{old('profissional')}}">
-           		<input type="hidden" id="profissional_id" name="profissional_id" value="">
+                <label for="profissional_id">Profissional:</label>
+            	<select class="form-control" id="profissional_id" name="profissional_id">
+            		<option value=""></option>
+            	</select>
             </div>
         </div>
 		
