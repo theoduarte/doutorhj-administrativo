@@ -16,7 +16,7 @@
         		  
            	      $('input[name="procedimento_id"]').val(arProcedimento[0]);
            	      $('input[name="cd_procedimento"]').val(arProcedimento[1]);
-           	      $('input[name="descricao"]').val(arProcedimento[2]);
+           	      $('input[name="descricao_procedimento"]').val(arProcedimento[2]);
         	  }
         });
     });
@@ -36,7 +36,7 @@
         
         cell1.innerHTML = $('#procedimento_id').val() + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val()       + '][]" value="' + $('#procedimento_id').val() + '">';
         cell2.innerHTML = $('#cd_procedimento').val() + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val()       + '][]" value="' + $('#cd_procedimento').val() + '">';
-        cell3.innerHTML = $('#descricao').val() 	  + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val()       + '][]" value="' + $('#descricao').val() 	     + '">';
+        cell3.innerHTML = $('#descricao_procedimento').val() 	  + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val()       + '][]" value="' + $('#descricao_procedimento').val() 	     + '">';
         cell4.innerHTML = '<input type="text" class="form-control mascaraMonetaria" name="precosProcedimentos[' + $('#procedimento_id').val() + '][]" value="' + $('#vl_procedimento').val() + '">';
         cell5.innerHTML = '<button type="button" class="btn ti-trash" onclick="delLinhaProcedimento(this)"> Remover</button>';
 
@@ -61,7 +61,7 @@
             <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" autofocus maxlength="100">
        		<input type="hidden" name="cd_procedimento" id="cd_procedimento" value="">
        		<input type="hidden" name="procedimento_id" id="procedimento_id" value="">
-       		<input type="hidden" name="descricao" id="descricao" value="">
+       		<input type="hidden" name="descricao_procedimento" id="descricao_procedimento" value="">
         </div>
         <div class="col-2">
             <label for="vl_procedimento" class="control-label">Preço<span class="text-danger">*</span></label>

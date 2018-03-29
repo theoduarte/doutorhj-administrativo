@@ -64,67 +64,89 @@
 </div>
 
 <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                    <h4 class="modal-title">Modal Content is Responsive</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="field-1" class="control-label">Name</label>
-                                                                <input type="text" class="form-control" id="field-1" placeholder="John">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="field-2" class="control-label">Surname</label>
-                                                                <input type="text" class="form-control" id="field-2" placeholder="Doe">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="field-3" class="control-label">Address</label>
-                                                                <input type="text" class="form-control" id="field-3" placeholder="Address">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="field-4" class="control-label">City</label>
-                                                                <input type="text" class="form-control" id="field-4" placeholder="Boston">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="field-5" class="control-label">Country</label>
-                                                                <input type="text" class="form-control" id="field-5" placeholder="United States">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="field-6" class="control-label">Zip</label>
-                                                                <input type="text" class="form-control" id="field-6" placeholder="123456">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group no-margin">
-                                                                <label for="field-7" class="control-label">Personal Info</label>
-                                                                <textarea class="form-control" id="field-7" placeholder="Write something about yourself"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-info waves-effect waves-light">Save changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">DrHoje: Adicionar Profissional</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nm_primario" class="control-label">Nome</label>
+                            <input type="text" id="nm_primario" class="form-control" name="nm_primario" placeholder="Nome">
+                            <input type="hidden" id="cs_status" name="cs_status" value="A">
+                            <input type="hidden" id="clinica_id" name="clinica_id" value="{{ $prestador->id }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nm_secundario" class="control-label">Sobrenome</label>
+                            <input type="text" id="nm_secundario" class="form-control" name="nm_secundario" placeholder="Sobrenome">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="cs_sexo" class="control-label">Sexo</label>
+                            <select id="cs_sexo" class="form-control" name="cs_sexo">
+                            	<option value="M">Masculino</option>
+                            	<option value="F">Feminino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="dt_nascimento" class="control-label">Data Nasc.</label>
+                            <input type="text" id="dt_nascimento" class="form-control mascaraData" name="dt_nascimento" placeholder="Data Nasc.">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tp_profissional" class="control-label">Tipo Profissional</label>
+                            <select id="tp_profissional" class="form-control" name="tp_profissional">
+                            	<option value="M">Médico</option>
+                            	<option value="D">Dentista</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="tp_documento" class="control-label">Tipo Documento</label>
+                            <select id="tp_documento" class="form-control" name="tp_documento">
+                            	<option value="CRM">CRM</option>
+                            	<option value="CRO">CRO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="te_documento" class="control-label">Nr. Documento</label>
+                            <input type="text" id="te_documento" class="form-control" name="tp_documento" placeholder="Nr. Documento">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group no-margin">
+                            <label for="tp_especialidade" class="control-label">Especialidade</label>
+                            <select id="tp_especialidade" class="form-control" name="tp_especialidade">
+                            	@foreach($list_especialidades as $id => $titulo)
+								<option value="{{ $id }}">{{ $titulo }}</option>
+								@endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-save-profissional" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
+                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
