@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PrestadoresRequest;
 use App\Http\Requests\EditarPrestadoresRequest;
+use Illuminate\Support\Facades\Request as CVXRequest;
 use LaravelLegends\PtBrValidator\Validator as CVXValidador;
 use App\Clinica;
 use App\User;
@@ -14,6 +15,7 @@ use App\Cidade;
 use App\Profissional;
 use App\Atendimento;
 use App\Estado;
+use App\Especialidade;
 
 class ClinicaController extends Controller
 {
@@ -76,7 +78,7 @@ class ClinicaController extends Controller
         
         try{
             # dados de acesso do usuário que é o profissional responsável pela empresa
-            $usuario            = new \App\User();
+            $usuario            = new User();
             $usuario->name      = $request->input('nm_primario').' '.$request->input('nm_secundario');
             $usuario->email     = $request->input('email');
             $usuario->password  = bcrypt($request->input('password'));
@@ -178,6 +180,29 @@ class ClinicaController extends Controller
             throw new \Exception($e->getCode().'-'.$e->getMessage());
         }
     }
+    
+    /**
+     * addProfissionalStore a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addProfissionalStore(Request $request)
+    {
+        $clinica_id = CVXRequest::post('clinica_id');
+        $clinica = Clinica::findorfail($clinica_id);
+        
+        $profissional = new Profissional();
+        $profissional->nm_primario = CVXRequest::post('nm_primario');
+        $profissional->nm_secundario = CVXRequest::post('nm_secundario');
+        $profissional->cs_sexo = CVXRequest::post('cs_sexo');
+        $profissional->dt_nascimento = preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", CVXRequest::post('dt_nascimento'));
+        
+        
+        dd($profissional);
+        
+        return true;
+    }
 
     /**
      * Display the specified resource.
@@ -266,11 +291,11 @@ class ClinicaController extends Controller
         $precoprocedimentos = [];
         $precoconsultas = [];
         $list_profissionals = [];
-        
+        $list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->pluck('ds_especialidade', 'id');
         
         return view('clinicas.edit', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 
                                                 'cidade', 'documentoprofissional', 'precoprocedimentos', 
-                                                'precoconsultas', 'documentosclinica', 'list_profissionals'));
+                                                'precoconsultas', 'documentosclinica', 'list_profissionals', 'list_especialidades'));
     }
 
     /**
@@ -287,17 +312,17 @@ class ClinicaController extends Controller
         DB::beginTransaction();
         
         try{
-            $prestador = \App\Clinica::findorfail((int)$idClinica);
+            $prestador = Clinica::findorfail((int)$idClinica);
             $prestador->update($dados);
             
-            $endereco = \App\Endereco::findorfail($prestador->enderecos->first()->id);
+            $endereco = Endereco::findorfail($prestador->enderecos->first()->id);
             if(!empty($dados['cd_cidade_ibge'])) { 
                 $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; 
             }
             $endereco->update($dados);
             $prestador->enderecos()->sync($endereco);
             
-            $user = \App\User::findorfail($prestador->profissional->user_id);
+            $user = User::findorfail($prestador->profissional->user_id);
             $user->update($dados);
             
             
@@ -325,21 +350,21 @@ class ClinicaController extends Controller
                     }
                 }
                 
-                $documento = \App\Documento::findorfail($idDocumento);
+                $documento = Documento::findorfail($idDocumento);
                 $documento->update(['tp_documento'=>$tp_documento[0],
                                     'te_documento'=>$doc]);
             }
             
             
             foreach( $dados['tp_contato'] as $idContato=>$tp_contato ){
-                $contato = \App\Contato::findorfail($idContato);
+                $contato = Contato::findorfail($idContato);
                 $contato->update( ['tp_contato'=>$tp_contato[0], 'ds_contato'=>$dados['ds_contato'][$idContato][0]] );
             }
 
                 
             
             
-            \App\Atendimento::where(['clinica_id'=>$idClinica])->delete();
+            Atendimento::where(['clinica_id'=>$idClinica])->delete();
             
             if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
                 foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){

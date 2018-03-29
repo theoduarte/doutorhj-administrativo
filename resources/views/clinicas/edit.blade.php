@@ -68,4 +68,44 @@
     	</div>
    </form>
 </div>
+@push('scripts')
+	<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$('#btn-save-profissional').click(function(){
+
+			var clinica_id = $('#clinica_id').val();
+			var nm_primario = $('#nm_primario').val();
+			var nm_secundario = $('#nm_secundario').val();
+			var cs_sexo = $('#cs_sexo').val();
+			var dt_nascimento = $('#dt_nascimento').val();
+			var cs_status = $('#cs_status').val();
+			
+			jQuery.ajax({
+				type: 'POST',
+				url: '{{ Request::url() }}/add-profissional',
+				data: {
+					'clinica_id': clinica_id,
+					'nm_primario': nm_primario,
+					'nm_secundario': nm_secundario,
+					'cs_sexo': cs_sexo,
+					'dt_nascimento': dt_nascimento,
+					'cs_status': cs_status,
+					'_token': laravel_token
+				},
+	            success: function (result) {
+	                swal("Saved", "This resource was added to your list of saved resources", "success")
+	            },
+	            error: function (result) {
+	                swal(({
+        	            title: "Oops",
+        	            text: "We ran into an issue trying to save this resource",
+        	            type: 'error',
+        	            confirmButtonClass: 'btn btn-confirm mt-2'
+        			}));
+	            }
+			});
+		});
+	});
+	</script>
+    @endpush
 @endsection

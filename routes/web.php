@@ -19,10 +19,13 @@ Route::resource('agenda','AgendaController')->middleware('auth');
 
 # rotas autocomplete
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
-Route::get('consultas/consulta/{consulta}', 'ClinicasController@getConsultas')->middleware('auth');
-Route::get('procedimentos/consulta/{consulta}', 'ClinicasController@getProcedimentos')->middleware('auth');
+
+Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');
+Route::get('procedimentos/consulta/{consulta}', 'ClinicaController@getProcedimentos')->middleware('auth');
 Route::get('consultas/localatendimento/{consulta}', 'AgendaController@getLocalAtendimento')->middleware('auth');
 Route::get('agenda/profissional/{profissional}', 'AgendaController@getProfissional')->middleware('auth');
+Route::post('clinicas/{clinica}/edit/add-profissional', 'ClinicaController@addProfissionalStore')->middleware('auth');
+
 
 Auth::routes();
 

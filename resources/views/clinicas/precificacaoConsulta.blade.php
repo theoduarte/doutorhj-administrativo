@@ -16,7 +16,7 @@
             	  
            	      $('input[name="consulta_id"]').val(arConsulta[0]);
            	      $('input[name="cd_consulta"]').val(arConsulta[1]);
-           	   	  $('input[name="descricao"]').val(arConsulta[2]);
+           	   	  $('input[name="descricao_consulta"]').val(arConsulta[2]);
         	  }
         });
     });
@@ -36,7 +36,7 @@
         
         cell1.innerHTML = $('#consulta_id').val() + '<input type="hidden" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#consulta_id').val() + '">';
         cell2.innerHTML = $('#cd_consulta').val() + '<input type="hidden" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#cd_consulta').val() + '">';
-        cell3.innerHTML = $('#descricao').val() + '<input type="hidden" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#descricao').val() + '">';
+        cell3.innerHTML = $('#descricao_consulta').val() + '<input type="hidden" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#descricao_consulta').val() + '">';
         cell4.innerHTML = '<input type="text" class="form-control mascaraMonetaria" name="precosConsultas[' + $('#consulta_id').val() + '][]" value="' + $('#vl_consulta').val() + '">';
         cell5.innerHTML = '<button type="button" class="btn ti-trash" onclick="delLinhaConsulta(this)"> Remover</button>';
 
@@ -61,7 +61,7 @@
             <input id="ds_consulta" type="text" class="form-control" name="ds_consulta" value="{{ old('ds_consulta') }}" autofocus maxlength="100">
        		<input type="hidden" name="consulta_id" id="consulta_id" value="">
        		<input type="hidden" name="cd_consulta" id="cd_consulta" value="">
-       		<input type="hidden" name="descricao" id="descricao" value="">
+       		<input type="hidden" name="descricao_consulta" id="descricao_consulta" value="">
         </div>
         <div class="col-2">
             <label for="vl_consulta" class="control-label">Preço<span class="text-danger">*</span></label>
