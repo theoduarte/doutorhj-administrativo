@@ -197,7 +197,9 @@ class ClinicaController extends Controller
         $profissional->nm_secundario = CVXRequest::post('nm_secundario');
         $profissional->cs_sexo = CVXRequest::post('cs_sexo');
         $profissional->dt_nascimento = preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", CVXRequest::post('dt_nascimento'));
-        
+        $profissional->clinica_id = CVXRequest::post('clinica_id');
+        $profissional->especialidade_id = CVXRequest::post('especialidade_id');
+        $profissional->tp_profissional = CVXRequest::post('tp_profissional');
         
         dd($profissional);
         

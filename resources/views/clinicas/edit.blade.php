@@ -79,6 +79,8 @@
 			var cs_sexo = $('#cs_sexo').val();
 			var dt_nascimento = $('#dt_nascimento').val();
 			var cs_status = $('#cs_status').val();
+			var especialidade_id = $('#tp_especialidade').val();
+			var tp_profissional = $('#tp_profissional').val();
 			
 			jQuery.ajax({
 				type: 'POST',
@@ -90,6 +92,8 @@
 					'cs_sexo': cs_sexo,
 					'dt_nascimento': dt_nascimento,
 					'cs_status': cs_status,
+					'especialidade_id': especialidade_id,
+					'tp_profissional': tp_profissional,
 					'_token': laravel_token
 				},
 	            success: function (result) {
