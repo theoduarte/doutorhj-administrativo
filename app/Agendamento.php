@@ -9,28 +9,24 @@ use Illuminate\Support\Carbon;
 class Agendamento extends Model
 {
     use Sortable;
+
+    public $fillable  = ['id', 'te_ticket', 'dt_consulta1', 'dt_consulta2', 
+                         'dt_consulta3', 'obs_agendamento', 'obs_cancelamento', 
+                         'profissional_id', 'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
     
-    public $fillable  = ['id', 'bo_contato_inicial', 'bo_contato_final', 'te_ticket', 
-                         'dt_consulta_primaria', 'dt_consulta_secundaria', 'bo_consulta_consumada', 
-                         'te_observacoes', 'profissional_id', 'paciente_id', 'clinica_id'];
+    public $sortable  = ['id', 'te_ticket', 'dt_consulta1', 'dt_consulta2', 'dt_consulta3', 'dt_atendimento', 'cs_status'];
     
-    public $sortable  = ['id', 'bo_contato_inicial', 'bo_contato_final', 'te_ticket',
-                         'dt_consulta_primaria', 'dt_consulta_secundaria', 'bo_consulta_consumada',
-                         'te_observacoes', 'profissional_id', 'paciente_id', 'clinica_id'];
-    
-    public $dates 	  = ['dt_consulta_secundaria'];
+    public $dates 	  = ['dt_atendimento', 'dt_consulta1', 'dt_consulta2', 'dt_consulta3'];
     
     
-    public function paciente(){
+    public function paciente()
+    {
         return $this->belongsTo(Paciente::class);
     }
     
-    public function clinica(){
+    public function clinica()
+    {
         return $this->belongsTo(Clinica::class);
-    }
-    
-    public function profissional(){
-        return $this->belongsTo(Profissional::class);
     }
     
     public function getDtConsultaPrimariaAttribute()

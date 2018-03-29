@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Itempedido;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,9 +24,10 @@ class DatabaseSeeder extends Seeder
 		$this->call(ConsultasTableSeeder::class);
 		$this->call(PacientesTableSeeder::class);
 		$this->call(ProfissionalsTableSeeder::class);
-		$this->call(ResponsavelsTableSeeder::class);
+ 		$this->call(ResponsavelsTableSeeder::class);
 		$this->call(ClinicasTableSeeder::class);
 		$this->call(TipoAtendimentoTableSeeder::class);
 		$this->call(AgendamentoTableSeeder::class);
+		$this->call(ItempedidoTableSeeder::class);
     }
 }

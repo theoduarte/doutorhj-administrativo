@@ -1,9 +1,0 @@
-.btn.btn-santos-svg-effect.btn-primary, .pagination-classic > li > a.btn-santos-svg-effect.btn-primary,
-.pagination-classic > li > span.btn-santos-svg-effect.btn-primary {
-	color: #666;
-}
-
-.owl-carousel-present.owl-carousel-arrows .page .owl-next:hover:before {
-	color: #bc0723;
-	background-image: -webkit-linear-gradient(0deg, #42b574 0%, #fc2a4a 100%);
-}

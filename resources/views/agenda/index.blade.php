@@ -77,9 +77,9 @@
         });
 	
         $( "#remarcar-consulta" ).button().on( "click", function() {
-        	$('#divPaciente') .html("<b>"+$(this).attr('nm-paciente')+"</b>");
-        	$('#divDtHora')   .html("<b>"+$(this).attr('data-hora')+"</b>");
-        	$('#divPrestador').html("<b>"+$(this).attr('prestador')+"</b>");
+        	$('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
+        	$('#divDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
+        	$('#divPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
             
           	dialog.dialog( "open" );
         });
@@ -121,24 +121,32 @@
                                 </div>
 								<div class="form-group">
 									<div style="height: 20px;"></div>
-									<label class="custom-checkbox" style="cursor: pointer;width:180px;">
-                    					<input type="checkbox" id="ckConsultasConfirmadas" name="ckConsultasConfirmadas" 
-                    						value="consultas_confirmadas" @if(old('ckConsultasConfirmadas')=='confirmada') checked @endif> Consultas Confirmadas 
+                                    <label class="custom-checkbox" style="cursor: pointer;width:210px;">
+                    					<input type="checkbox"  id="ckConsultasConfirmar" name="ckConsultasConfirmar" 
+                    						value="consultas_confirmar" @if(old('ckConsultasConfirmar')=='aconfirmar') checked @endif> Consultas Pré-Agendadas 
                                     </label>
                     				<br>
-                                    <label class="custom-checkbox" style="cursor: pointer;">
-                    					<input type="checkbox"  id="ckConsultasConfirmar" name="ckConsultasConfirmar" 
-                    						value="consultas_confirmar" @if(old('ckConsultasConfirmar')=='aconfirmar') checked @endif> Consultas a Confirmar 
+									<label class="custom-checkbox" style="cursor: pointer;">
+                    					<input type="checkbox" id="ckConsultasConfirmadas" name="ckConsultasConfirmadas" 
+                    						value="agendada" @if(old('ckConsultasConfirmadas')=='agendada') checked @endif> Consultas Agendadas 
                                     </label>
                                 </div>
                 				
                                 <div class="form-group">
                                 	<div style="height: 20px;"></div>
-                                	<label class="custom-checkbox" style="cursor: pointer;">
+                                	<label class="custom-checkbox" style="cursor: pointer;width:220px;">
                     					<input type="checkbox"  id="ckConsultasConsumadas" name="ckConsultasConsumadas" 
-                    						value="consultas_consumadas" @if(old('ckConsultasConsumadas')=='consumada') checked @endif> Consultas Consumadas 
+                    						value="consultas_consumadas" @if(old('ckConsultasConsumadas')=='consumada') checked @endif> Consultas Confirmadas 
                                     </label>
                     				<br>
+                                    <label class="custom-checkbox" style="cursor: pointer;">
+                    					<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas" 
+                    						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='canceladas') checked @endif> Consultas Não Confirmadas 
+                                    </label>
+                                </div>
+                                
+                                <div class="form-group">
+                                	<div style="height: 20px;"></div>
                                     <label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas" 
                     						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='canceladas') checked @endif> Consultas Canceladas 
@@ -182,17 +190,17 @@
                             <tr>
                             	<td>C034938</td>
                             	<td>{{$obAgenda->clinica->nm_razao_social}}</td>
-                            	<td>{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
+                            	<td></td>
                             	<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
-                            	<td>{{$obAgenda->dt_consulta_primaria}}</td>
-                            	<td>Confirmado</td>
+                            	<td></td>
+                            	<td>Pré-Agendado</td>
                             	<td>
                             		<a id-paciente    = "{{$obAgenda->paciente->id}}" 
                             		   id-agendamento = "{{$obAgenda->id}}" 	
                             		   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" 
-                            		   data-hora	  = "{{$obAgenda->dt_consulta_primaria}}"
+                            		   data-hora	  = ""
                             		   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}" 
-                            		   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+                            		   nm-profissional= ""
                             		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
                             		   title		  = "Remarcar" id ="remarcar-consulta"><i class="mdi mdi-eye"></i></a>
                             	</td>
@@ -214,51 +222,6 @@
 	</div>
 </div>
 
+@include('agenda/modal_agenda_consulta')
 
-<!-- Modal remarcar consulta -->
-<div id="dialog-form" title="Remarcar Consulta">
-    <form id="formRemarcaConsulta" name="formRemarcaConsulta">
-    	<div class="row">
-            <div class="col-10">
-                <label for="divPrestador">Prestador:
-                    <input type="hidden" id="idClinica" name="idClinica" value="">
-                    <div id="divPrestador"></div>
-                </label>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-7">
-    			<label for="divPaciente">Paciente:<div id="divPaciente"></div></label>
-            </div>
-            <div class="col-4">
-    			<label for="divDtHora">Consulta:<div id="divDtHora"></div></label>
-            </div>
-        </div>
-		
-		<br>
-    	
-    	<div class="row">
-            <div class="col-12">
-                <label for="profissional_id">Profissional:</label>
-            	<select class="form-control" id="profissional_id" name="profissional_id">
-            		<option value=""></option>
-            	</select>
-            </div>
-        </div>
-		
-		<br>
-		
-		<div class="row">
-        	<div class="col-3">    
-                <label>Remarcar para:</label>
-				<input type="text" class="form-control" placeholder="dd/mm/yyyy" id="datepicker-autoclose">
-            </div>
-        	<div class="col-3">
-                <label>Hora:</label>
-				<input class="form-control" type="time" name="time">
-            </div>
-        </div>
-    </form>
-</div>
 @endsection

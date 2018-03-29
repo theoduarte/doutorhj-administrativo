@@ -17,7 +17,7 @@ class AddPacienteIdToAgendamentosTable extends Migration
     		$table->integer('paciente_id')
     		->unsigned()
     		->nullable()
-    		->after('te_observacoes');
+    		->after('obs_cancelamento');
     		 
     		$table->foreign('paciente_id')->references('id')->on('pacientes');
     	});

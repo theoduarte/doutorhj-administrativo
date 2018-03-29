@@ -15,18 +15,19 @@ class CreateAgendamentosTable extends Migration
     {
         Schema::create('agendamentos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('bo_contato_inicial', 1)->default('N')->nullable()->comment('TRUE INDICA QUE O CONTATO REALIZADO PARA DEFINIR DATA E HORA DA CONSULTA JÁ FOI REALIZADO');
-            $table->string('bo_contato_final', 1)->default('N')->nullable()->comment('TRUE INDICA QUE O CONTATO TELEFÔNICO REALIZADO APÓS CONSULTA FOI REALIZADO');
-            $table->string('te_ticket', 10)->nullable()->comment('TICKET QUE FOI GERADO NO MOMENTO DA VENDA DA CONSULTA');
-            $table->timestamp('dt_consulta_primaria')->nullable()->comment('INDICA A DATA E A HORA QUE O PACIENTE DESEJA A CONSULTA');
-            $table->timestamp('dt_consulta_secundaria')->nullable()->comment('SE A DATA E HORA DA PRIMEIRA CONSULTA NÃO ESTIVEREM DISPONÍVEIS SERÁ ADOTADA ESTA DATA E HORA');
-            $table->string('bo_consulta_consumada', 1)->default('N')->nullable()->comment('TRUE SE A CONSULTA FOI REALIZADA');
-            $table->string('te_observacoes', 100)->nullable();
+            $table->string('te_ticket', 10)->comment('TICKET QUE FOI GERADO NO MOMENTO DA VENDA DA CONSULTA');
+            $table->timestamp('dt_atendimento')->nullable()->comment('POSSÍVEL DATA HORA PARA CONSULTA');
+            $table->timestamp('dt_consulta1')->comment('POSSÍVEL DATA HORA PARA CONSULTA');
+            $table->timestamp('dt_consulta2')->comment('POSSÍVEL DATA HORA PARA CONSULTA');
+            $table->timestamp('dt_consulta3')->comment('POSSÍVEL DATA HORA PARA CONSULTA');
+            $table->string('obs_agendamento', 400)->nullable()->comment('Observações sobre o agendamento.');
+            $table->string('obs_cancelamento', 400)->nullable()->comment('Observações sobre o cancelamento.');
+            $table->integer('cs_status')->unsigned()->comment('10=>Pré-Agendado 20=>Confirmado 30=>Não Confirmado 40=>Finalizado 50=>Não Compareceu 60=>Cancelado');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

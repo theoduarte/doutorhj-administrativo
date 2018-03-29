@@ -15,24 +15,23 @@ class AgendaController extends Controller
     public function index()
     {
         $agenda = \App\Agendamento::where(function($query){
-                                              
-                                          })->orderBy('dt_consulta_primaria')
-                                            ->sortable()->paginate(20);
+            
+                                    })->orderBy('dt_atendimento')
+                                      ->sortable()->paginate(20);
         
-        $agenda->load(['Clinica' => function($query){
-                                        $idClinica = (int)Request::input('clinica_id');
-                                        if(!empty($idClinica)) { $query->findorfail( 10 ); }
-                                    }]);
-        
-        $agenda->load(['Paciente' => function($query){
-                                         $paciente = Request::input('nm_paciente');
-                                         if(!empty($paciente)){
-                                             $query->where(DB::raw('to_str(CONCAT(nm_primario, nm_secundario))'), 
-                                                          'like', '%'.UtilController::toStr($paciente).'%');
-                                         }
-                                     }]);
-        
-        $agenda->load('Profissional');
+        $agenda->load(['Clinica'=>function($query){
+//             $idClinica = (int)Request::input('clinica_id');
+//             if(!empty($idClinica)) { $query->findorfail( 10 ); }
+        }]);
+            
+        $agenda->load(['Paciente'=>function($query){
+//             $paciente = Request::input('nm_paciente');
+            
+//             if(!empty($paciente)){
+//                 $query->where(DB::raw('to_str(CONCAT(nm_primario, nm_secundario)) as nome'),
+//                     'like', '%'.UtilController::toStr($paciente).'%');
+//             }
+        }]);
         
         Request::flash();
         
