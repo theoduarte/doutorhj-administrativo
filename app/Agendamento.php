@@ -9,10 +9,9 @@ use Illuminate\Support\Carbon;
 class Agendamento extends Model
 {
     use Sortable;
-
-    public $fillable  = ['id', 'te_ticket', 'dt_consulta1', 'dt_consulta2', 
-                         'dt_consulta3', 'obs_agendamento', 'obs_cancelamento', 
-                         'profissional_id', 'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
+    
+    public $fillable  = ['id', 'te_ticket', 'dt_consulta1', 'dt_consulta2', 'dt_consulta3', 'obs_agendamento', 
+                         'obs_cancelamento', 'profissional_id', 'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
     
     public $sortable  = ['id', 'te_ticket', 'dt_consulta1', 'dt_consulta2', 'dt_consulta3', 'dt_atendimento', 'cs_status'];
     
@@ -27,6 +26,11 @@ class Agendamento extends Model
     public function clinica()
     {
         return $this->belongsTo(Clinica::class);
+    }
+    
+    public function profissional()
+    {
+        return $this->belongsTo(Profissional::class);
     }
     
     public function getDtConsultaPrimariaAttribute()

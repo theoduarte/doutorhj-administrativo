@@ -14,10 +14,10 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        $agenda = \App\Agendamento::where(function($query){
-            
-                                    })->orderBy('dt_atendimento')
-                                      ->sortable()->paginate(20);
+        $agenda = \App\Agendamento::where(function($query){}
+        
+                                       )->orderBy('dt_atendimento')
+                                        ->sortable()->paginate(20);
         
         $agenda->load(['Clinica'=>function($query){
 //             $idClinica = (int)Request::input('clinica_id');
@@ -32,6 +32,8 @@ class AgendaController extends Controller
 //                     'like', '%'.UtilController::toStr($paciente).'%');
 //             }
         }]);
+        
+        $agenda->load('Profissional');
         
         Request::flash();
         
