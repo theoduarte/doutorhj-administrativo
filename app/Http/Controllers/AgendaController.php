@@ -14,9 +14,25 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        $agenda = \App\Agendamento::where('id', 1)->orderBy('dt_consulta_primaria')->sortable()->paginate(20);
-        $agenda->load('Clinica');
-        $agenda->load('Paciente');
+        $agenda = \App\Agendamento::where(function($query){
+                                              
+                                          })->orderBy('dt_consulta_primaria')
+                                            ->sortable()->paginate(20);
+        
+        $agenda->load(['Clinica' => function($query){
+                                        $idClinica = (int)Request::input('clinica_id');
+                                        if(!empty($idClinica)) { $query->findorfail( 10 ); }
+                                    }]);
+        
+        $agenda->load(['Paciente' => function($query){
+                                         $paciente = Request::input('nm_paciente');
+                                         if(!empty($paciente)){
+                                             $query->where(DB::raw('to_str(CONCAT(nm_primario, nm_secundario))'), 
+                                                          'like', '%'.UtilController::toStr($paciente).'%');
+                                         }
+                                     }]);
+        
+        $agenda->load('Profissional');
         
         Request::flash();
         
@@ -92,20 +108,13 @@ class AgendaController extends Controller
     /**
      * Consulta para alimentar autocomplete
      * 
-     * @param string $dsLocalAtendimento
+     * @param string $consulta
      * @return \Illuminate\Http\JsonResponse
      */
     public function getLocalAtendimento($consulta){
-        global $consulta;
-        dd($_REQUEST);
-        
         $arJson = array();
-        $consultas = \App\Clinica::where(function($query){
-            
-            
-                                            $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr($consulta).'%');
-                                            $query->orWhere(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr($consulta).'%');
-                                        })->get();
+        $consultas = \App\Clinica::where(DB::raw('to_str(nm_razao_social)'), 
+                                            'like', '%'.UtilController::toStr($consulta).'%')->get();
         $consultas->load('documentos');
         
         foreach ($consultas as $query)
@@ -117,8 +126,41 @@ class AgendaController extends Controller
                 }
             }
             
-            $teDocumento = (!empty($nrDocumento)) ? ' - CNPJ: ' . $nrDocumento : null;
+            $teDocumento = (!empty($nrDocumento)) ? ' - CNPJ: ' . UtilController::formataCnpj($nrDocumento) : null;
             $arJson[] = [ 'id' => $query->id, 'value' => $query->nm_razao_social . $teDocumento];
+        }
+        
+        return Response()->json($arJson);
+    }
+    
+    /**
+     * Consulta para alimentar autocomplete
+     * 
+     * @param string $consulta
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProfissional($profissional){
+        $arJson = array();
+        $profissional = \App\Profissional::where(function($query){
+//                         dd(Request::all());
+                # $query->where(DB::raw('to_str(CONCAT(nm_primario, nm_secundario))'),'like', '%'.UtilController::toStr($profissional).'%');
+            
+            
+                                                })->get();
+        $profissional->load('documentos');
+        
+        foreach ($profissional as $query)
+        {
+            foreach($query->documentos as $objDocumento){
+                if( $objDocumento->tp_documento == 'CRM' or 
+                        $objDocumento->tp_documento == 'CRO' ){
+                    
+                    $estado = \App\Estado::findorfail((int)$objDocumento->estado_id);
+                    $teDocumento = $objDocumento->te_documento.' '.$objDocumento->tp_documento.'/'.$estado->sg_estado;
+                }
+            }
+            
+            $arJson[] = [ 'id' => $query->id, 'value' => $query->nm_primario.' '.$query->nm_secundario. ' '. $teDocumento];
         }
         
         return Response()->json($arJson);

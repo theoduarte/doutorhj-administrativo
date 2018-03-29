@@ -28,8 +28,8 @@ class ProfissionalsTableSeeder extends Seeder
 				0 => 
 				array (
 					'id' => $numero,
-					'nm_primario' => 'FREDERICO',
-					'nm_secundario' => 'GOMES DA CRUZ',
+					'nm_primario' => 'DANIEL',
+					'nm_secundario' => 'ARANTES',
 					'cs_sexo'=>'M',
 					'dt_nascimento'=> '07/01/1986',
 					'user_id'=> $numero,

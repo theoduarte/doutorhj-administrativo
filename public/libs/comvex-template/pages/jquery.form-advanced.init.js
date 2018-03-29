@@ -122,7 +122,7 @@ jQuery('#datepicker-autoclose').datepicker({
 });
 jQuery('#datepicker-inline').datepicker();
 jQuery('#datepicker-multiple-date').datepicker({
-    format: "mm/dd/yyyy",
+    format: "dd/mm/yyyy",
     clearBtn: true,
     multidate: true,
     multidateSeparator: ","
@@ -140,7 +140,7 @@ $('.input-daterange-datepicker').daterangepicker({
 });
 $('.input-daterange-timepicker').daterangepicker({
     timePicker: true,
-    format: 'MM/DD/YYYY h:mm A',
+    format: 'DD/MM/YYYY h:mm A',
     timePickerIncrement: 30,
     timePicker12Hour: true,
     timePickerSeconds: false,
@@ -149,7 +149,7 @@ $('.input-daterange-timepicker').daterangepicker({
     cancelClass: 'btn-primary'
 });
 $('.input-limit-datepicker').daterangepicker({
-    format: 'MM/DD/YYYY',
+    format: 'DD/MM/YYYY',
     minDate: '06/01/2016',
     maxDate: '06/30/2016',
     buttonClasses: ['btn', 'btn-sm'],
@@ -163,7 +163,7 @@ $('.input-limit-datepicker').daterangepicker({
 $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
 $('#reportrange').daterangepicker({
-    format: 'MM/DD/YYYY',
+    format: 'DD/MM/YYYY',
     startDate: moment().subtract(29, 'days'),
     endDate: moment(),
     minDate: '01/01/2016',

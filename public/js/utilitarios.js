@@ -21,6 +21,36 @@ $(document).ready(function() {
 		keepStatic: true
 	});
 	
+	$('.input-daterange-datepicker').daterangepicker({
+	    buttonClasses: ['btn', 'btn-sm'],
+	    applyClass: 'btn-secondary',
+	    cancelClass: 'btn-primary'
+	});
+	
+	$('.input-daterange-timepicker').daterangepicker({
+	    timePicker: true,
+	    format: 'DD/MM/YYYY h:mm A',
+	    timePickerIncrement: 30,
+	    timePicker12Hour: true,
+	    timePickerSeconds: false,
+	    buttonClasses: ['btn', 'btn-sm'],
+	    applyClass: 'btn-secondary',
+	    cancelClass: 'btn-primary'
+	});
+	
+	$('.input-limit-datepicker').daterangepicker({
+	    format		  : 'DD/MM/YYYY',
+	    buttonClasses : ['btn', 'btn-sm'],
+	    applyClass    : 'btn-secondary',
+	    cancelClass   : 'btn-primary',
+	    dateLimit     : { days: 6 }
+	});
+	
+	jQuery('#datepicker-autoclose').datepicker({
+	    autoclose: true,
+	    todayHighlight: true
+	});
+	
 	$(".mascaraCEP").inputmask({
 		mask: ['99.999-999'],
 		keepStatic: true
