@@ -24,13 +24,13 @@ class EditarPrestadoresRequest extends FormRequest
     public function rules()
     {
         return [
-            'nm_primario'   => 'required|max:20|min:3',
-            'nm_secundario' => 'required|max:50',
-            'cs_sexo'       => 'required|max:1',
+//             'nm_primario'   => 'required|max:20|min:3',
+//             'nm_secundario' => 'required|max:50',
+//             'cs_sexo'       => 'required|max:1',
             'cd_cidade_ibge'=> 'required',
-            'dt_nascimento' => 'required|max:10|date_format:"d/m/Y"',
-            'tp_documento'  => 'required|max:4',
-            'te_documento'  => 'required|max:30',
+//             'dt_nascimento' => 'required|max:10|date_format:"d/m/Y"',
+//             'tp_documento'  => 'required|max:4',
+//             'te_documento'  => 'required|max:30',
             'nr_cep'        => 'max:9|min:8',
             'te_complemento'=> 'max:1000',
             'email'         => 'required|max:50|min:3',

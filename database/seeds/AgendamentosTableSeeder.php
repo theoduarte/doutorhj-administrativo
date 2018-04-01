@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Agendamento;
 
-class AgendamentoTableSeeder extends Seeder
+class AgendamentosTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,8 +12,8 @@ class AgendamentoTableSeeder extends Seeder
      */
     public function run()
     {
-    	if (\App\Agendamento::count() == 0) {
-    	    \App\Agendamento::create([
+    	if (Agendamento::count() == 0) {
+    	    Agendamento::create([
             				'id'                     => 1,
             				'te_ticket'              => 'C933S4T',
             				'dt_consulta1'           => '2018-03-28 14:11:32',

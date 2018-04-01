@@ -8,58 +8,10 @@
             height: 200px;
         }
     </style>
-    
-    <script>
-        $( function() {
-            $( function() {
-                var availableTags = [
-                    @foreach ($cargos as $cargo)
-                        '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
-                    @endforeach
-                ];
-    
-                $( "#ds_cargo" ).autocomplete({
-                  source: availableTags,
-                  select: function (event, ui) {
-                      var id_cargo = ui.item.value.split(' | ');
-                      $("#cargo_id").val(id_cargo[0]); 	
-                  },
-                  delay: 500,
-                  minLength: 4 
-                });
-            });
-    
-            $( "#nr_cep" ).blur(function() {
-            	$.ajax({
-            	  url: "/consulta-cep/cep/"+this.value,
-            	  context: document.body
-            	}).done(function(resposta) {
-            	  $( this ).addClass( "done" );
-    
-            	  if( resposta != null){
-                	  var json = JSON.parse(resposta);
-        
-          			  $('#te_endereco').val(json.logradouro);
-          			  $('#te_bairro').val(json.bairro);
-          			  $('#nm_cidade').val(json.cidade);
-          			  $('#sg_estado').val(json.estado);
-          			  $('#cd_cidade_ibge').val(json.ibge);
-          			  
-            	  }else{
-          			  $('#te_endereco').val(null);
-          			  $('#te_bairro').val(null);
-          			  $('#nm_cidade').val(null);
-          			  $('#sg_estado').val(null);
-          			  $('#cd_cidade_ibge').val(null);
-                  }
-            	});
-            });
-        });
-    </script>
 
     @if($errors->any())
         <div class="col-12 alert alert-danger">
-            @foreach ($errors->all() as $error)<div class="col-5">{{$error}}</div>@endforeach
+            @foreach ($errors->all() as $error)<div class="col-5">{{ $error }}</div>@endforeach
         </div>
     @endif
 
@@ -87,28 +39,10 @@
             	 @foreach( $documentosclinica as $documento )
                     <label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
                     <div class="col-8">
-                    	<input type="hidden" name="tp_documento[{{$documento->id}}][]" value="CNPJ">
-                        <input id="te_documento[{{$documento->id}}][]" type="text" class="form-control mascaraCNPJ" name="te_documento[{{$documento->id}}][]" value="{{$prestador->documentos->first()->te_documento}}" required >
+                    	<input type="hidden" name="tp_documento_{{$documento->id}}" value="CNPJ">
+                        <input id="te_documento_{{$documento->id}}" type="text" class="form-control mascaraCNPJ" name="te_documento_{{$documento->id}}" value="{{ $prestador->documentos->first()->te_documento }}" required >
+                        <input type="hidden" id="cnpj_id" name="cnpj_id" value="{{ $documento->id }}">
                     </div>
-                @endforeach
-            </div>
-            
-            <div class="form-group{{ $errors->has('tp_documento') ? ' has-error' : '' }}">
-                @foreach( $documentoprofissional as $documento )
-                <div class="row">
-                    <label for="tp_documento" class="col-12 control-label">Documento<span class="text-danger">*</span></label>
-                    <div class="col-3">
-            			<select id="tp_documento[{{$documento->id}}][]" name="tp_documento[{{$documento->id}}][]" class="form-control">
-                			<option value="CNH" {{($documento->tp_documento == 'CNH' ? 'selected' : '')}}>CNH</option>
-                			<option value="RG"  {{($documento->tp_documento == 'RG'  ? 'selected' : '')}}>RG</option>
-                			<option value="CPF" {{($documento->tp_documento == 'CPF' ? 'selected' : '')}}>CPF</option>
-                			<option value="TRE" {{($documento->tp_documento == 'TRE' ? 'selected' : '')}}>Título de Eleitor</option>
-            			</select>
-                    </div> 
-                    <div class="col-3">
-            			<input id="te_documento[{{$documento->id}}][]" type="text" placeholder="" class="form-control" name="te_documento[{{$documento->id}}][]" value="{{$documento->te_documento}}" required >                               
-                    </div> 
-                </div>
                 @endforeach
             </div>
             
@@ -117,14 +51,15 @@
                 <label for="tp_contato" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
                 <div class="row">
                 	<div class="col-md-4">
-        				<select id="tp_contato[{{$obContato->id}}][]" name="tp_contato[{{$obContato->id}}][]" class="form-control">
-        					<option value="FC" {{($obContato->tp_contato == 'FC' ? 'selected' : '')}}>Telefone Comercial</option>
-        					<option value="CC" {{($obContato->tp_contato == 'CC' ? 'selected' : '')}}>Celular Comercial</option>
-        					<option value="FX" {{($obContato->tp_contato == 'FX' ? 'selected' : '')}}>FAX</option>
+        				<select id="tp_contato_{{$obContato->id}}" name="tp_contato_{{$obContato->id}}" class="form-control">
+        					<option value="FC" @if( $obContato->tp_contato == 'FC' ) selected='selected' @endif >Telefone Comercial</option>
+        					<option value="CC" @if( $obContato->tp_contato == 'CC' ) selected='selected' @endif >Celular Comercial</option>
+        					<option value="FX" @if( $obContato->tp_contato == 'FX' ) selected='selected' @endif >FAX</option>
         				</select>
                     </div>
         	        <div class="col-md-4">
-        				<input id="ds_contato[{{$obContato->id}}][]" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato[{{$obContato->id}}][]" value="{{ $obContato->ds_contato }}" required >
+        				<input id="ds_contato_{{ $obContato->id }}" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato_{{ $obContato->id }}" value="{{ $obContato->ds_contato }}" required >
+        				<input type="hidden" id="contato_id" name="contato_id" value="{{ $obContato->id }}" >
                     </div>
                 </div>
                 @endforeach
@@ -153,7 +88,7 @@
                 </div>
             </div>
             
-            <div class="form-group{{ $errors->has('cpf_responsavel') ? ' has-error' : '' }}">
+            <div class="form-group{{ $errors->has('telefone_responsavel') ? ' has-error' : '' }}">
                 <div class="row">
                     <label for="telefone_responsavel" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
                     <div class="col-8">
@@ -179,6 +114,7 @@
     		<div class="form-group{{ $errors->has('nr_cep') ? ' has-error' : '' }}">
                 <label for="nr_cep" class="col-3 control-label">CEP<span class="text-danger">*</span></label>
                 <input id="nr_cep" type="text" class="form-control mascaraCEP consultaCep" name="nr_cep" value="{{$prestador->enderecos->first()->nr_cep}}" required  maxlength="9">
+                <input type="hidden" id="endereco_id" name="endereco_id" value="{{$prestador->enderecos->first()->id}}">
             </div>
     	</div>
     	
@@ -264,8 +200,8 @@
     		<div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
     			<label for="nm_cidade" class="col-3 control-label">Cidade<span class="text-danger">*</span></label>
     
-                <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{ $cidade->nm_cidade }}" required  maxlength="50" readonly>
-        		<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ $cidade->cd_ibge }}">
+                <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{ $prestador->enderecos->first()->cidade->nm_cidade }}" required  maxlength="50" readonly>
+        		<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ $prestador->enderecos->first()->cidade->cd_ibge }}">
         	</div>
         </div>
     	<div class="col-md-2">
@@ -273,8 +209,8 @@
                 <label for="sg_estado" class="col-3 control-label">Estado<span class="text-danger">*</span></label>
                 <select id="sg_estado" name="sg_estado" class="form-control" disabled>
         			<option></option>
-                    @foreach ($estados as $json)
-        				<option value="{{ $json->sg_estado }}" {{($cidade->sg_estado == $json->sg_estado ? 'selected' : '')}}>{{ $json->ds_estado }}</option>
+                    @foreach ($estados as $uf)
+        				<option value="{{ $uf->sg_estado }}" {{ ($prestador->enderecos->first()->cidade->sg_estado == $uf->sg_estado ? 'selected' : '')}}>{{ $uf->ds_estado }}</option>
                     @endforeach
         		</select>
             </div>
@@ -322,3 +258,51 @@
 			<a href="{{ route('clinicas.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
 		</div>
     </div>
+    
+    <script>
+        $( function() {
+            $( function() {
+                var availableTags = [
+                    @foreach ($cargos as $cargo)
+                        '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
+                    @endforeach
+                ];
+    
+                $( "#ds_cargo" ).autocomplete({
+                  source: availableTags,
+                  select: function (event, ui) {
+                      var id_cargo = ui.item.value.split(' | ');
+                      $("#cargo_id").val(id_cargo[0]); 	
+                  },
+                  delay: 500,
+                  minLength: 4 
+                });
+            });
+    
+            $( "#nr_cep" ).blur(function() {
+            	$.ajax({
+            	  url: "/consulta-cep/cep/"+this.value,
+            	  context: document.body
+            	}).done(function(resposta) {
+            	  $( this ).addClass( "done" );
+    
+            	  if( resposta != null){
+                	  var json = JSON.parse(resposta);
+        
+          			  $('#te_endereco').val(json.logradouro);
+          			  $('#te_bairro').val(json.bairro);
+          			  $('#nm_cidade').val(json.cidade);
+          			  $('#sg_estado').val(json.estado);
+          			  $('#cd_cidade_ibge').val(json.ibge);
+          			  
+            	  }else{
+          			  $('#te_endereco').val(null);
+          			  $('#te_bairro').val(null);
+          			  $('#nm_cidade').val(null);
+          			  $('#sg_estado').val(null);
+          			  $('#cd_cidade_ibge').val(null);
+                  }
+            	});
+            });
+        });
+    </script>

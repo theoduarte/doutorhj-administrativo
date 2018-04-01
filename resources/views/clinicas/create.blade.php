@@ -50,6 +50,7 @@
                         <div class="tab-pane fade active show" id="prestador">
                         	@include('clinicas/tab_dados_prestador_create')
                         </div>
+                        <?php /*
                         <div class="tab-pane fade" id="precificacaoProcedimento">
                          	@include('clinicas/precificacaoProcedimento')
                         </div>
@@ -59,6 +60,7 @@
                         <div class="tab-pane fade" id="corpoClinico">
                          	@include('clinicas/tab_corpo_clinico')
                         </div>
+                        */?>
                     </div>
                 </div>
        		</div>

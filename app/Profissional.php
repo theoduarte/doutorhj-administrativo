@@ -31,15 +31,20 @@ class Profissional extends Model
 	}
 	
 	public function documentos(){
-	    return $this->belongsToMany(Documento::class, 'documento_profissional', 'profissional_id', 'documento_id');
+	    return $this->belongsToMany('App\Documento');
 	}
 	
 	public function especialidade(){
-	    return $this->belongsTo(Especialidade::class, 'especialidade_id');
+	    return $this->belongsTo('App\Especialidade');
+	}
+	
+	public function atendimentos()
+	{
+	    return $this->hasMany('App\Atendimento');
 	}
 	
 	public function user(){
-	    return $this->belongsTo(User::class);
+	    return $this->belongsTo('App\User');
 	}
 	
 	public function setDtNascimentoAttribute($value)

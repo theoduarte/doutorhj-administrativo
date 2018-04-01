@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class TipoAtendimentoTableSeeder extends Seeder
+class TipoAtendimentosTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -38,6 +39,6 @@ class TipoAtendimentoTableSeeder extends Seeder
                 'cd_atendimento' => '400',
                 'ds_tipo' => 'Procedimentos',
             ),
-       ));
+        ));
     }
 }

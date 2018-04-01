@@ -41,6 +41,7 @@
     	<link rel="stylesheet" href="/css/doutorhj.style.css">
     	
     	<script src="/libs/comvex-template/js/jquery.min.js"></script>
+    	<script src="/libs/comvex-template/js/bootstrap.min.js"></script>
     	
     	<!-- modernizr script -->
     	<script src="/libs/comvex-template/js/modernizr.min.js"></script>
