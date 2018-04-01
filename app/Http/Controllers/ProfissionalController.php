@@ -11,7 +11,7 @@ use App\Especialidade;
 use App\Estado;
 use App\Cargo;
 
-class ProfissionalsController extends Controller
+class ProfissionalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -95,7 +95,7 @@ class ProfissionalsController extends Controller
             $profissionais->load('contatos');
             
             $cidade = \App\Cidade::findorfail($profissionais->enderecos->first()->cidade_id);
-        }catch( Exception $e ){
+        } catch( Exception $e ){
             print $e->getMessage();
         }
         

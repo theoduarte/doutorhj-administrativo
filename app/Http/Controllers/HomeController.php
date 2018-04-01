@@ -23,7 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-//         echo "<script>console.log( 'Debug Objects: teste' );</script>";
         return view('home');
     }
 }

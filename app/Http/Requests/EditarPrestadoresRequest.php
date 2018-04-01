@@ -31,7 +31,7 @@ class EditarPrestadoresRequest extends FormRequest
 //             'dt_nascimento' => 'required|max:10|date_format:"d/m/Y"',
 //             'tp_documento'  => 'required|max:4',
 //             'te_documento'  => 'required|max:30',
-            'nr_cep'        => 'max:9|min:8',
+            'nr_cep'        => 'max:10|min:8',
             'te_complemento'=> 'max:1000',
             'email'         => 'required|max:50|min:3',
             'password'      => 'required|string|min:6|confirmed',

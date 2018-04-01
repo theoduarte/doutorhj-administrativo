@@ -24,14 +24,14 @@
 		<div class="form-group{{ $errors->has('nm_razao_social') ? ' has-error' : '' }}">
             <label for="nm_razao_social" class="col-3 control-label">Razão Social<span class="text-danger">*</span></label>
             <div class="col-8">
-                <input id="nm_razao_social" type="text" class="form-control" name="nm_razao_social" required  maxlength="100" autofocus>
+                <input type="text" id="nm_razao_social" class="form-control" name="nm_razao_social" value="{{ old('nm_razao_social') }}" required  maxlength="100" autofocus>
             </div>	
         </div>
         
         <div class="form-group{{ $errors->has('nm_fantasia') ? ' has-error' : '' }}">
             <label for="nm_fantasia" class="col-3 control-label">Nome Fantasia<span class="text-danger">*</span></label>
             <div class="col-8">
-                <input id="nm_fantasia" type="text" class="form-control" name="nm_fantasia" required  maxlength="100">
+                <input id="nm_fantasia" type="text" class="form-control" name="nm_fantasia" value="{{ old('nm_fantasia') }}" required  maxlength="100">
             </div>	
         </div>
         
@@ -45,17 +45,17 @@
         </div>
         
          <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
-            <label for="tp_contato" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
+            <label for="tp_contato1" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
             <div class="row">
             	<div class="col-md-4">
-    				<select id="tp_contato" name="tp_contato" class="form-control">
+    				<select id="tp_contato" name="tp_contato1" class="form-control">
     					<option value="FC">Telefone Comercial</option>
     					<option value="CC">Celular Comercial</option>
     					<option value="FX">FAX</option>
     				</select>
                 </div>
     	        <div class="col-md-4">
-    				<input type="text" id="ds_contato" placeholder="" class="form-control mascaraTelefone" name="ds_contato" required >
+    				<input type="text" id="ds_contato" placeholder="" class="form-control mascaraTelefone" name="ds_contato1" required >
     				<input type="hidden" id="contato_id" name="contato_id" >
                 </div>
             </div>
@@ -70,7 +70,7 @@
         	<div class="row">
                 <label for="name_responsavel" class="col-12 control-label">Nome<span class="text-danger">*</span></label>
                 <div class="col-8">
-                    <input id="name_responsavel" type="text" class="form-control" name="name_responsavel" required  maxlength="50">
+                    <input type="text"  id="name_responsavel" class="form-control" name="name_responsavel" required  maxlength="50">
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
             <div class="row">
                 <label for="cpf_responsavel" class="col-12 control-label">CPF<span class="text-danger">*</span></label>
                 <div class="col-8">
-                    <input id="cpf_responsavel" type="text" class="form-control mascaraCPF" name="cpf_responsavel" required  maxlength="14">
+                    <input type="text" id="cpf_responsavel" class="form-control mascaraCPF" name="cpf_responsavel" required  maxlength="14">
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
             <div class="row">
                 <label for="telefone_responsavel" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
                 <div class="col-8">
-                    <input id="telefone_responsavel" type="text" class="form-control" name="telefone_responsavel" required  maxlength="20">
+                    <input type="text" id="telefone_responsavel" class="form-control mascaraTelefone" name="telefone_responsavel" required  maxlength="20">
                 </div>
             </div>
         </div>
@@ -109,8 +109,10 @@
 	<div class="col-md-1">
 		<div class="form-group{{ $errors->has('nr_cep') ? ' has-error' : '' }}">
             <label for="nr_cep" class="col-3 control-label">CEP<span class="text-danger">*</span></label>
-            <input id="nr_cep" type="text" class="form-control mascaraCEP consultaCep" name="nr_cep" required  maxlength="9">
+            <input id="nr_cep" type="text" class="form-control mascaraCEP consultaCep" name="nr_cep" value="{{ old('nr_cep') }}" required  maxlength="10">
             <input type="hidden" id="endereco_id" name="endereco_id" >
+            <input type="hidden" id="nr_latitude_gps" name="nr_latitude_gps" value="{{ old('nr_latitude_gps') }}" >
+            <input type="hidden" id="nr_longitute_gps" name="nr_longitute_gps" value="{{ old('nr_longitute_gps') }}" >
         </div>
 	</div>
 	
@@ -220,7 +222,7 @@
 </div>
 
 <div class="col-10">
-	<h4>Dados de Acesso</h4>
+	<h4>Dados de Acesso da Empresa</h4>
 </div>
 
 <div class="row">
@@ -275,30 +277,6 @@
             });
         });
 
-        $( "#nr_cep" ).blur(function() {
-        	$.ajax({
-        	  url: "/consulta-cep/cep/"+this.value,
-        	  context: document.body
-        	}).done(function(resposta) {
-        	  $( this ).addClass( "done" );
-
-        	  if( resposta != null){
-            	  var json = JSON.parse(resposta);
-    
-      			  $('#te_endereco').val(json.logradouro);
-      			  $('#te_bairro').val(json.bairro);
-      			  $('#nm_cidade').val(json.cidade);
-      			  $('#sg_estado').val(json.estado);
-      			  $('#cd_cidade_ibge').val(json.ibge);
-      			  
-        	  }else{
-      			  $('#te_endereco').val(null);
-      			  $('#te_bairro').val(null);
-      			  $('#nm_cidade').val(null);
-      			  $('#sg_estado').val(null);
-      			  $('#cd_cidade_ibge').val(null);
-              }
-        	});
-        });
+        
     });
 </script>

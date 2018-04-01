@@ -27,11 +27,12 @@ class UtilController extends Controller
 	 * @param string $input
 	 */
 	public static function retiraMascara($input){
-	   return str_replace(',', '', 
-	               str_replace('/', '', 
-	                   str_replace('.', '', 
-	                       str_replace('-', '', 
-	                           str_replace('.', '', $input)))));
+// 	   return str_replace(',', '', 
+// 	               str_replace('/', '', 
+// 	                   str_replace('.', '', 
+// 	                       str_replace('-', '', 
+// 	                           str_replace('.', '', $input)))));
+	    return preg_replace("/[^0-9]/", "", $input);
 	}
 	
 	/**
@@ -85,5 +86,16 @@ class UtilController extends Controller
 	    $parte_cinto  = substr($nrCnpj, -2);
 	    
 	    return "$parte_um.$parte_dois.$parte_tres/$parte_quatro-$parte_cinto";
+	}
+	
+	/**
+	 * gera random string
+	 * Ex.: WSWQKTQK92JP15IP
+	 *
+	 * @param integer $len
+	 */
+	public static function randHash($len=32)
+	{
+	    return substr(md5(openssl_random_pseudo_bytes(20)),-$len);
 	}
 }

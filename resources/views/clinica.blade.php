@@ -20,60 +20,6 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.js"></script>
   <script src="/js/utilitarios.js"></script>
-<script>
-
-$( function() {
-        $( function() {
-            var availableTags = [
-                @foreach ($arCargos as $cargo)
-                    '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
-                @endforeach
-            ];
-
-            
-            $( "#ds_cargo" ).autocomplete({
-              source: availableTags,
-              select: function (event, ui) {
-                  var id_cargo = ui.item.value.split(' | ');
-                  $("#cargo_id").val(id_cargo[0]); 	
-              },
-              delay: 500,
-              minLength: 4 
-            });
-        });
-
-  	  
-        
-        $( "#nr_cep" ).blur(function() { 
-        	$.ajax({
-        	  url: "/paciente/consulta-cep/cep/"+this.value,
-        	  context: document.body
-        	}).done(function(resposta) {
-        	  $( this ).addClass( "done" );
-
-        	  if( resposta != null){
-            	  var json = JSON.parse(resposta);
-    
-      			  $('#te_endereco').val(json.logradouro);
-      			  $('#te_bairro').val(json.bairro);
-      			  $('#nm_cidade').val(json.cidade);
-      			  $('#sg_estado').val(json.estado);
-      			  $('#cd_ibge_cidade').val(json.ibge);
-      			  
-        	  }else{
-      			  $('#te_endereco').val(null);
-      			  $('#te_bairro').val(null);
-      			  $('#nm_cidade').val(null);
-      			  $('#sg_estado').val(null);
-      			  $('#cd_ibge_cidade').val(null);
-              }
-        	});
-        });
-  } );
-
-
-</script>
-
 
 <div class="container">
     <div class="row">
@@ -581,4 +527,57 @@ $( function() {
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+$( function() {
+        $( function() {
+            var availableTags = [
+                @foreach ($arCargos as $cargo)
+                    '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
+                @endforeach
+            ];
+
+            
+            $( "#ds_cargo" ).autocomplete({
+              source: availableTags,
+              select: function (event, ui) {
+                  var id_cargo = ui.item.value.split(' | ');
+                  $("#cargo_id").val(id_cargo[0]); 	
+              },
+              delay: 500,
+              minLength: 4 
+            });
+        });
+
+  	  
+        
+        $( "#nr_cep" ).blur(function() { 
+        	$.ajax({
+        	  url: "/paciente/consulta-cep/cep/"+this.value,
+        	  context: document.body
+        	}).done(function(resposta) {
+        	  $( this ).addClass( "done" );
+
+        	  if( resposta != null){
+            	  var json = JSON.parse(resposta);
+    
+      			  $('#te_endereco').val(json.logradouro);
+      			  $('#te_bairro').val(json.bairro);
+      			  $('#nm_cidade').val(json.cidade);
+      			  $('#sg_estado').val(json.estado);
+      			  $('#cd_ibge_cidade').val(json.ibge);
+      			  
+        	  }else{
+      			  $('#te_endereco').val(null);
+      			  $('#te_bairro').val(null);
+      			  $('#nm_cidade').val(null);
+      			  $('#sg_estado').val(null);
+      			  $('#cd_ibge_cidade').val(null);
+              }
+        	});
+        });
+  } );
+
+
+</script>
 @endsection

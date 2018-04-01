@@ -18,19 +18,11 @@
 						</tr>
 						<tr>
 							<td width="25%">Nome</td>
-							<td width="75%">{{$prestador->profissional->nm_primario}} {{$prestador->profissional->nm_secundario}}</td>
-						</tr>
-						<tr>
-							<td width="25%">Sexo</td>
-							<td width="75%">{{ ( $prestador->profissional->cs_sexo == 'M' ? 'Masculino' : 'Feminino')}}</td>
-						</tr>
-						<tr>
-							<td width="25%">Data de Nascimento</td>
-							<td width="75%">{{ $prestador->profissional->dt_nascimento }}</td>
+							<td width="75%">{{$prestador->responsavel->user->name}}</td>
 						</tr>
 						<tr>
 							<td width="25%">Cargo</td>
-							<td width="75%">{{$cargo->ds_cargo}}</td>
+							<td width="75%">Responsável</td>
 						</tr>
 						<tr>
 							<td width="25%">E-mail</td>
@@ -40,12 +32,6 @@
 							<td width="25%"><h4>Documentação</h4></td>
 							<td width="75%"></td>
 						</tr>
-						@foreach( $documentoprofissional as $documento )
-						<tr>
-							<td width="25%">{{$documento->tp_documento}}</td>
-							<td width="75%">{{$documento->te_documento}}</td>
-						</tr>
-                        @endforeach
 						<tr>
 							<td width="25%">CNPJ</td>
 							<td width="75%">{{$prestador->documentos->first()->te_documento}}</td>

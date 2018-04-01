@@ -20,6 +20,7 @@ use App\Documento;
 use App\Contato;
 use App\Endereco;
 use App\Procedimento;
+use App\Responsavel;
 
 class ClinicaController extends Controller
 {
@@ -78,112 +79,76 @@ class ClinicaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PrestadoresRequest $request)
-    {
-        DB::beginTransaction();
+    {  
+        # dados de acesso do usuário que é o profissional responsável pela empresa
+        $usuario            = new User();
+        $usuario->name      = $request->input('name_responsavel');
+        $usuario->email     = $request->input('email');
+        $usuario->password  = bcrypt($request->input('password'));
+        $usuario->tp_user   = 'CLI';
+        $usuario->cs_status = 'A';
+        $usuario->perfiluser_id = 2;
+        $usuario->save();
         
-        try{
-            # dados de acesso do usuário que é o profissional responsável pela empresa
-            $usuario            = new User();
-            $usuario->name      = $request->input('nm_primario').' '.$request->input('nm_secundario');
-            $usuario->email     = $request->input('email');
-            $usuario->password  = bcrypt($request->input('password'));
-            $usuario->tp_user   = 'CLI';
-            $usuario->cs_status = 'A';
-            $usuario->save();
-            
-            
-            # documento da empresa CNPJ
-            $documentoCnpj      = new \App\Documento();
-            $documentoCnpj->tp_documento = 'CNPJ';   
-            $documentoCnpj->te_documento = UtilController::retiraMascara($request->input('nr_cnpj'));
-            $documentoCnpj->save();
-            
-            
-            # endereco da empresa
-            $endereco           = new \App\Endereco($request->all());
-            $cidade             = \App\Cidade::where(['cd_ibge'=>$request->input('cd_cidade_ibge')])->get()->first();
-            $endereco->cidade()->associate($cidade);
-            $endereco->save();
-            
-            
-            
-            # telefones 
-            $arContatos = array();
-            
-            $contato1             = new \App\Contato();
-            $contato1->tp_contato = $request->input('tp_contato1');
-            $contato1->ds_contato = $request->input('ds_contato1');
-            $contato1->save();
-            $arContatos[] = $contato1->id;
-            
-            if(!empty($request->input('ds_contato2'))){
-                $contato2             = new \App\Contato();
-                $contato2->tp_contato = $request->input('tp_contato2');
-                $contato2->ds_contato = $request->input('ds_contato2');
-                $contato2->save();
-                $arContatos[] = $contato2->id;
-            }
-            
-            if(!empty($request->input('ds_contato3'))){
-                $contato3             = new \App\Contato();
-                $contato3->tp_contato = $request->input('tp_contato3');
-                $contato3->ds_contato = $request->input('ds_contato3');
-                $contato3->save();
-                $arContatos[] = $contato3->id;
-            }
-
-
-            
-            # documento do profissional responsavel pela empresa
-            $documentoResp = \App\Documento::create($request->all());
-            $documentoResp->save();
-            
-            # profissional responsavel pela empresa
-            $profissional = \App\Profissional::create($request->all());
-            $profissional->cargo()->associate((int)$request->input('cargo_id'));
-            $profissional->user()->associate((int)$usuario->id);
-            $profissional->documentos()->attach($documentoResp);
-            $profissional->save();
-            
-            # clinica
-            $clinica = \App\Clinica::create($request->all());
-            $clinica->enderecos()->attach($endereco);
-            $clinica->contatos()->attach($arContatos);
-            $clinica->profissional()->associate($profissional);
-            $clinica->documentos()->attach($documentoCnpj);
-            $clinica->save();         
-            
-            if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
-                foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){
-                    $atendimento = new \App\Atendimento();
-                    $atendimento->procedimento()->associate($idProcedimento);
-                    $atendimento->clinica_id = $clinica->id;
-                    $atendimento->ds_preco = $arProcedimento[2];
-                    $atendimento->vl_atendimento = UtilController::moedaBanco($arProcedimento[3]);
-                    $atendimento->save();
-                }
-            }
-            
-            if(is_array($request->input('precosConsultas')) and count($request->input('precosConsultas')) > 0){
-                foreach( $request->input('precosConsultas') as $idConsulta => $arConsulta ){
-                    $atendimento = new \App\Atendimento();
-                    $atendimento->consulta()->associate($idConsulta);
-                    $atendimento->clinica_id = $clinica->id;
-                    $atendimento->ds_preco = $arConsulta[2];
-                    $atendimento->vl_atendimento = UtilController::moedaBanco($arConsulta[3]);
-                    $atendimento->save();
-                }
-            }
-            
-            DB::commit();
-            
-            return redirect()->route('clinicas.index')->with('success', 'O prestador foi cadastrado com sucesso!');
-            
-        } catch (\Exception $e){
-            DB::rollBack();
-            
-            throw new \Exception($e->getCode().'-'.$e->getMessage());
+        
+        # documento da empresa CNPJ
+        $documentoCnpj      = new Documento();
+        $documentoCnpj->tp_documento = 'CNPJ';   
+        $documentoCnpj->te_documento = UtilController::retiraMascara($request->input('te_documento'));
+        $documentoCnpj->save();
+        $documento_ids = [$documentoCnpj->id];
+        
+        
+        # endereco da empresa
+        $endereco           = new Endereco($request->all());
+        $cidade             = Cidade::where(['cd_ibge'=>$request->input('cd_cidade_ibge')])->get()->first();
+        $endereco->nr_cep = UtilController::retiraMascara($request->input('nr_cep'));
+        $endereco->cidade()->associate($cidade);
+        $endereco->nr_latitude_gps = $request->input('nr_latitude_gps');
+        $endereco->nr_longitute_gps = $request->input('nr_longitute_gps');
+        $endereco->save();
+        $endereco_ids = [$endereco->id];
+        
+        # responsavel pela empresa
+        $responsavel      = new Responsavel();
+        $responsavel->telefone = $request->input('telefone_responsavel');;
+        $responsavel->cpf = UtilController::retiraMascara($request->input('cpf_responsavel'));
+        $responsavel->user_id = $usuario->id;
+        $responsavel->save();
+                    
+        # telefones 
+        $arContatos = array();
+        
+        $contato1             = new Contato();
+        $contato1->tp_contato = $request->input('tp_contato1');
+        $contato1->ds_contato = $request->input('ds_contato1');
+        $contato1->save();
+        array_push($arContatos, $contato1->id);
+        
+        if(!empty($request->input('ds_contato2'))){
+            $contato2             = new \App\Contato();
+            $contato2->tp_contato = $request->input('tp_contato2');
+            $contato2->ds_contato = $request->input('ds_contato2');
+            $contato2->save();
+            array_push($arContatos, $contato2->id);
         }
+        
+        if(!empty($request->input('ds_contato3'))){
+            $contato3             = new \App\Contato();
+            $contato3->tp_contato = $request->input('tp_contato3');
+            $contato3->ds_contato = $request->input('ds_contato3');
+            $contato3->save();
+            array_push($arContatos, $contato3->id);
+        }
+        
+        # clinica
+        $clinica = Clinica::create($request->all());
+        $clinica->responsavel_id = $responsavel->id;
+        $clinica->save();
+        
+        $prestador = $this->setClinicaRelations($clinica, $documento_ids, $endereco_ids, $arContatos);
+        
+        return redirect()->route('clinicas.index')->with('success', 'O prestador foi cadastrado com sucesso!');
     }
 
     /**
@@ -202,19 +167,18 @@ class ClinicaController extends Controller
         $prestador->load('enderecos');
         $prestador->load('contatos');
         $prestador->load('documentos');
-        $prestador->load('profissional');
+        $prestador->load('profissionals');
         
         
-        $user   = User::findorfail($prestador->profissional->user_id); 
-        $cargo  = Cargo::findorfail($prestador->profissional->cargo_id); 
+        $user   = User::findorfail($prestador->responsavel->user_id); 
         $cidade = Cidade::findorfail($prestador->enderecos->first()->cidade_id); 
-        $documentoprofissional = \App\Profissional::findorfail($prestador->profissional->id)->documentos; 
+        $documentoprofissional = [];
         
         
-        $precoprocedimentos = \App\Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->get();
+        $precoprocedimentos = Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->get();
         $precoprocedimentos->load('procedimento');
         
-        $precoconsultas = \App\Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->get();
+        $precoconsultas = Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->get();
         $precoconsultas->load('consulta');
         
         
@@ -279,12 +243,19 @@ class ClinicaController extends Controller
         
         $prestador->update($request->all());
         
+        //--atualizar usuário-----------------
+        $usuario_id         = CVXRequest::post('responsavel_user_id');
+        $usuario            = User::findorfail($usuario_id);
+        $usuario->name      = $request->input('name_responsavel');
+        $usuario->password  = bcrypt($request->input('password'));
+        $usuario->save();
+        
         //--salvar CNPJ------------------------
         $documento_ids = [];
         $cnpj_id = CVXRequest::post('cnpj_id');
         $documento = Documento::findorfail($cnpj_id);
         $documento->tp_documento = CVXRequest::post('tp_documento_'.$cnpj_id);
-        $documento->te_documento = preg_replace("/[^0-9]/", "", CVXRequest::post('te_documento_'.$cnpj_id));
+        $documento->te_documento = UtilController::retiraMascara(CVXRequest::post('te_documento_'.$cnpj_id));
         $documento->save();
         $documento_ids = [$documento->id];
         
@@ -292,11 +263,13 @@ class ClinicaController extends Controller
         $endereco_ids = [];
         $endereco_id = CVXRequest::post('endereco_id');
         $endereco = Endereco::findorfail($endereco_id);
-        $endereco->nr_cep = CVXRequest::post('nr_cep');
+        $endereco->nr_cep = UtilController::retiraMascara(CVXRequest::post('nr_cep'));
         $endereco->sg_logradouro = CVXRequest::post('sg_logradouro');
         $endereco->te_endereco = CVXRequest::post('te_endereco');
         $endereco->nr_logradouro = CVXRequest::post('nr_logradouro');
         $endereco->te_complemento = CVXRequest::post('te_complemento');
+        $endereco->nr_latitude_gps = CVXRequest::post('nr_latitude_gps');
+        $endereco->nr_longitute_gps = CVXRequest::post('nr_longitute_gps');
         $endereco->te_bairro = CVXRequest::post('te_bairro');
         $endereco->te_bairro = CVXRequest::post('te_bairro');
         $endereco->save();
@@ -311,53 +284,18 @@ class ClinicaController extends Controller
         $contato->save();
         $contato_ids = [$contato->id];
         
-        $prestador = $this->setClinicaRelations($prestador, $documento_ids, $endereco_ids, $contato_ids);
+        # responsavel pela empresa
+        $responsavel_id         = CVXRequest::post('responsavel_id');
+        $responsavel            = Responsavel::findorfail($responsavel_id);
+        $responsavel->telefone  = $request->input('telefone_responsavel');
+        $responsavel->save();
         
+        $prestador = $this->setClinicaRelations($prestador, $documento_ids, $endereco_ids, $contato_ids);
+        $prestador->save();
         //$prestador->save();
         
+        return redirect()->route('clinicas.index')->with('success', 'Prestador alterado com sucesso!');
         
-        $dados = Request::all();
-
-        DB::beginTransaction();
-        
-        try{
-                        
-            
-            Atendimento::where(['clinica_id'=>$idClinica])->delete();
-            
-            if(is_array($request->input('precosProcedimentos')) and count($request->input('precosProcedimentos')) > 0){
-                foreach( $request->input('precosProcedimentos') as $idProcedimento => $arProcedimento ){
-                    $atendimento = new \App\Atendimento();
-                    $atendimento->procedimento()->associate($idProcedimento);
-                    $atendimento->clinica_id = $idClinica;
-                    $atendimento->ds_preco = $arProcedimento[2];
-                    $atendimento->vl_atendimento = UtilController::moedaBanco($arProcedimento[3]);
-                    $atendimento->save();
-                }
-            }
-            
-            if(is_array($request->input('precosConsultas')) and count($request->input('precosConsultas')) > 0){
-                foreach( $request->input('precosConsultas') as $idConsulta => $arConsulta ){
-                    $atendimento = new \App\Atendimento();
-                    $atendimento->consulta()->associate($idConsulta);
-                    $atendimento->clinica_id = $idClinica;
-                    $atendimento->ds_preco = $arConsulta[2];
-                    $atendimento->vl_atendimento = UtilController::moedaBanco($arConsulta[3]);
-                    $atendimento->save();
-                }
-            }
-            
-            
-            $prestador->save();
-            
-            DB::commit();
-            
-            return redirect()->route('clinicas.index')->with('success', 'Prestador alterado com sucesso!');
-        } catch (\Exception $e){
-            DB::rollBack();
-            
-            throw new \Exception($e->getCode().'-'.$e->getMessage());
-        }
     }
 
     /**

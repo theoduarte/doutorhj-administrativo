@@ -10,7 +10,7 @@
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
+					<li class="breadcrumb-item"><a href="{{ route('clinicas.index') }}">Todas as Clínicas</a></li>
 					<li class="breadcrumb-item active">Clínicas</li>
 				</ol>
 				<div class="clearfix"></div>
@@ -27,7 +27,6 @@
 				<div class="row ">
 					<div class="col-12"> 
 						<form class="form-edit-add" role="form" action="{{ route('clinicas.index') }}" method="get" enctype="multipart/form-data">
-                    		{{ csrf_field() }}
                 			
         					<div class="float-right">
         						<a href="{{ route('clinicas.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar</a>
@@ -47,7 +46,7 @@
             						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
             					</div>
                 				<div class="col-1" >
-                					<button type="submit" class="btn btn-primary" id="btnPesquisar">Pesquisar</button>
+                					<button type="submit" class="btn btn-primary" id="btnPesquisar"><i class="fa fa-search"></i> Pesquisar</button>
                 				</div>				
             				</div>
                     	</form>

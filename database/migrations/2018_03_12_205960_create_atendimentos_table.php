@@ -18,6 +18,7 @@ class CreateAtendimentosTable extends Migration
             $table->increments('id');
             $table->float('vl_atendimento', 10)->nullable();
             $table->string('ds_preco', 150)->nullable();
+            $table->string('cs_status', 1)->default('A');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });

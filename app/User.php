@@ -42,7 +42,7 @@ class User extends Authenticatable
     
     public function responsavel()
     {
-        return $this->hasOne('App\Responsavel');
+        return $this->hasMany('App\Responsavel');
         
     }
     
