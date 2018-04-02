@@ -38,4 +38,10 @@ class Agendamento extends Model
         $date = new Carbon($this->attributes['dt_consulta_primaria']);
         return $date->format('d/m/Y g:i A');
     }
+    
+    public function getDtAtendimentoAttribute()
+    {
+        $date = new Carbon($this->attributes['dt_atendimento']);
+        return $date->format('d/m/Y g:i A');
+    }
 }

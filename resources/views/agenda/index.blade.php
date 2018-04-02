@@ -6,17 +6,24 @@
 
 <style>
     .ui-autocomplete {
-        max-height : 200px;
-        overflow-y : auto;
-        overflow-x : hidden;
+        max-height  : 200px;
+        overflow-y  : auto;
+        overflow-x  : hidden;
     }
     
     * html .ui-autocomplete {
-        height     : 200px;
+        height      : 200px;
     }
-
+    
     .ui-dialog .ui-state-error {
-        padding    : .3em;
+        padding     : .3em;
+    }
+    
+    .ui-widget-header {
+        border      : 1px solid #dddddd;
+        background  : #00b0f4 !important;
+        color       : #ffffff;
+        font-weight : bold;
     }
 </style>
 
@@ -60,38 +67,44 @@
         	return true;
         }
  
-        dialog = $( "#dialog-form" ).dialog({
+        dialogAgendarRemarcar = $( "#dialog-agendar-form" ).dialog({
             autoOpen : false,
             height	 : 450,
             width	 : 700,
             modal	 : true,
             buttons	 : {
-                "Remarcar": addUser,
-                Cancel	  : function() {
-                    dialog.dialog( "close" );
-                }
+                "Agendar" : addUser,
+                Fechar	   : function() { dialogAgendarRemarcar.dialog( "close" ); }
             },
-            close: function() {
-            	dialog.dialog( "close" ); 
-            }
+            close: function() { dialogAgendarRemarcar.dialog( "close" ); }
         });
-
-
-    	function alimentarDadosModal(){
+ 		
+        dialogCancelarConsulta = $( "#dialog-cancelar-form" ).dialog({
+            autoOpen : false,
+            height	 : 400,
+            width	 : 600,
+            modal	 : true,
+            buttons	 : {
+                "Efetuar Cancelamento": addUser,
+                Fechar	  : function() { dialogCancelarConsulta.dialog( "close" ); }
+            },
+            close: function() { dialogCancelarConsulta.dialog( "close" ); }
+        });
+    	
+        $( "#remarcar-consulta" ).button().on( "click", function() {
         	$('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
         	$('#divDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
         	$('#divPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
-       	}
-    	
-        $( "#remarcar-consulta" ).button().on( "click", function() {
-        	alimentarDadosModal();
-            
-          	dialog.dialog( "open" );
+        	
+        	dialogAgendarRemarcar.dialog( "open" );
         });
-        $( "#remarcar-consulta" ).button().on( "click", function() {
-        	alimentarDadosModal();
-            
-          	dialog.dialog( "open" );
+        
+        $( "#cancelar-consulta" ).button().on( "click", function() {
+        	$('#paciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
+        	$('#clinica').html("<b>" + $(this).attr('prestador')   + "</b>");
+        	$('#dtconsulta')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
+        	
+        	dialogCancelarConsulta.dialog( "open" );
         });
    });
 </script>
@@ -207,28 +220,30 @@
                             	<td>{{$obAgenda->clinica->nm_razao_social}}</td>
                             	<td>{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
                             	<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
-                            	<td></td>
+                            	<td>{{$obAgenda->dt_atendimento}}</td>
                             	<td>Pré-Agendado</td>
                             	<td>
-                            		<!-- Botão Agendar -->
+                            		<!-- Agendar -->
                             		<a id-paciente    = "{{$obAgenda->paciente->id}}" 
                             		   id-agendamento = "{{$obAgenda->id}}" 	
                             		   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" 
-                            		   data-hora	  = ""
+                            		   data-hora	  = "{{$obAgenda->dt_atendimento}}"
                             		   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}" 
                             		   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
                             		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
                             		   title		  = "Remarcar" id ="remarcar-consulta"><i class="mdi mdi-eye"></i></a>
+   									
+   									<!-- Cancelar Consulta -->
+                            		<a id-paciente    = "{{$obAgenda->paciente->id}}" 
+                            		   id-agendamento = "{{$obAgenda->id}}" 	
+                            		   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" 
+                            		   data-hora	  = "{{$obAgenda->dt_atendimento}}"
+                            		   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}" 
+                            		   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+                            		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
+                            		   title		  = "Remarcar" id ="cancelar-consulta"><i class="mdi mdi-eye"></i></a>
                             		   
-                            		<!-- Botão Cancelamento -->   
-                            		<a id-paciente    = "{{$obAgenda->paciente->id}}" 
-                            		   id-agendamento = "{{$obAgenda->id}}" 	
-                            		   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" 
-                            		   data-hora	  = ""
-                            		   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}" 
-                            		   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
-                            		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
-                            		   title		  = "Remarcar" id ="remarcar-consulta"><i class="mdi mdi-eye"></i></a>
+                            		   
                             	</td>
                             </tr>
                             @endforeach

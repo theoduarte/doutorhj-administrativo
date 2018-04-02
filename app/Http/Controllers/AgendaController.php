@@ -23,7 +23,7 @@ class AgendaController extends Controller
 //             $idClinica = (int)Request::input('clinica_id');
 //             if(!empty($idClinica)) { $query->findorfail( 10 ); }
         }]);
-            
+                
         $agenda->load(['Paciente'=>function($query){
 //             $paciente = Request::input('nm_paciente');
             
@@ -33,7 +33,9 @@ class AgendaController extends Controller
 //             }
         }]);
         
-        $agenda->load('Profissional');
+        //$agenda->load('Profissional');
+        
+//         dd($agenda);
         
         Request::flash();
         

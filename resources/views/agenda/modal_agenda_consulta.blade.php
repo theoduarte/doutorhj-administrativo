@@ -1,11 +1,11 @@
 <!-- Modal remarcar consulta -->
-<div id="dialog-form" title="Agendar Consulta">
+<div id="dialog-agendar-form" title="Agendar Consulta">
     <form id="formRemarcaConsulta" name="formRemarcaConsulta">
     	<div class="row">
             <div class="col-10">
                 <label for="divPrestador">Prestador:
                     <input type="hidden" id="idClinica" name="idClinica" value="">
-                    <div id="divPrestador"></div>
+                    <div id="divPrestador" name="divPrestador"></div>
                 </label>
             </div>
         </div>
@@ -29,7 +29,7 @@
         
 		<div class="row">
 		    <div class="col-4">
-    			<label for="divDtHora">Possibilidades:<div id="divDtHora"></div></label>
+    			<label for="divDtHora">Consulta:<div id="divDtHora"></div></label>
             </div>
 		</div>
 		
