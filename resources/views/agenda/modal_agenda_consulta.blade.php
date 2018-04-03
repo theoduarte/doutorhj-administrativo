@@ -11,7 +11,9 @@
             <div class="col-12">
                 <label for="profissional_id">Clínica:</label>
             	<select class="form-control" id="clinica_id" name="clinica_id">
-            		<option value=""></option>
+            		@foreach($clinicas as $clinica)
+            			<option value="{{$clinica->id}}">{{$clinica->nm_razao_social}}</option>
+            		@endforeach
             	</select>
             </div>
         </div>

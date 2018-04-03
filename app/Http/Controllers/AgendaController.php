@@ -14,6 +14,9 @@ class AgendaController extends Controller
      */
     public function index()
     {
+        $clinicas = \App\Clinica::all();
+        
+        
         $agenda = \App\Itempedido::with([
                                          'agendamento' => function($query){
                                              if(Request::get('data')){
@@ -63,7 +66,7 @@ class AgendaController extends Controller
                                          ->paginate(20);
         Request::flash();
 
-        return view('agenda.index', compact('agenda'));
+        return view('agenda.index', compact('agenda', 'clinicas'));
     }
     
     /**

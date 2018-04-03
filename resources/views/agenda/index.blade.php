@@ -67,7 +67,7 @@
         	return true;
         }
  
-        dialogAgendarRemarcar = $( "#dialog-agendar-form" ).dialog({
+        dialogAgendamento = $( "#dialog-agendar-form" ).dialog({
             autoOpen : false,
             height	 : 470,
             width	 : 698,
@@ -75,21 +75,21 @@
             buttons	 : {
                 "Agendar" 		 : addUser,
                 "Não Confirmado" : addUser,
-                Fechar	   		 : function() { dialogAgendarRemarcar.dialog( "close" ); }
+                Fechar	   		 : function() { dialogAgendamento.dialog( "close" ); }
             },
-            close: function() { dialogAgendarRemarcar.dialog( "close" ); }
+            close: function() { dialogAgendamento.dialog( "close" ); }
         });
  		
-        dialogCancelarConsulta = $( "#dialog-cancelar-form" ).dialog({
+        dialogCancelamento = $( "#dialog-cancelar-form" ).dialog({
             autoOpen : false,
             height	 : 400,
             width	 : 600,
             modal	 : true,
             buttons	 : {
                 "Efetuar Cancelamento": addUser,
-                Fechar	  : function() { dialogCancelarConsulta.dialog( "close" ); }
+                Fechar	  : function() { dialogCancelamento.dialog( "close" ); }
             },
-            close: function() { dialogCancelarConsulta.dialog( "close" ); }
+            close: function() { dialogCancelamento.dialog( "close" ); }
         });
     	
         $( "#agendamento" ).button().on( "click", function() {
@@ -100,7 +100,7 @@
         	$('#divValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
 
         	
-        	dialogAgendarRemarcar.dialog( "open" );
+        	dialogAgendamento.dialog( "open" );
         });
         
         $( "#cancelamento" ).button().on( "click", function() {
@@ -108,7 +108,7 @@
         	$('#clinica').html("<b>" + $(this).attr('prestador')   + "</b>");
         	$('#dtconsulta')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
         	
-        	dialogCancelarConsulta.dialog( "open" );
+        	dialogCancelamento.dialog( "open" );
         });
    });
 </script>
