@@ -106,7 +106,7 @@ class ItemmenusTableSeeder extends Seeder
             10 =>
             array (
                 'titulo'        => 'Profissionais',
-                'url'           => 'profissionais',
+                'url'           => 'profissionals',
                 'ic_item_class' => '',
                 'ordemexibicao' => 3,
                 'menu_id'       => 1,

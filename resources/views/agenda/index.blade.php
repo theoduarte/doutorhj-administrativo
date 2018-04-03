@@ -69,12 +69,13 @@
  
         dialogAgendarRemarcar = $( "#dialog-agendar-form" ).dialog({
             autoOpen : false,
-            height	 : 450,
-            width	 : 700,
+            height	 : 470,
+            width	 : 698,
             modal	 : true,
             buttons	 : {
-                "Agendar" : addUser,
-                Fechar	   : function() { dialogAgendarRemarcar.dialog( "close" ); }
+                "Agendar" 		 : addUser,
+                "Não Confirmado" : addUser,
+                Fechar	   		 : function() { dialogAgendarRemarcar.dialog( "close" ); }
             },
             close: function() { dialogAgendarRemarcar.dialog( "close" ); }
         });
@@ -91,15 +92,18 @@
             close: function() { dialogCancelarConsulta.dialog( "close" ); }
         });
     	
-        $( "#remarcar-consulta" ).button().on( "click", function() {
+        $( "#agendamento" ).button().on( "click", function() {
         	$('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
         	$('#divDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
         	$('#divPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
+        	$('#divEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
+        	$('#divValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
+
         	
         	dialogAgendarRemarcar.dialog( "open" );
         });
         
-        $( "#cancelar-consulta" ).button().on( "click", function() {
+        $( "#cancelamento" ).button().on( "click", function() {
         	$('#paciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
         	$('#clinica').html("<b>" + $(this).attr('prestador')   + "</b>");
         	$('#dtconsulta')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
@@ -140,31 +144,31 @@
                 				<div class="col-5">
             				        <label for="localAtendimento">Clínica:<span class="text-danger">*</span></label>
     								<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}">
-    								<input type="hidden" id="clinica_id" name="clinica_id" value="">
+    								<input type="hidden" id="clinica_id" name="clinica_id" value="{{old('clinica_id')}}">
                                 </div>
 								<div class="form-group">
 									<div style="height: 20px;"></div>
                                     <label class="custom-checkbox" style="cursor: pointer;width:210px;">
-                    					<input type="checkbox"  id="ckConsultasConfirmar" name="ckConsultasConfirmar" 
-                    						value="consultas_confirmar" @if(old('ckConsultasConfirmar')=='aconfirmar') checked @endif> Consultas Pré-Agendadas 
+                    					<input type="checkbox"  id="ckPreAgendada" name="ckPreAgendada" 
+                    						value="10" @if(old('ckPreAgendada')=='10') checked @endif> Consultas Pré-Agendadas 
                                     </label>
                     				<br>
 									<label class="custom-checkbox" style="cursor: pointer;">
-                    					<input type="checkbox" id="ckConsultasConfirmadas" name="ckConsultasConfirmadas" 
-                    						value="agendada" @if(old('ckConsultasConfirmadas')=='agendada') checked @endif> Consultas Agendadas 
+                    					<input type="checkbox" id="ckConsultasAgendadas" name="ckConsultasAgendadas" 
+                    						value="70" @if(old('ckConsultasAgendadas')=='70') checked @endif> Consultas Agendadas 
                                     </label>
                                 </div>
                 				
                                 <div class="form-group">
                                 	<div style="height: 20px;"></div>
                                 	<label class="custom-checkbox" style="cursor: pointer;width:220px;">
-                    					<input type="checkbox"  id="ckConsultasConsumadas" name="ckConsultasConsumadas" 
-                    						value="consultas_consumadas" @if(old('ckConsultasConsumadas')=='consumada') checked @endif> Consultas Confirmadas 
+                    					<input type="checkbox"  id="ckConsultasConfirmadas" name="ckConsultasConfirmadas" 
+                    						value="20" @if(old('ckConsultasConfirmadas')=='20') checked @endif> Consultas Confirmadas 
                                     </label>
                     				<br>
                                     <label class="custom-checkbox" style="cursor: pointer;">
-                    					<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas" 
-                    						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='canceladas') checked @endif> Consultas Não Confirmadas 
+                    					<input type="checkbox"  id="ckConsultasNaoConfirmadas" name="ckConsultasNaoConfirmadas" 
+                    						value="30" @if(old('ckConsultasNaoConfirmadas')=='30') checked @endif> Consultas Não Confirmadas 
                                     </label>
                                 </div>
                                 
@@ -172,12 +176,12 @@
                                 	<div style="height: 20px;"></div>
                                     <label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas" 
-                    						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='canceladas') checked @endif> Consultas Canceladas 
+                    						value="60" @if(old('ckConsultasCanceladas')=='60') checked @endif> Consultas Canceladas 
                                     </label>
 									<br>
                                     <label class="custom-checkbox" style="cursor: pointer;">
-                    					<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas" 
-                    						value="consultas_canceladas" @if(old('ckConsultasCanceladas')=='canceladas') checked @endif> Ausências 
+                    					<input type="checkbox"  id="ckAusencias" name="ckAusencias" 
+                    						value="50" @if(old('ckAusencias')=='50') checked @endif> Ausências 
                                     </label>
                                 </div>
             				</div>
@@ -214,39 +218,44 @@
         						<th>Situação</th>
         						<th>Ações</th>
         					</tr>
-                            @foreach($agenda as $obAgenda)
-                            <tr>
-                            	<td>C034938</td>
-                            	<td>{{$obAgenda->clinica->nm_razao_social}}</td>
-                            	<td>{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
-                            	<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
-                            	<td>{{$obAgenda->dt_atendimento}}</td>
-                            	<td>Pré-Agendado</td>
-                            	<td>
-                            		<!-- Agendar -->
-                            		<a id-paciente    = "{{$obAgenda->paciente->id}}" 
-                            		   id-agendamento = "{{$obAgenda->id}}" 	
-                            		   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" 
-                            		   data-hora	  = "{{$obAgenda->dt_atendimento}}"
-                            		   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}" 
-                            		   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
-                            		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
-                            		   title		  = "Remarcar" id ="remarcar-consulta"><i class="mdi mdi-eye"></i></a>
-   									
-   									<!-- Cancelar Consulta -->
-                            		<a id-paciente    = "{{$obAgenda->paciente->id}}" 
-                            		   id-agendamento = "{{$obAgenda->id}}" 	
-                            		   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}" 
-                            		   data-hora	  = "{{$obAgenda->dt_atendimento}}"
-                            		   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}" 
-                            		   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
-                            		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
-                            		   title		  = "Remarcar" id ="cancelar-consulta"><i class="mdi mdi-eye"></i></a>
-                            		   
-                            		   
-                            	</td>
-                            </tr>
-                            @endforeach
+                                @foreach($agenda as $obAgenda)
+                                   @if( $obAgenda->agendamento != null 
+                                   		&& $obAgenda->agendamento->paciente->user != null ) 
+                                    <tr>
+                                    	<td>{{$obAgenda->agendamento->te_ticket}}</td>
+                                    	<td>{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}</td>
+                                    	<td>{{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}</td>
+                                    	<td>{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}</td>
+                                    	<td>{{$obAgenda->agendamento->dt_atendimento}}</td>
+                                    	<td>{{$obAgenda->agendamento->cs_status}}</td>
+                                    	<td>
+                   							<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
+                                    		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
+                                    		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
+                                    		   prestador	  = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
+                                    		   nm-profissional= "{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+                                    		   valor-consulta = "{{$obAgenda->valor}}"
+                                    		   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
+                                    		   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
+                                    		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
+                                    		   title		  = "Agendamento" id ="agendamento"><i class="mdi mdi-thumb-up"></i></a>
+                                    		   
+                                    		   
+                   							<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
+                                    		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
+                                    		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
+                                    		   prestador	  = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
+                                    		   nm-profissional= "{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+                                    		   valor-consulta = "{{$obAgenda->valor}}"
+                                    		   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
+                                    		   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
+                                    		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
+                                    		   title		  = "Cancelamento" id ="cancelamento"><i class="mdi mdi-thumb-down"></i></a>
+           									
+                                    	</td>
+                                    </tr>
+                                   @endif 
+                                @endforeach
     					</table>
                         <tfoot>
                         	<div class="cvx-pagination">

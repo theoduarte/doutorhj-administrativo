@@ -14,10 +14,6 @@ class Profissional extends Model
 	public $sortable      = ['id', 'nm_primario', 'nm_secundario'];
 	public $dates 	      = ['dt_nascimento'];
 	
-	/* public function cargo(){
-	    return $this->belongsTo(Cargo::class);
-	} */
-	
 	public function clinica(){
 	    return $this->belongsTo('App\Clinica');
 	}

@@ -17,7 +17,7 @@ class PacientesTableSeeder extends Seeder
 
 			User::create([
 					'id'			 => $numero,
-					'name'           => 'Paciente '.$numero,
+					'name'           => 'FREDERICO GOMES DA CRUZ'.$numero,
 					'email'          => 'paciente'.$numero.'@gmail.com',
 					'password'       => bcrypt('1234'),
 					'remember_token' => str_random(60),

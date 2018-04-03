@@ -9,36 +9,60 @@ class AgendaController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $agenda = \App\Agendamento::where(function($query){}
-        
-                                       )->orderBy('dt_atendimento')
-                                        ->sortable()->paginate(20);
-        
-        $agenda->load(['Clinica'=>function($query){
-//             $idClinica = (int)Request::input('clinica_id');
-//             if(!empty($idClinica)) { $query->findorfail( 10 ); }
-        }]);
-                
-        $agenda->load(['Paciente'=>function($query){
-//             $paciente = Request::input('nm_paciente');
-            
-//             if(!empty($paciente)){
-//                 $query->where(DB::raw('to_str(CONCAT(nm_primario, nm_secundario)) as nome'),
-//                     'like', '%'.UtilController::toStr($paciente).'%');
-//             }
-        }]);
-        
-        //$agenda->load('Profissional');
-        
-//         dd($agenda);
-        
+        $agenda = \App\Itempedido::with([
+                                         'agendamento' => function($query){
+                                             if(Request::get('data')){
+                                                 $data = UtilController::getDataRangeTimePickerToCarbon(Request::get('data'));
+                                                 
+                                                 $query->where('dt_atendimento', '>=', $data['de']);
+                                                 $query->Where('dt_atendimento', '<=', $data['ate']);
+                                             }
+                                                 
+                                            /************************
+                                                CS_STATUS 
+                                                10 : 'Pré-Agendado';  
+                                                20 : 'Confirmado';    
+                                                30 : 'Não Confirmado';
+                                                40 : 'Finalizado';    
+                                                50 : 'Ausente';       
+                                                60 : 'Cancelado';     
+                                                70 : 'Agendado';      
+                                            ************************/
+                                             $arCsStatus = array();
+                                             if( !empty(Request::get('ckPreAgendada'))            ) $arCsStatus[] = 10;          
+                                             if( !empty(Request::get('ckConsultasAgendadas'))     ) $arCsStatus[] = 70;
+                                             if( !empty(Request::get('ckConsultasConfirmadas'))   ) $arCsStatus[] = 20;
+                                             if( !empty(Request::get('ckConsultasNaoConfirmadas'))) $arCsStatus[] = 30;
+                                             if( !empty(Request::get('ckConsultasCanceladas'))    ) $arCsStatus[] = 60;
+                                             if( !empty(Request::get('ckAusencias'))              ) $arCsStatus[] = 50;
+                                             if( count($arCsStatus) > 0) $query->whereIn('cs_status', $arCsStatus);
+                                         },
+                                         'agendamento.clinica' => function ($query){
+                                             $clinica_id = Request::get('clinica_id');
+                                             if(!empty($clinica_id)){
+                                                 $query->where(DB::raw('id'), '=', Request::get('clinica_id'));
+                                             }
+                                         }, 
+                                         'agendamento.profissional', 
+                                         'agendamento.profissional.especialidade', 
+                                         'agendamento.paciente',
+                                         'agendamento.paciente.user'=> function ($query){
+                                              $nm_paciente = Request::get('nm_paciente');
+                                              if(!empty($nm_paciente)){
+                                                  $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr($nm_paciente).'%');
+                                              }
+                                         }, 
+                                ])->where(function($query){})
+//                                          ->orderBy('dt_atendimento')
+                                         ->sortable()
+                                         ->paginate(20);
         Request::flash();
-        
+
         return view('agenda.index', compact('agenda'));
     }
     
@@ -129,7 +153,7 @@ class AgendaController extends Controller
                 }
             }
             
-            $teDocumento = (!empty($nrDocumento)) ? ' - CNPJ: ' . UtilController::formataCnpj($nrDocumento) : null;
+            $teDocumento = (!empty($nrDocumento)) ? ' - CNPJ: ' . $nrDocumento : null;
             $arJson[] = [ 'id' => $query->id, 'value' => $query->nm_razao_social . $teDocumento];
         }
         

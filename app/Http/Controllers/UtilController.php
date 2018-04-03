@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Carbon;
+
 class UtilController extends Controller
 {
 	/**
@@ -27,11 +29,6 @@ class UtilController extends Controller
 	 * @param string $input
 	 */
 	public static function retiraMascara($input){
-// 	   return str_replace(',', '', 
-// 	               str_replace('/', '', 
-// 	                   str_replace('.', '', 
-// 	                       str_replace('-', '', 
-// 	                           str_replace('.', '', $input)))));
 	    return preg_replace("/[^0-9]/", "", $input);
 	}
 	
@@ -97,5 +94,25 @@ class UtilController extends Controller
 	public static function randHash($len=32)
 	{
 	    return substr(md5(openssl_random_pseudo_bytes(20)),-$len);
+	}
+	
+    /**
+     * Recebe data de um DataRangeTimePicker e
+     * retorna referência de Carbon() para utilizar em consultas.
+     * 
+     * Ex.: getDataRangeTimePickerToCarbon("10/10/2010")
+     * 
+     * @param string $data
+     * @return \App\Http\Controllers\Carbon
+     */
+	public static function getDataRangeTimePickerToCarbon($data){
+	    $data = explode(' - ', $data);
+	    $de  = explode('/', $data[0]);
+	    $ate = explode('/', $data[1]);
+	    
+	    return array(
+    	           'de'  => new Carbon($de[2].'-'.$de[1].'-'.$de[0]), 
+	               'ate' => new Carbon($ate[2].'-'.$ate[1].'-'.$ate[0])
+	           );
 	}
 }

@@ -20,7 +20,7 @@ class ProfissionalController extends Controller
      */
     public function index()
     {
-        $profissionais = Profissional::whereHas('user', function($query){
+        $profissionals = Profissional::whereHas('user', function($query){
                             if(!empty(Request::input('nm_busca'))){
                                 switch (Request::input('tp_filtro')){
                                     case "nome" :
@@ -40,13 +40,13 @@ class ProfissionalController extends Controller
                             if( count($arFiltroStatusIn) > 0 ) { $query->whereIn('cs_status', $arFiltroStatusIn); }
                         })->sortable()->paginate(20);
        
-        $profissionais->load('user');
-        $profissionais->load('documentos');
-        $profissionais->load('especialidade');
+        $profissionals->load('user');
+        $profissionals->load('documentos');
+        $profissionals->load('especialidade');
         
         Request::flash();
         
-        return view('profissionais.index', compact('profissionais'));
+        return view('profissionals.index', compact('profissionals'));
     }
     
     /**
@@ -56,7 +56,7 @@ class ProfissionalController extends Controller
      */
     public function create()
     {
-        return view('profissionais.create');
+        return view('profissionals.create');
     }
     
     /**
@@ -87,19 +87,19 @@ class ProfissionalController extends Controller
             
             $usuarios  = User::findorfail($id);
             
-            $profissionais = Profissional::where('user_id', '=', $id)->get()->first();
-            $profissionais->load('especialidade');
-            $profissionais->load('user');
-            $profissionais->load('documentos');
-            $profissionais->load('enderecos');
-            $profissionais->load('contatos');
+            $profissionals = Profissional::where('user_id', '=', $id)->get()->first();
+            $profissionals->load('especialidade');
+            $profissionals->load('user');
+            $profissionals->load('documentos');
+            $profissionals->load('enderecos');
+            $profissionals->load('contatos');
             
-            $cidade = \App\Cidade::findorfail($profissionais->enderecos->first()->cidade_id);
+            $cidade = \App\Cidade::findorfail($profissionals->enderecos->first()->cidade_id);
         } catch( Exception $e ){
             print $e->getMessage();
         }
         
-        return view('profissionais.show', [ 'profissionais'   => $profissionais,
+        return view('profissionals.show', [ 'profissionals'   => $profissionals,
                                             'cidade'          => $cidade,
                                             'arEspecialidade' => $arEspecialidade,
                                             'arEstados'       => $arEstados]);
@@ -120,19 +120,19 @@ class ProfissionalController extends Controller
             
             $usuarios = User::findorfail($idUsuario);
             
-            $profissionais = Profissional::where('user_id', '=', $idUsuario)->get()->first();
-            $profissionais->load('especialidade');
-            $profissionais->load('user');
-            $profissionais->load('documentos');
-            $profissionais->load('enderecos');
-            $profissionais->load('contatos');
+            $profissionals = Profissional::where('user_id', '=', $idUsuario)->get()->first();
+            $profissionals->load('especialidade');
+            $profissionals->load('user');
+            $profissionals->load('documentos');
+            $profissionals->load('enderecos');
+            $profissionals->load('contatos');
             
-            $cidade = \App\Cidade::findorfail($profissionais->enderecos->first()->cidade_id);            
+            $cidade = \App\Cidade::findorfail($profissionals->enderecos->first()->cidade_id);            
         }catch( Exception $e ){
             print $e->getMessage();
         }
         
-        return view('profissionais.edit', ['profissionais'   => $profissionais,
+        return view('profissionals.edit', ['profissionals'   => $profissionals,
                                            'cidade'          => $cidade,
                                            'arEstados'       => $arEstados,
                                            'arCargos'        => $arCargos,
@@ -176,10 +176,10 @@ class ProfissionalController extends Controller
             }
            
         }catch( Exception $e ){
-            return redirect()->route('profissionais.index')->with('error', $e->getMessage());
+            return redirect()->route('profissionals.index')->with('error', $e->getMessage());
         }
         
-        return redirect()->route('profissionais.index')->with('success', 'O usuário foi atualizado com sucesso!');
+        return redirect()->route('profissionals.index')->with('success', 'O usuário foi atualizado com sucesso!');
     }
     
     /**
@@ -193,20 +193,23 @@ class ProfissionalController extends Controller
         DB::beginTransaction();
         
         try{
-            $profissionais = \App\Profissional::findorfail($idProfissional);
-            $profissionais->forceDelete();
-            $profissionais->contatos()->forceDelete();
-            $profissionais->enderecos()->forceDelete();
-            $profissionais->documentos()->forceDelete();
-            $profissionais->user()->forceDelete();
+//             \App\Agendamento::where('profissional_id', $idProfissional)->delete();
+            
+            $profissionals = \App\Profissional::findorfail($idProfissional);
+            $profissionals->forceDelete();
+            $profissionals->contatos()->forceDelete();
+            $profissionals->enderecos()->forceDelete();
+            $profissionals->documentos()->forceDelete();
+            $profissionals->user()->forceDelete();
+            
             
             DB::commit();
         }catch( Exception $e ){
             DB::rollBack();
             
-            return redirect()->route('profissionais.index')->with('error', $e->getMessage());
+            return redirect()->route('profissionals.index')->with('error', $e->getMessage());
         }
         
-        return redirect()->route('profissionais.index')->with('success', 'Usuário apagado com sucesso!');
+        return redirect()->route('profissionals.index')->with('success', 'Usuário apagado com sucesso!');
     }
 }

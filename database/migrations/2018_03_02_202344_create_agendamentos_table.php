@@ -18,12 +18,9 @@ class CreateAgendamentosTable extends Migration
             $table->increments('id');
             $table->string('te_ticket', 10)->comment('TICKET QUE FOI GERADO NO MOMENTO DA VENDA DA CONSULTA');
             $table->timestamp('dt_atendimento')->nullable()->comment('POSSÍVEL DATA HORA PARA CONSULTA');
-            $table->timestamp('dt_consulta1')->comment('POSSÍVEL DATA HORA PARA CONSULTA');
-            $table->timestamp('dt_consulta2')->comment('POSSÍVEL DATA HORA PARA CONSULTA');
-            $table->timestamp('dt_consulta3')->comment('POSSÍVEL DATA HORA PARA CONSULTA');
             $table->string('obs_agendamento', 400)->nullable()->comment('Observações sobre o agendamento.');
             $table->string('obs_cancelamento', 400)->nullable()->comment('Observações sobre o cancelamento.');
-            $table->integer('cs_status')->unsigned()->comment('10=>Pré-Agendado 20=>Confirmado 30=>Não Confirmado 40=>Finalizado 50=>Não Compareceu 60=>Cancelado');
+            $table->integer('cs_status')->unsigned()->comment('10=>Pré-Agendado 20=>Confirmado 30=>Não Confirmado 40=>Finalizado 50=>Não Compareceu 60=>Cancelado 70=>Agendado');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });

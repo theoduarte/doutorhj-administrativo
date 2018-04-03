@@ -9,7 +9,7 @@ Route::get('/', function () {
 });
 
 Route::resource('clinicas','ClinicaController')->middleware('auth');
-Route::resource('profissionals','ProfissionalsController')->middleware('auth');
+Route::resource('profissionals','ProfissionalController')->middleware('auth');
 Route::resource('clientes', 'ClientesController')->middleware('auth');
 Route::resource('cargos','CargoController')->middleware('auth');
 Route::resource('menus','MenuController')->middleware('auth');

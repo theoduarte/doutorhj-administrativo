@@ -17,4 +17,11 @@ class Documento extends Model
 	public function estado(){
 		return $this->belongsTo('App\Estado'); 
 	}
+	
+	public function getTeDocumentoAttribute($nrDocumento){
+	    
+	    if( $this->attributes['tp_documento'] == 'CPF' ) { return \App\Http\Controllers\UtilController::formataCpf($nrDocumento);  }
+	    if( $this->attributes['tp_documento'] == 'CNPJ' ) { return \App\Http\Controllers\UtilController::formataCnpj($nrDocumento); }
+	    
+	}
 }
