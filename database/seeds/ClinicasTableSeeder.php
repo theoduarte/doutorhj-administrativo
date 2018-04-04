@@ -13,7 +13,7 @@ class ClinicasTableSeeder extends Seeder
      */
     public function run()
     {
-		for($numero = 3000; $numero<=3000; $numero++){
+		for($numero = 4000; $numero<=4001; $numero++){
 			User::create([
 					'id'			 => $numero,
 					'name'           => 'Clínica '.$numero,
@@ -23,7 +23,7 @@ class ClinicasTableSeeder extends Seeder
 					'tp_user'	     => 'CLI',
 					'cs_status'	     => 'A'
 			]);
-				   
+            		   
 			DB::table('clinicas')->insert(array (
 				0 => 
 				array (
@@ -110,26 +110,18 @@ class ClinicasTableSeeder extends Seeder
 			    ),
 			)); */
 			
+			$idAtendimento = $numero;
+			
             DB::table('atendimentos')->insert(array (
                     0 =>
                     array (
-                            'id' => 1,
+                            'id' => ++$idAtendimento,
                             'vl_atendimento'=>2400.40,
                             'ds_preco' => 'teste...',
                             'clinica_id' => $numero,
                             'consulta_id' => null,
                             'procedimento_id' => 8381
-                    ),
-                    1 =>
-                    array (
-                            'id' => 2,
-                            'vl_atendimento'=>4400.10,
-                            'ds_preco' => 'teste...',
-                            'clinica_id' => $numero,
-                            'consulta_id' => 81,
-                            'procedimento_id' => null,
-                    ),
-
+                    )
             ));
 		}
     }

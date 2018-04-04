@@ -27,18 +27,34 @@ class User extends Authenticatable
      */
     protected $hidden = ['password', 'remember_token'];
     
+    
+    /*
+     * CS_STATUS
+     */
+    const ATIVO   = 'A';
+    const INATIVO = 'I';
+    
+    protected static $cs_status = array(
+        self::ATIVO   => 'Ativo',
+        self::INATIVO => 'Inativo',
+    );
+    
+    
     public function perfiluser()
     {
     	return $this->belongsTo('App\Perfiluser');
     }
     
+    
     public function paciente(){
         return $this->hasOne(Paciente::class);
     }
     
+    
     public function profissional(){
         return $this->hasOne(Profissional::class);
     }
+    
     
     public function responsavel()
     {
@@ -46,4 +62,7 @@ class User extends Authenticatable
         
     }
     
+    public function getCsStatusAttribute($cdStatus) {
+        return static::$cs_status[$cdStatus];
+    }
 }

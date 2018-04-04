@@ -41,7 +41,7 @@ class ProfissionalsTableSeeder extends Seeder
 				0 => 
 				array (
 					'id' => $numero,
-					'sg_logradouro' => 'RUA',
+					'sg_logradouro' => 'Rua',
 					'te_endereco' => 'RUA PROPÍCIO DE PINA N.656',
 					'nr_logradouro' => '656',
 					'te_bairro' => 'DOM PEDRO II',

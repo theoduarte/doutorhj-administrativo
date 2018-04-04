@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 use App\Http\Requests\ProfissionaisEditRequest;
 use App\User;
 use App\Profissional;
@@ -174,6 +174,7 @@ class ProfissionalController extends Controller
                                      'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice]), 
                                      'estado_id'=>(int)$dados['estado_id'][0]]);
             }
+            
            
         }catch( Exception $e ){
             return redirect()->route('profissionals.index')->with('error', $e->getMessage());

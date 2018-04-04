@@ -32,8 +32,7 @@ class ProfissionaisEditRequest extends FormRequest
             'te_documento'  => 'required|max:15',
             'nr_cep'        => 'max:9|min:8',
             'te_complemento'=> 'max:1000',
-            'email'         => 'required|max:50|min:3|email',
-            'password'      => 'required|string|min:6|confirmed', 
+            'email'         => 'required|max:50|min:3|email'
         ];
     }
 }

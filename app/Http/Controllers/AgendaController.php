@@ -25,24 +25,14 @@ class AgendaController extends Controller
                                                  $query->where('dt_atendimento', '>=', $data['de']);
                                                  $query->Where('dt_atendimento', '<=', $data['ate']);
                                              }
-                                                 
-                                            /************************
-                                                CS_STATUS 
-                                                10 : 'Pré-Agendado';  
-                                                20 : 'Confirmado';    
-                                                30 : 'Não Confirmado';
-                                                40 : 'Finalizado';    
-                                                50 : 'Ausente';       
-                                                60 : 'Cancelado';     
-                                                70 : 'Agendado';      
-                                            ************************/
+                                             
                                              $arCsStatus = array();
-                                             if( !empty(Request::get('ckPreAgendada'))            ) $arCsStatus[] = 10;          
-                                             if( !empty(Request::get('ckConsultasAgendadas'))     ) $arCsStatus[] = 70;
-                                             if( !empty(Request::get('ckConsultasConfirmadas'))   ) $arCsStatus[] = 20;
-                                             if( !empty(Request::get('ckConsultasNaoConfirmadas'))) $arCsStatus[] = 30;
-                                             if( !empty(Request::get('ckConsultasCanceladas'))    ) $arCsStatus[] = 60;
-                                             if( !empty(Request::get('ckAusencias'))              ) $arCsStatus[] = 50;
+                                             if( !empty(Request::get('ckPreAgendada'))            ) $arCsStatus[] = \App\Agendamento::PRE_AGENDADO;          
+                                             if( !empty(Request::get('ckConsultasAgendadas'))     ) $arCsStatus[] = \App\Agendamento::AGENDADO;
+                                             if( !empty(Request::get('ckConsultasConfirmadas'))   ) $arCsStatus[] = \App\Agendamento::CONFIRMADO;
+                                             if( !empty(Request::get('ckConsultasNaoConfirmadas'))) $arCsStatus[] = \App\Agendamento::NAO_CONFIRMADO;
+                                             if( !empty(Request::get('ckConsultasCanceladas'))    ) $arCsStatus[] = \App\Agendamento::CANCELADO;
+                                             if( !empty(Request::get('ckAusencias'))              ) $arCsStatus[] = \App\Agendamento::AUSENTE;
                                              if( count($arCsStatus) > 0) $query->whereIn('cs_status', $arCsStatus);
                                          },
                                          'agendamento.clinica' => function ($query){

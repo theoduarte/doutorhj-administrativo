@@ -85,10 +85,7 @@
 								{{$profissional->especialidade->cd_especialidade.' - '.$profissional->especialidade->ds_especialidade}}
                 	 		</td>
                	 			<td>
-                	 			@switch( $profissional->user->cs_status )
-                	 				@case('A')  Ativo   @Break
-                	 				@case('I')  Inativo @Break
-                	 			@endswitch
+                	 			{{$profissional->user->cs_status}}
                 	 		</td>
     						<td>
     							<a href="{{ route('profissionals.show', $profissional->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>

@@ -81,10 +81,7 @@
 								@endforeach
                 	 		</td>
                	 			<td>
-                	 			@switch( $usuario->user->cs_status )
-                	 				@case('A')  Ativo   @Break
-                	 				@case('I')  Inativo @Break
-                	 			@endswitch
+                	 			{{$usuario->user->cs_status}}
                 	 		</td>
     						<td>
     							<a href="{{ route('clientes.show', $usuario->user->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>

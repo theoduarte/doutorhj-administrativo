@@ -52,6 +52,5 @@
 				<input class="form-control" type="time" name="time">
             </div>
 		</div>
-
     </form>
 </div>

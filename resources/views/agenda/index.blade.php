@@ -74,24 +74,12 @@
             modal	 : true,
             buttons	 : {
                 "Agendar" 		 : addUser,
-                "Não Confirmado" : addUser,
+                "Cancelar" 		 : addUser,
                 Fechar	   		 : function() { dialogAgendamento.dialog( "close" ); }
             },
             close: function() { dialogAgendamento.dialog( "close" ); }
-        });
+        }); 
  		
-        dialogCancelamento = $( "#dialog-cancelar-form" ).dialog({
-            autoOpen : false,
-            height	 : 400,
-            width	 : 600,
-            modal	 : true,
-            buttons	 : {
-                "Efetuar Cancelamento": addUser,
-                Fechar	  : function() { dialogCancelamento.dialog( "close" ); }
-            },
-            close: function() { dialogCancelamento.dialog( "close" ); }
-        });
-    	
         $( "#agendamento" ).button().on( "click", function() {
         	$('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
         	$('#divDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
@@ -99,17 +87,9 @@
         	$('#divEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
         	$('#divValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
 
-        	
         	dialogAgendamento.dialog( "open" );
         });
-        
-        $( "#cancelamento" ).button().on( "click", function() {
-        	$('#paciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
-        	$('#clinica').html("<b>" + $(this).attr('prestador')   + "</b>");
-        	$('#dtconsulta')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
-        	
-        	dialogCancelamento.dialog( "open" );
-        });
+
    });
 </script>
 
@@ -219,8 +199,10 @@
         						<th>Ações</th>
         					</tr>
                                 @foreach($agenda as $obAgenda)
-                                   @if( $obAgenda->agendamento != null 
-                                   		&& $obAgenda->agendamento->paciente->user != null ) 
+                                   @if( $obAgenda->agendamento != null && 
+                                   		$obAgenda->agendamento->clinica != null && 
+                                   		$obAgenda->agendamento->profissional != null && 
+                                   		$obAgenda->agendamento->paciente->user != null ) 
                                     <tr>
                                     	<td>{{$obAgenda->agendamento->te_ticket}}</td>
                                     	<td>{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}</td>
@@ -229,6 +211,8 @@
                                     	<td>{{$obAgenda->agendamento->dt_atendimento}}</td>
                                     	<td>{{$obAgenda->agendamento->cs_status}}</td>
                                     	<td>
+                                    	
+                                    	@if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' )
                    							<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
                                     		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                                     		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
@@ -239,9 +223,8 @@
                                     		   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
                                     		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
                                     		   title		  = "Agendamento" id ="agendamento"><i class="mdi mdi-thumb-up"></i></a>
-                                    		   
-                                    		   
-                   							<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
+                                    	@elseif()
+											<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
                                     		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                                     		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
                                     		   prestador	  = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
@@ -250,8 +233,10 @@
                                     		   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
                                     		   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
                                     		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
-                                    		   title		  = "Cancelamento" id ="cancelamento"><i class="mdi mdi-thumb-down"></i></a>
-           									
+                                    		   title		  = "Agendamento" id ="agendamento"><i class="mdi mdi-thumb-up"></i></a>
+                                    	@endif   
+                                    		   
+
                                     	</td>
                                     </tr>
                                    @endif 
@@ -273,6 +258,5 @@
 </div>
 
 @include('agenda/modal_agenda_consulta')
-@include('agenda/modal_cancelamento')
 
 @endsection

@@ -127,10 +127,12 @@
     								<input type="hidden" name="documentos_id[]" value="{{$documento->id}}">
     					            <label for="tp_documento" class="control-label">Documento<span class="text-danger">*</span></label>
         							<select name="tp_documento[]" class="form-control">
-    									@if ( trim($documento->tp_documento) != 'CRM')
+        								@if ( trim($documento->tp_documento) == 'CNPJ')
         									<option value="CNPJ" {{ (trim($documento->tp_documento) == 'CNPJ') ? 'selected' : '' }}>CNPJ</option>
     									@elseif ( trim($documento->tp_documento) == 'CRM')
     										<option value="CRM" {{ (trim($documento->tp_documento) == 'CRM') ? 'selected' : '' }}>CRM</option>
+    									@elseif ( trim($documento->tp_documento) == 'CRO')
+    										<option value="CRO" {{ (trim($documento->tp_documento) == 'CRO') ? 'selected' : '' }}>CRO</option>
     									@endif
     								</select>
                                 </div>
@@ -142,6 +144,16 @@
                                 <div class="col-1">
                                 	<label for="estado_id[]" class="control-label">&emsp;</label>
         							<select id="uf_crm" name="estado_id[]" class="form-control" required autofocus>
+                                        @foreach ($arEstados as $json)
+            								<option value="{{ $json->id }}" {{($documento->estado_id == $json->id ? 'selected' : '')}}>{{ $json->sg_estado }}</option>
+                                        @endforeach
+        							</select>
+                                </div>
+                                @endif
+                                @if ( trim($documento->tp_documento) == 'CRO')
+                                <div class="col-1">
+                                	<label for="estado_id[]" class="control-label">&emsp;</label>
+        							<select id="uf_cro" name="estado_id[]" class="form-control" required autofocus>
                                         @foreach ($arEstados as $json)
             								<option value="{{ $json->id }}" {{($documento->estado_id == $json->id ? 'selected' : '')}}>{{ $json->sg_estado }}</option>
                                         @endforeach
@@ -315,43 +327,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                    	<div class="row">
-                            <div class="col-2">
-                                <label for="password" class="control-label">Senha<span class="text-danger">*</span></label>
-                                <input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{$profissionals->user->password}}" autofocus maxlength="50">
-    
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                    	<div class="row">
-                            <div class="col-2">
-                                <label for="password_confirmation" class="control-label">Repita a Senha<span class="text-danger">*</span></label>
-                                <input id="password_confirmation" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password_confirmation" value="{{$profissionals->user->password}}" autofocus maxlength="50">
-    
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                     	<div class="row">
                             <div class="col-5">
                              	<label for="cs_statusA" class="control-label">Situação<span class="text-danger">*</span></label>
                                 <br>
-                                <input type="radio" id="cs_statusA" value="A" name="cs_status" @if( $profissionals->user->cs_status == 'A' ) checked @endif autofocus style="cursor: pointer;">
+                                <input type="radio" id="cs_statusA" value="A" name="cs_status" @if( $profissionals->user->cs_status == 'Ativo' ) checked @endif autofocus style="cursor: pointer;">
                                 <label for="cs_statusA" style="cursor: pointer;">Ativo</label>
              					<br>
-                                <input type="radio" value="I" id="cs_statusI" name="cs_status" @if( $profissionals->user->cs_status == 'I' ) checked @endif autofocus style="cursor: pointer;">
+                                <input type="radio" value="I" id="cs_statusI" name="cs_status" @if( $profissionals->user->cs_status == 'Inativo' ) checked @endif autofocus style="cursor: pointer;">
                                 <label for="cs_statusI" style="cursor: pointer;">Inativo</label>
                             </div>
                         </div>
