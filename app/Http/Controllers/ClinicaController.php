@@ -587,4 +587,5 @@ class ClinicaController extends Controller
         
         return response()->json(['status' => true, 'mensagem' => 'A Consulta foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
+    
 }

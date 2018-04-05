@@ -27,72 +27,6 @@
     }
 </style>
 
-<script>
-    $(function(){
-        $("#localAtendimento").autocomplete({
-            source: function( request, response ) {
-                $.ajax({
-                    url : "/consultas/localatendimento/"+$('#localAtendimento').val(),
-                    dataType: "json",
-                    success: function(data) {
-                        response(data);
-                    }
-                });
-            },
-            minLength: 5,
-            select: function(event, ui) {
-    	        $('input[name="clinica_id"]').val(parseInt(ui.item.id));
-            }
-        });
-        
-        $("#profissional").autocomplete({
-            source: function( request, response ) {
-                $.ajax({
-                    url : "/agenda/profissional/" + $('#profissional').val(),
-                    dataType: "json",
-                    success: function(data) {
-                        response(data);
-                    }
-                });
-            },
-            minLength: 5,
-            select: function(event, ui) {
-    	        $('input[name="profissional_id"]').val(parseInt(ui.item.id));
-            }
-        });
-
-        function addUser() {
-        	window.alert("OK!");
-        
-        	return true;
-        }
- 
-        dialogAgendamento = $( "#dialog-agendar-form" ).dialog({
-            autoOpen : false,
-            height	 : 470,
-            width	 : 698,
-            modal	 : true,
-            buttons	 : {
-                "Agendar" 		 : addUser,
-                "Cancelar" 		 : addUser,
-                Fechar	   		 : function() { dialogAgendamento.dialog( "close" ); }
-            },
-            close: function() { dialogAgendamento.dialog( "close" ); }
-        }); 
- 		
-        $( "#agendamento" ).button().on( "click", function() {
-        	$('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
-        	$('#divDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
-        	$('#divPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
-        	$('#divEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
-        	$('#divValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
-
-        	dialogAgendamento.dialog( "open" );
-        });
-
-   });
-</script>
-
 
 <div class="container-fluid">
 	<div class="row">
@@ -212,31 +146,27 @@
                                     	<td>{{$obAgenda->agendamento->cs_status}}</td>
                                     	<td>
                                     	
-                                    	@if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' )
+                                    	@if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' 
+                                    			or $obAgenda->agendamento->cs_status == 'Agendado' 
+                                    				and $obAgenda->agendamento->bo_remarcacao=='N')
                    							<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
                                     		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                                     		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
                                     		   prestador	  = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
                                     		   nm-profissional= "{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
                                     		   valor-consulta = "{{$obAgenda->valor}}"
+                                    		   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
                                     		   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
                                     		   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
-                                    		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
-                                    		   title		  = "Agendamento" id ="agendamento"><i class="mdi mdi-thumb-up"></i></a>
-                                    	@elseif()
-											<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
-                                    		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
-                                    		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
-                                    		   prestador	  = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
-                                    		   nm-profissional= "{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
-                                    		   valor-consulta = "{{$obAgenda->valor}}"
-                                    		   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
-                                    		   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
-                                    		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5" 
-                                    		   title		  = "Agendamento" id ="agendamento"><i class="mdi mdi-thumb-up"></i></a>
-                                    	@endif   
+                                    		   ticket         = "{{$obAgenda->agendamento->te_ticket}}"
+                                    		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5"
                                     		   
-
+                                    		   @if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' )		   
+                                    		   		title = "Agendar Consulta" id="agendamento"><i class="mdi mdi-thumb-up"></i></a>
+                                    		   @elseif( $obAgenda->agendamento->cs_status == 'Agendado' )
+                                    		   		title = "Remarcar Consulta" id="agendamento"><i class="mdi mdi-thumb-up"></i></a>
+                                    		   @endif
+                                    	@endif
                                     	</td>
                                     </tr>
                                    @endif 

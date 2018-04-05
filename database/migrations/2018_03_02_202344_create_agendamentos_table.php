@@ -21,6 +21,7 @@ class CreateAgendamentosTable extends Migration
             $table->string('obs_agendamento', 400)->nullable()->comment('Observações sobre o agendamento.');
             $table->string('obs_cancelamento', 400)->nullable()->comment('Observações sobre o cancelamento.');
             $table->integer('cs_status')->unsigned()->comment('10=>Pré-Agendado 20=>Confirmado 30=>Não Confirmado 40=>Finalizado 50=>Não Compareceu 60=>Cancelado 70=>Agendado');
+            $table->string('bo_remarcacao', 1)->default('N')->comment('S=> Já foi remarcado N=> Não foi remarcado');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });

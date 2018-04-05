@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Carbon;
 
 class AgendaController extends Controller
 {
@@ -51,7 +52,6 @@ class AgendaController extends Controller
                                               }
                                          }, 
                                 ])->where(function($query){})
-//                                          ->orderBy('dt_atendimento')
                                          ->sortable()
                                          ->paginate(20);
         Request::flash();
@@ -184,5 +184,28 @@ class AgendaController extends Controller
         }
         
         return Response()->json($arJson);
+    }
+    
+    /**
+     * Realiza o agendamento/remarcacao de consultas
+     *
+     * @param integer $idClinica
+     * @param integer $idProfissional
+     * @param integer $idPaciente
+     * @param integer $dia
+     * @param integer $mes
+     * @param integer $ano
+     * @param string  $hora
+     */
+    public function addAgendamento($ticket, $idClinica, $idProfissional, $idPaciente, $dia, $mes, $ano, $hora, $boRemarcacao='N'){
+        $agendamento = \App\Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $ticket);
+        
+        
+        $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
+                         'bo_remarcacao'  => $boRemarcacao, 
+                         'clinica_id'     => $idClinica,
+                         'profissional_id'=> $idProfissional,
+                         'cs_status'      => \App\Agendamento::AGENDADO);
+        $agendamento->update($arDados);
     }
 }

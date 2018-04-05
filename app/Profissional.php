@@ -97,6 +97,6 @@ class Profissional extends Model
     
 	
 	public function getCsStatusAttribute($cdStatus) {
-	    return static::$cs_status[$cdStatus];
+	    return (!empty($cdStatus)) ? static::$cs_status[$cdStatus] : null;
 	}
 }

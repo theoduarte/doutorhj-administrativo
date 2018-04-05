@@ -213,4 +213,18 @@ class ProfissionalController extends Controller
         
         return redirect()->route('profissionals.index')->with('success', 'Usuário apagado com sucesso!');
     }
+    
+    /**
+     * Consulta profissionais atrelados a uma clínica.
+     * 
+     * @param integer $idClinica
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProfissionaisPorClinica($idClinica){
+        $profissional = \App\Profissional::where('clinica_id', '=', $idClinica)
+                            ->get(['id', 'nm_primario', 'nm_secundario']);
+        
+        
+        return Response()->json($profissional);
+    }
 }
