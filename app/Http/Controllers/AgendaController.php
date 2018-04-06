@@ -17,7 +17,6 @@ class AgendaController extends Controller
     {
         $clinicas = \App\Clinica::all();
         
-        
         $agenda = \App\Itempedido::with([
                                          'agendamento' => function($query){
                                              if(Request::get('data')){
@@ -57,72 +56,6 @@ class AgendaController extends Controller
         Request::flash();
 
         return view('agenda.index', compact('agenda', 'clinicas'));
-    }
-    
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($idAgenda)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($idAgenda)
-    {
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $idAgenda)
-    {
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($idAgenda)
-    {
-        
     }
     
     /**
@@ -197,8 +130,8 @@ class AgendaController extends Controller
      * @param integer $ano
      * @param string  $hora
      */
-    public function addAgendamento($ticket, $idClinica, $idProfissional, $idPaciente, $dia, $mes, $ano, $hora, $boRemarcacao='N'){
-        $agendamento = \App\Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $ticket);
+    public function addAgendamento($teTicket, $idClinica, $idProfissional, $idPaciente, $dia, $mes, $ano, $hora, $boRemarcacao='N'){
+        $agendamento = \App\Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $teTicket);
         
         
         $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
@@ -206,6 +139,19 @@ class AgendaController extends Controller
                          'clinica_id'     => $idClinica,
                          'profissional_id'=> $idProfissional,
                          'cs_status'      => \App\Agendamento::AGENDADO);
+        $agendamento->update($arDados);
+    }
+    
+    /**
+     * Realiza o cancelamento de uma consulta por ticket.
+     * 
+     * @param string $teTicket
+     */
+    public function addCancelamento($teTicket, $obsCancelamento=null){
+        $agendamento = \App\Agendamento::where('te_ticket', '=', $teTicket);
+        
+        $arDados = array('cs_status'=>\App\Agendamento::CANCELADO,
+                         'obs_cancelamento'=> $obsCancelamento);
         $agendamento->update($arDados);
     }
 }

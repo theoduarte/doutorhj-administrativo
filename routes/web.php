@@ -33,6 +33,7 @@ Route::post('clinicas/{clinica}/edit/add-precificacao-consulta', 'ClinicaControl
 Route::post('clinicas/{clinica}/edit/delete-consulta', 'ClinicaController@deleteConsultaDestroy')->middleware('auth');
 Route::get('profissionais/{idClinica}', 'ProfissionalController@getProfissionaisPorClinica')->middleware('auth');
 Route::get('agenda/agendar/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i?}', 'AgendaController@addAgendamento')->middleware('auth');
+Route::get('agenda/cancelar/{ticket}/{obs?}', 'AgendaController@addCancelamento')->middleware('auth');
 
 
 Auth::routes();

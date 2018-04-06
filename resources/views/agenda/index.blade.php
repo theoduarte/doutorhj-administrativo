@@ -134,9 +134,9 @@
         					</tr>
                                 @foreach($agenda as $obAgenda)
                                    @if( $obAgenda->agendamento != null && 
-                                   		$obAgenda->agendamento->clinica != null && 
-                                   		$obAgenda->agendamento->profissional != null && 
-                                   		$obAgenda->agendamento->paciente->user != null ) 
+                                   			$obAgenda->agendamento->clinica != null && 
+                                   				$obAgenda->agendamento->profissional != null && 
+                                   					$obAgenda->agendamento->paciente->user != null ) 
                                     <tr>
                                     	<td>{{$obAgenda->agendamento->te_ticket}}</td>
                                     	<td>{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}</td>
@@ -144,11 +144,16 @@
                                     	<td>{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}</td>
                                     	<td>{{$obAgenda->agendamento->dt_atendimento}}</td>
                                     	<td>{{$obAgenda->agendamento->cs_status}}</td>
-                                    	<td>
+                                    	<td style="width:100px;">
                                     	
+                                    	<!-- botao agendar/remarcar -->
                                     	@if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' 
                                     			or $obAgenda->agendamento->cs_status == 'Agendado' 
-                                    				and $obAgenda->agendamento->bo_remarcacao=='N')
+                                    				and $obAgenda->agendamento->cs_status!='Cancelado'
+                                    					and $obAgenda->agendamento->cs_status!='Finalizado'
+                                    						and $obAgenda->agendamento->cs_status!='Confirmado'
+                                    							and $obAgenda->agendamento->bo_remarcacao=='N')
+                                    							
                    							<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
                                     		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                                     		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
@@ -162,11 +167,49 @@
                                     		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5"
                                     		   
                                     		   @if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' )		   
-                                    		   		title = "Agendar Consulta" id="agendamento"><i class="mdi mdi-thumb-up"></i></a>
+                                    		   		title = "Agendar Consulta" id="agendamento"><i class="mdi mdi-phone"></i></a>
                                     		   @elseif( $obAgenda->agendamento->cs_status == 'Agendado' )
-                                    		   		title = "Remarcar Consulta" id="agendamento"><i class="mdi mdi-thumb-up"></i></a>
+                                    		   		title = "Remarcar Consulta" id="agendamento"><i class="mdi mdi-phone"></i></a>
                                     		   @endif
                                     	@endif
+                                    	
+                                    	
+                                    	<!-- botao confirmar -->
+                                    	@if( $obAgenda->agendamento->cs_status!='Cancelado' and $obAgenda->agendamento->cs_status=='Agendado')                                	   
+                                    	    <a especialidade   = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
+                                    		   nm-paciente     = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
+                                    		   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
+                                    		   prestador	   = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
+                                    		   nm-profissional = "{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+                                    		   valor-consulta  = "{{$obAgenda->valor}}"
+                                    		   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
+                                    		   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
+                                    		   id-paciente     = "{{$obAgenda->agendamento->paciente->id}}"
+                                    		   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
+                                    		   class		   = "btn btn-icon waves-effect btn-primary btn-sm m-b-5"
+                                    		   title 		   = "Confirmar Consulta" id="confirmacao"><i class="mdi mdi-thumb-up"></i></a>
+										@endif
+										
+										
+                                    	<!-- botao cancelar -->
+                                    	@if( $obAgenda->agendamento->cs_status!='Cancelado')                                	   
+                                    	    <a especialidade   = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
+                                    		   nm-paciente     = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
+                                    		   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
+                                    		   prestador	   = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
+                                    		   nm-profissional = "{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+                                    		   valor-consulta  = "{{$obAgenda->valor}}"
+                                    		   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
+                                    		   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
+                                    		   id-paciente     = "{{$obAgenda->agendamento->paciente->id}}"
+                                    		   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
+                                    		   class		   = "btn btn-icon waves-effect btn-primary btn-sm m-b-5"
+                                    		   title 		   = "Cancelar Consulta" id="cancelamento"><i class="mdi mdi-thumb-down"></i></a>
+										@endif                                	
+                                    	
+                                    	
+                                   
+                                    	 
                                     	</td>
                                     </tr>
                                    @endif 
@@ -188,5 +231,7 @@
 </div>
 
 @include('agenda/modal_agenda_consulta')
+@include('agenda/modal_cancelamento')
+@include('agenda/modal_confirmacao')
 
 @endsection
