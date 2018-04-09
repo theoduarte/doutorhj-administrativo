@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
 		$this->call(TipoAtendimentosTableSeeder::class);
 		$this->call(AgendamentosTableSeeder::class);
 		$this->call(ItempedidosTableSeeder::class);
+		$this->call(ConveniosTableSeeder::class);
     }
 }
