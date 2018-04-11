@@ -39,15 +39,6 @@
     	
     	<!-- DoutorHJ Reset CSS -->
     	<link rel="stylesheet" href="/css/doutorhj.style.css">
-    	
-    	<script src="/libs/comvex-template/js/jquery.min.js"></script>
-    	
-    	<!-- modernizr script -->
-    	<script src="/libs/comvex-template/js/modernizr.min.js"></script>
-    	
-    	<!-- Sweet Alert Js  -->
-        <script src="/libs/sweet-alert/sweetalert2.min.js"></script>
-        <script src="/libs/comvex-template/pages/jquery.sweet-alert.init.js"></script>
 		
 		<!-- JQueryUI -->
     	<link rel="stylesheet" href="/libs/jquery-ui-themes/jquery-ui.css">
@@ -55,6 +46,15 @@
     	<!-- Datapicker -->
 		<link href="/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 		<link href="/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+		
+		<script src="/libs/comvex-template/js/jquery.min.js"></script>
+    	
+    	<!-- modernizr script -->
+    	<script src="/libs/comvex-template/js/modernizr.min.js"></script>
+    	
+    	<!-- Sweet Alert Js  -->
+        <script src="/libs/sweet-alert/sweetalert2.min.js"></script>
+        <script src="/libs/comvex-template/pages/jquery.sweet-alert.init.js"></script>
     @endpush
     
     @stack('style')
