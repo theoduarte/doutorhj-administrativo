@@ -12,9 +12,9 @@ class TipoAtendimentosTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tipoatendimento')->delete();
+        DB::table('tipoatendimentos')->delete();
         
-        DB::table('tipoatendimento')->insert(array (
+        DB::table('tipoatendimentos')->insert(array (
             0 =>
             array (
                 'id'             => '1',

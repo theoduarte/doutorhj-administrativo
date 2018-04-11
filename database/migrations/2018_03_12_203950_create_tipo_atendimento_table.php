@@ -14,7 +14,7 @@ class CreateTipoAtendimentoTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipoatendimento', function (Blueprint $table) {
+        Schema::create('tipoatendimentos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('cd_atendimento', 3)->nullable();
             $table->string('ds_atendimento', 150)->nullable();
@@ -30,6 +30,6 @@ class CreateTipoAtendimentoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipoatendimento');
+        Schema::dropIfExists('tipoatendimentos');
     }
 }
