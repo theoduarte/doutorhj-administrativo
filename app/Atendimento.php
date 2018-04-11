@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use Illuminate\Support\Carbon;
 
 
 class Atendimento extends Model
@@ -14,16 +13,25 @@ class Atendimento extends Model
 	public $fillable  = ['id', 'vl_atendimento', 'ds_preco'];
 	public $sortable  = ['id', 'vl_atendimento', 'ds_preco'];
 
+	public function clinica(){
+	    return $this->belongsTo('App\Clinica');
+	}
+	
 	public function consulta(){
-	    return $this->belongsTo(Consulta::class);
+	    return $this->belongsTo('App\Consulta');
 	}
     
 	public function procedimento(){
-	    return $this->belongsTo(Procedimento::class);
+	    return $this->belongsTo('App\Procedimento');
 	}
     
 	public function profissional(){
-	    return $this->belongsTo(Profissional::class);
+	    return $this->belongsTo('App\Profissional');
+	}
+	
+	public function agendamentos()
+	{
+	    return $this->hasMany('App\Agendamento');
 	}
 	
 	public function getVlAtendimentoAttribute($valor){

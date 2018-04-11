@@ -10,11 +10,6 @@ class ResponsavelsTableSeeder extends Seeder
      *
      * @return void
      */
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         if (Responsavel::count() == 0) {

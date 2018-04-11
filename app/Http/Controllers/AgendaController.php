@@ -4,106 +4,58 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Carbon;
 
 class AgendaController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $agenda = \App\Agendamento::where(function($query){}
+        $clinicas = \App\Clinica::all();
         
-                                       )->orderBy('dt_atendimento')
-                                        ->sortable()->paginate(20);
-        
-        $agenda->load(['Clinica'=>function($query){
-//             $idClinica = (int)Request::input('clinica_id');
-//             if(!empty($idClinica)) { $query->findorfail( 10 ); }
-        }]);
-            
-        $agenda->load(['Paciente'=>function($query){
-//             $paciente = Request::input('nm_paciente');
-            
-//             if(!empty($paciente)){
-//                 $query->where(DB::raw('to_str(CONCAT(nm_primario, nm_secundario)) as nome'),
-//                     'like', '%'.UtilController::toStr($paciente).'%');
-//             }
-        }]);
-        
-        $agenda->load('Profissional');
-        
+        $agenda = \App\Itempedido::with([
+                                         'agendamento' => function($query){
+                                             if(Request::get('data')){
+                                                 $data = UtilController::getDataRangeTimePickerToCarbon(Request::get('data'));
+                                                 
+                                                 $query->where('dt_atendimento', '>=', $data['de']);
+                                                 $query->Where('dt_atendimento', '<=', $data['ate']);
+                                             }
+                                             
+                                             $arCsStatus = array();
+                                             if( !empty(Request::get('ckPreAgendada'))            ) $arCsStatus[] = \App\Agendamento::PRE_AGENDADO;          
+                                             if( !empty(Request::get('ckConsultasAgendadas'))     ) $arCsStatus[] = \App\Agendamento::AGENDADO;
+                                             if( !empty(Request::get('ckConsultasConfirmadas'))   ) $arCsStatus[] = \App\Agendamento::CONFIRMADO;
+                                             if( !empty(Request::get('ckConsultasNaoConfirmadas'))) $arCsStatus[] = \App\Agendamento::NAO_CONFIRMADO;
+                                             if( !empty(Request::get('ckConsultasCanceladas'))    ) $arCsStatus[] = \App\Agendamento::CANCELADO;
+                                             if( !empty(Request::get('ckAusencias'))              ) $arCsStatus[] = \App\Agendamento::AUSENTE;
+                                             if( count($arCsStatus) > 0) $query->whereIn('cs_status', $arCsStatus);
+                                         },
+                                         'agendamento.clinica' => function ($query){
+                                             $clinica_id = Request::get('clinica_id');
+                                             if(!empty($clinica_id)){
+                                                 $query->where(DB::raw('id'), '=', Request::get('clinica_id'));
+                                             }
+                                         }, 
+                                         'agendamento.profissional', 
+                                         'agendamento.profissional.especialidade', 
+                                         'agendamento.paciente',
+                                         'agendamento.paciente.user'=> function ($query){
+                                              $nm_paciente = Request::get('nm_paciente');
+                                              if(!empty($nm_paciente)){
+                                                  $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr($nm_paciente).'%');
+                                              }
+                                         }, 
+                                ])->where(function($query){})
+                                         ->sortable()
+                                         ->paginate(20);
         Request::flash();
-        
-        return view('agenda.index', compact('agenda'));
-    }
-    
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
 
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($idAgenda)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($idAgenda)
-    {
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $idAgenda)
-    {
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($idAgenda)
-    {
-        
+        return view('agenda.index', compact('agenda', 'clinicas'));
     }
     
     /**
@@ -127,7 +79,7 @@ class AgendaController extends Controller
                 }
             }
             
-            $teDocumento = (!empty($nrDocumento)) ? ' - CNPJ: ' . UtilController::formataCnpj($nrDocumento) : null;
+            $teDocumento = (!empty($nrDocumento)) ? ' - CNPJ: ' . $nrDocumento : null;
             $arJson[] = [ 'id' => $query->id, 'value' => $query->nm_razao_social . $teDocumento];
         }
         
@@ -165,5 +117,41 @@ class AgendaController extends Controller
         }
         
         return Response()->json($arJson);
+    }
+    
+    /**
+     * Realiza o agendamento/remarcacao de consultas
+     *
+     * @param integer $idClinica
+     * @param integer $idProfissional
+     * @param integer $idPaciente
+     * @param integer $dia
+     * @param integer $mes
+     * @param integer $ano
+     * @param string  $hora
+     */
+    public function addAgendamento($teTicket, $idClinica, $idProfissional, $idPaciente, $dia, $mes, $ano, $hora, $boRemarcacao='N'){
+        $agendamento = \App\Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $teTicket);
+        
+        
+        $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
+                         'bo_remarcacao'  => $boRemarcacao, 
+                         'clinica_id'     => $idClinica,
+                         'profissional_id'=> $idProfissional,
+                         'cs_status'      => \App\Agendamento::AGENDADO);
+        $agendamento->update($arDados);
+    }
+    
+    /**
+     * Realiza o cancelamento de uma consulta por ticket.
+     * 
+     * @param string $teTicket
+     */
+    public function addCancelamento($teTicket, $obsCancelamento=null){
+        $agendamento = \App\Agendamento::where('te_ticket', '=', $teTicket);
+        
+        $arDados = array('cs_status'=>\App\Agendamento::CANCELADO,
+                         'obs_cancelamento'=> $obsCancelamento);
+        $agendamento->update($arDados);
     }
 }

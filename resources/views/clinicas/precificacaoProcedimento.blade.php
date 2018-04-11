@@ -1,4 +1,50 @@
-<script>
+<div class="form-group">
+	<div class="row">
+        <div class="col-6">
+        	<label for="ds_procedimento" class="control-label">Procedimento<span class="text-danger">*</span></label>
+            <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" autofocus maxlength="100">
+       		<input type="hidden" id="cd_procedimento" name="cd_procedimento" value="">
+       		<input type="hidden" id="descricao_procedimento" name="descricao_procedimento" value="">
+       		<input type="hidden" id="atendimento_id" name="atendimento_id" value="">
+       		<input type="hidden" id="procedimento_id" name="procedimento_id" value="">
+        </div>
+        <div class="col-2">
+            <label for="vl_procedimento" class="control-label">Preço (R$)<span class="text-danger">*</span></label>
+            <input id="vl_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_procedimento" value="{{ old('vl_procedimento') }}"  maxlength="15">
+        </div>
+        <div class="col-3">
+        	<div style="height: 30px;"></div>
+            <button type="button" class="btn btn-primary" onclick="addLinhaProcedimento();"><i class="mdi mdi-content-save"></i> Salvar</button>
+        </div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-12">
+    		<table id="tblPrecosProcedimentos" name="tblPrecosProcedimentos" class="table table-striped table-bordered table-doutorhj">
+        		<tr>
+					<th width="12">Id</th>
+					<th width="80">Código</th>
+					<th width="380">Procedimento</th>
+					<th width="100">Valor (R$)</th>
+					<th width="10">Ação</th>
+				</tr>
+    			@foreach( $precoprocedimentos as $procedimento )
+    				<tr id="tr-{{$procedimento->id}}">
+    					<td>{{$procedimento->id}}</td>
+    					<td>{{$procedimento->procedimento->cd_procedimento}} <input type="hidden" class="procedimento_id" value="{{ $procedimento->procedimento->id }}"></td>
+    					<td>{{$procedimento->ds_preco}}</td>
+    					<td>{{$procedimento->vl_atendimento}}</td>
+    					<td>
+    						<a href="#" onclick="loadDataProcedimento(this)" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+	                 		<a onclick="delLinhaProcedimento(this, '{{ $procedimento->ds_preco }}', '{{ $procedimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Remover</a>
+    					</td>
+    				</tr>
+				@endforeach 
+        	</table>
+        </div>
+	</div>
+</div>
+<script type="text/javascript">
 	$(function(){
         $( "#ds_procedimento" ).autocomplete({
         	  source: function( request, response ) {
@@ -10,7 +56,7 @@
         	          }
         	      });
         	  },
-        	  minLength : 5,
+        	  minLength : 3,
         	  select: function(event, ui) {
         		  arProcedimento = ui.item.id.split(' | ');
         		  
@@ -25,97 +71,122 @@
 		if( $('#procedimento_id').val().length == 0 ) return false;
 		if( $('#ds_procedimento').val().length == 0 ) return false;
 		if( $('#vl_procedimento').val().length == 0 ) return false;
+		if( $('#clinica_id').val().length == 0 ) return false;
         
 		var table = document.getElementById("tblPrecosProcedimentos");
-        var linha = table.insertRow(1);
-        var cell1 = linha.insertCell(0);
-        var cell2 = linha.insertCell(1);
-        var cell3 = linha.insertCell(2);
-        var cell4 = linha.insertCell(3);
-        var cell5 = linha.insertCell(4);
-        
-        cell1.innerHTML = $('#procedimento_id').val() + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val()       + '][]" value="' + $('#procedimento_id').val() + '">';
-        cell2.innerHTML = $('#cd_procedimento').val() + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val()       + '][]" value="' + $('#cd_procedimento').val() + '">';
-        cell3.innerHTML = $('#descricao_procedimento').val() 	  + '<input type="hidden" name="precosProcedimentos[' + $('#procedimento_id').val()       + '][]" value="' + $('#descricao_procedimento').val() 	     + '">';
-        cell4.innerHTML = '<input type="text" class="form-control mascaraMonetaria" name="precosProcedimentos[' + $('#procedimento_id').val() + '][]" value="' + $('#vl_procedimento').val() + '">';
-        cell5.innerHTML = '<button type="button" class="btn ti-trash" onclick="delLinhaProcedimento(this)"> Remover</button>';
 
-    	$(".mascaraMonetaria").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
-    	
-        $('#vl_procedimento').val(null);
-        $('#procedimento_id').val(null);
-        $('#ds_procedimento').val(null);
-        $('#cd_procedimento').val(null);
+		var atendimento_id = $('#atendimento_id').val();
+		var procedimento_id = $('#procedimento_id').val();
+		var ds_procedimento = $('#ds_procedimento').val();
+		var vl_procedimento = $('#vl_procedimento').val();
+		var clinica_id = $('#clinica_id').val();
+
+		jQuery.ajax({
+			type: 'POST',
+			url: '{{ Request::url() }}/add-precificacao-procedimento',
+			data: {
+				'atendimento_id': atendimento_id,
+				'procedimento_id': procedimento_id,
+				'ds_procedimento': ds_procedimento,
+				'vl_procedimento': vl_procedimento,
+				'clinica_id': clinica_id,
+				'_token': laravel_token
+			},
+            success: function (result) {
+	            if(result.status) {
+
+	            	var atendimento = JSON.parse(result.atendimento);
+
+	            	$.Notification.notify('success','top right', 'DrHoje', result.mensagem);
+
+	            	if(atendimento_id == '') {
+	            		$tr = '<tr id="tr-'+atendimento.id+'">\
+		                 <td>'+atendimento.id+'</td>\
+		                 <td>'+atendimento.procedimento.cd_procedimento+'</td>\
+		                 <td>'+atendimento.ds_preco+'</td>\
+		                 <td>'+atendimento.vl_atendimento+'</td>\
+		                 <td>\
+		                 	<a href="#" onclick="loadDataProcedimento(this)" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>\
+		                 	<a onclick="delLinhaProcedimento(this, '+atendimento.ds_preco+', '+atendimento.id+')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Remover</a>\
+		                 </td>\
+		                 </tr>';
+	                	$('#tblPrecosProcedimentos  > tbody > tr:first').after($tr);
+	            	} else {
+	            		$('#tr-'+atendimento.id).find('td:nth-child(2)').html(atendimento.procedimento.cd_procedimento);
+						$('#tr-'+atendimento.id).find('td:nth-child(3)').html(atendimento.ds_preco);
+						$('#tr-'+atendimento.id).find('td:nth-child(4)').html(atendimento.vl_atendimento);
+	            	}
+	                 
+	            } else {
+	            	swal(({
+        	            title: "Oops",
+        	            text: result.mensagem,
+        	            type: 'error',
+        	            confirmButtonClass: 'btn btn-confirm mt-2'
+        			}));
+	            }
+            },
+            error: function (result) {
+                swal(({
+    	            title: "Oops",
+    	            text: "Falha na operação!",
+    	            type: 'error',
+    	            confirmButtonClass: 'btn btn-confirm mt-2'
+    			}));
+            }
+		});
+    }
+
+    function loadDataProcedimento(element) {
+
+    	var atendimento_id = $(element).parent().parent().find('td:nth-child(1)').html();
+    	var procedimento_id = $(element).parent().parent().find('input.procedimento_id').val();
+    	var cd_procedimento = $(element).parent().parent().find('td:nth-child(2)').html();
+    	var ds_preco = $(element).parent().parent().find('td:nth-child(3)').html();
+    	var vl_atendimento = $(element).parent().parent().find('td:nth-child(4)').html();
+
+    	$('#atendimento_id').val(atendimento_id);
+    	$('#procedimento_id').val(procedimento_id);
+    	$('#ds_procedimento').val(ds_preco);
+    	$('#cd_procedimento').val(cd_procedimento);
+    	$('#vl_procedimento').val(vl_atendimento);
     }
 	
-    function delLinhaProcedimento(r) {
-        var i = r.parentNode.parentNode.rowIndex;
-        document.getElementById("tblPrecosProcedimentos").deleteRow(i);
+    function delLinhaProcedimento(element, atendimento_nome, atendimento_id) {
+
+    	var mensagem = 'DrHoje';
+        swal({
+            title: mensagem,
+            text: 'O Atendimento "'+atendimento_nome+'" será movido da lista',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-confirm mt-2',
+            cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Cancelar'
+        }).then(function () {
+            
+        	jQuery.ajax({
+    			type: 'POST',
+    			url: '{{ Request::url() }}/delete-procedimento',
+    			data: {
+    				'atendimento_id': atendimento_id,
+    				'_token': laravel_token
+    			},
+                success: function (result) {
+                    
+                    var atendimento = JSON.parse(result.atendimento);
+                    
+    	            if(result.status) {
+    	            	$(element).parent().parent().remove();
+    	            	$.Notification.notify('success','top right', 'DrHoje', result.mensagem);
+    	            }
+                },
+                error: function (result) {
+                    $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+                }
+    		});
+    		
+        });
     }
 </script>
-
-<div class="form-group">
-	<div class="row">
-        <div class="col-6">
-        	<label for="ds_procedimento" class="control-label">Procedimento<span class="text-danger">*</span></label>
-            <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" autofocus maxlength="100">
-       		<input type="hidden" name="cd_procedimento" id="cd_procedimento" value="">
-       		<input type="hidden" name="procedimento_id" id="procedimento_id" value="">
-       		<input type="hidden" name="descricao_procedimento" id="descricao_procedimento" value="">
-        </div>
-        <div class="col-2">
-            <label for="vl_procedimento" class="control-label">Preço<span class="text-danger">*</span></label>
-            <input id="vl_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_procedimento" value="{{ old('vl_procedimento') }}"  maxlength="15">
-        </div>
-        <div class="col-3">
-        	<div style="height: 30px;"></div>
-            <button type="button" class="btn btn-primary" onclick="addLinhaProcedimento();">Adicionar</button>
-        </div>
-	</div>
-	<br>
-	<div class="row">
-		<div class="col-12">
-    		<table id="tblPrecosProcedimentos" name="tblPrecosProcedimentos" class="table table-striped table-bordered table-doutorhj">
-    			<col width="12">
-    			<col width="80">
-    			<col width="380">
-    			<col width="100">
-    			<col width="10">
-        		<thead>
-        			<tr>
-    					<th>Id</th>
-    					<th>Código</th>
-    					<th>Procedimento</th>
-    					<th>Valor</th>
-    					<th>Ação</th>
-    				</tr>
-    			</thead>
-    			<tbody>
-        			@if( old('precosProcedimentos') != null )
-        				@foreach( old('precosProcedimentos') as $id => $arProcedimento )
-        				<tr>
-        					<th>{{$id}}				  <input type="hidden" name="precosProcedimentos[{{$id}}][]" value="{{$id}}"></th>
-        					<th>{{$arProcedimento[1]}}<input type="hidden" name="precosProcedimentos[{{$id}}][]" value="{{$arProcedimento[1]}}"></th>
-        					<th>{{$arProcedimento[2]}}<input type="hidden" name="precosProcedimentos[{{$id}}][]" value="{{$arProcedimento[2]}}"></th>
-        					<th><input type="text" class="form-control mascaraMonetaria" name="precosProcedimentos[{{$id}}][]" value="{{$arProcedimento[3]}}"></th>
-        					<th><button type="button" class="btn ti-trash" onclick="delLinhaProcedimento(this)"> Remover</button></th>
-        				</tr>
-        				@endforeach
-    				@else
-        				@if( $precoprocedimentos != null)
-            				@foreach( $precoprocedimentos as $procedimento )
-                				<tr>
-                					<th>{{$procedimento->procedimento->id}}       		 <input type="hidden" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->procedimento->id}}"></th>
-                					<th>{{$procedimento->procedimento->cd_procedimento}} <input type="hidden" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->procedimento->cd_procedimento}}"></th>
-                					<th>{{$procedimento->procedimento->ds_procedimento}} <input type="hidden" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->ds_preco}}"></th>
-                					<th><input type="text" class="form-control mascaraMonetaria" name="precosProcedimentos[{{$procedimento->procedimento->id}}][]" value="{{$procedimento->vl_atendimento}}"></th>
-                					<th><button type="button" class="btn ti-trash" onclick="delLinhaProcedimento(this)"> Remover</button></th>
-                				</tr>
-            				@endforeach  
-        				@endif
-    				@endif
-				</tbody> 
-        	</table>
-        </div>
-	</div>
-</div>

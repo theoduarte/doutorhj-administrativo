@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class ItempedidoTableSeeder extends Seeder
+class ItempedidosTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

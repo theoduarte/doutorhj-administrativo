@@ -26,7 +26,7 @@
 				
 				<div class="row justify-content-between">
 					<div class="col-12"> 
-						<form class="form-edit-add" role="form" action="{{ route('profissionais.index') }}" method="get" enctype="multipart/form-data">
+						<form class="form-edit-add" role="form" action="{{ route('profissionals.index') }}" method="get" enctype="multipart/form-data">
                     		{{ csrf_field() }}
                 			
             				<div class="row">
@@ -69,7 +69,7 @@
 						<th>Situação</th>
 						<th>Ações</th>
 					</tr>
-					@foreach ($profissionais as $profissional)
+					@foreach ($profissionals as $profissional)
 						<tr>
     						<td>{{$profissional->id}}</td>
     						<td>{{$profissional->user->name}}</td>
@@ -85,15 +85,12 @@
 								{{$profissional->especialidade->cd_especialidade.' - '.$profissional->especialidade->ds_especialidade}}
                 	 		</td>
                	 			<td>
-                	 			@switch( $profissional->user->cs_status )
-                	 				@case('A')  Ativo   @Break
-                	 				@case('I')  Inativo @Break
-                	 			@endswitch
+                	 			{{$profissional->user->cs_status}}
                 	 		</td>
     						<td>
-    							<a href="{{ route('profissionais.show', $profissional->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-    							<a href="{{ route('profissionais.edit', $profissional->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('profissionais.destroy', $profissional->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o profissional {{$profissional->nm_primario}}?"><i class="ti-trash"></i></a>
+    							<a href="{{ route('profissionals.show', $profissional->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+    							<a href="{{ route('profissionals.edit', $profissional->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+    							<a href="{{ route('profissionals.destroy', $profissional->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o profissional {{$profissional->nm_primario}}?"><i class="ti-trash"></i></a>
     						</td>
     					</tr>
 					@endforeach
@@ -101,9 +98,9 @@
                 <tfoot>
                 	<div class="cvx-pagination">
                 		<span class="text-primary">
-                			{{ sprintf("%02d", $profissionais->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $profissionais->count()) }} Registro(s) exibido(s)
+                			{{ sprintf("%02d", $profissionals->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $profissionals->count()) }} Registro(s) exibido(s)
                 		</span>
-                		{!! $profissionais->links() !!}
+                		{!! $profissionals->links() !!}
                 	</div>
                 </tfoot>
            </div>

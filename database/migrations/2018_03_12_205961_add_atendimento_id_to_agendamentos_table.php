@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddProfissionalIdToAgendamentosTable extends Migration
+class AddAtendimentoIdToAgendamentosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,15 +14,15 @@ class AddProfissionalIdToAgendamentosTable extends Migration
     public function up()
     {
     	Schema::table('agendamentos', function (Blueprint $table) {
-    		$table->integer('profissional_id')
+    		$table->integer('atendimento_id')
     		->unsigned()
     		->nullable()
-    		->after('paciente_id');
+    		->after('profissional_id');
     		 
-    		$table->foreign('profissional_id')->references('id')->on('profissionals');
+    		$table->foreign('atendimento_id')->references('id')->on('atendimentos');
     	});
     }
-    
+
     /**
      * Reverse the migrations.
      *
@@ -31,8 +31,8 @@ class AddProfissionalIdToAgendamentosTable extends Migration
     public function down()
     {
     	Schema::table('agendamentos', function (Blueprint $table) {
-    	    $table->dropForeign('agendamentos_profissional_id_foreign');
-    		$table->dropColumn('profissional_id');
+    		$table->dropForeign('agendamentos_atendimento_id_foreign');
+    		$table->dropColumn('atendimento_id');
     	});
     }
 }

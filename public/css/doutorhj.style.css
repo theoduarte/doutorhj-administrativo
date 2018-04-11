@@ -92,6 +92,10 @@ a.jstree-anchor i.ti-na {
 	color: #3bafda;
 }
 
+.table-doutorhj tr th a.btn-secondary {
+    color: #fff;
+}
+
 .view-doutorhj > tbody > tr > td, .view-doutorhj > tbody > tr > th, .view-doutorhj > tfoot > tr > td, .view-doutorhj > tfoot > tr > th, .view-doutorhj > thead > tr > td, .view-doutorhj > thead > tr > th {
     border-top: 1px solid #dee2e6;
 }
@@ -140,6 +144,13 @@ a.jstree-anchor i.ti-na {
 
 .breadcrumb-item a {
 	color: #3bafda;
+}
+
+select[readonly], input[readonly] {
+  background: #ddd;
+  cursor: not-allowed;
+  pointer-events: none;
+  touch-action: none;
 }
 
 .cvx-pagination .pagination {

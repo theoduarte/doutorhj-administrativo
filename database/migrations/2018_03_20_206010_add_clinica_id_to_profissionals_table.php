@@ -19,7 +19,7 @@ class AddClinicaIdToProfissionalsTable extends Migration
     		->nullable()
     		->after('especialidade_id');
     		 
-    		$table->foreign('clinica_id')->references('id')->on('profissionals');
+    		$table->foreign('clinica_id')->references('id')->on('clinicas');
     	});
     }
     

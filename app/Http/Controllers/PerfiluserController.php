@@ -104,9 +104,9 @@ class PerfiluserController extends Controller
     	$list_selecionadas_permissaos = Perfiluser::find($id)->load('permissaos');
     	$list_permisssao_id = array();
     	
-    	foreach ($list_selecionadas_permissaos->permissaos as $permissao) {
+    	/* foreach ($list_selecionadas_permissaos->permissaos as $permissao) {
     		array_push ( $list_permisssao_id, $permissao->id );
-    	}
+    	} */
     	
     	//--busca os itens nao relacionados ao perfil de usuario---------------------
     	//$list_nao_selecionadas_permissaos = Permissao::whereNotIn('permissaos.id', $list_permisssao_id)->get(['id','titulo']);
@@ -121,9 +121,9 @@ class PerfiluserController extends Controller
     	$list_selecionadas_menus = Perfiluser::find($id)->load('menus');
     	$list_menu_id = array();
     	 
-    	foreach ($list_selecionadas_menus->menus as $menu) {
-    		array_push ( $list_menu_id, $menu->id );
-    	}
+//     	foreach ($list_selecionadas_menus->menus as $menu) {
+//     		array_push ( $list_menu_id, $menu->id );
+//     	}
     	 
     	//--busca os itens nao relacionados ao perfil de usuario---------------------
     	//$list_nao_selecionadas_menus = Permissao::whereNotIn('menus.id', $list_permisssao_id)->get(['id','titulo']);
