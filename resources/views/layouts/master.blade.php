@@ -48,6 +48,7 @@
 		<link href="/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
 		
 		<script src="/libs/comvex-template/js/jquery.min.js"></script>
+		<script src="/libs/comvex-template/js/popper.min.js"></script>
     	<script src="/libs/comvex-template/js/bootstrap.min.js"></script>
     	
     	<!-- modernizr script -->
@@ -373,9 +374,7 @@
     		var laravel_token = '{{ csrf_token() }}';
     		var resizefunc = [];
     	</script>
-    	
-    	<script src="/libs/comvex-template/js/popper.min.js"></script>
-    	
+    	    	
     	<script src="/libs/comvex-template/js/detect.js"></script>
         <script src="/libs/comvex-template/js/fastclick.js"></script>
         <script src="/libs/comvex-template/js/jquery.slimscroll.js"></script>
