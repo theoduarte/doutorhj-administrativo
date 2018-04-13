@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
-class CreateItempedidoTable extends Migration
+class CreateTipoAtendimentosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +14,10 @@ class CreateItempedidoTable extends Migration
      */
     public function up()
     {
-        Schema::create('itempedidos', function (Blueprint $table) {
+        Schema::create('tipoatendimentos', function (Blueprint $table) {
             $table->increments('id');
-            $table->float('valor')->nullable()->comment('VALOR DA COMPRA');
+            $table->string('cd_atendimento', 3)->nullable();
+            $table->string('ds_atendimento', 150)->nullable();
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });
@@ -28,6 +30,6 @@ class CreateItempedidoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('itempedidos');
+        Schema::dropIfExists('tipoatendimentos');
     }
 }

@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
-class CreateConvenioTable extends Migration
+class CreateItempedidosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +14,9 @@ class CreateConvenioTable extends Migration
      */
     public function up()
     {
-        Schema::create('convenios', function (Blueprint $table) {
+        Schema::create('itempedidos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('cd_convenio', 50)->comment('Código do Convênio.');
-            $table->string('ds_convenio', 250)->comment('Descrição do Convênio.');
-            $table->string('cs_status', 1)->comment('A => ATIVO I => INATIVO');
+            $table->float('valor')->nullable()->comment('VALOR DA COMPRA');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });
@@ -30,6 +29,6 @@ class CreateConvenioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('convenios');
+        Schema::dropIfExists('itempedidos');
     }
 }

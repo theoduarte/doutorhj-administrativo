@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
-
 class Itempedido extends Model
 {
     use Sortable;
@@ -16,10 +15,5 @@ class Itempedido extends Model
     public function agendamento()
     {
         return $this->belongsTo(Agendamento::class);
-    }
-    
-    public function getValorAttribute($valor){
-        
-        return \App\Http\Controllers\UtilController::formataMoeda($valor);
     }
 }

@@ -282,31 +282,5 @@
               minLength: 4 
             });
         });
-
-        /* $( "#nr_cep" ).blur(function() {
-        	$.ajax({
-        	  url: "/consulta-cep/cep/"+this.value,
-        	  context: document.body
-        	}).done(function(resposta) {
-        	  $( this ).addClass( "done" );
-
-        	  if( resposta != null){
-            	  var json = JSON.parse(resposta);
-    
-      			  $('#te_endereco').val(json.logradouro);
-      			  $('#te_bairro').val(json.bairro);
-      			  $('#nm_cidade').val(json.cidade);
-      			  $('#sg_estado').val(json.estado);
-      			  $('#cd_cidade_ibge').val(json.ibge);
-      			  
-        	  }else{
-      			  $('#te_endereco').val(null);
-      			  $('#te_bairro').val(null);
-      			  $('#nm_cidade').val(null);
-      			  $('#sg_estado').val(null);
-      			  $('#cd_cidade_ibge').val(null);
-              }
-        	});
-        }); */
     });
 </script>
