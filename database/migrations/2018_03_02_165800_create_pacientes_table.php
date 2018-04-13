@@ -22,7 +22,6 @@ class CreatePacientesTable extends Migration
             $table->date('dt_nascimento')->nullable()->comment('DATA DE NASCIMENTO');
             $table->string('access_token', 6)->nullable()->comment('token de acesso.');
             $table->time('time_to_live')->nullable()->comment('tempo de vida do token de acesso.');
-            $table->date('dt_nascimento')->nullable()->comment('DATA DE NASCIMENTO');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });
