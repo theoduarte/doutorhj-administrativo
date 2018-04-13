@@ -36,7 +36,6 @@ Route::get('profissionais/{idClinica}', 'ProfissionalController@getProfissionais
 Route::get('agenda/agendar/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i?}', 'AgendaController@addAgendamento')->middleware('auth');
 Route::get('agenda/cancelar/{ticket}/{obs?}', 'AgendaController@addCancelamento')->middleware('auth');
 
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
