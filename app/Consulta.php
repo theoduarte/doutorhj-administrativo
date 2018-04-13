@@ -19,7 +19,7 @@ class Consulta extends Model
     
     public function tipo_atendimento()
     {
-        return $this->belongsTo('App\TipoAtendimento');
+        return $this->belongsTo('App\Tipoatendimento');
     }
     
     public function atendimentos()

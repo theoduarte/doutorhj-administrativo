@@ -19,7 +19,7 @@ class AddTipoAtendimentoIdToProcedimentosTable extends Migration
     		->nullable()
     		->after('ds_procedimento');
     		 
-    		$table->foreign('tipoatendimento_id')->references('id')->on('tipoatendimento');
+    		$table->foreign('tipoatendimento_id')->references('id')->on('tipoatendimentos');
     	});
     }
     

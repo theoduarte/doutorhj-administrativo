@@ -10,6 +10,6 @@ class Cidade extends Model
 	public $timestamps   = false;
 	
 	public function estado(){
-	    return $this->belongsTo(Estado::class);
+	    return $this->belongsTo("App\Estado");
 	}
 }

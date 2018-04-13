@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddAgendamentoIdToItempedidoTable extends Migration
+class AddAgendamentoIdToItempedidosTable extends Migration
 {
     /**
      * Run the migrations.

@@ -8,6 +8,4 @@ class Contato extends Model
 {
 	public $fillable   = ['tp_contato', 'ds_contato'];
 	
-	
-	
 }
