@@ -30,7 +30,7 @@ class AddTipoAtendimentoIdToProcedimentosTable extends Migration
      */
     public function down()
     {
-    	Schema::table('users', function (Blueprint $table) {
+    	Schema::table('procedimentos', function (Blueprint $table) {
     		$table->dropForeign('procedimentos_tipoatendimento_id_foreign');
     		$table->dropColumn('tipoatendimento_id');
     	});
