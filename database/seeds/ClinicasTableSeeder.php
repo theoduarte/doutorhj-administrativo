@@ -116,7 +116,8 @@ class ClinicasTableSeeder extends Seeder
                     0 =>
                     array (
                             'id' => ++$idAtendimento,
-                            'vl_atendimento'=>2400.40,
+                            'vl_com_atendimento'=>2400.40,
+                    		'vl_net_atendimento'=>2200.40,
                             'ds_preco' => 'teste...',
                             'clinica_id' => $numero,
                             'consulta_id' => null,

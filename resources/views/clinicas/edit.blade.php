@@ -88,6 +88,10 @@
 	        $('#cvx-tab a[href="' + activeTab + '"]').tab('show');
 	    }
 
+	    $('body').on('hidden.bs.modal', '.modal', function () {
+	        $(this).removeData('bs.modal');
+	    });
+
 	    $( "#nr_cep" ).blur(function() {
 	    	jQuery.ajax({
         		type: 'GET',
@@ -173,15 +177,11 @@
 		                     confirmButtonClass: 'btn btn-confirm mt-2',
 		                     confirmButtonText: 'OK'
 		                 }).then(function () {
-		                     //$('#con-close-modal').modal('hide');
-		                     //$(".modal.in").modal('hide');
-		                     //$('.modal-backdrop').remove();
-		                     //$('button.close').trigger('click');
-		                	 $(".modal").removeClass("in");
-		                	 $(".modal-backdrop").remove();
-		                	 $('body').removeClass('modal-open');
-		                	 $('body').css('padding-right', '');
-		                	 $(".modal").hide(); 
+		                	 $('.modal').removeClass('in').attr("aria-hidden","true").off('click.dismiss.modal').removeClass('show');
+		                     $('.modal').css("display", "none");
+		                     $('.modal-backdrop').remove();
+		                     $('body').removeClass('modal-open');
+		                     window.location.reload(false); 
 		                 });
 
 		                 if(tp_operation == 'add') {

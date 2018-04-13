@@ -10,8 +10,8 @@ class Atendimento extends Model
 {
 	use Sortable;
 	
-	public $fillable  = ['id', 'vl_atendimento', 'ds_preco'];
-	public $sortable  = ['id', 'vl_atendimento', 'ds_preco'];
+	public $fillable  = ['id', 'vl_com_atendimento', 'ds_preco'];
+	public $sortable  = ['id', 'vl_net_atendimento', 'ds_preco'];
 
 	public function clinica(){
 	    return $this->belongsTo('App\Clinica');
@@ -36,5 +36,15 @@ class Atendimento extends Model
 	
 	public function getVlAtendimentoAttribute($valor){
 	    return number_format( $valor,  2, ',', '.'); 
+	}
+	
+	public function getVlComercialAtendimento()
+	{
+		return number_format( $this->attributes['vl_com_atendimento'],  2, ',', '.');
+	}
+	
+	public function getVlNetAtendimento()
+	{
+		return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
 	}
 }

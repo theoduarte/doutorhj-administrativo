@@ -210,8 +210,8 @@ class ClinicaController extends Controller
         $documentosclinica = $prestador->documentos;
         
         $user   = User::findorfail($prestador->responsavel->user_id);
-        $precoprocedimentos = Atendimento::where('clinica_id', $idClinica)->where('procedimento_id', '<>', null)->orderBy('ds_preco', 'asc')->orderBy('vl_atendimento', 'desc')->get();
-        $precoconsultas =     Atendimento::where('clinica_id', $idClinica)->where('consulta_id', '<>', null)->orderBy('ds_preco', 'asc')->orderBy('vl_atendimento', 'desc')->get();
+        $precoprocedimentos = Atendimento::where('clinica_id', $idClinica)->where('procedimento_id', '<>', null)->where('cs_status', '=', 'A')->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
+        $precoconsultas =     Atendimento::where('clinica_id', $idClinica)->where('consulta_id', '<>', null)->where('cs_status', '=', 'A')->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
         
         $documentoprofissional = [];
 
@@ -319,6 +319,31 @@ class ClinicaController extends Controller
         
         
         return redirect()->route('clinicas.index')->with('success', 'Clínica excluída com sucesso!');        
+    }
+    
+    /**
+     * Consulta para alimentar autocomplete
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProfissionals(){
+    	
+    	$arResultado = array();
+    	
+    	$nm_profissional = CVXRequest::post('nm_profissional');
+    	$clinica_id = CVXRequest::post('clinica_id');
+    	
+    	$profissionals = Profissional::where ( DB::raw ( 'to_str(nm_primario)' ), 'like', '%' . UtilController::toStr ( $nm_profissional ) . '%' )->orWhere ( DB::raw ( 'to_str(nm_secundario)' ), 'like', '%' . UtilController::toStr ( $nm_profissional ) . '%' )->where ('clinica_id', '=', $clinica_id)->get ();
+    
+    	foreach ($profissionals as $query)
+    	{
+    		$tipo_documento = $query->documentos()->first()->tp_documento;
+    		$nr_documento = $query->documentos()->first()->te_documento;
+    		
+    		$arResultado[] = [ 'id' =>  $query->id, 'value' => $query->nm_primario.' '.$query->nm_secundario.' ('.$tipo_documento.': '.$nr_documento.')' ];
+    	}
+    
+    	return Response()->json($arResultado);
     }
     
     /**
@@ -498,16 +523,20 @@ class ClinicaController extends Controller
         
         $clinica_id = CVXRequest::post('clinica_id');
         $procedimento_id = CVXRequest::post('procedimento_id');
+        $profissional_id = CVXRequest::post('atendimento_profissional_id');
         $ds_procedimento = CVXRequest::post('ds_procedimento');
-        $vl_procedimento = CVXRequest::post('vl_procedimento');
+        $vl_com_procedimento = CVXRequest::post('vl_com_procedimento');
+        $vl_net_procedimento = CVXRequest::post('vl_net_procedimento');
         
         if (sizeof($atendimento) == 0) {
             $atendimento = new Atendimento();
         }
         $atendimento->ds_preco =  $ds_procedimento;
-        $atendimento->vl_atendimento = UtilController::moedaBanco($vl_procedimento);
+        $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_procedimento);
+        $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_procedimento);
         $atendimento->clinica_id = $clinica_id;
         $atendimento->procedimento_id = $procedimento_id;
+        $atendimento->profissional_id = $profissional_id;
         $atendimento->cs_status = 'A';
         
         if (!$atendimento->save()) {
@@ -515,6 +544,8 @@ class ClinicaController extends Controller
         }
         
         $atendimento->load('procedimento');
+        $atendimento->load('profissional');
+        $atendimento->profissional->load('documentos');
         
         return response()->json(['status' => true, 'mensagem' => 'O Procedimento foi salvo com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
@@ -552,15 +583,19 @@ class ClinicaController extends Controller
         $clinica_id = CVXRequest::post('clinica_id');
         $consulta_id = CVXRequest::post('consulta_id');
         $ds_consulta = CVXRequest::post('ds_consulta');
-        $vl_consulta = CVXRequest::post('vl_consulta');
+        $profissional_id = CVXRequest::post('consulta_profissional_id');
+        $vl_com_consulta = CVXRequest::post('vl_com_consulta');
+        $vl_net_consulta = CVXRequest::post('vl_net_consulta');
         
         if (sizeof($atendimento) == 0) {
             $atendimento = new Atendimento();
         }
         $atendimento->ds_preco =  $ds_consulta;
-        $atendimento->vl_atendimento = UtilController::moedaBanco($vl_consulta);
+        $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_consulta);
+        $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_consulta);
         $atendimento->clinica_id = $clinica_id;
         $atendimento->consulta_id = $consulta_id;
+        $atendimento->profissional_id = $profissional_id;
         $atendimento->cs_status = 'A';
         
         if (!$atendimento->save()) {
@@ -568,6 +603,8 @@ class ClinicaController extends Controller
         }
         
         $atendimento->load('consulta');
+        $atendimento->load('profissional');
+        $atendimento->profissional->load('documentos');
         
         return response()->json(['status' => true, 'mensagem' => 'A Consulta foi salva com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
