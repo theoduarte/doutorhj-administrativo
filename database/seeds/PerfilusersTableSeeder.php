@@ -39,6 +39,11 @@ class PerfilusersTableSeeder extends Seeder
                     'titulo'                => 'Paciente',
                     'descricao'             => 'Clientes usuários do sistema.',
                     'tipo_permissao'        => 4
+                ],
+                [
+                    'titulo'                => 'Operador',
+                    'descricao'             => 'Realiza cadastros e atualização de dados no sistema.',
+                    'tipo_permissao'        => 5
                 ]
                 
             ]);
