@@ -66,7 +66,6 @@ class ClinicaController extends Controller
         $precoconsultas = null;
         $precoprocedimentos = null;
         
-//         $list_profissionals = Clinica::findorfail($idClinica)->load('profissionals');
         $list_profissionals = [];
         
         return view('clinicas.create', compact('estados', 'cargos', 'precoprocedimentos', 'precoconsultas', 'list_profissionals'));
@@ -93,7 +92,7 @@ class ClinicaController extends Controller
         
         # documento da empresa CNPJ
         $documentoCnpj      = new Documento();
-        $documentoCnpj->tp_documento = 'CNPJ';   
+        $documentoCnpj->tp_documento = $request->input('tp_documento');   
         $documentoCnpj->te_documento = UtilController::retiraMascara($request->input('te_documento'));
         $documentoCnpj->save();
         $documento_ids = [$documentoCnpj->id];
@@ -111,7 +110,7 @@ class ClinicaController extends Controller
         
         # responsavel pela empresa
         $responsavel      = new Responsavel();
-        $responsavel->telefone = $request->input('telefone_responsavel');;
+        $responsavel->telefone = $request->input('telefone_responsavel');
         $responsavel->cpf = UtilController::retiraMascara($request->input('cpf_responsavel'));
         $responsavel->user_id = $usuario->id;
         $responsavel->save();
@@ -120,8 +119,8 @@ class ClinicaController extends Controller
         $arContatos = array();
         
         $contato1             = new Contato();
-        $contato1->tp_contato = $request->input('tp_contato1');
-        $contato1->ds_contato = $request->input('ds_contato1');
+        $contato1->tp_contato = $request->input('tp_contato');
+        $contato1->ds_contato = $request->input('ds_contato');
         $contato1->save();
         array_push($arContatos, $contato1->id);
         

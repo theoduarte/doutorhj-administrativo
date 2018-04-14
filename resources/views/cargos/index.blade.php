@@ -35,7 +35,7 @@
 					</div>				
 					<div class="col-1">
 						<div class="form-group text-right m-b-0">
-							<a href="{{ route('cargos.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ti-close"></i> Limpar Busca</a>
+							<a href="{{ route('cargos.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ion-close"></i> Limpar Busca</a>
 						</div>
 					</div>
 					<div class="col-2">
