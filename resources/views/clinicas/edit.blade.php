@@ -143,8 +143,14 @@
 			var especialidade_id = $('#tp_especialidade').val();
 			var tp_profissional = $('#tp_profissional').val();
 			var profissional_id = $('#profissional_id').val();
-			var tp_documento = $('#tp_documento').val();
-			var te_documento = $('#te_documento').val();
+			var tp_documento_profissional = $('#tp_documento_profissional').val();
+			var te_documento_profissional = $('#te_documento_profissional').val();
+
+			if( nm_primario.length == 0 ) { $('#nm_primario').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; } 
+			if( nm_secundario.length == 0 ) { $('#nm_secundario').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
+			if( dt_nascimento.length == 0 ) { $('#dt_nascimento').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
+			if( te_documento_profissional.length == 0 ) { $('#te_documento_profissional').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
+			if( especialidade_id.length == 0 ) { $('#tp_especialidade').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
 
 			var tp_operation = $('#profisisonal-type-operation').val();
 			
@@ -161,8 +167,8 @@
 					'especialidade_id': especialidade_id,
 					'tp_profissional': tp_profissional,
 					'profissional_id': profissional_id,
-					'tp_documento': tp_documento,
-					'te_documento': te_documento,
+					'tp_documento': tp_documento_profissional,
+					'te_documento': te_documento_profissional,
 					'_token': laravel_token
 				},
 	            success: function (result) {
@@ -248,13 +254,13 @@
 		            $('#con-close-modal').find('#cs_sexo').val(profissional.cs_sexo);
 		            $('#con-close-modal').find('#dt_nascimento').val(profissional.dt_nascimento);
 		            $('#con-close-modal').find('#tp_profissional').val(profissional.tp_profissional);
-		            $('#con-close-modal').find('#tp_documento').val(profissional.tp_documento);
-		            $('#con-close-modal').find('#te_documento').val(profissional.te_documento);
+		            $('#con-close-modal').find('#tp_documento_profissional').val(profissional.tp_documento);
+		            $('#con-close-modal').find('#te_documento_profissional').val(profissional.te_documento);
 		            $('#con-close-modal').find('#tp_especialidade').val(profissional.especialidade_id);
 		            
 		            if(profissional.documentos.length > 0) {
-		            	$('#con-close-modal').find('#tp_documento').val(profissional.documentos[0].tp_documento);
-			            $('#con-close-modal').find('#te_documento').val(profissional.documentos[0].te_documento);
+		            	$('#con-close-modal').find('#tp_documento_profissional').val(profissional.documentos[0].tp_documento);
+			            $('#con-close-modal').find('#te_documento_profissional').val(profissional.documentos[0].te_documento);
 		            }
 		            
 	            }

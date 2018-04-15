@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Perfiluser;
 use Illuminate\Support\Facades\DB;
 
 class PerfilusersTableSeeder extends Seeder

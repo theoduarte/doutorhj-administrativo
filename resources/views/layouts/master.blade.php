@@ -107,30 +107,30 @@
             			     
             			     <!-- item-->
             			     <div class="dropdown-item noti-title">
-            			     	<h5 class="font-16"><span class="badge badge-danger float-right">5</span>Notification</h5>
+            			     	<h5 class="font-16"><span class="badge badge-danger float-right">5</span>Notificações</h5>
             			     </div>
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     	<div class="notify-icon bg-success"><i class="mdi mdi-comment-account"></i></div>
-            			     	<p class="notify-details">Robert S. Taylor commented on Admin<small class="text-muted">1 min ago</small></p>
+            			     	<div class="notify-icon bg-success"><i class="mdi mdi-stethoscope"></i></div>
+            			     	<p class="notify-details">Dr. Theogenes <b>Adicionado</b><small class="text-muted">Adicionado</small></p>
             			     </a>
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     <div class="notify-icon bg-info"><i class="mdi mdi-account"></i></div>
-            			     	<p class="notify-details">New user registered.<small class="text-muted">1 min ago</small></p>
+            			     <div class="notify-icon bg-primary"><i class="mdi mdi-calendar-multiple-check"></i></div>
+            			     	<p class="notify-details">Consulta(s) <b>Agendada(s)</b><small class="text-muted">1 min ago</small></p>
             			     </a>
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     	<div class="notify-icon bg-danger"><i class="mdi mdi-airplane"></i></div>
+            			     	<div class="notify-icon bg-danger"><i class="mdi mdi-hospital"></i></div>
             			     
-            			     	<p class="notify-details">Carlos Crouch liked <b>Admin</b><small class="text-muted">1 min ago</small></p>
+            			     	<p class="notify-details">Clínica Marcela <b>Adicionada</b><small class="text-muted">1 min ago</small></p>
             			     </a>
             			     
             			     <!-- All-->
-            			     <a href="javascript:void(0);" class="dropdown-item notify-item notify-all">View All</a>
+            			     <a href="javascript:void(0);" class="dropdown-item notify-item notify-all">Ver tudo</a>
             			</div>
             		</li>
             		

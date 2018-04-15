@@ -119,8 +119,8 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="tp_documento" class="control-label">Tipo Documento</label>
-                            <select id="tp_documento" class="form-control" name="tp_documento">
+                            <label for="tp_documento_profissional" class="control-label">Tipo Documento</label>
+                            <select id="tp_documento_profissional" class="form-control" name="tp_documento_profissional">
                             	<option value="CRM">CRM</option>
                             	<option value="CRO">CRO</option>
                             </select>
@@ -128,8 +128,8 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="te_documento" class="control-label">Nr. Documento</label>
-                            <input type="text" id="te_documento" class="form-control" name="tp_documento" placeholder="Nr. Documento">
+                            <label for="te_documento_profissional" class="control-label">Nr. Documento</label>
+                            <input type="text" id="te_documento_profissional" class="form-control" name="te_documento_profissional" placeholder="Nr. Documento">
                         </div>
                     </div>
                 </div>
@@ -138,6 +138,7 @@
                         <div class="form-group no-margin">
                             <label for="tp_especialidade" class="control-label">Especialidade</label>
                             <select id="tp_especialidade" class="form-control" name="tp_especialidade">
+                            	<option value="">SELECIONE A ESPECIALIDADE</option>
                             	@foreach($list_especialidades as $id => $titulo)
 								<option value="{{ $id }}">{{ $titulo }}</option>
 								@endforeach

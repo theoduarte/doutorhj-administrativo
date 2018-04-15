@@ -113,10 +113,10 @@
 	
     function addLinhaConsulta() {
         
-		if( $('#consulta_id').val().length == 0 ) return false;
-		if( $('#ds_consulta').val().length == 0 ) return false;
-		if( $('#vl_com_consulta').val().length == 0 ) return false;
-		if( $('#vl_net_consulta').val().length == 0 ) return false;
+    	if( $('#consulta_id').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Falha ao Selecionar a Consulta. Por favor, tente novamente.'); return false; }
+		if( $('#ds_consulta').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Falha ao Selecionar a Consulta. Por favor, tente novamente.'); return false; }
+		if( $('#vl_com_consulta').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Valor Comercial informado não é válido. Por favor, tente novamente.'); return false; }
+		if( $('#vl_net_consulta').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Valor NET informado não é válido. Por favor, tente novamente.'); return false; }
 		if( $('#consulta_profissional_id').val().length == 0 ) return false;
 		if( $('#clinica_id').val().length == 0 ) return false;
         

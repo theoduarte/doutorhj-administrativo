@@ -115,10 +115,10 @@
     });
 	
     function addLinhaProcedimento() {
-		if( $('#procedimento_id').val().length == 0 ) return false;
-		if( $('#ds_procedimento').val().length == 0 ) return false;
-		if( $('#vl_com_procedimento').val().length == 0 ) return false;
-		if( $('#vl_net_procedimento').val().length == 0 ) return false;
+		if( $('#procedimento_id').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Falha ao Selecionar Procedimento. Por favor, tente novamente.'); return false; }
+		if( $('#ds_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Falha ao Selecionar Procedimento. Por favor, tente novamente.'); return false; }
+		if( $('#vl_com_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Valor Comercial informado não é válido. Por favor, tente novamente.'); return false; }
+		if( $('#vl_net_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Valor NET informado não é válido. Por favor, tente novamente.'); return false; }
 		if( $('#atendimento_profissional_id').val().length == 0 ) return false;
 		if( $('#clinica_id').val().length == 0 ) return false;
         

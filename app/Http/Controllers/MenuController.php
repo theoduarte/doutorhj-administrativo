@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request as CVXRequest;
 
 class MenuController extends Controller
 {
@@ -15,7 +16,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-    	$get_term = \Request::get('search_term');
+        $get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	 
     	$menus = Menu::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);

@@ -21,6 +21,8 @@ use App\Contato;
 use App\Endereco;
 use App\Procedimento;
 use App\Responsavel;
+use App\RegistroLog;
+use Illuminate\Support\Facades\Auth;
 
 class ClinicaController extends Controller
 {
@@ -143,7 +145,16 @@ class ClinicaController extends Controller
         # clinica
         $clinica = Clinica::create($request->all());
         $clinica->responsavel_id = $responsavel->id;
-        $clinica->save();
+        if ($clinica->save()) {
+            
+            # registra log
+            $log = new RegistroLog();
+            $log->titulo = 'Clinica';
+            $log->descricao = 'Adicionar Clinica';
+            $log->tipolog_id = 1;
+            $log->user_id = Auth::user()->id;
+            $log->save();
+        }
         
         $prestador = $this->setClinicaRelations($clinica, $documento_ids, $endereco_ids, $arContatos);
         
@@ -236,7 +247,7 @@ class ClinicaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EditarPrestadoresRequest $request, $idClinica)
+    public function update(PrestadoresRequest $request, $idClinica)
     {
         $prestador = Clinica::findOrFail($idClinica);
         
@@ -253,8 +264,8 @@ class ClinicaController extends Controller
         $documento_ids = [];
         $cnpj_id = CVXRequest::post('cnpj_id');
         $documento = Documento::findorfail($cnpj_id);
-        $documento->tp_documento = CVXRequest::post('tp_documento_'.$cnpj_id);
-        $documento->te_documento = UtilController::retiraMascara(CVXRequest::post('te_documento_'.$cnpj_id));
+        $documento->tp_documento = $request->input('tp_documento');
+        $documento->te_documento = UtilController::retiraMascara($request->input('te_documento'));
         $documento->save();
         $documento_ids = [$documento->id];
         
