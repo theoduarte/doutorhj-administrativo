@@ -131,12 +131,17 @@
 
 <div class="row">
 	<div class="col-md-1">
-		<div class="form-group{{ $errors->has('nr_cep') ? ' has-error' : '' }}">
+		<div class="form-group{{ $errors->has('nr_cep') | $errors->has('cd_cidade_ibge') ? ' has-error' : '' }}">
             <label for="nr_cep" class="col-3 control-label">CEP<span class="text-danger">*</span></label>
             <input id="nr_cep" type="text" class="form-control mascaraCEP consultaCep" name="nr_cep" value="{{$prestador->enderecos->first()->nr_cep}}" required  maxlength="10">
             <input type="hidden" id="nr_latitude_gps" name="nr_latitude_gps" value="{{ $prestador->enderecos->first()->nr_latitude_gps }}" >
             <input type="hidden" id="nr_longitute_gps" name="nr_longitute_gps" value="{{ $prestador->enderecos->first()->nr_longitute_gps }}" >
             <input type="hidden" id="endereco_id" name="endereco_id" value="{{$prestador->enderecos->first()->id}}">
+            @if ($errors->has('cd_cidade_ibge'))
+            <span class="help-block text-danger">
+            	<strong>Cód. IBGE não Encontrado!</strong>
+            </span>
+            @endif
         </div>
 	</div>
 	

@@ -88,6 +88,7 @@ class ClinicaController extends Controller
         $usuario->password  = bcrypt($request->input('password'));
         $usuario->tp_user   = 'CLI';
         $usuario->cs_status = 'A';
+        $usuario->avatar = 'users/default.png';
         $usuario->perfiluser_id = 2;
         $usuario->save();
         
@@ -362,11 +363,11 @@ class ClinicaController extends Controller
     {
         $clinica = Clinica::findorfail($idClinica);
         $clinica_obj = $clinica->toJson();
-        $clinica->forceDelete();
-        $clinica->contatos()->forceDelete();
-        $clinica->enderecos()->forceDelete();
-        $clinica->documentos()->forceDelete();
-        $clinica->user()->forceDelete();
+        $clinica->contatos()->delete();
+        $clinica->enderecos()->delete();
+        $clinica->documentos()->delete();
+        $clinica->delete();
+        $clinica->responsavel()->delete();
         Atendimento::where('clinica_id', $idClinica)->delete();
         
         # registra log 
