@@ -91,7 +91,6 @@ class ClinicaController extends Controller
         $usuario->perfiluser_id = 2;
         $usuario->save();
         
-        
         # documento da empresa CNPJ
         $documentoCnpj      = new Documento();
         $documentoCnpj->tp_documento = $request->input('tp_documento');   
@@ -148,17 +147,38 @@ class ClinicaController extends Controller
         if ($clinica->save()) {
             
             # registra log
-            $log = new RegistroLog();
-            $log->titulo = 'Clinica';
-            $log->descricao = 'Adicionar Clinica';
-            $log->tipolog_id = 1;
-            $log->user_id = Auth::user()->id;
-            $log->save();
+            $user_obj           = $usuario->toJson();
+            $clinica_obj        = $clinica->toJson();
+            $documento_obj      = $documentoCnpj->toJson();
+            $endereco_obj       = $endereco->toJson();
+            $responsavel_obj    = $responsavel->toJson();
+            $contato_obj        = $contato1->toJson();
+            
+            $log = "[$user_obj, $clinica_obj, $documento_obj, $endereco_obj, $responsavel_obj, $contato_obj]";
+            
+            $this->registrarLog('Adicionar Clinica', $log, 1);
+            
         }
         
         $prestador = $this->setClinicaRelations($clinica, $documento_ids, $endereco_ids, $arContatos);
         
         return redirect()->route('clinicas.index')->with('success', 'O prestador foi cadastrado com sucesso!');
+    }
+    
+    /**
+     * Registra os logs of specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    private function registrarLog($titulo, $descricao, $tipo_log)
+    {
+        $log = new RegistroLog();
+        $log->titulo = $titulo;
+        $log->descricao = $descricao;
+        $log->tipolog_id = $tipo_log;
+        $log->user_id = Auth::user()->id;
+        $log->save();
     }
 
     /**
@@ -250,22 +270,25 @@ class ClinicaController extends Controller
     public function update(PrestadoresRequest $request, $idClinica)
     {
         $prestador = Clinica::findOrFail($idClinica);
+        $ct_clinica_obj        = $prestador->toJson();
         
         $prestador->update($request->all());
         
         //--atualizar usuário-----------------
         $usuario_id         = CVXRequest::post('responsavel_user_id');
         $usuario            = User::findorfail($usuario_id);
+        $ct_user_obj        = $usuario->toJson();
         $usuario->name      = $request->input('name_responsavel');
         $usuario->password  = bcrypt($request->input('password'));
         $usuario->save();
         
         //--salvar CNPJ------------------------
         $documento_ids = [];
-        $cnpj_id = CVXRequest::post('cnpj_id');
-        $documento = Documento::findorfail($cnpj_id);
-        $documento->tp_documento = $request->input('tp_documento');
-        $documento->te_documento = UtilController::retiraMascara($request->input('te_documento'));
+        $cnpj_id                    = CVXRequest::post('cnpj_id');
+        $documento                  = Documento::findorfail($cnpj_id);
+        $ct_documento_obj           = $documento->toJson();
+        $documento->tp_documento    = $request->input('tp_documento');
+        $documento->te_documento    = UtilController::retiraMascara($request->input('te_documento'));
         $documento->save();
         $documento_ids = [$documento->id];
         
@@ -273,6 +296,7 @@ class ClinicaController extends Controller
         $endereco_ids = [];
         $endereco_id = CVXRequest::post('endereco_id');
         $endereco = Endereco::findorfail($endereco_id);
+        $ct_endereco_obj           = $endereco->toJson();
         $endereco->nr_cep = UtilController::retiraMascara(CVXRequest::post('nr_cep'));
         $endereco->sg_logradouro = CVXRequest::post('sg_logradouro');
         $endereco->te_endereco = CVXRequest::post('te_endereco');
@@ -292,6 +316,7 @@ class ClinicaController extends Controller
         $contato_ids = [];
         $contato_id = CVXRequest::post('contato_id');
         $contato = Contato::findorfail($contato_id);
+        $ct_contato_obj           = $contato->toJson();
         $contato->tp_contato = CVXRequest::post('tp_contato_'.$contato_id);
         $contato->ds_contato = CVXRequest::post('ds_contato_'.$contato_id);
         $contato->save();
@@ -300,11 +325,27 @@ class ClinicaController extends Controller
         # responsavel pela empresa
         $responsavel_id         = CVXRequest::post('responsavel_id');
         $responsavel            = Responsavel::findorfail($responsavel_id);
+        $ct_responsavel_obj           = $responsavel->toJson();
         $responsavel->telefone  = $request->input('telefone_responsavel');
         $responsavel->save();
         
         $prestador = $this->setClinicaRelations($prestador, $documento_ids, $endereco_ids, $contato_ids);
-        $prestador->save();
+        if ($prestador->save()) {
+            
+            $user_obj           = $usuario->toJson();
+            $clinica_obj        = $prestador->toJson();
+            $documento_obj      = $documento->toJson();
+            $endereco_obj       = $endereco->toJson();
+            $responsavel_obj    = $responsavel->toJson();
+            $contato_obj        = $contato->toJson();
+            
+            $ct_log = "reg_anterior:[$ct_user_obj, $ct_clinica_obj, $ct_documento_obj, $ct_endereco_obj, $ct_responsavel_obj, $ct_contato_obj]";
+            $new_log = "reg_novo:[$user_obj, $clinica_obj, $documento_obj, $endereco_obj, $responsavel_obj, $contato_obj]";
+            
+            $log = "{".$ct_log.",".$new_log."}";
+            
+            $this->registrarLog('Editar Clinica', $log, 3);
+        }
         //$prestador->save();
         
         return redirect()->route('clinicas.index')->with('success', 'Prestador alterado com sucesso!');
@@ -320,6 +361,7 @@ class ClinicaController extends Controller
     public function destroy($idClinica)
     {
         $clinica = Clinica::findorfail($idClinica);
+        $clinica_obj = $clinica->toJson();
         $clinica->forceDelete();
         $clinica->contatos()->forceDelete();
         $clinica->enderecos()->forceDelete();
@@ -327,6 +369,10 @@ class ClinicaController extends Controller
         $clinica->user()->forceDelete();
         Atendimento::where('clinica_id', $idClinica)->delete();
         
+        # registra log 
+        $log = "[$clinica_obj]";
+        
+        $this->registrarLog('Excluir Clinica', $log, 4);
         
         return redirect()->route('clinicas.index')->with('success', 'Clínica excluída com sucesso!');        
     }
@@ -343,7 +389,7 @@ class ClinicaController extends Controller
     	$nm_profissional = CVXRequest::post('nm_profissional');
     	$clinica_id = CVXRequest::post('clinica_id');
     	
-    	$profissionals = Profissional::where ( DB::raw ( 'to_str(nm_primario)' ), 'like', '%' . UtilController::toStr ( $nm_profissional ) . '%' )->orWhere ( DB::raw ( 'to_str(nm_secundario)' ), 'like', '%' . UtilController::toStr ( $nm_profissional ) . '%' )->where ('clinica_id', '=', $clinica_id)->get ();
+    	$profissionals = Profissional::where('clinica_id', '=', $clinica_id)->where ( DB::raw ( 'to_str(nm_primario)' ), 'like', '%' . UtilController::toStr ( $nm_profissional ) . '%' )->orWhere ( DB::raw ( 'to_str(nm_secundario)' ), 'like', '%' . UtilController::toStr ( $nm_profissional ) . '%' )->get();
     
     	foreach ($profissionals as $query)
     	{
@@ -439,10 +485,12 @@ class ClinicaController extends Controller
             $profissional = Profissional::findorfail($profissional_id);
             $profissional->load('documentos');
         }
+        $ct_profissional_obj = $profissional_id != '' ? $profissional->toJson() : "[]";
         
         if (isset($profissional) && isset($profissional->documentos) && sizeof($profissional->documentos) > 0) {
             $documento_id = $profissional->documentos[0]->id;
             $documento = Documento::findorfail($documento_id);
+            $ct_documento_obj = $documento->toJson();
             
             $documento->tp_documento = CVXRequest::post('tp_documento');
             $documento->te_documento = CVXRequest::post('te_documento');
@@ -455,11 +503,9 @@ class ClinicaController extends Controller
             $documento->te_documento =  CVXRequest::post('te_documento');
             $documento->save();
             $documento_ids = [$documento->id];
+            $ct_documento_obj = "[]";
         }
         
-        //         $contato = new Contato();
-        //         $contato->save();
-        //         $contatos_ids = [$contato->id];
         $contatos_ids = [];
         
         if (!isset($profissional)) {
@@ -474,7 +520,22 @@ class ClinicaController extends Controller
         $profissional->tp_profissional = CVXRequest::post('tp_profissional');
         $profissional->cs_status = CVXRequest::post('cs_status');
         
-        if (!$profissional->save()) {
+        if ($profissional->save()) {
+            
+            # registra log
+            $profissional_obj           = $profissional->toJson();
+            $documento_obj              = $documento->toJson();
+            $titulo_log                 = $profissional_id != '' ? 'Editar Profissional' : 'Adicionar Profissional';
+            $tipo_log                   = $profissional_id != '' ? 3 : 1;
+            
+            $ct_log = "reg_anterior:[$ct_profissional_obj, $ct_documento_obj]";
+            $new_log = "reg_novo:[$profissional_obj, $documento_obj]";
+            
+            $log = "{".$ct_log.",".$new_log."}";
+            
+            $this->registrarLog($titulo_log, $log, $tipo_log);
+            
+        } else {
             return response()->json(['status' => false, 'mensagem' => 'O Profissional não foi salvo. Por favor, tente novamente.']);
         }
         
@@ -513,7 +574,16 @@ class ClinicaController extends Controller
         $profissional = Profissional::findorfail($profissional_id);
         $profissional->cs_status = 'I';
         
-        if (!$profissional->save()) {
+        if ($profissional->save()) {
+            
+            # registra log
+            $profissional_obj           = $profissional->toJson();
+            
+            $log = "[$profissional_obj]";
+            
+            $this->registrarLog('Excluir Profissional', $log, 4);
+            
+        } else {
             return response()->json(['status' => false, 'mensagem' => 'O Profissional não foi removido. Por favor, tente novamente.']);
         }
         
@@ -530,6 +600,7 @@ class ClinicaController extends Controller
     {
         $atendimento_id = CVXRequest::post('atendimento_id');
         $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
+        $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]";
         
         $clinica_id = CVXRequest::post('clinica_id');
         $procedimento_id = CVXRequest::post('procedimento_id');
@@ -549,7 +620,20 @@ class ClinicaController extends Controller
         $atendimento->profissional_id = $profissional_id;
         $atendimento->cs_status = 'A';
         
-        if (!$atendimento->save()) {
+        if ($atendimento->save()) {
+            
+            # registra log
+            $atendimento_obj        = $atendimento->toJson();
+            $titulo_log             = $atendimento_id != '' ? 'Editar Atendimento' : 'Adicionar Atendimento';
+            $tipo_log = $atendimento_id != '' ? 3 : 1;
+            
+            $ct_log = "reg_anterior:[$ct_atendimento_obj]";
+            $new_log = "reg_novo:[$atendimento_obj]";
+            
+            $log = "{".$ct_log.",".$new_log."}";
+            
+            $this->registrarLog($titulo_log, $log, $tipo_log);
+        } else {
             return response()->json(['status' => false, 'mensagem' => 'O Procedimento não foi salvo. Por favor, tente novamente.']);
         }
         
@@ -572,7 +656,16 @@ class ClinicaController extends Controller
         $atendimento = Atendimento::findorfail($atendimento_id);
         $atendimento->cs_status = 'I';
         
-        if (!$atendimento->save()) {
+        if ($atendimento->save()) {
+            
+            # registra log
+            $atendimento_obj           = $atendimento->toJson();
+            
+            $log = "[$atendimento_obj]";
+            
+            $this->registrarLog('Excluir Procedimento', $log, 4);
+            
+        } else {
             return response()->json(['status' => false, 'mensagem' => 'O Atendimento não foi removido. Por favor, tente novamente.']);
         }
         
@@ -589,6 +682,7 @@ class ClinicaController extends Controller
     {
         $atendimento_id = CVXRequest::post('atendimento_id');
         $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
+        $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]";
         
         $clinica_id = CVXRequest::post('clinica_id');
         $consulta_id = CVXRequest::post('consulta_id');
@@ -608,7 +702,21 @@ class ClinicaController extends Controller
         $atendimento->profissional_id = $profissional_id;
         $atendimento->cs_status = 'A';
         
-        if (!$atendimento->save()) {
+        if ($atendimento->save()) {
+            
+            # registra log
+            $atendimento_obj        = $atendimento->toJson();
+            $titulo_log             = $atendimento_id != '' ? 'Editar Consulta' : 'Adicionar Consulta';
+            $tipo_log = $atendimento_id != '' ? 3 : 1;
+            
+            $ct_log = "reg_anterior:[$ct_atendimento_obj]";
+            $new_log = "reg_novo:[$atendimento_obj]";
+            
+            $log = "{".$ct_log.",".$new_log."}";
+            
+            $this->registrarLog($titulo_log, $log, $tipo_log);
+                        
+        } else {
             return response()->json(['status' => false, 'mensagem' => 'A Consulta não foi salva. Por favor, tente novamente.']);
         }
         
@@ -631,7 +739,16 @@ class ClinicaController extends Controller
         $atendimento = Atendimento::findorfail($atendimento_id);
         $atendimento->cs_status = 'I';
         
-        if (!$atendimento->save()) {
+        if ($atendimento->save()) {
+            
+            # registra log
+            $atendimento_obj           = $atendimento->toJson();
+            
+            $log = "[$atendimento_obj]";
+            
+            $this->registrarLog('Excluir Consulta', $log, 4);
+            
+        } else {
             return response()->json(['status' => false, 'mensagem' => 'A Consulta não foi removida. Por favor, tente novamente.']);
         }
         

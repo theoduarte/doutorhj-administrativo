@@ -48,6 +48,10 @@ a.jstree-anchor i.ti-na {
     color: #fff ! important;
 }
 
+.ui-widget.ui-widget-content {
+    z-index: 1000;
+}
+
 .table-doutorhj tr th,
 .table-doutorhj tr td {
     text-align: center;

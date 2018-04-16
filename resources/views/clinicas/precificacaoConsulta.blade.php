@@ -157,8 +157,8 @@
 		                 <td>'+atendimento.consulta.cd_consulta+'<input type="hidden" class="consulta_id" value="'+atendimento.consulta.id+'"> <input type="hidden" class="profissional_id" value="'+atendimento.profissional.id+'"></td>\
 		                 <td>'+atendimento.ds_preco+'</td>\
 		                 <td>'+atendimento.profissional.nm_primario+' '+atendimento.profissional.nm_secundario+' ('+atendimento.profissional.documentos[0].tp_documento+': '+atendimento.profissional.documentos[0].te_documento+')</td>\
-		                 <td>'+atendimento.vl_com_atendimento+'</td>\
-		                 <td>'+atendimento.vl_net_atendimento+'</td>\
+		                 <td>'+numberToReal(atendimento.vl_com_atendimento)+'</td>\
+		                 <td>'+numberToReal(atendimento.vl_net_atendimento)+'</td>\
 		                 <td>\
 		                 	<a href="#" onclick="loadDataConsulta(this)" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>\
 		                 	<a onclick="delLinhaConsulta(this, '+atendimento.ds_preco+', '+atendimento.id+')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Remover</a>\
@@ -170,8 +170,8 @@
 						$('#tr-'+atendimento.id).find('td:nth-child(2)').html(atendimento.consulta.cd_consulta);
 						$('#tr-'+atendimento.id).find('td:nth-child(3)').html(atendimento.ds_preco);
 	            		$('#tr-'+atendimento.id).find('td:nth-child(4)').html(atendimento.profissional.nm_primario+' '+atendimento.profissional.nm_secundario+' ('+atendimento.profissional.documentos[0].tp_documento+': '+atendimento.profissional.documentos[0].te_documento);
-						$('#tr-'+atendimento.id).find('td:nth-child(5)').html(atendimento.vl_com_atendimento);
-						$('#tr-'+atendimento.id).find('td:nth-child(6)').html(atendimento.vl_net_atendimento);
+						$('#tr-'+atendimento.id).find('td:nth-child(5)').html(numberToReal(atendimento.vl_com_atendimento));
+						$('#tr-'+atendimento.id).find('td:nth-child(6)').html(numberToReal(atendimento.vl_net_atendimento));
 	            	}
 
 	            	$('#consulta_atendimento_id').val('');
