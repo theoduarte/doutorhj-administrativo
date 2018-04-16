@@ -23,6 +23,7 @@ use App\Procedimento;
 use App\Responsavel;
 use App\RegistroLog;
 use Illuminate\Support\Facades\Auth;
+use App\Consulta;
 
 class ClinicaController extends Controller
 {
@@ -411,11 +412,11 @@ class ClinicaController extends Controller
      */
     public function getProcedimentos($termo){
         $arResultado = array();
-        $procedimentos = Procedimento::where(DB::raw('to_str(ds_procedimento)'), 'like', '%'.UtilController::toStr($termo).'%')->get();
+        $procedimentos = Procedimento::where(DB::raw('to_str(cd_procedimento)'), 'like', '%'.UtilController::toStr($termo).'%')->orWhere(DB::raw('to_str(ds_procedimento)'), 'like', '%'.UtilController::toStr($termo).'%')->orderBy('ds_procedimento')->get();
         
         foreach ($procedimentos as $query)
         {
-            $arResultado[] = [ 'id' =>  $query->id.' | '.$query->cd_procedimento .' | '.$query->ds_procedimento, 'value' => $query->ds_procedimento ];
+            $arResultado[] = [ 'id' =>  $query->id.' | '.$query->cd_procedimento .' | '.$query->ds_procedimento, 'value' => '('.$query->cd_procedimento.') '.$query->ds_procedimento ];
         }
         
         return Response()->json($arResultado);
@@ -429,11 +430,11 @@ class ClinicaController extends Controller
      */
     public function getConsultas($termo){
         $arResultado = array();
-        $consultas = \App\Consulta::where(DB::raw('to_str(ds_consulta)'), 'like', '%'.UtilController::toStr($termo).'%')->get();
+        $consultas = Consulta::where(DB::raw('to_str(cd_consulta)'), 'like', '%'.UtilController::toStr($termo).'%')->orWhere(DB::raw('to_str(ds_consulta)'), 'like', '%'.UtilController::toStr($termo).'%')->orderBy('ds_consulta')->get();
         
         foreach ($consultas as $query)  
         {
-            $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta, 'value' => $query->ds_consulta ];
+            $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta, 'value' => '('.$query->cd_consulta.') '.$query->ds_consulta ];
         }
         
         return Response()->json($arResultado);

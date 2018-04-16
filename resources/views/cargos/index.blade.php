@@ -75,7 +75,7 @@
                 <tfoot>
                 	<div class="cvx-pagination">
                 		<span class="text-primary">{{ sprintf("%02d", $cargos->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $cargos->count()) }} Registro(s) exibido(s)</span>
-                		{!! $cargos->links() !!}
+                		{!! $cargos->appends(request()->input())->links() !!}
                 		<!-- <ul class="pagination pagination-split justify-content-end footable-pagination m-t-10 m-b-0">
                 			<li class="footable-page-arrow disabled"><a data-page="first" href="#first">«</a></li>
                 			<li class="footable-page-arrow disabled"><a data-page="prev" href="#prev">‹</a></li>

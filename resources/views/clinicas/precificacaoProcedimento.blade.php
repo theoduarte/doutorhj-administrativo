@@ -3,7 +3,7 @@
         <div class="col-8">
 			<div class="row">
 		        <div class="col-10">
-		        	<label for="ds_procedimento" class="control-label">Procedimento<span class="text-danger">*</span></label>
+		        	<label for="ds_procedimento" class="control-label">Descrição Procedimento<span class="text-danger">*</span></label>
 		            <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" placeholder="Informe a Descrição do Procedimento para buscar" autofocus maxlength="100">
 		       		<input type="hidden" id="cd_procedimento" name="cd_procedimento" value="">
 		       		<input type="hidden" id="descricao_procedimento" name="descricao_procedimento" value="">
@@ -81,13 +81,13 @@
         	          }
         	      });
         	  },
-        	  minLength : 3,
+        	  minLength : 2,
         	  select: function(event, ui) {
-        		  arProcedimento = ui.item.id.split(' | ');
+        		  	arProcedimento = ui.item.id.split(' | ');
         		  
-           	      $('input[name="procedimento_id"]').val(arProcedimento[0]);
-           	      $('input[name="cd_procedimento"]').val(arProcedimento[1]);
-           	      $('input[name="descricao_procedimento"]').val(arProcedimento[2]);
+        		  	$('#procedimento_id').val(arProcedimento[0]);
+     	      		$('#cd_procedimento').val(arProcedimento[1]);
+     	      		$('#descricao_procedimento').val(arProcedimento[2]);
         	  }
         });
 
@@ -128,7 +128,7 @@
 		var atendimento_id = $('#atendimento_id').val();
 		var procedimento_id = $('#procedimento_id').val();
 		var atendimento_profissional_id = $('#atendimento_profissional_id').val();
-		var ds_procedimento = $('#ds_procedimento').val();
+		var ds_procedimento = $('#descricao_procedimento').val();
 		var vl_com_procedimento = $('#vl_com_procedimento').val();
 		var vl_net_procedimento = $('#vl_net_procedimento').val();
 		var clinica_id = $('#clinica_id').val();

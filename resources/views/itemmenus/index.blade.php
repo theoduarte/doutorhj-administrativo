@@ -79,7 +79,7 @@
                 <tfoot>
                 	<div class="cvx-pagination">
                 		<span class="text-primary">{{ sprintf("%02d", $itemmenus->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $itemmenus->count()) }} Registro(s) exibido(s)</span>
-                		{!! $itemmenus->links() !!}
+                		{!! $itemmenus->appends(request()->input())->links() !!}
                 	</div>
                 </tfoot>
            </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\RegistroLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as CVXRequest;
+use Illuminate\Support\Facades\DB;
 
 class RegistroLogController extends Controller
 {
@@ -14,7 +16,12 @@ class RegistroLogController extends Controller
      */
     public function index()
     {
-        //
+    	$get_term = CVXRequest::get('search_term');
+    	$search_term = UtilController::toStr($get_term);
+    	 
+    	$registros = RegistroLog::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(descricao)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    	 
+    	return view('registro_logs.index', compact('registros'));
     }
 
     /**

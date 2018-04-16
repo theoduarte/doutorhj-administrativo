@@ -67,6 +67,7 @@
 </div>
 <script type="text/javascript">
 	$(function(){
+		
         $( "#ds_consulta" ).autocomplete({
         	  source: function( request, response ) {
         	      $.ajax( {
@@ -125,7 +126,7 @@
 		var atendimento_id = $('#consulta_atendimento_id').val();
 		var consulta_id = $('#consulta_id').val();
 		var consulta_profissional_id = $('#consulta_profissional_id').val();
-		var ds_consulta = $('#ds_consulta').val();
+		var ds_consulta = $('#descricao_consulta').val();
 		var vl_com_consulta = $('#vl_com_consulta').val();
 		var vl_net_consulta = $('#vl_net_consulta').val();
 		var clinica_id = $('#clinica_id').val();
