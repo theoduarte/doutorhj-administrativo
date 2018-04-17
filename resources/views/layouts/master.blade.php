@@ -62,9 +62,9 @@
     @stack('style')
 </head>
 
-<body class="fixed-left">
+<body class="widescreen fixed-left-void">
     <!-- Begin page -->
-    <div id="wrapper">
+    <div id="wrapper" class="forced enlarged">
     	<div class="page-loader page-loader-variant-1">
             <div><img class='cvx-img-responsive' style='margin-top: -20px;margin-left: -18px;' width='330' height='67' src='/libs/home-template/img/logos/logo-doutor-hoje-vertical.svg' alt='' />
                 <div class="offset-top-41 text-center">
