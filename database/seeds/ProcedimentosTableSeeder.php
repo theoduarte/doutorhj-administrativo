@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class ProcedimentosTableSeeder extends Seeder
-{
+{ 
     /**
      * Auto generated seed file
      *
