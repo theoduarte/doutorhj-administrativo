@@ -10,8 +10,8 @@ class Atendimento extends Model
 {
 	use Sortable;
 	
-	public $fillable  = ['id', 'vl_com_atendimento', 'ds_preco'];
-	public $sortable  = ['id', 'vl_net_atendimento', 'ds_preco'];
+	public $fillable  = ['id', 'vl_com_atendimento', 'vl_net_atendimento', 'ds_preco'];
+	public $sortable  = ['id', 'vl_com_atendimento', 'vl_net_atendimento', 'ds_preco'];
 
 	public function clinica(){
 	    return $this->belongsTo('App\Clinica');
