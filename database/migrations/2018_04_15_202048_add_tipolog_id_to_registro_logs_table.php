@@ -31,7 +31,7 @@ class AddTipologIdToRegistroLogsTable extends Migration
     public function down()
     {
         Schema::table('registro_logs', function (Blueprint $table) {
-            $table->dropForeign('tipo_logs_user_id_foreign');
+            $table->dropForeign('registro_logs_tipolog_id_foreign');
             $table->dropColumn('tipolog_id');
         });
     }
