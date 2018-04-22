@@ -35,7 +35,7 @@ class EstadosTableSeeder extends Seeder
             2 => 
             array (
                 'id' => '3',
-                'ds_estado' => 'AMAZONAS',
+                'ds_estado' => 'Amazonas',
                 'cd_ibge' => '13',
                 'sg_estado' => 'AM',
             ),
@@ -49,7 +49,7 @@ class EstadosTableSeeder extends Seeder
             4 => 
             array (
                 'id' => '5',
-                'ds_estado' => 'BAhia',
+                'ds_estado' => 'Bahia',
                 'cd_ibge' => '29',
                 'sg_estado' => 'BA',
             ),
@@ -208,7 +208,5 @@ class EstadosTableSeeder extends Seeder
                 'sg_estado' => 'TO',
             ),
         ));
-        
-        
     }
 }
