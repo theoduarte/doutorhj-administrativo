@@ -43,7 +43,7 @@
 				<tr id="tr-{{$profissional->id}}">
 					<td>{{sprintf("%04d", $profissional->id)}}</td>
 					<td>{{$profissional->nm_primario}} {{$profissional->nm_secundario}}</td>
-					<td>{{$profissional->especialidade->ds_especialidade}}</td>
+					<td>@if( isset($profissional->especialidade) ) $profissional->especialidade->ds_especialidade @endif</td>
 					<td>{{date('d-m-Y H:i', strtotime($profissional->updated_at))}}</td>
 					<td>
 						<a href="#" onclick="openModal({{ $profissional->id }})" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
@@ -123,6 +123,12 @@
                             <select id="tp_documento_profissional" class="form-control" name="tp_documento_profissional">
                             	<option value="CRM">CRM</option>
                             	<option value="CRO">CRO</option>
+                            	<option value="CRF">CRF</option>
+                            	<option value="CRFA">CRFA</option>
+                            	<option value="CRN">CRN</option>
+                            	<option value="CRP">CRP</option>
+                            	<option value="CREFITO">CREFITO</option>
+                            	<option value="COREN">COREN</option>
                             </select>
                         </div>
                     </div>
