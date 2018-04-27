@@ -104,6 +104,23 @@ a.jstree-anchor i.ti-na {
     border-top: 1px solid #dee2e6;
 }
 
+ul.list-profissional-especialidade {list-style-type:none;}
+ul.list-profissional-especialidade li {
+    float: left;
+    display: inline-block;
+    max-width: 50%;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    background-color: #3bafda;
+    border: 1px solid transparent;
+    color: #ffffff;
+    border-radius: 3px;
+    padding: 0 7px;
+}
+@media screen and (max-width:520px) {
+    ul.list-profissional-especialidade li#three {clear:left;}
+}
+
 .page-loader-variant-1 {
     position: fixed;
     left: 0;

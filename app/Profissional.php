@@ -34,8 +34,8 @@ class Profissional extends Model
 	    return $this->belongsToMany('App\Documento');
 	}
 	
-	public function especialidade(){
-	    return $this->belongsTo('App\Especialidade');
+	public function especialidades(){
+	    return $this->belongsToMany('App\Especialidade');
 	}
 	
 	public function atendimentos()
