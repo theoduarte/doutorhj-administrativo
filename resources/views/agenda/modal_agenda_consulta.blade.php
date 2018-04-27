@@ -94,7 +94,7 @@
     			    }).fail(function(jqXHR, textStatus, msg){
     					swal(
     					        {
-    					            title: 'Preencha todos os campos!',
+    					            title: 'Um erro inesperado ocorreu!',
     					            text: '',
     					            type: 'error',
     					            confirmButtonClass: 'btn btn-confirm mt-2'

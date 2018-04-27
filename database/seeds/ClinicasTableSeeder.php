@@ -116,13 +116,33 @@ class ClinicasTableSeeder extends Seeder
                     0 =>
                     array (
                             'id' => ++$idAtendimento,
-                            'vl_com_atendimento'=>2400.40,
-                    		'vl_net_atendimento'=>2200.40,
+                            'vl_com_atendimento'=>300,
+                            'vl_net_atendimento'=>320,
                             'ds_preco' => 'teste...',
                             'clinica_id' => $numero,
                             'consulta_id' => null,
                             'procedimento_id' => 8381
-                    )
+                    ),
+                    1 =>
+                    array (
+                            'id' => $idAtendimento*2,
+                            'vl_com_atendimento'=>100.50,
+                            'vl_net_atendimento'=>150.00,
+                            'ds_preco' => 'teste...',
+                            'clinica_id' => $numero,
+                            'consulta_id' => 104,
+                            'procedimento_id' => null
+                    ),
+                    2 =>
+                    array (
+                            'id' => $idAtendimento*3,
+                            'vl_com_atendimento'=>100.50,
+                            'vl_net_atendimento'=>150.00,
+                            'ds_preco' => 'teste...',
+                            'clinica_id' => $numero,
+                            'consulta_id' => null,
+                            'procedimento_id' => 158
+                    ),
             ));
 		}
     }

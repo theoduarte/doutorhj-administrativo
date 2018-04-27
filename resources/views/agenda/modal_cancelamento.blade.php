@@ -41,7 +41,7 @@
 
 
 		
-        $( "#cancelamento" ).button().on( "click", function() {
+        $( ".cancelamento" ).button().on( "click", function() {
         	$('#clinica').html("<b>" + $(this).attr('prestador')   + "</b>");
         	$('#paciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
         	$('#dtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");

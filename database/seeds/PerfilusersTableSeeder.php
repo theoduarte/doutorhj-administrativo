@@ -23,7 +23,6 @@ class PerfilusersTableSeeder extends Seeder
         if(DB::table('perfilusers')->get()->count() == 0){
             
             DB::table('perfilusers')->insert([
-                
                 [
                     'titulo'                => 'Administrador',
                     'descricao'             => 'Possui todas as permissões do sistema.',
@@ -33,6 +32,7 @@ class PerfilusersTableSeeder extends Seeder
                     'titulo'                => 'Responsável',
                     'descricao'             => 'Responsável Técnico pela Clínica.',
                     'tipo_permissao'        => 10
+
                 ],
                 [
                     'titulo'                => 'Paciente',
@@ -44,7 +44,6 @@ class PerfilusersTableSeeder extends Seeder
                     'descricao'             => 'Realiza cadastros e atualização de dados no sistema.',
                     'tipo_permissao'        => 5
                 ]
-                
             ]);
             
         }

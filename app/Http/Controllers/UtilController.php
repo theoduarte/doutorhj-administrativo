@@ -109,10 +109,10 @@ class UtilController extends Controller
 	    $data = explode(' - ', $data);
 	    $de  = explode('/', $data[0]);
 	    $ate = explode('/', $data[1]);
-	    
+	       
 	    return array(
-    	           'de'  => new Carbon($de[2].'-'.$de[1].'-'.$de[0]), 
-	               'ate' => new Carbon($ate[2].'-'.$ate[1].'-'.$ate[0])
+    	           'de'  => new Carbon($de[2].'-'.$de[1].'-'.$de[0].' 00:00:00'), 
+	               'ate' => new Carbon($ate[2].'-'.$ate[1].'-'.$ate[0].' 23:59:59')
 	           );
 	}
 }
