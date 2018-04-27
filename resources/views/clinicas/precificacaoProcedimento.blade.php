@@ -22,7 +22,12 @@
 			<div class="row">
 		        <div class="col-10">
 		        	<label for="nm_profissional" class="control-label">Profissional<span class="text-danger">*</span></label>
-		            <input id="nm_profissional" type="text" class="form-control" name="nm_profissional" value="{{ old('nm_profissional') }}" placeholder="Informe o Nome do Profissional para buscar" maxlength="100">
+		            <!-- <input id="nm_profissional" type="text" class="form-control" name="nm_profissional" value="{{ old('nm_profissional') }}" placeholder="Informe o Nome do Profissional para buscar" maxlength="100"> -->
+		            <select id="list_profissional_procedimento" class="select2 select2-multiple" name="nm_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
+			            @foreach($list_profissionals as $profissional)
+			            <option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.' ('.$profissional->documentos->first()->tp_documento.': '.$profissional->documentos->first()->te_documento.')' }}</option>
+			            @endforeach
+		            </select>
 		       		<input type="hidden" id="atendimento_profissional_id" name="atendimento_profissional_id" value="">
 		        </div>
 		        <div class="col-2">
@@ -59,7 +64,7 @@
     					<td>{{$procedimento->getVlComercialAtendimento()}}</td>
     					<td>{{$procedimento->getVlNetAtendimento()}}</td>
     					<td>
-    						<a href="#" onclick="loadDataProcedimento(this)" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+    						<a href="#" onclick="loadDataProcedimento({{ $procedimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
 	                 		<a onclick="delLinhaProcedimento(this, '{{ $procedimento->ds_preco }}', '{{ $procedimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Remover</a>
     					</td>
     				</tr>
@@ -67,6 +72,101 @@
         	</table>
         </div>
 	</div>
+</div>
+<div id="profissional-procedimento-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ProfissionalProcedimentoModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="edit-profisisonal-title-modal">DrHoje: Adicionar Profissional</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nm_primario" class="control-label">Nome</label>
+                            <input type="text" id="nm_primario" class="form-control" name="nm_primario" placeholder="Nome">
+                            <input type="hidden" id="profissional_id" name="id" >
+                            <input type="hidden" id="cs_status" name="cs_status" value="A">
+                            <input type="hidden" id="clinica_id" name="clinica_id" value="{{ $prestador->id }}">
+                            <input type="hidden" id="profisisonal-type-operation" value="add" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nm_secundario" class="control-label">Sobrenome</label>
+                            <input type="text" id="nm_secundario" class="form-control" name="nm_secundario" placeholder="Sobrenome">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="cs_sexo" class="control-label">Sexo</label>
+                            <select id="cs_sexo" class="form-control" name="cs_sexo">
+                            	<option value="M">M</option>
+                            	<option value="F">F</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="dt_nascimento" class="control-label">Data Nasc.</label>
+                            <input type="text" id="dt_nascimento" class="form-control mascaraData" name="dt_nascimento" placeholder="Data Nasc.">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tp_profissional" class="control-label">Tipo Profissional</label>
+                            <select id="tp_profissional" class="form-control" name="tp_profissional">
+                            	<option value="M">Médico</option>
+                            	<option value="D">Dentista</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="tp_documento_profissional" class="control-label">Tipo Documento</label>
+                            <select id="tp_documento_profissional" class="form-control" name="tp_documento_profissional">
+                            	<option value="CRM">CRM</option>
+                            	<option value="CRO">CRO</option>
+                            	<option value="CRF">CRF</option>
+                            	<option value="CRFA">CRFA</option>
+                            	<option value="CRN">CRN</option>
+                            	<option value="CRP">CRP</option>
+                            	<option value="CREFITO">CREFITO</option>
+                            	<option value="COREN">COREN</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="te_documento_profissional" class="control-label">Nr. Documento</label>
+                            <input type="text" id="te_documento_profissional" class="form-control" name="te_documento_profissional" placeholder="Nr. Documento">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group no-margin">
+                            <label for="tp_especialidade" class="control-label">Especialidade</label>
+                            <select id="especialidade_profissional" class="select2 select2-multiple" name="especialidade_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
+                            	@foreach($list_especialidades as $especialidade)
+								<option value="{{ $especialidade->id }}">{{ "($especialidade->cd_especialidade) $especialidade->ds_especialidade" }}</option>
+								@endforeach  
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-save-profissional" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
+                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
 	$(function(){

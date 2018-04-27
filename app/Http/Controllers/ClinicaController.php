@@ -250,10 +250,12 @@ class ClinicaController extends Controller
         //$prestador->load('profissionals')->orderBy('updated_at', 'desc');
         
         if($search_term != '') {
-            $list_profissionals = Profissional::where(DB::raw('to_str(nm_primario)'), 'LIKE', '%'.$search_term.'%')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('updated_at', 'desc')->get();
+            $list_profissionals = Profissional::where(DB::raw('to_str(nm_primario)'), 'LIKE', '%'.$search_term.'%')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('nm_primario', 'asc')->get();
         } else {
-            $list_profissionals = Profissional::where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('updated_at', 'desc')->get();
+            $list_profissionals = Profissional::where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('nm_primario', 'asc')->get();
         }
+        
+        $list_profissionals->load('documentos');
         
         //$list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->pluck('ds_especialidade', 'cd_especialidade', 'id');
         $list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->get();

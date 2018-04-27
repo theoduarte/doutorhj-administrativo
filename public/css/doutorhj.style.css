@@ -117,6 +117,11 @@ ul.list-profissional-especialidade li {
     border-radius: 3px;
     padding: 0 7px;
 }
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    color: #aaa;
+}
+
 @media screen and (max-width:520px) {
     ul.list-profissional-especialidade li#three {clear:left;}
 }
