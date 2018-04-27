@@ -27,7 +27,6 @@
     }
 </style>
 
-
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12">
@@ -133,10 +132,8 @@
         						<th>Ações</th>
         					</tr>
                                 @foreach($agenda as $obAgenda)
-                                   @if( $obAgenda->agendamento != null && 
-                                   			$obAgenda->agendamento->clinica != null && 
-                                   				$obAgenda->agendamento->profissional != null && 
-                                   					$obAgenda->agendamento->paciente->user != null ) 
+                                   @if( $obAgenda->agendamento != null && $obAgenda->agendamento->clinica != null && 
+                                   	    $obAgenda->agendamento->profissional != null && $obAgenda->agendamento->paciente->user != null ) 
                                     <tr>
                                     	<td>{{$obAgenda->agendamento->te_ticket}}</td>
                                     	<td>{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}</td>
@@ -192,7 +189,7 @@
 										
 										
                                     	<!-- botao cancelar -->
-                                    	@if( $obAgenda->agendamento->cs_status!='Cancelado')                                	   
+                                    	@if( $obAgenda->agendamento->cs_status!='Cancelado' and $obAgenda->agendamento->cs_status!='Finalizado')                                	   
                                     	    <a especialidade   = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
                                     		   nm-paciente     = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                                     		   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
@@ -203,13 +200,10 @@
                                     		   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
                                     		   id-paciente     = "{{$obAgenda->agendamento->paciente->id}}"
                                     		   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
-                                    		   class		   = "btn btn-icon waves-effect btn-primary btn-sm m-b-5"
+                                    		   class		   = "btn btn-icon waves-effect btn-primary btn-sm m-b-5 cancelamento"
                                     		   title 		   = "Cancelar Consulta" id="cancelamento"><i class="mdi mdi-thumb-down"></i></a>
 										@endif                                	
-                                    	
-                                    	
-                                   
-                                    	 
+
                                     	</td>
                                     </tr>
                                    @endif 

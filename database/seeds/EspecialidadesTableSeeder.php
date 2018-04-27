@@ -5,16 +5,8 @@ use Illuminate\Support\Facades\DB;
 
 class EspecialidadesTableSeeder extends Seeder
 {
-
-    /**
-     * Auto generated seed file
-     *
-     * @return void
-     */
     public function run()
     {
-        
-
         DB::table('especialidades')->delete();
         
         DB::table('especialidades')->insert(array (
@@ -46,7 +38,7 @@ class EspecialidadesTableSeeder extends Seeder
             array (
                 'id' => '185',
                 'cd_especialidade' => '104',
-            'ds_especialidade' => 'CANCEROLOGIA (ONCOLOGIA)',
+                'ds_especialidade' => 'CANCEROLOGIA (ONCOLOGIA)',
             ),
             5 => 
             array (
@@ -112,7 +104,7 @@ class EspecialidadesTableSeeder extends Seeder
             array (
                 'id' => '196',
                 'cd_especialidade' => '115',
-            'ds_especialidade' => 'CLÍNICA MÉDICA (MEDICINA INTERNA)',
+                'ds_especialidade' => 'CLÍNICA MÉDICA (MEDICINA INTERNA)',
             ),
             16 => 
             array (
@@ -214,7 +206,7 @@ class EspecialidadesTableSeeder extends Seeder
             array (
                 'id' => '213',
                 'cd_especialidade' => '132',
-            'ds_especialidade' => 'MEDICINA LEGAL E PERÍCIA MÉDICA (OU MEDICINA FORENSE)',
+                'ds_especialidade' => 'MEDICINA LEGAL E PERÍCIA MÉDICA (OU MEDICINA FORENSE)',
             ),
             33 => 
             array (
@@ -330,8 +322,30 @@ class EspecialidadesTableSeeder extends Seeder
                 'cd_especialidade' => '151',
                 'ds_especialidade' => 'UROLOGIA',
             ),
+            52 => 
+            array (
+                'id' => '233',
+                'cd_especialidade' => '152',
+                'ds_especialidade' => 'ODONTOLOGIA',
+            ),
+            53 => 
+            array (
+                'id' => '234',
+                'cd_especialidade' => '153',
+                'ds_especialidade' => 'HEPATOLOGIA',
+            ),
+            54 => 
+            array (
+                'id' => '235',
+                'cd_especialidade' => '154',
+                'ds_especialidade' => 'Nutrologia',
+            ),
+            55 => 
+            array (
+                'id' => '236',
+                'cd_especialidade' => '155',
+                'ds_especialidade' => 'Homeopatia',
+            ),
         ));
-        
-        
     }
 }

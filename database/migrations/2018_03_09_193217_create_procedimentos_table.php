@@ -17,7 +17,7 @@ class CreateProcedimentosTable extends Migration
         Schema::create('procedimentos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('cd_procedimento', 10)->nullable()->comment('CÓDIGO DO PROCEDIMENTO UTILIZADO PELA S1 SAÚDE');
-            $table->string('ds_procedimento', 100)->nullable()->comment('DESCRIÇÃO DO PROCEDIMENTO UTILIZADO INTERNAMENTE PELA S1 SAÚDE');
+            $table->string('ds_procedimento', 1000)->nullable()->comment('DESCRIÇÃO DO PROCEDIMENTO UTILIZADO INTERNAMENTE PELA S1 SAÚDE');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
 			$table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });

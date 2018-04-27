@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
-class ConvenioTableSeeder extends Seeder
+class ConveniosTableSeeder extends Seeder
 {
     public function run()
     {

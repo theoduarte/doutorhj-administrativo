@@ -19,7 +19,7 @@ class AddTipoAtendimentoIdToConsultasTable extends Migration
     		->nullable()
     		->after('ds_consulta');
     		 
-    		$table->foreign('tipoatendimento_id')->references('id')->on('tipoatendimentos');
+    		$table->foreign('tipoatendimento_id')->references('id')->on('atendimentos');
     	});
     }
 

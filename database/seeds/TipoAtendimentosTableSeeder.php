@@ -18,25 +18,25 @@ class TipoAtendimentosTableSeeder extends Seeder
             0 =>
             array (
                 'id'             => '1',
-                'cd_atendimento' => '100',
+                'cd_atendimento' => '1',
                 'ds_atendimento' => 'Consulta Médica',
             ),
             1 =>
             array (
                 'id'             => '2',
-                'cd_atendimento' => '200',
+                'cd_atendimento' => '2',
                 'ds_tipo' => 'Consulta Odontológica',
             ),
             2 =>
             array (
                 'id'             => '3',
-                'cd_atendimento' => '300',
+                'cd_atendimento' => '3',
                 'ds_tipo' => 'Exames',
             ),
             3 =>
             array (
                 'id'             => '4',
-                'cd_atendimento' => '400',
+                'cd_atendimento' => '4',
                 'ds_tipo' => 'Procedimentos',
             ),
         ));

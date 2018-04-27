@@ -34,11 +34,6 @@ class PerfilusersTableSeeder extends Seeder
                     'titulo'                => 'Responsável',
                     'descricao'             => 'Responsável Técnico pela Clínica.',
                     'tipo_permissao'        => 10
-                ],
-                [
-                    'titulo'                => 'Paciente',
-                    'descricao'             => 'Clientes usuários do sistema.',
-                    'tipo_permissao'        => 4
                 ]
                 
             ]);

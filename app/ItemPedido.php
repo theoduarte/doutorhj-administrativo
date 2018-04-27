@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Model;
 
 class Itempedido extends Model
 {
@@ -15,5 +15,9 @@ class Itempedido extends Model
     public function agendamento()
     {
         return $this->belongsTo(Agendamento::class);
+    }
+    
+    public function getValorAttribute($valor){
+        return number_format( $valor,  2, ',', '.');
     }
 }

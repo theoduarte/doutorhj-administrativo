@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Carbon;
 
 class AgendaController extends Controller
 {
@@ -49,10 +49,9 @@ class AgendaController extends Controller
                                               if(!empty($nm_paciente)){
                                                   $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr($nm_paciente).'%');
                                               }
-                                         }, 
-                                ])->where(function($query){})
-                                         ->sortable()
-                                         ->paginate(20);
+                                         }])->where(function($query){})
+                                            ->sortable()
+                                            ->paginate(20);
         Request::flash();
 
         return view('agenda.index', compact('agenda', 'clinicas'));
@@ -130,9 +129,10 @@ class AgendaController extends Controller
      * @param integer $ano
      * @param string  $hora
      */
-    public function addAgendamento($teTicket, $idClinica, $idProfissional, $idPaciente, $dia, $mes, $ano, $hora, $boRemarcacao='N'){
-        $agendamento = \App\Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $teTicket);
+    public function addAgendamento($teTicket, $idClinica, $idProfissional, 
+                                   $idPaciente, $dia, $mes, $ano, $hora, $boRemarcacao='N'){
         
+        $agendamento = \App\Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $teTicket);
         
         $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
                          'bo_remarcacao'  => $boRemarcacao, 

@@ -11,7 +11,7 @@ class Agendamento extends Model
     use Sortable;
     
     public $fillable  = ['id', 'te_ticket', 'profissional_id',
-        'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
+                         'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
     
     public $sortable  = ['id', 'te_ticket', 'dt_atendimento', 'cs_status'];
     
@@ -33,7 +33,7 @@ class Agendamento extends Model
         self::CONFIRMADO     => 'Confirmado',
         self::NAO_CONFIRMADO => 'Não Confirmado',
         self::FINALIZADO     => 'Finalizado',
-        self::AUSENTE        => 'Ausente',
+        self::AUSENTE        => 'Não Compareceu',
         self::CANCELADO      => 'Cancelado',
         self::AGENDADO       => 'Agendado'
     );
@@ -58,5 +58,10 @@ class Agendamento extends Model
     
     public function getCsStatusAttribute($cdStatus) {
         return static::$cs_status[$cdStatus];
+    }
+    
+    public function getDtAtendimentoAttribute($data) {
+        $obData = new Carbon($data);
+        return $obData->format('d/m/Y  H:i');
     }
 }
