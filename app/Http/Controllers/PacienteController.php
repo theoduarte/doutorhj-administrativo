@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PacientesRequest;
 use Illuminate\Support\Facades\DB;
+use App\Cidade;
+use App\Endereco;
 
 /**
  * @author Frederico Cruz <frederico.cruz@s1saude.com.br>
@@ -48,8 +50,8 @@ class PacienteController extends Controller
             $documento->save();
             
             
-            $endereco = new \App\Endereco($request->all());
-            $idCidade = \App\Cidades::where(['cd_ibge'=>$request->input('cd_ibge_cidade')])->get(['id'])->first();
+            $endereco = new Endereco($request->all());
+            $idCidade = Cidade::where(['cd_ibge'=>$request->input('cd_ibge_cidade')])->get(['id'])->first();
             $endereco->cidade_id = $idCidade->id;
             $endereco->save();
             

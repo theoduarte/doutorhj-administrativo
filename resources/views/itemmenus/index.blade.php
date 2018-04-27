@@ -35,7 +35,7 @@
 					</div>				
 					<div class="col-1">
 						<div class="form-group text-right m-b-0">
-							<a href="{{ route('itemmenus.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ti-close"></i> Limpar Busca</a>
+							<a href="{{ route('itemmenus.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ion-close"></i> Limpar Busca</a>
 						</div>
 					</div>
 					<div class="col-2">
@@ -79,7 +79,7 @@
                 <tfoot>
                 	<div class="cvx-pagination">
                 		<span class="text-primary">{{ sprintf("%02d", $itemmenus->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $itemmenus->count()) }} Registro(s) exibido(s)</span>
-                		{!! $itemmenus->links() !!}
+                		{!! $itemmenus->appends(request()->input())->links() !!}
                 	</div>
                 </tfoot>
            </div>

@@ -34,7 +34,7 @@
 				<tr>
 					<th>Id</th>
 					<th>Nome</th>
-					<th>Especialidade</th>
+					<th class="text-left" style="width: 600px;">Especialidade(s)</th>
 					<th>Data/hora</th>
 					<th>Ações</th>
 				</tr>
@@ -43,7 +43,7 @@
 				<tr id="tr-{{$profissional->id}}">
 					<td>{{sprintf("%04d", $profissional->id)}}</td>
 					<td>{{$profissional->nm_primario}} {{$profissional->nm_secundario}}</td>
-					<td>{{$profissional->especialidade->ds_especialidade}}</td>
+					<td>@if( isset($profissional->especialidades) && sizeof($profissional->especialidades) > 0 ) <ul class="list-profissional-especialidade">@foreach($profissional->especialidades as $especialidade) <li><i class="mdi mdi-check"></i> {{ $especialidade->ds_especialidade }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA ESPECILIDADE SELECIONADA</span>  @endif</td>
 					<td>{{date('d-m-Y H:i', strtotime($profissional->updated_at))}}</td>
 					<td>
 						<a href="#" onclick="openModal({{ $profissional->id }})" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
@@ -119,17 +119,23 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="tp_documento" class="control-label">Tipo Documento</label>
-                            <select id="tp_documento" class="form-control" name="tp_documento">
+                            <label for="tp_documento_profissional" class="control-label">Tipo Documento</label>
+                            <select id="tp_documento_profissional" class="form-control" name="tp_documento_profissional">
                             	<option value="CRM">CRM</option>
                             	<option value="CRO">CRO</option>
+                            	<option value="CRF">CRF</option>
+                            	<option value="CRFA">CRFA</option>
+                            	<option value="CRN">CRN</option>
+                            	<option value="CRP">CRP</option>
+                            	<option value="CREFITO">CREFITO</option>
+                            	<option value="COREN">COREN</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="te_documento" class="control-label">Nr. Documento</label>
-                            <input type="text" id="te_documento" class="form-control" name="tp_documento" placeholder="Nr. Documento">
+                            <label for="te_documento_profissional" class="control-label">Nr. Documento</label>
+                            <input type="text" id="te_documento_profissional" class="form-control" name="te_documento_profissional" placeholder="Nr. Documento">
                         </div>
                     </div>
                 </div>
@@ -137,10 +143,16 @@
                     <div class="col-md-12">
                         <div class="form-group no-margin">
                             <label for="tp_especialidade" class="control-label">Especialidade</label>
-                            <select id="tp_especialidade" class="form-control" name="tp_especialidade">
+                            <?php /* <select id="tp_especialidade" class="form-control" name="tp_especialidade">
+                            	<option value="">SELECIONE A ESPECIALIDADE</option>
                             	@foreach($list_especialidades as $id => $titulo)
 								<option value="{{ $id }}">{{ $titulo }}</option>
 								@endforeach
+                            </select> */ ?>
+                            <select id="especialidade_profissional" class="select2 select2-multiple" name="especialidade_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
+                            	@foreach($list_especialidades as $especialidade)
+								<option value="{{ $especialidade->id }}">{{ "($especialidade->cd_especialidade) $especialidade->ds_especialidade" }}</option>
+								@endforeach  
                             </select>
                         </div>
                     </div>

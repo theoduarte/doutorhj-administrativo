@@ -55,7 +55,7 @@
 					
 					<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
     					<tr>
-    						<th>ID</th>
+    						<th>Cód.</th>
     						<th>@sortablelink('nm_razao_social', 'Razão Social')</th>
     						<th>@sortablelink('nm_primario', 'Responsável')</th>
     						<th>Contato</th>
@@ -63,7 +63,7 @@
     					</tr>
     					@foreach($prestadores as $prestador)
 						<tr>
-    						<td>{{$prestador->id}}</td>
+    						<td>{{ sprintf("%04d", $prestador->id) }}</td>
     						<td>{{$prestador->nm_razao_social}}</td>
     						<td>{{ $prestador->responsavel->user->name }}</td>
                 	 		<td>

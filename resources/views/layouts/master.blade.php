@@ -33,6 +33,9 @@
     	
     	<!-- Multi Select css -->
         <link href="/libs/multiselect/css/multi-select.css" rel="stylesheet"  type="text/css" />
+        
+        <!-- Select2 CSS -->
+    	<link rel="stylesheet" href="/libs/select2/css/select2.min.css" type="text/css" />
     	
     	<!-- Template theme CSS -->
     	<link rel="stylesheet" href="/libs/comvex-template/css/style_dark.css">
@@ -57,14 +60,15 @@
     	<!-- Sweet Alert Js  -->
         <script src="/libs/sweet-alert/sweetalert2.min.js"></script>
         <script src="/libs/comvex-template/pages/jquery.sweet-alert.init.js"></script>
+        <script src="/js/doutorhj.script.js"></script>
     @endpush
     
     @stack('style')
 </head>
 
-<body class="fixed-left">
+<body class="widescreen fixed-left-void">
     <!-- Begin page -->
-    <div id="wrapper">
+    <div id="wrapper" class="forced enlarged">
     	<div class="page-loader page-loader-variant-1">
             <div><img class='cvx-img-responsive' style='margin-top: -20px;margin-left: -18px;' width='330' height='67' src='/libs/home-template/img/logos/logo-doutor-hoje-vertical.svg' alt='' />
                 <div class="offset-top-41 text-center">
@@ -107,30 +111,30 @@
             			     
             			     <!-- item-->
             			     <div class="dropdown-item noti-title">
-            			     	<h5 class="font-16"><span class="badge badge-danger float-right">5</span>Notification</h5>
+            			     	<h5 class="font-16"><span class="badge badge-danger float-right">5</span>Notificações</h5>
             			     </div>
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     	<div class="notify-icon bg-success"><i class="mdi mdi-comment-account"></i></div>
-            			     	<p class="notify-details">Robert S. Taylor commented on Admin<small class="text-muted">1 min ago</small></p>
+            			     	<div class="notify-icon bg-success"><i class="mdi mdi-stethoscope"></i></div>
+            			     	<p class="notify-details">Dr. Theogenes <b>Adicionado</b><small class="text-muted">Adicionado</small></p>
             			     </a>
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     <div class="notify-icon bg-info"><i class="mdi mdi-account"></i></div>
-            			     	<p class="notify-details">New user registered.<small class="text-muted">1 min ago</small></p>
+            			     <div class="notify-icon bg-primary"><i class="mdi mdi-calendar-multiple-check"></i></div>
+            			     	<p class="notify-details">Consulta(s) <b>Agendada(s)</b><small class="text-muted">1 min ago</small></p>
             			     </a>
             			     
             			     <!-- item-->
             			     <a href="javascript:void(0);" class="dropdown-item notify-item">
-            			     	<div class="notify-icon bg-danger"><i class="mdi mdi-airplane"></i></div>
+            			     	<div class="notify-icon bg-danger"><i class="mdi mdi-hospital"></i></div>
             			     
-            			     	<p class="notify-details">Carlos Crouch liked <b>Admin</b><small class="text-muted">1 min ago</small></p>
+            			     	<p class="notify-details">Clínica Marcela <b>Adicionada</b><small class="text-muted">1 min ago</small></p>
             			     </a>
             			     
             			     <!-- All-->
-            			     <a href="javascript:void(0);" class="dropdown-item notify-item notify-all">View All</a>
+            			     <a href="javascript:void(0);" class="dropdown-item notify-item notify-all">Ver tudo</a>
             			</div>
             		</li>
             		
@@ -177,7 +181,7 @@
             		</li>
             		<li class="hide-phone app-search">
             			<form role="search" class="">
-            				<input type="text" placeholder="Pesquisar..." class="form-control">
+            				<input type="text" id="main-search" placeholder="Pesquisar..." class="form-control">
             				<a href=""><i class="fa fa-search"></i></a>
             			</form>
             		</li>

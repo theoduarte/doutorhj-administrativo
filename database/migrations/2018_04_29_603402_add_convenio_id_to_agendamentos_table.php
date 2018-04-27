@@ -15,9 +15,9 @@ class AddConvenioIdToAgendamentosTable extends Migration
     {
     	Schema::table('agendamentos', function (Blueprint $table) {
     		$table->integer('convenio_id')
-    		->unsigned()
-    		->nullable()
-    		->after('profissional_id');
+            	  ->unsigned()
+            	  ->nullable()
+            	  ->after('profissional_id');
     		
     		$table->foreign('convenio_id')->references('id')->on('convenios');
     	});

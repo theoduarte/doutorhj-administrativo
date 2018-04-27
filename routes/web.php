@@ -12,16 +12,20 @@ Route::resource('clinicas','ClinicaController')->middleware('auth');
 Route::resource('profissionals','ProfissionalController')->middleware('auth');
 Route::resource('clientes', 'ClientesController')->middleware('auth');
 Route::resource('cargos','CargoController')->middleware('auth');
+Route::resource('procedimentos','ProcedimentoController')->middleware('auth');
+Route::resource('consultas','ConsultaController')->middleware('auth');
 Route::resource('menus','MenuController')->middleware('auth');
 Route::resource('itemmenus','ItemmenuController')->middleware('auth');
 Route::resource('perfilusers','PerfiluserController')->middleware('auth');
 Route::resource('permissaos','PermissaoController')->middleware('auth');
-Route::resource('agenda','AgendaController')->only(['index'])->middleware('auth');
+Route::resource('agenda','AgendamentoController')->only(['index'])->middleware('auth');
+Route::resource('registro_logs','RegistroLogController')->middleware('auth');
 
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
 Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');
 Route::get('procedimentos/consulta/{consulta}', 'ClinicaController@getProcedimentos')->middleware('auth');
+Route::post('clinicas/{clinica}/edit/list-profissional', 'ClinicaController@getProfissionals')->middleware('auth');
 Route::get('consultas/localatendimento/{consulta}', 'AgendaController@getLocalAtendimento')->middleware('auth');
 Route::get('agenda/profissional/{profissional}', 'AgendaController@getProfissional')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/add-profissional', 'ClinicaController@addProfissionalStore')->middleware('auth');

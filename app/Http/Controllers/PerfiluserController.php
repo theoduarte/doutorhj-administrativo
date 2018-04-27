@@ -38,7 +38,7 @@ class PerfiluserController extends Controller
     	$perfilusers = Perfiluser::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
     	
 
-    	$list_tipo_permissao = [1 => 'Administrador', 2 => 'Gestor', 3 => 'Prestador', 4 => 'Cliente', 10 => 'Responsável'];
+    	$list_tipo_permissao = [1 => 'Administrador', 2 => 'Gestor', 3 => 'Prestador', 4 => 'Cliente', 5 => 'Operador', 10 => 'Responsável'];
 
     	
     	return view('perfilusers.index', compact('perfilusers', 'list_tipo_permissao'));

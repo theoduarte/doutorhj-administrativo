@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
-	<buildpathentry kind="src" path="bootstrap"/>
-	<buildpathentry kind="src" path="database"/>
-	<buildpathentry kind="src" path="storage"/>
-	<buildpathentry kind="src" path="tests"/>
-	<buildpathentry kind="src" path="app"/>
-	<buildpathentry kind="src" path="config"/>
-	<buildpathentry kind="src" path="vendor"/>
-	<buildpathentry kind="src" path="routes"/>
-	<buildpathentry kind="src" path="resources"/>
-	<buildpathentry kind="src" path=".settings"/>
-	<buildpathentry kind="src" path="public"/>
+	<buildpathentry kind="src" path=""/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
 </buildpath>

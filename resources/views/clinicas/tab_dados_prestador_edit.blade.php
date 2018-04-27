@@ -9,11 +9,13 @@
     }
 </style>
 
+
 @if($errors->any())
     <div class="col-12 alert alert-danger">
         @foreach ($errors->all() as $error)<div class="col-5">{{ $error }}</div>@endforeach
     </div>
 @endif
+
 
 {!! csrf_field() !!}
 <div class="row">
@@ -35,13 +37,19 @@
             </div>	
         </div>
         
-        <div class="form-group{{ $errors->has('nr_cnpj') ? ' has-error' : '' }}">
+        <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
         	 @foreach( $documentosclinica as $documento )
                 <label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
                 <div class="col-8">
-                	<input type="hidden" name="tp_documento_{{$documento->id}}" value="CNPJ">
-                    <input id="te_documento_{{$documento->id}}" type="text" class="form-control mascaraCNPJ" name="te_documento_{{$documento->id}}" value="{{ $prestador->documentos->first()->te_documento }}" required readonly >
+                	<input type="hidden" name="tp_documento" value="{{ $prestador->documentos->first()->tp_documento }}">
+                    <input id="te_documento_{{$documento->id}}" type="text" class="form-control mascaraCNPJ" value="{{ $prestador->documentos->first()->te_documento }}" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required readonly >
+                    <input type="hidden" id="te_documento_no_mask" name="te_documento" value="{{ preg_replace('/[^0-9]/', '', $prestador->documentos->first()->te_documento) }}" maxlength="30" >
                     <input type="hidden" id="cnpj_id" name="cnpj_id" value="{{ $documento->id }}">
+                    @if ($errors->has('te_documento'))
+                    <span class="help-block text-danger">
+                    	<strong>{{ $errors->first('te_documento') }}</strong>
+                    </span>
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -84,7 +92,13 @@
             <div class="row">
                 <label for="cpf_responsavel" class="col-12 control-label">CPF<span class="text-danger">*</span></label>
                 <div class="col-8">
-                    <input id="cpf_responsavel" type="text" class="form-control mascaraCPF" name="cpf_responsavel" value="{{$prestador->responsavel->cpf}}" required readonly  maxlength="14">
+                    <input id="cpf_responsavel" type="text" class="form-control mascaraCPF" value="{{$prestador->responsavel->cpf}}" required readonly  maxlength="14">
+                    <input type="hidden" id="cpf_responsavel_no_mask" name="cpf_responsavel" value="{{ preg_replace('/[^0-9]/', '', $prestador->responsavel->cpf) }}" maxlength="14" >
+                    @if ($errors->has('cpf_responsavel'))
+                    <span class="help-block text-danger">
+                    	<strong>{{ $errors->first('cpf_responsavel') }}</strong>
+                    </span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -94,6 +108,11 @@
                 <label for="telefone_responsavel" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
                 <div class="col-8">
                     <input id="telefone_responsavel" type="text" class="form-control mascaraTelefone" name="telefone_responsavel" value="{{$prestador->responsavel->telefone}}" required  maxlength="20">
+                    @if ($errors->has('telefone_responsavel'))
+                    <span class="help-block text-danger">
+                    	<strong>{{ $errors->first('telefone_responsavel') }}</strong>
+                    </span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -112,12 +131,17 @@
 
 <div class="row">
 	<div class="col-md-1">
-		<div class="form-group{{ $errors->has('nr_cep') ? ' has-error' : '' }}">
+		<div class="form-group{{ $errors->has('nr_cep') | $errors->has('cd_cidade_ibge') ? ' has-error' : '' }}">
             <label for="nr_cep" class="col-3 control-label">CEP<span class="text-danger">*</span></label>
             <input id="nr_cep" type="text" class="form-control mascaraCEP consultaCep" name="nr_cep" value="{{$prestador->enderecos->first()->nr_cep}}" required  maxlength="10">
             <input type="hidden" id="nr_latitude_gps" name="nr_latitude_gps" value="{{ $prestador->enderecos->first()->nr_latitude_gps }}" >
             <input type="hidden" id="nr_longitute_gps" name="nr_longitute_gps" value="{{ $prestador->enderecos->first()->nr_longitute_gps }}" >
             <input type="hidden" id="endereco_id" name="endereco_id" value="{{$prestador->enderecos->first()->id}}">
+            @if ($errors->has('cd_cidade_ibge'))
+            <span class="help-block text-danger">
+            	<strong>Cód. IBGE não Encontrado!</strong>
+            </span>
+            @endif
         </div>
 	</div>
 	
@@ -236,18 +260,33 @@
             <label for="email" class="col-3 control-label">E-mail<span class="text-danger">*</span></label>
             <input id="email" type="email" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="email" value="{{ $user->email }}" required readonly  maxlength="50">
             <input type="hidden" id="responsavel_user_id" name="responsavel_user_id" value="{{ $user->id }}" >
+            @if ($errors->has('email'))
+            <span class="help-block text-danger">
+            	<strong>{{ $errors->first('email') }}</strong>
+            </span>
+            @endif
         </div>
 	</div>
 	<div class="col-md-2">
 		<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
     		<label for="password" class="col-3 control-label">Senha<span class="text-danger">*</span></label>
     		<input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{ $user->password }}" required  maxlength="50">
+    		@if ($errors->has('password'))
+            <span class="help-block text-danger">
+            	<strong>{{ $errors->first('password') }}</strong>
+            </span>
+            @endif
 		</div>
 	</div>
 	<div class="col-md-2">
 		<div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
     		<label for="password_confirmation" class="control-label">Repita a Senha<span class="text-danger">*</span></label>
     		<input id="password_confirmation" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password_confirmation" value="{{ $user->password }}" required  maxlength="50">
+    		@if ($errors->has('password_confirmation'))
+            <span class="help-block text-danger">
+            	<strong>{{ $errors->first('password_confirmation') }}</strong>
+            </span>
+            @endif
 		</div>
 	</div>
 </div>

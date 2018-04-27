@@ -19,8 +19,12 @@ class CreateCidadesTable extends Migration
             $table->string('nm_cidade', 80)->nullable()->comment('NOME DA CIDADE CONFORME IBGE');
             $table->string('cd_ibge', 25)->nullable()->comment('CÓDIGO IBGE');
             $table->string('sg_cidade', 4)->nullable()->comment('SIGLA DA CIDADE CONFORME IBGE');
+            $table->string('nr_cep', 9)->nullable();
 			$table->string('ds_estado', 30)->nullable();
 			$table->string('sg_estado', 2)->nullable();
+			$table->string('tp_localidade', 2)->nullable();
+			$table->float('latitude', 10)->nullable();
+			$table->float('longitude', 10)->nullable();
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
 			$table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });

@@ -46,4 +46,10 @@ class User extends Authenticatable
         
     }
     
+    public function registro_logs()
+    {
+        return $this->hasMany('App\RegistroLog');
+        
+    }
+    
 }

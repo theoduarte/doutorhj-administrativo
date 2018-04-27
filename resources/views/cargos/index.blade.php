@@ -35,7 +35,7 @@
 					</div>				
 					<div class="col-1">
 						<div class="form-group text-right m-b-0">
-							<a href="{{ route('cargos.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ti-close"></i> Limpar Busca</a>
+							<a href="{{ route('cargos.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ion-close"></i> Limpar Busca</a>
 						</div>
 					</div>
 					<div class="col-2">
@@ -75,7 +75,7 @@
                 <tfoot>
                 	<div class="cvx-pagination">
                 		<span class="text-primary">{{ sprintf("%02d", $cargos->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $cargos->count()) }} Registro(s) exibido(s)</span>
-                		{!! $cargos->links() !!}
+                		{!! $cargos->appends(request()->input())->links() !!}
                 		<!-- <ul class="pagination pagination-split justify-content-end footable-pagination m-t-10 m-b-0">
                 			<li class="footable-page-arrow disabled"><a data-page="first" href="#first">«</a></li>
                 			<li class="footable-page-arrow disabled"><a data-page="prev" href="#prev">‹</a></li>

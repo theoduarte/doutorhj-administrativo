@@ -6,7 +6,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
-class AgendaController extends Controller
+class AgendamentoController extends Controller
 {
     /**
      * Display a listing of the resource.

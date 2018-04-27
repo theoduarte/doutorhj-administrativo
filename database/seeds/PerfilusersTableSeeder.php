@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Perfiluser;
 use Illuminate\Support\Facades\DB;
 
 class PerfilusersTableSeeder extends Seeder
@@ -24,7 +23,6 @@ class PerfilusersTableSeeder extends Seeder
         if(DB::table('perfilusers')->get()->count() == 0){
             
             DB::table('perfilusers')->insert([
-                
                 [
                     'titulo'                => 'Administrador',
                     'descricao'             => 'Possui todas as permissões do sistema.',
@@ -34,8 +32,18 @@ class PerfilusersTableSeeder extends Seeder
                     'titulo'                => 'Responsável',
                     'descricao'             => 'Responsável Técnico pela Clínica.',
                     'tipo_permissao'        => 10
+
+                ],
+                [
+                    'titulo'                => 'Paciente',
+                    'descricao'             => 'Clientes usuários do sistema.',
+                    'tipo_permissao'        => 4
+                ],
+                [
+                    'titulo'                => 'Operador',
+                    'descricao'             => 'Realiza cadastros e atualização de dados no sistema.',
+                    'tipo_permissao'        => 5
                 ]
-                
             ]);
             
         }

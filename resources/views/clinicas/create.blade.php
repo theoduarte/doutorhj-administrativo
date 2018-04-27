@@ -88,6 +88,7 @@
 						$('#te_endereco').val(json.logradouro);
 						$('#te_bairro').val(json.bairro);
 						$('#nm_cidade').val(json.cidade);
+						$('#sg_logradouro').val(json.tp_logradouro);
 						$('#sg_estado').val(json.estado);
 						$('#cd_cidade_ibge').val(json.ibge);
 						$('#nr_latitude_gps').val(json.latitude);
@@ -98,6 +99,7 @@
 						$('#te_endereco').val('');
 						$('#te_bairro').val('');
 						$('#nm_cidade').val('');
+						$('#sg_logradouro').prop('selectedIndex',0);
 						$('#sg_estado').val('');
 						$('#cd_cidade_ibge').val('');
 						$('#sg_logradouro').prop('selectedIndex',0);

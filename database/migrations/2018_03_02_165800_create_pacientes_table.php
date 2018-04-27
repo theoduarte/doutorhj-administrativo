@@ -20,8 +20,13 @@ class CreatePacientesTable extends Migration
             $table->string('nm_secundario', 50)->nullable()->comment('SOBRENOME');
             $table->string('cs_sexo', 1)->nullable()->comment('M => MASCULINO F => FEMININO');
             $table->date('dt_nascimento')->nullable()->comment('DATA DE NASCIMENTO');
+<<<<<<< HEAD
             $table->string('access_token', 6)->nullable()->comment('token de acesso.');
             $table->time('time_to_live')->nullable()->comment('tempo de vida do token de acesso.');
+=======
+            $table->string('access_token', 6)->nullable()->comment('Senha temporaria');
+            $table->time('time_to_live')->nullable()->comment('Validade da senha');
+>>>>>>> 20c02fbd9c5df214423bb782dd03093cc5d21a78
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));
         });
