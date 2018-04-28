@@ -15,23 +15,23 @@ class Paciente extends Model
 	public $dates 	      = ['dt_nascimento'];
     
 	public function cargo(){
-	    return $this->belongsTo(Cargo::class);
+	    return $this->belongsTo('App\Cargo');
 	}
 
 	public function contatos(){
-	    return $this->belongsToMany(Contato::class, 'contato_paciente', 'paciente_id', 'contato_id');
+	    return $this->belongsToMany('App\Contato');
 	}
     
 	public function enderecos(){
-	    return $this->belongsToMany(Endereco::class, 'endereco_paciente', 'paciente_id', 'endereco_id');
+	    return $this->belongsToMany('App\Endereco');
 	}
 	
 	public function documentos(){
-	    return $this->belongsToMany(Documento::class, 'documento_paciente', 'paciente_id', 'documento_id'); 
+	    return $this->belongsToMany('App\Documento'); 
 	}
 	
 	public function user(){
-	    return $this->belongsTo(User::class, 'user_id');
+	    return $this->belongsTo('App\User');
 	}
     
 	public function setDtNascimentoAttribute($data)

@@ -202,7 +202,7 @@
 		                	 $tr = '<tr id="tr-'+profissional.id+'">\
 				                 <td>'+profissional.id+'</td>\
 				                 <td>'+profissional.nm_primario+' '+profissional.nm_secundario+'</td>\
-				                 <td>'+profissional.especialidade.ds_especialidade+'</td>\
+				                 <td></td>\
 				                 <td>'+profissional.updated_at+'</td>\
 				                 <td>\
 				                 	<a href="#" onclick="openModal('+profissional.id+')" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>\
@@ -213,7 +213,7 @@
 			                 $('#table-corpo-clinico  > tbody > tr:first').after($tr);
 		                 } else if (tp_operation == 'edit') {
 							$('#tr-'+profissional.id).find('td:nth-child(2)').html(profissional.nm_primario+' '+profissional.nm_secundario);
-							$('#tr-'+profissional.id).find('td:nth-child(3)').html(profissional.especialidade.ds_especialidade);
+							$('#tr-'+profissional.id).find('td:nth-child(3)').html();
 							$('#tr-'+profissional.id).find('td:nth-child(4)').html(profissional.updated_at);
 						}
 		                 

@@ -23,6 +23,10 @@
 	color: #ccc !important; 
 }
 
+.btn-secondary {
+    color: #fff !important;
+}
+
 .form-control::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #ccc;
 }
@@ -108,10 +112,11 @@ ul.list-profissional-especialidade {list-style-type:none;}
 ul.list-profissional-especialidade li {
     float: left;
     display: inline-block;
-    max-width: 50%;
+    max-width: 80%;
     margin-right: 5px;
     margin-bottom: 5px;
     background-color: #3bafda;
+    text-align: left;
     border: 1px solid transparent;
     color: #ffffff;
     border-radius: 3px;

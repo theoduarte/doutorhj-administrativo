@@ -10,6 +10,9 @@ use App\Profissional;
 use App\Especialidade;
 use App\Estado;
 use App\Cargo;
+use App\Cidade;
+use App\Contato;
+use App\Endereco;
 
 class ProfissionalController extends Controller
 {
@@ -81,23 +84,19 @@ class ProfissionalController extends Controller
      */
     public function show($id)
     {
-        try{
-            $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
-            $arEstados       = Estado::orderBy('ds_estado')->get();
-            
-            $usuarios  = User::findorfail($id);
-            
-            $profissionals = Profissional::where('user_id', '=', $id)->get()->first();
-            $profissionals->load('especialidade');
-            $profissionals->load('user');
-            $profissionals->load('documentos');
-            $profissionals->load('enderecos');
-            $profissionals->load('contatos');
-            
-            $cidade = \App\Cidade::findorfail($profissionals->enderecos->first()->cidade_id);
-        } catch( Exception $e ){
-            print $e->getMessage();
-        }
+        $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
+        $arEstados       = Estado::orderBy('ds_estado')->get();
+        
+        $usuarios  = User::findorfail($id);
+        
+        $profissionals = Profissional::where('user_id', '=', $id)->get()->first();
+        $profissionals->load('especialidade');
+        $profissionals->load('user');
+        $profissionals->load('documentos');
+        $profissionals->load('enderecos');
+        $profissionals->load('contatos');
+        
+        $cidade = Cidade::findorfail($profissionals->enderecos->first()->cidade_id);
         
         return view('profissionals.show', [ 'profissionals'   => $profissionals,
                                             'cidade'          => $cidade,
@@ -113,24 +112,20 @@ class ProfissionalController extends Controller
      */
     public function edit($idUsuario)
     {
-        try{
-            $arCargos        = Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-            $arEstados       = Estado::orderBy('ds_estado')->get();
-            $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
-            
-            $usuarios = User::findorfail($idUsuario);
-            
-            $profissionals = Profissional::where('user_id', '=', $idUsuario)->get()->first();
-            $profissionals->load('especialidade');
-            $profissionals->load('user');
-            $profissionals->load('documentos');
-            $profissionals->load('enderecos');
-            $profissionals->load('contatos');
-            
-            $cidade = \App\Cidade::findorfail($profissionals->enderecos->first()->cidade_id);            
-        }catch( Exception $e ){
-            print $e->getMessage();
-        }
+        $arCargos        = Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
+        $arEstados       = Estado::orderBy('ds_estado')->get();
+        $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
+        
+        $usuarios = User::findorfail($idUsuario);
+        
+        $profissionals = Profissional::where('user_id', '=', $idUsuario)->get()->first();
+        $profissionals->load('especialidade');
+        $profissionals->load('user');
+        $profissionals->load('documentos');
+        $profissionals->load('enderecos');
+        $profissionals->load('contatos');
+        
+        $cidade = Cidade::findorfail($profissionals->enderecos->first()->cidade_id);
         
         return view('profissionals.edit', ['profissionals'   => $profissionals,
                                            'cidade'          => $cidade,
@@ -150,34 +145,28 @@ class ProfissionalController extends Controller
     {
         $dados = Request::all();
         
-        try{
-            $profissional = \App\Profissional::findorfail($idProfissional);
-            $profissional->update($dados);
-            $profissional->user()->update($dados);
-            $profissional->especialidade()->update($dados);
-            
-            foreach( $dados['contato_id'] as $indice=>$contato_id){
-                $contato = \App\Contato::findorfail($contato_id);
-                $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
-            }
-            
-            $endereco = \App\Endereco::findorfail($dados['endereco_id']);
-            if(!empty($dados['cd_cidade_ibge'])) { 
-                $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; 
-            }
-            $endereco->update($dados);
-            $profissional->enderecos()->sync($endereco);
-            
-            foreach( $dados['documentos_id'] as $indice=>$documentos_id){
-                $documentos = \App\Documento::findorfail($documentos_id);
-                $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 
-                                     'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice]), 
-                                     'estado_id'=>(int)$dados['estado_id'][0]]);
-            }
-            
-           
-        }catch( Exception $e ){
-            return redirect()->route('profissionals.index')->with('error', $e->getMessage());
+        $profissional = Profissional::findorfail($idProfissional);
+        $profissional->update($dados);
+        $profissional->user()->update($dados);
+        $profissional->especialidade()->update($dados);
+        
+        foreach( $dados['contato_id'] as $indice=>$contato_id){
+            $contato = Contato::findorfail($contato_id);
+            $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
+        }
+        
+        $endereco = Endereco::findorfail($dados['endereco_id']);
+        if(!empty($dados['cd_cidade_ibge'])) {
+            $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id;
+        }
+        $endereco->update($dados);
+        $profissional->enderecos()->sync($endereco);
+        
+        foreach( $dados['documentos_id'] as $indice=>$documentos_id){
+            $documentos = \App\Documento::findorfail($documentos_id);
+            $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice],
+                'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice]),
+                'estado_id'=>(int)$dados['estado_id'][0]]);
         }
         
         return redirect()->route('profissionals.index')->with('success', 'O usuário foi atualizado com sucesso!');
@@ -193,23 +182,12 @@ class ProfissionalController extends Controller
     {
         DB::beginTransaction();
         
-        try{
-//             \App\Agendamento::where('profissional_id', $idProfissional)->delete();
-            
-            $profissionals = \App\Profissional::findorfail($idProfissional);
-            $profissionals->forceDelete();
-            $profissionals->contatos()->forceDelete();
-            $profissionals->enderecos()->forceDelete();
-            $profissionals->documentos()->forceDelete();
-            $profissionals->user()->forceDelete();
-            
-            
-            DB::commit();
-        }catch( Exception $e ){
-            DB::rollBack();
-            
-            return redirect()->route('profissionals.index')->with('error', $e->getMessage());
-        }
+        $profissionals = Profissional::findorfail($idProfissional);
+        $profissionals->forceDelete();
+        $profissionals->contatos()->forceDelete();
+        $profissionals->enderecos()->forceDelete();
+        $profissionals->documentos()->forceDelete();
+        $profissionals->user()->forceDelete();
         
         return redirect()->route('profissionals.index')->with('success', 'Usuário apagado com sucesso!');
     }

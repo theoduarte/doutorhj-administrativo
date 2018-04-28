@@ -23,7 +23,7 @@
 		        <div class="col-10">
 		        	<label for="nm_profissional" class="control-label">Profissional<span class="text-danger">*</span></label>
 		            <!-- <input id="nm_profissional" type="text" class="form-control" name="nm_profissional" value="{{ old('nm_profissional') }}" placeholder="Informe o Nome do Profissional para buscar" maxlength="100"> -->
-		            <select id="list_profissional_procedimento" class="select2 select2-multiple" name="nm_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
+		            <select id="list_profissional_procedimento" class="select2 select2-multiple" name="list_profissional_procedimento" multiple="multiple" multiple data-placeholder="Selecione ...">
 			            @foreach($list_profissionals as $profissional)
 			            <option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.' ('.$profissional->documentos->first()->tp_documento.': '.$profissional->documentos->first()->te_documento.')' }}</option>
 			            @endforeach
@@ -57,14 +57,14 @@
 				</tr>
     			@foreach( $precoprocedimentos as $procedimento )
     				<tr id="tr-{{$procedimento->id}}">
-    					<td>{{$procedimento->id}}</td>
-    					<td>{{$procedimento->procedimento->cd_procedimento}} <input type="hidden" class="procedimento_id" value="{{ $procedimento->procedimento->id }}"> <input type="hidden" class="profissional_id" value="{{ $procedimento->profissional->id }}"></td>
+    					<td>{{$procedimento->id}} <input type="hidden" class="procedimento_id" value="{{ $procedimento->procedimento->id }}"> <input type="hidden" class="profissional_id" value="{{ $procedimento->profissional->id }}"></td>
+    					<td>{{$procedimento->procedimento->cd_procedimento}}</td>
     					<td>{{$procedimento->ds_preco}}</td>
     					<td>{{$procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }}</td>
     					<td>{{$procedimento->getVlComercialAtendimento()}}</td>
     					<td>{{$procedimento->getVlNetAtendimento()}}</td>
     					<td>
-    						<a href="#" onclick="loadDataProcedimento({{ $procedimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+    						<a onclick="loadDataProcedimento(this, {{ $procedimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
 	                 		<a onclick="delLinhaProcedimento(this, '{{ $procedimento->ds_preco }}', '{{ $procedimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Remover</a>
     					</td>
     				</tr>
@@ -74,95 +74,53 @@
 	</div>
 </div>
 <div id="profissional-procedimento-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ProfissionalProcedimentoModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="edit-profisisonal-title-modal">DrHoje: Adicionar Profissional</h4>
+                <h4 class="modal-title" id="edit-atendimento-title-modal">DrHoje: Editar Procedimento</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="nm_primario" class="control-label">Nome</label>
-                            <input type="text" id="nm_primario" class="form-control" name="nm_primario" placeholder="Nome">
-                            <input type="hidden" id="profissional_id" name="id" >
-                            <input type="hidden" id="cs_status" name="cs_status" value="A">
-                            <input type="hidden" id="clinica_id" name="clinica_id" value="{{ $prestador->id }}">
-                            <input type="hidden" id="profisisonal-type-operation" value="add" >
+                            <label for="cd_procedimento_edit" class="control-label">Código do Procedimento</label>
+                            <input type="text" id="cd_procedimento_edit" class="form-control" name="cd_procedimento_edit" placeholder="Código do Procedimento" readonly="readonly">
+                            <input type="hidden" id="atendimento_id_edit" name="atendimento_id_edit" >
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="nm_secundario" class="control-label">Sobrenome</label>
-                            <input type="text" id="nm_secundario" class="form-control" name="nm_secundario" placeholder="Sobrenome">
-                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <label for="cs_sexo" class="control-label">Sexo</label>
-                            <select id="cs_sexo" class="form-control" name="cs_sexo">
-                            	<option value="M">M</option>
-                            	<option value="F">F</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="dt_nascimento" class="control-label">Data Nasc.</label>
-                            <input type="text" id="dt_nascimento" class="form-control mascaraData" name="dt_nascimento" placeholder="Data Nasc.">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tp_profissional" class="control-label">Tipo Profissional</label>
-                            <select id="tp_profissional" class="form-control" name="tp_profissional">
-                            	<option value="M">Médico</option>
-                            	<option value="D">Dentista</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="tp_documento_profissional" class="control-label">Tipo Documento</label>
-                            <select id="tp_documento_profissional" class="form-control" name="tp_documento_profissional">
-                            	<option value="CRM">CRM</option>
-                            	<option value="CRO">CRO</option>
-                            	<option value="CRF">CRF</option>
-                            	<option value="CRFA">CRFA</option>
-                            	<option value="CRN">CRN</option>
-                            	<option value="CRP">CRP</option>
-                            	<option value="CREFITO">CREFITO</option>
-                            	<option value="COREN">COREN</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label for="te_documento_profissional" class="control-label">Nr. Documento</label>
-                            <input type="text" id="te_documento_profissional" class="form-control" name="te_documento_profissional" placeholder="Nr. Documento">
+                            <label for="ds_procedimento_edit" class="control-label">Descrição</label>
+                            <input type="text" id="ds_procedimento_edit" class="form-control" name="ds_procedimento_edit" placeholder="Descrição do Procedimento">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group no-margin">
-                            <label for="tp_especialidade" class="control-label">Especialidade</label>
-                            <select id="especialidade_profissional" class="select2 select2-multiple" name="especialidade_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
-                            	@foreach($list_especialidades as $especialidade)
-								<option value="{{ $especialidade->id }}">{{ "($especialidade->cd_especialidade) $especialidade->ds_especialidade" }}</option>
-								@endforeach  
-                            </select>
+                        <div class="form-group">
+                            <label for="nm_profissional_edit" class="control-label">Profissional</label>
+                            <input type="text" id="nm_profissional_edit" class="form-control" name="nm_profissional_edit" placeholder="Nome do Profissional" readonly="readonly">
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    	<label for="vl_com_atendimento_edit" class="control-label">Valor Comercial (R$)</label>
+                    	<input type="text" id="vl_com_atendimento_edit" class="form-control mascaraMonetaria" name="vl_com_atendimento_edit" placeholder="Valor Comercial">
+                    </div>
+                    <div class="col-md-6">
+                    	<label for="vl_net_atendimento_edit" class="control-label">Valor Net (R$)</label>
+                    	<input type="text" id="vl_net_atendimento_edit" class="form-control mascaraMonetaria" name="vl_net_atendimento_edit" placeholder="Valor Net">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btn-save-profissional" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
+                <button type="button" id="btn-save-profissional-procedimento" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
                 <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
             </div>
         </div>
@@ -213,21 +171,88 @@
       		  $('#atendimento_profissional_id').val(profissional_id);
       	  }
       });
+
+        $('#btn-save-profissional-procedimento').click(function(){
+
+			var atendimento_id = $('#atendimento_id_edit').val();
+			var ds_atendimento = $('#ds_procedimento_edit').val();
+			var vl_com_atendimento = $('#vl_com_atendimento_edit').val();
+			var vl_net_atendimento = $('#vl_net_atendimento_edit').val();
+			
+			if( ds_atendimento.length == 0 ) { $('#ds_procedimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; } 
+			if( vl_com_atendimento.length == 0 ) { $('#vl_com_atendimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
+			if( vl_net_atendimento.length == 0 ) { $('#vl_net_atendimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
+			
+			jQuery.ajax({
+				type: 'POST',
+				url: '{{ Request::url() }}/edit-precificacao-atendimento',
+				data: {
+					'atendimento_id': atendimento_id,
+					'ds_atendimento': ds_atendimento,
+					'vl_com_atendimento': vl_com_atendimento,
+					'vl_net_atendimento': vl_net_atendimento,
+					'_token': laravel_token
+				},
+	            success: function (result) {
+		            if(result.status) {
+			            		            	
+		            	 swal({
+		                     title: 'DrHoje',
+		                     text: result.mensagem,
+		                     type: 'success',
+		                     confirmButtonClass: 'btn btn-confirm mt-2',
+		                     confirmButtonText: 'OK'
+		                 }).then(function () {
+		                	 $('.modal').removeClass('in').attr("aria-hidden","true").off('click.dismiss.modal').removeClass('show');
+		                     $('.modal').css("display", "none");
+		                     $('.modal-backdrop').remove();
+		                     $('body').removeClass('modal-open');
+		                     window.location.reload(false); 
+		                 });
+		                 
+		            } else {
+		            	swal(({
+	        	            title: "Oops",
+	        	            text: result.mensagem,
+	        	            type: 'error',
+	        	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        			}));
+		            }
+	            },
+	            error: function (result) {
+	                swal(({
+        	            title: "Oops",
+        	            text: "Falha na operação!",
+        	            type: 'error',
+        	            confirmButtonClass: 'btn btn-confirm mt-2'
+        			}));
+	            }
+			});
+		});
     });
 	
     function addLinhaProcedimento() {
+        
 		if( $('#procedimento_id').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Falha ao Selecionar Procedimento. Por favor, tente novamente.'); return false; }
 		if( $('#ds_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Falha ao Selecionar Procedimento. Por favor, tente novamente.'); return false; }
 		if( $('#vl_com_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Valor Comercial informado não é válido. Por favor, tente novamente.'); return false; }
 		if( $('#vl_net_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Valor NET informado não é válido. Por favor, tente novamente.'); return false; }
-		if( $('#atendimento_profissional_id').val().length == 0 ) return false;
+		//if( $('#atendimento_profissional_id').val().length == 0 ) return false;
+		
+		var list_profissional_procedimento = new Array();
+		$('#list_profissional_procedimento :selected').each(function(i, selected) {
+			list_profissional_procedimento[i] = $(selected).val();
+		});
+		
+		if( list_profissional_procedimento.length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Nenhum Profissional Selecionado!. Por favor, tente novamente.'); return false; }
 		if( $('#clinica_id').val().length == 0 ) return false;
         
 		var table = document.getElementById("tblPrecosProcedimentos");
 
 		var atendimento_id = $('#atendimento_id').val();
 		var procedimento_id = $('#procedimento_id').val();
-		var atendimento_profissional_id = $('#atendimento_profissional_id').val();
+		//var atendimento_profissional_id = $('#atendimento_profissional_id').val();
+		
 		var ds_procedimento = $('#descricao_procedimento').val();
 		var vl_com_procedimento = $('#vl_com_procedimento').val();
 		var vl_net_procedimento = $('#vl_net_procedimento').val();
@@ -239,7 +264,8 @@
 			data: {
 				'atendimento_id': atendimento_id,
 				'procedimento_id': procedimento_id,
-				'atendimento_profissional_id': atendimento_profissional_id,
+				//'atendimento_profissional_id': atendimento_profissional_id,
+				'list_profissional_procedimento': list_profissional_procedimento,
 				'ds_procedimento': ds_procedimento,
 				'vl_com_procedimento': vl_com_procedimento,
 				'vl_net_procedimento': vl_net_procedimento,
@@ -249,11 +275,25 @@
             success: function (result) {
 	            if(result.status) {
 
-	            	var atendimento = JSON.parse(result.atendimento);
+	            	swal({
+	                     title: 'DrHoje',
+	                     text: result.mensagem,
+	                     type: 'success',
+	                     confirmButtonClass: 'btn btn-confirm mt-2',
+	                     confirmButtonText: 'OK'
+	                 }).then(function () {
+	                	 $('.modal').removeClass('in').attr("aria-hidden","true").off('click.dismiss.modal').removeClass('show');
+	                     $('.modal').css("display", "none");
+	                     $('.modal-backdrop').remove();
+	                     $('body').removeClass('modal-open');
+	                     window.location.reload(false); 
+	                 });
 
-	            	$.Notification.notify('success','top right', 'DrHoje', result.mensagem);
+	            	//var atendimento = JSON.parse(result.atendimento);
 
-	            	if(atendimento_id == '') {
+	            	//$.Notification.notify('success','top right', 'DrHoje', result.mensagem);
+
+	            	/* if(atendimento_id == '') {
 	            		$tr = '<tr id="tr-'+atendimento.id+'">\
 		                 <td>'+atendimento.id+'</td>\
 		                 <td>'+atendimento.procedimento.cd_procedimento+'<input type="hidden" class="procedimento_id" value="'+atendimento.procedimento.id+'"> <input type="hidden" class="profissional_id" value="'+atendimento.profissional.id+'"></td>\
@@ -281,7 +321,7 @@
 	        		$('#ds_procedimento').val('');
 	        		$('#nm_profissional').val('');
 	        		$('#vl_com_procedimento').val('');
-	        		$('#vl_net_procedimento').val('');
+	        		$('#vl_net_procedimento').val(''); */
 	                 
 	            } else {
 	            	swal(({
@@ -303,11 +343,10 @@
 		});
     }
 
-    function loadDataProcedimento(element) {
+    function loadDataProcedimento(element, atendimento_id) {
 
-    	var atendimento_id = $(element).parent().parent().find('td:nth-child(1)').html();
+    	/* var atendimento_id = $(element).parent().parent().find('td:nth-child(1)').html();
     	var procedimento_id = $(element).parent().parent().find('input.procedimento_id').val();
-    	var cd_procedimento = $(element).parent().parent().find('td:nth-child(2)').html();
     	var ds_preco = $(element).parent().parent().find('td:nth-child(3)').html();
     	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
     	var profissional_id = $(element).parent().parent().find('input.profissional_id').val();
@@ -321,13 +360,31 @@
     	$('#ds_procedimento').val(ds_preco);
     	$('#cd_procedimento').val(cd_procedimento);
     	$('#vl_com_procedimento').val(vl_com_atendimento);
-    	$('#vl_net_procedimento').val(vl_net_atendimento);
+    	$('#vl_net_procedimento').val(vl_net_atendimento); */
+
+    	var cd_procedimento = $(element).parent().parent().find('td:nth-child(2)').html();
+    	var ds_procedimento = $(element).parent().parent().find('td:nth-child(3)').html();
+    	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
+    	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(5)').html();
+    	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
+
+    	$('input.form-control').val('');
+		$('select.form-control').prop('selectedIndex',0);
+
+		$('#atendimento_id_edit').val(atendimento_id);
+		$('#cd_procedimento_edit').val(cd_procedimento);
+		$('#ds_procedimento_edit').val(ds_procedimento);
+		$('#nm_profissional_edit').val(nm_profissional);
+		$('#vl_com_atendimento_edit').val(vl_com_atendimento);
+    	$('#vl_net_atendimento_edit').val(vl_net_atendimento);
+		 
+		$("#profissional-procedimento-modal").modal();
     }
 
     function limparProcedimento() {
     	$('#atendimento_id').val('');
 		$('#procedimento_id').val('');
-		$('#atendimento_profissional_id').val('');
+		//$('#atendimento_profissional_id').val('');
 		$('#ds_procedimento').val('');
 		$('#nm_profissional').val('');
 		$('#vl_com_procedimento').val('');

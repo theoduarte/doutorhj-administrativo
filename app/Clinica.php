@@ -17,23 +17,23 @@ class Clinica extends Model
     }
     
     public function contatos(){
-        return $this->belongsToMany(Contato::class, 'clinica_contato', 'clinica_id', 'contato_id');
+        return $this->belongsToMany('App\Contato');
     }
     
     public function enderecos(){
-        return $this->belongsToMany(Endereco::class, 'clinica_endereco', 'clinica_id', 'endereco_id');
+        return $this->belongsToMany('App\Endereco');
     }
     
     public function documentos(){
-        return $this->belongsToMany(Documento::class, 'clinica_documento', 'clinica_id', 'documento_id');
+        return $this->belongsToMany('App\Documento');
     }
     
     public function consultas(){
-        return $this->belongsToMany(Consulta::class, 'clinica_consulta', 'consulta_id', 'clinica_id');
+        return $this->belongsToMany('App\Consulta');
     }
     
     public function procedimentos(){
-        return $this->belongsToMany(Procedimento::class, 'clinica_procedimento', 'procedimento_id', 'clinica_id');
+        return $this->belongsToMany('App\Procedimento');
     }
     
     public function profissionals()

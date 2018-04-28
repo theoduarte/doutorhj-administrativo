@@ -608,48 +608,109 @@ class ClinicaController extends Controller
     {
         $atendimento_id = CVXRequest::post('atendimento_id');
         $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
-        $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]";
         
         $clinica_id = CVXRequest::post('clinica_id');
         $procedimento_id = CVXRequest::post('procedimento_id');
-        $profissional_id = CVXRequest::post('atendimento_profissional_id');
         $ds_procedimento = CVXRequest::post('ds_procedimento');
         $vl_com_procedimento = CVXRequest::post('vl_com_procedimento');
         $vl_net_procedimento = CVXRequest::post('vl_net_procedimento');
         
-        if (sizeof($atendimento) == 0) {
-            $atendimento = new Atendimento();
-        }
-        $atendimento->ds_preco =  $ds_procedimento;
-        $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_procedimento);
-        $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_procedimento);
-        $atendimento->clinica_id = $clinica_id;
-        $atendimento->procedimento_id = $procedimento_id;
-        $atendimento->profissional_id = $profissional_id;
-        $atendimento->cs_status = 'A';
+        $profissional_ids = CVXRequest::post('list_profissional_procedimento');
         
-        if ($atendimento->save()) {
+        $result = true;
+        foreach ($profissional_ids as $index => $profissional_id) {
             
-            # registra log
-            $atendimento_obj        = $atendimento->toJson();
-            $titulo_log             = $atendimento_id != '' ? 'Editar Atendimento' : 'Adicionar Atendimento';
-            $tipo_log = $atendimento_id != '' ? 3 : 1;
+            $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]"; //--current atendimento objeto, usado na auditoria
+            //$profissional_id = CVXRequest::post('atendimento_profissional_id');
             
-            $ct_log = "reg_anterior:[$ct_atendimento_obj]";
-            $new_log = "reg_novo:[$atendimento_obj]";
+//             if (sizeof($atendimento) == 0) {
+//                 $atendimento = new Atendimento();
+//             }
+            $atendimento = new Atendimento();
+            $atendimento->ds_preco =  $ds_procedimento;
+            $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_procedimento);
+            $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_procedimento);
+            $atendimento->clinica_id = $clinica_id;
+            $atendimento->procedimento_id = $procedimento_id;
+            $atendimento->profissional_id = $profissional_id;
+            $atendimento->cs_status = 'A';
             
-            $log = "{".$ct_log.",".$new_log."}";
-            
-            $this->registrarLog($titulo_log, $log, $tipo_log);
-        } else {
+            if ($atendimento->save()) {
+                
+                # registra log
+                $atendimento_obj        = $atendimento->toJson();
+                $titulo_log             = $atendimento_id != '' ? 'Editar Atendimento' : 'Adicionar Atendimento';
+                $tipo_log = $atendimento_id != '' ? 3 : 1;
+                
+                $ct_log = "reg_anterior:[$ct_atendimento_obj]";
+                $new_log = "reg_novo:[$atendimento_obj]";
+                
+                $log = "{".$ct_log.",".$new_log."}";
+                
+                $this->registrarLog($titulo_log, $log, $tipo_log);
+            } else {
+                $result = false;
+            }
+        }
+        
+        if (!$result) {
             return response()->json(['status' => false, 'mensagem' => 'O Procedimento não foi salvo. Por favor, tente novamente.']);
         }
         
-        $atendimento->load('procedimento');
-        $atendimento->load('profissional');
-        $atendimento->profissional->load('documentos');
+        //$atendimento->load('procedimento');
+        //$atendimento->load('profissional');
+        //$atendimento->profissional->load('documentos');
         
-        return response()->json(['status' => true, 'mensagem' => 'O Procedimento foi salvo com sucesso!', 'atendimento' => $atendimento->toJson()]);
+        return response()->json(['status' => true, 'mensagem' => 'O(s) Procedimento(s) foi(ram) salvo(s) com sucesso!']);
+    }
+    
+    /**
+     * editAtendimentoPrecoUpdate a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function editAtendimentoPrecoUpdate(Request $request)
+    {
+        $atendimento_id = CVXRequest::post('atendimento_id');
+        $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
+        
+        $ds_atendimento = CVXRequest::post('ds_atendimento');
+        $vl_com_atendimento = CVXRequest::post('vl_com_atendimento');
+        $vl_net_atendimento = CVXRequest::post('vl_net_atendimento');
+        
+        if (isset($atendimento)) {
+            
+            $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]"; //--current atendimento objeto, usado na auditoria
+            
+            $atendimento->ds_preco =  $ds_atendimento;
+            $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_atendimento);
+            $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_atendimento);
+            
+            if ($atendimento->save()) {
+                
+                # registra log
+                $atendimento_obj        = $atendimento->toJson();
+                $titulo_log             = $atendimento_id != '' ? 'Editar Atendimento' : 'Adicionar Atendimento';
+                $tipo_log = $atendimento_id != '' ? 3 : 1;
+                
+                $ct_log = "reg_anterior:[$ct_atendimento_obj]";
+                $new_log = "reg_novo:[$atendimento_obj]";
+                
+                $log = "{".$ct_log.",".$new_log."}";
+                
+                $this->registrarLog($titulo_log, $log, $tipo_log);
+                
+            } else {
+                return response()->json(['status' => false, 'mensagem' => 'O Atendimento não foi salvo. Por favor, tente novamente.']);
+            }
+        }
+        
+        //$atendimento->load('procedimento');
+        //$atendimento->load('profissional');
+        //$atendimento->profissional->load('documentos');
+        
+        return response()->json(['status' => true, 'mensagem' => 'O Atendimento foi salvo com sucesso!']);
     }
     
     /**
@@ -690,49 +751,58 @@ class ClinicaController extends Controller
     {
         $atendimento_id = CVXRequest::post('atendimento_id');
         $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
-        $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]";
         
         $clinica_id = CVXRequest::post('clinica_id');
         $consulta_id = CVXRequest::post('consulta_id');
         $ds_consulta = CVXRequest::post('ds_consulta');
-        $profissional_id = CVXRequest::post('consulta_profissional_id');
+        //$profissional_id = CVXRequest::post('consulta_profissional_id');
         $vl_com_consulta = CVXRequest::post('vl_com_consulta');
         $vl_net_consulta = CVXRequest::post('vl_net_consulta');
         
-        if (sizeof($atendimento) == 0) {
-            $atendimento = new Atendimento();
-        }
-        $atendimento->ds_preco =  $ds_consulta;
-        $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_consulta);
-        $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_consulta);
-        $atendimento->clinica_id = $clinica_id;
-        $atendimento->consulta_id = $consulta_id;
-        $atendimento->profissional_id = $profissional_id;
-        $atendimento->cs_status = 'A';
+        $profissional_ids = CVXRequest::post('list_profissional_consulta');
         
-        if ($atendimento->save()) {
+        $result = true;
+        foreach ($profissional_ids as $index => $profissional_id) {
             
-            # registra log
-            $atendimento_obj        = $atendimento->toJson();
-            $titulo_log             = $atendimento_id != '' ? 'Editar Consulta' : 'Adicionar Consulta';
-            $tipo_log = $atendimento_id != '' ? 3 : 1;
+            $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]";
             
-            $ct_log = "reg_anterior:[$ct_atendimento_obj]";
-            $new_log = "reg_novo:[$atendimento_obj]";
+            $atendimento = new Atendimento();
+            $atendimento->ds_preco =  $ds_consulta;
+            $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_consulta);
+            $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_consulta);
+            $atendimento->clinica_id = $clinica_id;
+            $atendimento->consulta_id = $consulta_id;
+            $atendimento->profissional_id = $profissional_id;
+            $atendimento->cs_status = 'A';
             
-            $log = "{".$ct_log.",".$new_log."}";
-            
-            $this->registrarLog($titulo_log, $log, $tipo_log);
-                        
-        } else {
+            if ($atendimento->save()) {
+                
+                # registra log
+                $atendimento_obj        = $atendimento->toJson();
+                $titulo_log             = $atendimento_id != '' ? 'Editar Consulta' : 'Adicionar Consulta';
+                $tipo_log = $atendimento_id != '' ? 3 : 1;
+                
+                $ct_log = "reg_anterior:[$ct_atendimento_obj]";
+                $new_log = "reg_novo:[$atendimento_obj]";
+                
+                $log = "{".$ct_log.",".$new_log."}";
+                
+                $this->registrarLog($titulo_log, $log, $tipo_log);
+                
+            } else {
+                $result = false;
+            }
+        }
+        
+        if (!$result) {
             return response()->json(['status' => false, 'mensagem' => 'A Consulta não foi salva. Por favor, tente novamente.']);
         }
         
-        $atendimento->load('consulta');
+        /* $atendimento->load('consulta');
         $atendimento->load('profissional');
-        $atendimento->profissional->load('documentos');
+        $atendimento->profissional->load('documentos'); */
         
-        return response()->json(['status' => true, 'mensagem' => 'A Consulta foi salva com sucesso!', 'atendimento' => $atendimento->toJson()]);
+        return response()->json(['status' => true, 'mensagem' => 'A(s) Consulta(s) foi(ram) salva(s) com sucesso!']);
     }
     
     /**
