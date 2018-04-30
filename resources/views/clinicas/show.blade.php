@@ -26,7 +26,7 @@
             <div class="card-box col-12">
                 <h4 class="header-title m-t-0 m-b-30">Clínicas</h4>
 
-                <ul class="nav nav-tabs">
+                <ul id="cvx-tab" class="nav nav-tabs">
                     <li class="nav-item">
                         <a href="#prestador" data-toggle="tab" aria-expanded="true" class="nav-link active">
                             Dados da Clínica
@@ -44,7 +44,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="#corpoClinico" data-toggle="tab" aria-expanded="false" class="nav-link">
-                            Precificação de Consultas
+                            Corpo Clínico
                         </a>
                     </li>
                 </ul>
@@ -66,4 +66,20 @@
    		</div>
 	</div>
 </div>
+@push('scripts')
+	<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		
+		$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+	        localStorage.setItem('activeTab', $(e.target).attr('href'));
+	    });
+	    
+	    var activeTab = localStorage.getItem('activeTab');
+	    if(activeTab){
+	        $('#cvx-tab a[href="' + activeTab + '"]').tab('show');
+	    }
+		
+	});
+	</script>
+    @endpush
 @endsection

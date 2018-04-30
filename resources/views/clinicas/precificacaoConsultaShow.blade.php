@@ -11,7 +11,9 @@
     					<th>Id</th>
     					<th>Código</th>
     					<th>Consulta</th>
-    					<th>Valor</th>
+    					<th style="width: 150px;">Valor Comercial</th>
+    					<th style="width: 150px;">Valor Net</th>
+    					<th style="width: 400px;">Profissional</th>
     				</tr>
         		</thead>
         		<tbody>
@@ -31,7 +33,9 @@
                 					<th>{{$consulta->consulta->id}}		     <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->consulta->id}}"></th>
                 					<th>{{$consulta->consulta->cd_consulta}} <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->consulta->cd_consulta}}"></th>
                 					<th>{{$consulta->consulta->ds_consulta}} <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->ds_preco}}"></th>
-                					<th>{{$consulta->vl_atendimento}}</th>
+                					<td>R$ {{$consulta->getVlComercialAtendimento()}}</td>
+                					<td>R$ {{$consulta->getVlNetAtendimento()}}</td>
+                					<td>{{ $consulta->profissional->nm_primario.' '.$consulta->profissional->nm_secundario.' ('.$consulta->profissional->documentos()->first()->tp_documento.': '.$consulta->profissional->documentos->first()->te_documento.')' }}</td>
                 				</tr>
             				@endforeach    			
         				@endif

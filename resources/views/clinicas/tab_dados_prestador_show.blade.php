@@ -67,8 +67,8 @@
 							<td width="75%">{{$prestador->enderecos->first()->nr_cep}}</td>
 						</tr>
 						<tr>
-							<td width="25%">Logradouro</td>
-							<td width="75%">{{$prestador->enderecos->first()->sg_logradouro}}</td>
+							<td width="25%">Tipo de Logradouro</td>
+							<td width="75%">@if( $prestador->enderecos->first()->sg_logradouro != null ) $prestador->enderecos->first()->sg_logradouro @else <span class="text-danger">-- NÃO INFORMADO --</span> @endif</td>
 						</tr>
 						<tr>
 							<td width="25%">Endereço</td>

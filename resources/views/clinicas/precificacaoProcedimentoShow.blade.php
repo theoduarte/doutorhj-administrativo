@@ -11,7 +11,9 @@
     					<th>Id</th>
     					<th>Código</th>
     					<th>Procedimento</th>
-    					<th>Valor</th>
+    					<th style="width: 150px;">Valor Comercial</th>
+    					<th style="width: 150px;">Valor Net</th>
+    					<th style="width: 400px;">Profissional</th>
     				</tr>
     			</thead>
     			<tbody>
@@ -28,10 +30,12 @@
         				@if( $precoprocedimentos != null)
             				@foreach( $precoprocedimentos as $procedimento )
                 				<tr>
-                					<th>{{$procedimento->procedimento->id}}</th>
-                					<th>{{$procedimento->procedimento->cd_procedimento}}</th>
-                					<th>{{$procedimento->procedimento->ds_procedimento}}</th>
-                					<th>{{$procedimento->vl_atendimento}}</th>
+                					<td>{{$procedimento->procedimento->id}}</td>
+                					<td>{{$procedimento->procedimento->cd_procedimento}}</td>
+                					<td>{{$procedimento->procedimento->ds_procedimento}}</td>
+                					<td>R$ {{$procedimento->getVlComercialAtendimento()}}</td>
+                					<td>R$ {{$procedimento->getVlNetAtendimento()}}</td>
+                					<td>{{ $procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }}</td>
                 				</tr>
             				@endforeach
         				@endif
