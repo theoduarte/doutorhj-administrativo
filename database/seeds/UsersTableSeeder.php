@@ -49,26 +49,6 @@ class UsersTableSeeder extends Seeder
     	            'cs_status'	     => 'A',
     	            'avatar'          => 'users/default.png',
     	            'perfiluser_id' => 2
-    	        ],
-    	        [
-    	            'name'           => 'Cleisson Pessoa',
-    	            'email'          => 'cleisson.pessoa@prevservice.com.br',
-    	            'password'       => bcrypt('U3KqyD'),
-    	            'remember_token' => str_random(60),
-    	            'tp_user'	     => 'O',
-    	            'cs_status'	     => 'A',
-    	            'avatar'          => 'users/default.png',
-    	            'perfiluser_id' => 4
-    	        ],
-    	        [
-    	            'name'           => 'Raquel Sousa',
-    	            'email'          => 'raquel@prevservice.com.br',
-    	            'password'       => bcrypt('DFef4N'),
-    	            'remember_token' => str_random(60),
-    	            'tp_user'	     => 'O',
-    	            'cs_status'	     => 'A',
-    	            'avatar'          => 'users/default.png',
-    	            'perfiluser_id' => 4
     	        ]
     	        
     	    ]);

@@ -42,7 +42,7 @@ class AgendamentoController extends Controller
                                              }
                                          }, 
                                          'agendamento.profissional', 
-                                         'agendamento.profissional.especialidade', 
+                                         'agendamento.profissional.especialidades', 
                                          'agendamento.paciente',
                                          'agendamento.paciente.user'=> function ($query){
                                               $nm_paciente = Request::get('nm_paciente');
@@ -94,10 +94,7 @@ class AgendamentoController extends Controller
     public function getProfissional($profissional){
         $arJson = array();
         $profissional = \App\Profissional::where(function($query){
-//                         dd(Request::all());
-                # $query->where(DB::raw('to_str(CONCAT(nm_primario, nm_secundario))'),'like', '%'.UtilController::toStr($profissional).'%');
-            
-            
+
                                                 })->get();
         $profissional->load('documentos');
         

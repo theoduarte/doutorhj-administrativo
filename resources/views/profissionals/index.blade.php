@@ -82,10 +82,16 @@
 								@endforeach
                 	 		</td>
                 	 		<td>
-								{{$profissional->especialidade->cd_especialidade.' - '.$profissional->especialidade->ds_especialidade}}
+								@foreach( $profissional->especialidades as $especialidade )
+    								{{$especialidade->cd_especialidade.' - '.$especialidade->ds_especialidade.' '}}
+								@endforeach
                 	 		</td>
                	 			<td>
-                	 			{{$profissional->user->cs_status}}
+               	 				@if( $profissional->user->cs_status == 'A' ) 
+               	 					Ativo
+               	 				@elseif( $profissional->user->cs_status == 'I' )
+               	 					Inativo
+               	 				@endif
                 	 		</td>
     						<td>
     							<a href="{{ route('profissionals.show', $profissional->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>

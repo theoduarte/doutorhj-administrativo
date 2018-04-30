@@ -15,11 +15,9 @@ class AddEspecialidadeIdToProfissionalsTable extends Migration
     {
     	Schema::table('profissionals', function (Blueprint $table) {
     		$table->integer('especialidade_id')
-    		->unsigned()
-    		->nullable()
-    		->after('user_id');
-    		 
-    		$table->foreign('especialidade_id')->references('id')->on('especialidades');
+				->unsigned()
+				->nullable()
+				->after('user_id');
     	});
     }
 
@@ -32,7 +30,7 @@ class AddEspecialidadeIdToProfissionalsTable extends Migration
     {
     	Schema::table('especialidades', function (Blueprint $table) {
     	    $table->dropForeign('profissionals_especialidade_id_foreign');
-    	    $table->dropColumn('especialidade_id');
+    	    $table->dropColumn('especialidade_id');	
     	});
     }
 }

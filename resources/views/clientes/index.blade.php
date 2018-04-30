@@ -81,7 +81,11 @@
 								@endforeach
                 	 		</td>
                	 			<td>
-                	 			{{$usuario->user->cs_status}}
+               	 				@if( $usuario->user->cs_status == 'A' ) 
+               	 					Ativo
+               	 				@elseif( $usuario->user->cs_status == 'I' )
+               	 					Inativo
+               	 				@endif
                 	 		</td>
     						<td>
     							<a href="{{ route('clientes.show', $usuario->user->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>

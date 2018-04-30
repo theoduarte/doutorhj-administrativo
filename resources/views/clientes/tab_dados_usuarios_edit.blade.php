@@ -335,10 +335,10 @@
                             <div class="col-5">
                              	<label for="cs_statusA" class="control-label">Situação<span class="text-danger">*</span></label>
                                 <br>
-                                <input type="radio" id="cs_statusA" value="A" name="cs_status" @if( $pacientes->user->cs_status == 'Ativo' ) checked @endif autofocus style="cursor: pointer;">
+                                <input type="radio" id="cs_statusA" value="A" name="cs_status" @if( $pacientes->user->cs_status == 'A' ) checked @endif autofocus style="cursor: pointer;">
                                 <label for="cs_statusA" style="cursor: pointer;">Ativo</label>
              					<br>
-                                <input type="radio" value="I" id="cs_statusI" name="cs_status" @if( $pacientes->user->cs_status == 'Inativo' ) checked @endif autofocus style="cursor: pointer;">
+                                <input type="radio" value="I" id="cs_statusI" name="cs_status" @if( $pacientes->user->cs_status == 'I' ) checked @endif autofocus style="cursor: pointer;">
                                 <label for="cs_statusI" style="cursor: pointer;">Inativo</label>
                             </div>
                         </div>

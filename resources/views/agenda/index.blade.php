@@ -151,7 +151,10 @@
                                     						and $obAgenda->agendamento->cs_status!='Confirmado'
                                     							and $obAgenda->agendamento->bo_remarcacao=='N')
                                     							
-                   							<a especialidade  = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
+                   							<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
+                   													{{$especialidade->ds_especialidade}}
+                   												@endforeach
+                   												"
                                     		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                                     		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
                                     		   prestador	  = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
@@ -173,7 +176,10 @@
                                     	
                                     	<!-- botao confirmar -->
                                     	@if( $obAgenda->agendamento->cs_status!='Cancelado' and $obAgenda->agendamento->cs_status=='Agendado')                                	   
-                                    	    <a especialidade   = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
+                   							<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
+                   													{{$especialidade->ds_especialidade}}
+                   												@endforeach
+                   												"
                                     		   nm-paciente     = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                                     		   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
                                     		   prestador	   = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
@@ -190,7 +196,10 @@
 										
                                     	<!-- botao cancelar -->
                                     	@if( $obAgenda->agendamento->cs_status!='Cancelado' and $obAgenda->agendamento->cs_status!='Finalizado')                                	   
-                                    	    <a especialidade   = "{{$obAgenda->agendamento->profissional->especialidade->ds_especialidade}}"
+                   							<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
+                   													{{$especialidade->ds_especialidade}}
+                   												@endforeach
+                   												"
                                     		   nm-paciente     = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                                     		   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
                                     		   prestador	   = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 

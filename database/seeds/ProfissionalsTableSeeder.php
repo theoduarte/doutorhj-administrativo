@@ -24,6 +24,8 @@ class ProfissionalsTableSeeder extends Seeder
 					'cs_status'	     => 'A'
 			]);
 		    
+
+			
 			DB::table('profissionals')->insert(array (
 				0 => 
 				array (
@@ -33,7 +35,15 @@ class ProfissionalsTableSeeder extends Seeder
 					'cs_sexo'=>'M',
 					'dt_nascimento'=> '07/01/1986',
 					'user_id'=> $numero,
-					'especialidade_id'=>189
+					'clinica_id' => 4000
+				),
+			));
+			
+			DB::table('especialidade_profissional')->insert(array (
+				0 => 
+				array (
+				    'especialidade_id' => 189,
+					'profissional_id' => $numero,
 				),
 			));
 			

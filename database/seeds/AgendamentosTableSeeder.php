@@ -22,7 +22,8 @@ class AgendamentosTableSeeder extends Seeder
             				'clinica_id'             => 4000,
             				'profissional_id'        => 2001,
             				'paciente_id'            => 1002,
-    	                    'cs_status'              => 60
+    	                    'cs_status'              => 60,
+							'atendimento_id'		 => 12006
                 		  ]
     	        );
     	    
@@ -41,7 +42,8 @@ class AgendamentosTableSeeder extends Seeder
             				'clinica_id'             => 4000,
             				'profissional_id'        => 2001,
             				'paciente_id'            => 1002,
-    	                    'cs_status'              => 20
+    	                    'cs_status'              => 20,
+							'atendimento_id'		 => 4001
                 		  ]
     	        );
     	    
@@ -60,7 +62,8 @@ class AgendamentosTableSeeder extends Seeder
             				'clinica_id'             => 4000,
             				'profissional_id'        => 2001,
             				'paciente_id'            => 1002,
-    	                    'cs_status'              => 20
+    	                    'cs_status'              => 20,
+							'atendimento_id'		 => 8002
                 		  ]
     	        );
     	    
@@ -78,7 +81,8 @@ class AgendamentosTableSeeder extends Seeder
             				'clinica_id'             => 4000,
             				'profissional_id'        => 2001,
             				'paciente_id'            => 1002,
-    	                    'cs_status'              => 10
+    	                    'cs_status'              => 10,
+							'atendimento_id'		 => 12003
                 		  ]
     	        );
     	    
@@ -96,7 +100,8 @@ class AgendamentosTableSeeder extends Seeder
             				'clinica_id'             => 4000,
             				'profissional_id'        => 2001,
             				'paciente_id'            => 1002,
-    	                    'cs_status'              => 10
+    	                    'cs_status'              => 10,
+							'atendimento_id'		 => 4002
                 		  ]
     	        );
     	    

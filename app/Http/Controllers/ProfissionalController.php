@@ -45,7 +45,7 @@ class ProfissionalController extends Controller
        
         $profissionals->load('user');
         $profissionals->load('documentos');
-        $profissionals->load('especialidade');
+        $profissionals->load('especialidades');
         
         Request::flash();
         
@@ -86,11 +86,11 @@ class ProfissionalController extends Controller
     {
         $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
         $arEstados       = Estado::orderBy('ds_estado')->get();
-        
+
         $usuarios  = User::findorfail($id);
         
         $profissionals = Profissional::where('user_id', '=', $id)->get()->first();
-        $profissionals->load('especialidade');
+        $profissionals->load('especialidades');
         $profissionals->load('user');
         $profissionals->load('documentos');
         $profissionals->load('enderecos');
@@ -119,7 +119,7 @@ class ProfissionalController extends Controller
         $usuarios = User::findorfail($idUsuario);
         
         $profissionals = Profissional::where('user_id', '=', $idUsuario)->get()->first();
-        $profissionals->load('especialidade');
+        $profissionals->load('especialidades');
         $profissionals->load('user');
         $profissionals->load('documentos');
         $profissionals->load('enderecos');
@@ -148,7 +148,7 @@ class ProfissionalController extends Controller
         $profissional = Profissional::findorfail($idProfissional);
         $profissional->update($dados);
         $profissional->user()->update($dados);
-        $profissional->especialidade()->update($dados);
+        $profissional->especialidades()->update($dados);
         
         foreach( $dados['contato_id'] as $indice=>$contato_id){
             $contato = Contato::findorfail($contato_id);
