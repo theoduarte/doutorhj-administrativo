@@ -63,7 +63,7 @@
 			profissional_id = $('.profissional_id').val();
 			paciente_id = $('.paciente').val();
 			data = $('#datepicker-autoclose').val();
-			hora = $('input[name="time"]').val();
+			hora = $('select[name="time"]').val();
 			ticket = $('.ticket').val();
 
 			
@@ -101,7 +101,9 @@
     					        }
     					    );
     			    });
-					
+
+
+        			location.reload();
 					dialogAgendamento.dialog( "close" ); 
  
 			}else{
@@ -117,7 +119,7 @@
 
 			return true;
 		}
-
+		
         
         dialogAgendamento = $( "#dialog-agendar" ).dialog({
             autoOpen : false,
@@ -130,6 +132,7 @@
             },
             close: function() { dialogAgendamento.dialog( "close" ); }
         }); 
+		
 		
         $( "#agendamento" ).button().on( "click", function() {
         	$('.ticket').val($(this).attr('ticket'));
@@ -146,6 +149,23 @@
         	$('.clinica_id').val($(this).attr('id-clinica'));
         	$('.clinica_id').change();
         });
+		
+		
+    	$('#datepicker-autoclose').change(function(){
+			var data = $(this).val().split('/');
+        	
+        	$.ajax({
+        	    url 	 : '/horarios/' + data[2]+'-'+data[1]+'-'+data[0],
+        	    dataType : 'json',
+        	    success  : function(horarios) {
+        	    	$('#time').html(null);
+
+        	        for( var indice = 0; indice<=horarios.length-1; indice++ ){
+        	        	$('#time').append('<option value="' + horarios[indice].hora + '">' + horarios[indice].hora + '</option>');
+        	        }
+        	    }
+        	});
+    	});
    });
 </script>
 
@@ -201,7 +221,8 @@
             </div>
         	<div class="col-4">
                 <label>Hora:</label>
-				<input class="form-control" type="time" name="time">
+    			<select class="form-control" id="time" name="time">
+    			</select>
             </div>
 		</div>
     </form>

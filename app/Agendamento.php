@@ -27,15 +27,17 @@ class Agendamento extends Model
     const AUSENTE        = 50;
     const CANCELADO      = 60;
     const AGENDADO       = 70;
+    const RETORNO        = 80;
     
     protected static $cs_status = array(
         self::PRE_AGENDADO   => 'Pré-Agendado',
         self::CONFIRMADO     => 'Confirmado',
         self::NAO_CONFIRMADO => 'Não Confirmado',
         self::FINALIZADO     => 'Finalizado',
-        self::AUSENTE        => 'Não Compareceu',
+        self::AUSENTE        => 'Ausente',
         self::CANCELADO      => 'Cancelado',
-        self::AGENDADO       => 'Agendado'
+        self::AGENDADO       => 'Agendado',
+        self::RETORNO        => 'Retorno'
     );
     
     

@@ -23,7 +23,7 @@ class AgendamentoController extends Controller
                                                  $data = UtilController::getDataRangeTimePickerToCarbon(Request::get('data'));
                                                  
                                                  $query->where('dt_atendimento', '>=', $data['de']);
-                                                 $query->Where('dt_atendimento', '<=', $data['ate']);
+                                                 $query->where('dt_atendimento', '<=', $data['ate']);
                                              }
                                              
                                              $arCsStatus = array();
@@ -33,6 +33,7 @@ class AgendamentoController extends Controller
                                              if( !empty(Request::get('ckConsultasNaoConfirmadas'))) $arCsStatus[] = \App\Agendamento::NAO_CONFIRMADO;
                                              if( !empty(Request::get('ckConsultasCanceladas'))    ) $arCsStatus[] = \App\Agendamento::CANCELADO;
                                              if( !empty(Request::get('ckAusencias'))              ) $arCsStatus[] = \App\Agendamento::AUSENTE;
+                                             if( !empty(Request::get('ckRetornoConsultas'))       ) $arCsStatus[] = \App\Agendamento::RETORNO;
                                              if( count($arCsStatus) > 0) $query->whereIn('cs_status', $arCsStatus);
                                          },
                                          'agendamento.clinica' => function ($query){
@@ -150,5 +151,38 @@ class AgendamentoController extends Controller
         $arDados = array('cs_status'=>\App\Agendamento::CANCELADO,
                          'obs_cancelamento'=> $obsCancelamento);
         $agendamento->update($arDados);
+    }
+    
+    /**
+     * Consulta lista de horários livres em uma data.
+     *
+     * @param date $data
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getHorariosLivres($data){
+        $arJson = array();
+        
+        for( $hora = 6; $hora <=22; $hora++ ){
+            $this->_verificaDisponibilidadeHorario($data, str_pad($hora, 2, 0, STR_PAD_LEFT).':00:00');
+            $this->_verificaDisponibilidadeHorario($data, str_pad($hora, 2, 0, STR_PAD_LEFT).':30:00');
+        }
+        
+        return Response()->json($this->arHorariosLivres);
+    }
+    
+    /**
+     * Consulta disponibilidade de horário
+     *
+     * @param integer $hora
+     * @return boolean
+     */
+    private function _verificaDisponibilidadeHorario($data, $hora){
+        $agenda = \App\Agendamento::where('dt_atendimento', new Carbon($data.' '.$hora));
+        if( $agenda->count() == 0 ){
+            $this->arHorariosLivres[] = ['hora'=>substr($hora, 0, 5)];
+            return true;
+        }else{
+            return false;
+        }
     }
 }
