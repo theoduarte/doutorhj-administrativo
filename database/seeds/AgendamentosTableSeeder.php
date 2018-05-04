@@ -22,7 +22,7 @@ class AgendamentosTableSeeder extends Seeder
             				'clinica_id'             => 4000,
             				'profissional_id'        => 2001,
             				'paciente_id'            => 1002,
-    	                    'cs_status'              => 60,
+    	                    'cs_status'              => 20,
 							'atendimento_id'		 => 12006
                 		  ]
     	        );

@@ -185,4 +185,16 @@ class AgendamentoController extends Controller
             return false;
         }
     }
+    
+    /**
+     * Muda Status de um agendamento
+     * 
+     * @param unknown $teTicket
+     */
+    public function setStatus($teTicket, $cdStatus){
+        $agendamento = \App\Agendamento::where('te_ticket', '=', $teTicket);
+        
+        $arDados = array('cs_status' => $cdStatus);
+        $agendamento->update($arDados);
+    }    
 }

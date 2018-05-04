@@ -20,7 +20,6 @@ Route::resource('permissaos','PermissaoController')->middleware('auth');
 Route::resource('agenda','AgendamentoController')->only(['index'])->middleware('auth');
 Route::resource('registro_logs','RegistroLogController')->middleware('auth');
 
-
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
 Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');
 Route::get('procedimentos/consulta/{consulta}', 'ClinicaController@getProcedimentos')->middleware('auth');
@@ -39,6 +38,7 @@ Route::get('profissionais/{idClinica}', 'ProfissionalController@getProfissionais
 Route::get('agenda/agendar/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i?}', 'AgendamentoController@addAgendamento')->middleware('auth');
 Route::get('agenda/cancelar/{ticket}/{obs?}', 'AgendamentoController@addCancelamento')->middleware('auth');
 Route::get('horarios/{data}', 'AgendamentoController@getHorariosLivres')->middleware('auth');
+Route::get('agenda/confirmar/{ticket}/{cdStatus}', 'AgendamentoController@setStatus')->middleware('auth');
 
 Auth::routes();
 

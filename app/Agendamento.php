@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Model;
 
 class Agendamento extends Model
 {
@@ -17,9 +17,8 @@ class Agendamento extends Model
     
     public $dates 	  = ['dt_atendimento'];
     
-    /*
-     * CS_STATUS
-     */
+
+    # CS_STATUS
     const PRE_AGENDADO   = 10;
     const CONFIRMADO     = 20;
     const NAO_CONFIRMADO = 30;
@@ -41,22 +40,23 @@ class Agendamento extends Model
     );
     
     
+    
     public function paciente()
     {
         return $this->belongsTo(Paciente::class);
     }
-    
     
     public function clinica()
     {
         return $this->belongsTo(Clinica::class);
     }
     
-    
     public function profissional()
     {
         return $this->belongsTo(Profissional::class);
     }
+    
+    
     
     public function getCsStatusAttribute($cdStatus) {
         return static::$cs_status[$cdStatus];
