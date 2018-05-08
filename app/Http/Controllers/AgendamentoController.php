@@ -34,6 +34,7 @@ class AgendamentoController extends Controller
                                              if( !empty(Request::get('ckConsultasCanceladas'))    ) $arCsStatus[] = \App\Agendamento::CANCELADO;
                                              if( !empty(Request::get('ckAusencias'))              ) $arCsStatus[] = \App\Agendamento::AUSENTE;
                                              if( !empty(Request::get('ckRetornoConsultas'))       ) $arCsStatus[] = \App\Agendamento::RETORNO;
+                                             if( !empty(Request::get('ckConsultasFinalizadas'))   ) $arCsStatus[] = \App\Agendamento::FINALIZADO;
                                              if( count($arCsStatus) > 0) $query->whereIn('cs_status', $arCsStatus);
                                          },
                                          'agendamento.clinica' => function ($query){
@@ -50,11 +51,10 @@ class AgendamentoController extends Controller
                                               if(!empty($nm_paciente)){
                                                   $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr($nm_paciente).'%');
                                               }
-                                         }])->where(function($query){})
-                                            ->sortable()
+                                         }])->sortable()
                                             ->paginate(20);
         Request::flash();
-
+        
         return view('agenda.index', compact('agenda', 'clinicas'));
     }
     

@@ -54,7 +54,7 @@
                     		{{ csrf_field() }}
         					
                 			<div class="row">
-                				<div class="col-5">
+                				<div class="col-4">
             				        <label for="localAtendimento">Clínica:<span class="text-danger">*</span></label>
     								<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}">
     								<input type="hidden" id="clinica_id" name="clinica_id" value="{{old('clinica_id')}}">
@@ -102,13 +102,17 @@
                                 	<div style="height: 20px;"></div>
                                     <label class="custom-checkbox" style="cursor: pointer;">
                     					<input type="checkbox"  id="ckRetornoConsultas" name="ckRetornoConsultas" 
-                    						value="80" @if(old('ckRetornoConsultas')=='80') checked @endif> Retorno
+                    						value="80" @if(old('ckRetornoConsultas')=='80') checked @endif> Consultas de Retorno
                                     </label>
-									
+									<br>
+                                    <label class="custom-checkbox" style="cursor: pointer;">
+                    					<input type="checkbox" id="ckConsultasFinalizadas" name="ckConsultasFinalizadas" 
+                    						value="80" @if(old('ckConsultasFinalizadas')=='80') checked @endif> Consultas Finalizadas
+                                    </label>
                                 </div>
             				</div>
             				<div class="row">
-								<div class="col-5">
+								<div class="col-4">
             				        <label for="localAtendimento">Paciente:</label>
     								<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
                                 </div>            					

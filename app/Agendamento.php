@@ -64,6 +64,6 @@ class Agendamento extends Model
     
     public function getDtAtendimentoAttribute($data) {
         $obData = new Carbon($data);
-        return $obData->format('d/m/Y  H:i');
+        return $obData->format('d/m/Y H:i');
     }
 }
