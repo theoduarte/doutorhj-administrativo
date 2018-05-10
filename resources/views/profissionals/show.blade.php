@@ -41,10 +41,15 @@
 							<td>Nascimento</td>
 							<td>{{$profissionals->dt_nascimento}}</td>
 						</tr>
-						@if ( $profissionals->especialidade != null )
+						@if ( $profissionals->especialidades != null )
+						
 						<tr>
 							<td>Especialidade</td>
-							<td>{{$profissionals->especialidade->cd_especialidade}} - {{$profissionals->especialidade->ds_especialidade}}</td>
+							<td>
+								@foreach($profissionals->especialidades as $especialidade)
+									{{$especialidade->cd_especialidade}} - {{$especialidade->ds_especialidade.' '}}
+								@endforeach
+							</td>
 						</tr>
 						@endif
 						@foreach( $profissionals->documentos as $documento )
@@ -53,57 +58,6 @@
 							<td>{{$documento->tp_documento}} - {{$documento->te_documento}}</td>
 						</tr>
 						@endforeach 
-						@foreach ( $profissionals->contatos as $contato )
-						<tr>
-							<td>Contato</td>
-							<td>   
-             	 			@switch( $contato->tp_contato )
-            	 				@case('FR')  Fixo Residencial   @Break
-            	 				@case('FC')  Fixo Comercial     @Break
-            	 				@case('CP')  Celular Pessoal    @Break
-            	 				@case('CC')  Celular Comercial  @Break
-            	 				@case('FX')  FAX  				@Break
-                	 		@endswitch
-							-
-							{{$contato->ds_contato}}</td>
-						</tr>
-						@endforeach 
-						<tr>
-							<td>CEP</td>
-							<td>{{$profissionals->enderecos->first()->nr_cep}}</td>
-						</tr>
-						<tr>
-							<td>Logradouro</td>
-							<td>{{$profissionals->enderecos->first()->sg_logradouro}}</td>
-						</tr>
-						<tr>
-							<td>Endereço</td>
-							<td>{{ $profissionals->enderecos->first()->te_endereco }}</td>
-						</tr>
-						<tr>
-							<td>Número</td>
-							<td>{{$profissionals->enderecos->first()->nr_logradouro}}</td>
-						</tr>
-						<tr>
-							<td>Complemento</td>
-							<td>{{ $profissionals->enderecos->first()->te_complemento }}</td>
-						</tr>
-						<tr>
-							<td>Bairro</td>
-							<td>{{ $profissionals->enderecos->first()->te_bairro }}</td>
-						</tr>
-						<tr>
-							<td>Cidade</td>
-							<td>{{$cidade->nm_cidade}}</td>
-						</tr>
-						<tr>
-							<td>Estado</td>
-							<td>{{$cidade->ds_estado}}</td>
-						</tr>
-						<tr>
-							<td>E-mail</td>
-							<td>{{$profissionals->user->email}}</td>
-						</tr>
 					</tbody>
 				</table>
 			</div>

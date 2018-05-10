@@ -43,21 +43,22 @@
             					<div class="col-4">
             						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
             					</div>
-      							<div style="width: 160px !important;">
+      							<div style="width:150px !important;">
                 					<input type="checkbox"  id="tp_usuario_somente_ativos" name="tp_usuario_somente_ativos" value="ativo" @if(old('tp_usuario_somente_ativos')=='ativo') checked @endif >
                 					<label for="tp_usuario_somente_ativos" style="cursor: pointer;">Clientes Ativos</label>
-            						
-                					<label for="tp_usuario_somente_inativos"></label><br>
+                					<br>
                 					<input type="checkbox"  id="tp_usuario_somente_inativos" name="tp_usuario_somente_inativos" value="inativo" @if(old('tp_usuario_somente_inativos')=='inativo') checked @endif>
                 					<label for="tp_usuario_somente_inativos" style="cursor: pointer;">Clientes Inativos</label>
                 				</div>
-                				<div class="col-1" >
+                				<div class="col-4" >
                 					<button type="submit" class="btn btn-primary" id="btnPesquisar">Pesquisar</button>
                 				</div>				
             				</div>
                     	</form>
 					</div>
 				</div>
+				
+				<br>
 				
 				<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
 					<tr>
@@ -90,7 +91,7 @@
     						<td>
     							<a href="{{ route('clientes.show', $usuario->user->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
     							<a href="{{ route('clientes.edit', $usuario->user->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('clientes.destroy', $usuario->user->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o usuário? {{$usuario->user->name}}"><i class="ti-trash"></i></a>
+    							<a href="{{ route('clientes.destroy', $usuario->user->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar o cliente? {{$usuario->user->name}}"><i class="ti-trash"></i></a>
     						</td>
     					</tr>
 					@endforeach

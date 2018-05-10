@@ -10,6 +10,9 @@ class Agendamento extends Model
 {
     use Sortable;
     
+    
+    
+    
     public $fillable  = ['id', 'te_ticket', 'profissional_id',
                          'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
     
@@ -18,7 +21,10 @@ class Agendamento extends Model
     public $dates 	  = ['dt_atendimento'];
     
 
-    # CS_STATUS
+    
+    /*
+     * Constants
+     */
     const PRE_AGENDADO   = 10;
     const CONFIRMADO     = 20;
     const NAO_CONFIRMADO = 30;
@@ -41,6 +47,9 @@ class Agendamento extends Model
     
     
     
+    /*
+     * Relationship
+     */
     public function paciente()
     {
         return $this->belongsTo(Paciente::class);
@@ -58,6 +67,9 @@ class Agendamento extends Model
     
     
     
+    /*
+     * Getters and Setters
+     */
     public function getCsStatusAttribute($cdStatus) {
         return static::$cs_status[$cdStatus];
     }

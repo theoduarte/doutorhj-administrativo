@@ -177,13 +177,16 @@
                             		   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
                             		   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
                             		   ticket         = "{{$obAgenda->agendamento->te_ticket}}"
-                            		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5"
+                            		   class		  = "btn btn-icon waves-effect btn-primary btn-sm m-b-5 agendamento"
+                            		   id			  = "agendamento"
                             		   
                             		   @if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' )		   
-                            		   		title = "Agendar Consulta" id="agendamento"><i class="mdi mdi-phone"></i></a>
+                            		   		title = "Agendar Consulta" 
                             		   @elseif( $obAgenda->agendamento->cs_status == 'Agendado' )
-                            		   		title = "Remarcar Consulta" id="agendamento"><i class="mdi mdi-phone"></i></a>
+                            		   		title = "Remarcar Consulta"
                             		   @endif
+                            		   
+                            		   ><i class="mdi mdi-phone"></i></a>
                             	@endif
                             	
                             	

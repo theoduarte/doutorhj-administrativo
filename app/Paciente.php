@@ -2,18 +2,37 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Carbon;
+use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Model;
 
 class Paciente extends Model
 {
 	use Sortable;
 	
+	
 	public $fillable      = ['id', 'nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'cargo_id'];
 	public $sortable      = ['id', 'nm_primario', 'nm_secundario'];
 	public $dates 	      = ['dt_nascimento'];
     
+	
+	
+	/*
+	 * Constants
+	 */
+	const MASCULINO = 'M';
+	const FEMININO  = 'F';
+	
+	protected static $cs_sexo = array(
+	    self::MASCULINO => 'Masculino',
+	    self::FEMININO  => 'Feminino'
+	);
+	
+	
+	
+	/*
+	 * Relationship
+	 */
 	public function cargo(){
 	    return $this->belongsTo('App\Cargo');
 	}
@@ -34,6 +53,11 @@ class Paciente extends Model
 	    return $this->belongsTo('App\User');
 	}
     
+	
+	
+	/*
+	 * Getters and Setters
+	 */
 	public function setDtNascimentoAttribute($data)
 	{
 	    $date = new Carbon($data);

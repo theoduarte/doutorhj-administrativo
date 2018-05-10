@@ -17,6 +17,9 @@ class Profissional extends Model
     
 	
 	
+	/*
+	 * Relationship
+	 */
 	public function clinica()
 	{
 	    return $this->belongsTo('App\Clinica');
@@ -53,11 +56,18 @@ class Profissional extends Model
 	
 	
 	
-	public function setDtNascimentoAttribute($value)
-	{
-	    $date = new Carbon($value);
-	    $date->format('Y-m-d H:i:s');
-	    
-	    $this->attributes['dt_nascimento'] = $date;
+	/*
+	 * Getters and Setters
+	 */
+	public function setDtNascimentoAttribute($data)
+	{   
+	    $this->attributes['dt_nascimento'] = Carbon::createFromFormat('d/m/Y', $data); 
 	}
+	
+	public function getDtNascimentoAttribute()
+	{
+	    $date = new Carbon($this->attributes['dt_nascimento']);
+	    return $date->format('d/m/Y');
+	}
+	
 }

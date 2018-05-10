@@ -134,7 +134,7 @@
         }); 
 		
 		
-        $( "#agendamento" ).button().on( "click", function() {
+        $( ".agendamento" ).button().on( "click", function() {
         	$('.ticket').val($(this).attr('ticket'));
         	$('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
         	$('#divDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
