@@ -27,9 +27,9 @@ Route::get('procedimentos/consulta/{consulta}', 'ClinicaController@getProcedimen
 Route::post('clinicas/{clinica}/edit/list-profissional', 'ClinicaController@getProfissionals')->middleware('auth');
 Route::get('consultas/localatendimento/{consulta}', 'AgendamentoController@getLocalAtendimento')->middleware('auth');
 Route::get('agenda/profissional/{profissional}', 'AgendamentoController@getProfissional')->middleware('auth');
-Route::post('clinicas/{clinica}/edit/add-profissional', 'ClinicaController@addProfissionalStore')->middleware('auth');
-Route::post('clinicas/{clinica}/edit/view-profissional', 'ClinicaController@viewProfissionalShow')->middleware('auth');
-Route::post('clinicas/{clinica}/edit/delete-profissional', 'ClinicaController@deleteProfissionalDestroy')->middleware('auth');
+Route::post('add-profissional', 'ClinicaController@addProfissionalStore')->middleware('auth');
+Route::post('view-profissional', 'ClinicaController@viewProfissionalShow')->middleware('auth');
+Route::post('delete-profissional', 'ClinicaController@deleteProfissionalDestroy')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/add-precificacao-procedimento', 'ClinicaController@addProcedimentoPrecoStore')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/delete-procedimento', 'ClinicaController@deleteProcedimentoDestroy')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/add-precificacao-consulta', 'ClinicaController@addConsultaPrecoStore')->middleware('auth');

@@ -164,7 +164,7 @@
 			
 			jQuery.ajax({
 				type: 'POST',
-				url: '{{ Request::url() }}/add-profissional',
+				url: '/add-profissional',
 				data: {
 					'clinica_id': clinica_id,
 					'nm_primario': nm_primario,
@@ -246,7 +246,7 @@
 
 		jQuery.ajax({
 			type: 'POST',
-			url: '{{ Request::url() }}/view-profissional',
+			url: '/view-profissional',
 			data: {
 				'profissional_id': profissional_id,
 				'_token': laravel_token
@@ -309,7 +309,7 @@
             
         	jQuery.ajax({
     			type: 'POST',
-    			url: '{{ Request::url() }}/delete-profissional',
+    			url: '/delete-profissional',
     			data: {
     				'profissional_id': profissional_id,
     				'_token': laravel_token

@@ -368,8 +368,8 @@
     	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(5)').html();
     	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
 
-    	$('input.form-control').val('');
-		$('select.form-control').prop('selectedIndex',0);
+    	$('#profissional-consulta-modal').find('input.form-control').val('');
+    	$('#profissional-consulta-modal').find('select.form-control').prop('selectedIndex',0);
 
 		$('#consulta_id_edit').val(atendimento_id);
 		$('#cd_consulta_edit').val(cd_consulta);

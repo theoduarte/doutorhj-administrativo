@@ -10,8 +10,7 @@ class Profissional extends Model
 {
 	use Sortable;
 	
-	public $fillable = ['nm_primario', 'nm_secundario', 'cs_sexo', 
-	                    'dt_nascimento', 'tp_profissional', 'cs_status'];
+	public $fillable = ['nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'tp_profissional', 'cs_status'];
 	public $sortable = ['id', 'nm_primario', 'nm_secundario'];
 	public $dates 	 = ['dt_nascimento'];
     
@@ -51,7 +50,11 @@ class Profissional extends Model
 	    return $this->belongsTo('App\User');
 	}
 	
-	
+	public function getDtNascimentoAttribute()
+	{
+	    $date = new Carbon($this->attributes['dt_nascimento']);
+	    return $date->format('d/m/Y');
+	}
 	
 	public function setDtNascimentoAttribute($value)
 	{
