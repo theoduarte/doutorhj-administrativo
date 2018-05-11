@@ -238,8 +238,10 @@
 	});
 
 	function openModal(profissional_id) {
-		$('input.form-control').val('');
-		$('select.form-control').prop('selectedIndex',0);
+		
+		$('#con-close-modal').find('input.form-control').val('');
+    	$('#con-close-modal').find('select.form-control').prop('selectedIndex',0);
+    	
 		$('#edit-profisisonal-title-modal').html('Editar Profissional');
 		$('#profisisonal-type-operation').val('edit');
 
