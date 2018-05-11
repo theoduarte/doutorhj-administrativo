@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 use App\Http\Requests\PacientesEditRequest;
-use App\User;
 
 class ClienteController extends Controller
 {
@@ -29,12 +28,14 @@ class ClienteController extends Controller
                                                         $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
                                                 }
                                             }
-                
+                                            
                                             $arFiltroStatusIn = array();
-                                            if(!empty(Request::input('tp_usuario_somente_ativos'))  ){ $arFiltroStatusIn[] = 'A'; }
-                                            if(!empty(Request::input('tp_usuario_somente_inativos'))){ $arFiltroStatusIn[] = 'I'; }
+                                            if(!empty(Request::input('tp_usuario_somente_ativos'))  ){ $arFiltroStatusIn[] = \App\User::ATIVO; }
+                                            if(!empty(Request::input('tp_usuario_somente_inativos'))){ $arFiltroStatusIn[] = \App\User::INATIVO; }
                                             if( count($arFiltroStatusIn) > 0 ) { $query->whereIn('cs_status', $arFiltroStatusIn); }      
-                                        })->sortable()->paginate(20);
+                                        })->sortable()
+                                          
+                                          ->paginate(20);
         $paciente->load('user');
         $paciente->load('documentos');
 
@@ -85,16 +86,13 @@ class ClienteController extends Controller
             $pacientes->load('cargo');
             $pacientes->load('user');
             $pacientes->load('documentos');
-            $pacientes->load('enderecos');
             $pacientes->load('contatos');
             
-            $cidade = \App\Cidade::findorfail($pacientes->enderecos->first()->cidade_id);
         }catch( Exception $e ){
             print $e->getMessage();
         }
 
         return view('clientes.show', ['pacientes'       => $pacientes,
-                                      'cidade'          => $cidade,
                                       'arEspecialidade' => $arEspecialidade,
                                       'arEstados'       => $arEstados]);
     }
@@ -115,20 +113,14 @@ class ClienteController extends Controller
             $usuarios = \App\User::findorfail($idUsuario);
             
             $pacientes = \App\Paciente::where('user_id', '=', $idUsuario)->get()->first();
-            $pacientes->load('cargo');
             $pacientes->load('user');
             $pacientes->load('documentos');
-            $pacientes->load('enderecos');
             $pacientes->load('contatos');
-            
-            $cidade = \App\Cidade::findorfail($pacientes->enderecos->first()->cidade_id);
-            
         }catch( Exception $e ){
             print $e->getMessage();
         }
         
         return view('clientes.edit', ['pacientes'          => $pacientes, 
-                                      'cidade'             => $cidade,
                                       'arEstados'          => $arEstados,
                                       'arCargos'           => $arCargos,
                                       'arEspecialidade'    => $arEspecialidade]);
@@ -155,13 +147,7 @@ class ClienteController extends Controller
                 $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
             }
             
-            
-            $endereco = \App\Endereco::findorfail($dados['endereco_id']);
-            if(!empty($dados['cd_cidade_ibge'])) { $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id; }
-            $endereco->update($dados);
-            $profissional->enderecos()->sync($endereco);
-            
-            
+
             foreach( $dados['documentos_id'] as $indice=>$documentos_id){
                 $documentos = \App\Documento::findorfail($documentos_id);
                 $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice])]);
@@ -179,26 +165,11 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($idCliente)
+    public function destroy($idUser)
     {
-        DB::beginTransaction();
+        $usuario = \App\User::findorfail($idUser);
+        $usuario->update(['cs_status'=>\App\User::INATIVO]);
         
-        try{
-            $clientes = \App\Paciente::findorfail($idCliente);
-            $clientes->forceDelete();
-            $clientes->contatos()->forceDelete();
-            $clientes->enderecos()->forceDelete();
-            $clientes->documentos()->forceDelete();
-            $clientes->user()->forceDelete();
-            
-                   
-            DB::commit();
-        }catch( Exception $e ){
-            DB::rollBack(); 
-
-            return redirect()->route('clientes.index')->with('error', $e->getMessage());
-        }
-        
-        return redirect()->route('clientes.index')->with('success', 'Usuário apagado com sucesso!');
+        return redirect()->route('clientes.index')->with('success', 'Usuário inativado com sucesso!');
     }
 }

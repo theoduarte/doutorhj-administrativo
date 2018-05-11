@@ -34,6 +34,10 @@
 							<td>{{$pacientes->nm_primario}} {{$pacientes->nm_secundario}}</td>
 						</tr>
 						<tr>
+							<td>E-mail</td>
+							<td>{{$pacientes->user->email}}</td>
+						</tr>
+						<tr>
 							<td>Sexo</td>
 							<td>{{( $pacientes->cs_sexo == 'F' ) ? 'Feminino' : 'Masculino'}}</td>
 						</tr>
@@ -74,47 +78,11 @@
 							{{$contato->ds_contato}}</td>
 						</tr>
 						@endforeach 
-						<tr>
-							<td>CEP</td>
-							<td>{{$pacientes->enderecos->first()->nr_cep}}</td>
-						</tr>
-						<tr>
-							<td>Logradouro</td>
-							<td>{{$pacientes->enderecos->first()->sg_logradouro}}</td>
-						</tr>
-						<tr>
-							<td>Endereço</td>
-							<td>{{ $pacientes->enderecos->first()->te_endereco }}</td>
-						</tr>
-						<tr>
-							<td>Número</td>
-							<td>{{$pacientes->enderecos->first()->nr_logradouro}}</td>
-						</tr>
-						<tr>
-							<td>Complemento</td>
-							<td>{{ $pacientes->enderecos->first()->te_complemento }}</td>
-						</tr>
-						<tr>
-							<td>Bairro</td>
-							<td>{{ $pacientes->enderecos->first()->te_bairro }}</td>
-						</tr>
-						<tr>
-							<td>Cidade</td>
-							<td>{{$cidade->nm_cidade}}</td>
-						</tr>
-						<tr>
-							<td>Estado</td>
-							<td>{{$cidade->ds_estado}}</td>
-						</tr>
-						<tr>
-							<td>E-mail</td>
-							<td>{{$pacientes->user->email}}</td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="form-group text-right m-b-0">
-				<a href="{{ route('clientes.edit', $pacientes->id) }}" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-lead-pencil"></i> Editar</a>
+				<a href="{{ route('clientes.edit', $pacientes->user->id) }}" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-lead-pencil"></i> Editar</a>
 				<a href="{{ route('clientes.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
 			</div>
 		</div>

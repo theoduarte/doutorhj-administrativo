@@ -9,45 +9,45 @@
 @section('container')
 <div class="container-fluid">
 
-                        <!-- Page-Title -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="page-title-box">
-                                    <h4 class="page-title">Bem-vindo: {{ Auth::user()->name }}!</h4>
-                                    <ol class="breadcrumb float-right">
-                                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                        <li class="breadcrumb-item active">Painel Administrativo</li>
-                                    </ol>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
+<!-- Page-Title -->
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-title-box">
+			<h4 class="page-title">Bem-vindo: {{ Auth::user()->name }}!</h4>
+			<ol class="breadcrumb float-right">
+				<li class="breadcrumb-item"><a href="#">Home</a></li>
+				<li class="breadcrumb-item active">Painel Administrativo</li>
+			</ol>
+			
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
 
-
-                        <div class="row">
-                            <div class="col-sm-6 col-xl-3">
-                                <div class="widget-simple-chart text-right card-box">
-                                    <div class="circliful-chart" data-dimension="90" data-text="35%" data-width="5" data-fontsize="14" data-percent="35" data-fgcolor="#5fbeaa" data-bgcolor="#ebeff2"></div>
-                                    <h3 class="text-success counter m-t-10">2562</h3>
-                                    <p class="text-muted text-nowrap m-b-10">Pagamentos Compensados</p>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6 col-xl-3">
-                                <div class="widget-simple-chart text-right card-box">
-                                    <div class="circliful-chart" data-dimension="90" data-text="75%" data-width="5" data-fontsize="14" data-percent="75" data-fgcolor="#3bafda" data-bgcolor="#ebeff2"></div>
-                                    <h3 class="text-primary counter m-t-10">5685</h3>
-                                    <p class="text-muted text-nowrap m-b-10">Pagamentos Agendados</p>
-                                </div>
-                            </div>
-                            
-                            <div class="col-sm-6 col-xl-3">
-                                <div class="widget-simple-chart text-right card-box">
-                                    <div class="circliful-chart" data-dimension="90" data-text="49%" data-width="5" data-fontsize="14" data-percent="49" data-fgcolor="#98a6ad" data-bgcolor="#ebeff2"></div>
-                                    <h3 class="text-inverse counter m-t-10">62</h3>
-                                    <p class="text-muted text-nowrap m-b-10">Profissionais Ativos</p>
-                                </div>
-                            </div>
+<div class="row">
+	<div class="col-sm-6 col-xl-3">
+		<div class="widget-simple-chart text-right card-box">
+			<div class="circliful-chart" data-dimension="90" data-text="35%" data-width="5" data-fontsize="14" data-percent="35" data-fgcolor="#5fbeaa" data-bgcolor="#ebeff2"></div>
+			<h3 class="text-success counter m-t-10">2562</h3>
+			<p class="text-muted text-nowrap m-b-10">Pagamentos Compensados</p>
+		</div>
+	</div>
+	
+	<div class="col-sm-6 col-xl-3">
+		<div class="widget-simple-chart text-right card-box">
+			<div class="circliful-chart" data-dimension="90" data-text="75%" data-width="5" data-fontsize="14" data-percent="75" data-fgcolor="#3bafda" data-bgcolor="#ebeff2"></div>
+			<h3 class="text-primary counter m-t-10">5685</h3>
+			<p class="text-muted text-nowrap m-b-10">Pagamentos Agendados</p>
+		</div>
+	</div>
+	
+	<div class="col-sm-6 col-xl-3">
+		<div class="widget-simple-chart text-right card-box">
+			<div class="circliful-chart" data-dimension="90" data-text="49%" data-width="5" data-fontsize="14" data-percent="49" data-fgcolor="#98a6ad" data-bgcolor="#ebeff2"></div>
+			<h3 class="text-inverse counter m-t-10">62</h3>
+			<p class="text-muted text-nowrap m-b-10">Profissionais Ativos</p>
+		</div>
+	</div>
 
                             <div class="col-sm-6 col-xl-3">
                                 <div class="widget-simple-chart text-right card-box">

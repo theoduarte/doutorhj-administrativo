@@ -5,14 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use App\Http\Requests\ProfissionaisEditRequest;
-use App\User;
-use App\Profissional;
-use App\Especialidade;
-use App\Estado;
-use App\Cargo;
-use App\Cidade;
-use App\Contato;
-use App\Endereco;
 
 class ProfissionalController extends Controller
 {
@@ -23,30 +15,31 @@ class ProfissionalController extends Controller
      */
     public function index()
     {
-        $profissionals = Profissional::whereHas('user', function($query){
-                            if(!empty(Request::input('nm_busca'))){
-                                switch (Request::input('tp_filtro')){
-                                    case "nome" :
-                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                                        break;
-                                    case "email" :
-                                        $query->where(DB::raw('to_str(email)'), '=', UtilController::toStr(Request::input('nm_busca')));
-                                        break;
-                                    default :
-                                        $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                                }
-                            }
-                            
-                            $arFiltroStatusIn = array();
-                            if(!empty(Request::input('tp_usuario_somente_ativos'))  ){ $arFiltroStatusIn[] = 'A'; }
-                            if(!empty(Request::input('tp_usuario_somente_inativos'))){ $arFiltroStatusIn[] = 'I'; }
-                            if( count($arFiltroStatusIn) > 0 ) { $query->whereIn('cs_status', $arFiltroStatusIn); }
-                        })->sortable()->paginate(20);
+        $profissionals = \App\Profissional::WhereHas(
+                                                'documentos', function($query){
+                                                    if(!empty(Request::get('nm_busca'))){
+                                                        if( Request::get('tp_filtro') == 'registro' ){
+                                                            $query->where('te_documento', Request::get('nm_busca'));
+                                                        }
+                                                    }
+                                                }
+                                            )->where(
+                                                function($query){
+                                                    if(!empty(Request::get('nm_busca'))){
+                                                        if( Request::get('tp_filtro') == 'nome' ){
+                                                            $query->where(DB::raw('concat(to_str(nm_primario), to_str(nm_secundario))'), 
+                                                                        'like', '%'.UtilController::toStr(Request::get('nm_busca'), true).'%');
+                        
+                                                        }
+                                                    }
+                                                }
+                                            )->sortable()
+                                             ->paginate(20);
+
        
-        $profissionals->load('user');
         $profissionals->load('documentos');
         $profissionals->load('especialidades');
-        
+                                            
         Request::flash();
         
         return view('profissionals.index', compact('profissionals'));
@@ -70,7 +63,7 @@ class ProfissionalController extends Controller
      */
     public function store(Request $request)
     {
-        $usuarios = User::create($request->all());
+        $usuarios = \App\User::create($request->all());
         
         $request->session()->flash('message', 'Profissional cadastrado com sucesso!');
         return redirect('/usuarios');
@@ -79,29 +72,16 @@ class ProfissionalController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $idProfissional
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($idProfissional)
     {
-        $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
-        $arEstados       = Estado::orderBy('ds_estado')->get();
-
-        $usuarios  = User::findorfail($id);
-        
-        $profissionals = Profissional::where('user_id', '=', $id)->get()->first();
-        $profissionals->load('especialidades');
-        $profissionals->load('user');
+        $profissionals = \App\Profissional::findorfail($idProfissional);
         $profissionals->load('documentos');
-        $profissionals->load('enderecos');
-        $profissionals->load('contatos');
-        
-        $cidade = Cidade::findorfail($profissionals->enderecos->first()->cidade_id);
-        
-        return view('profissionals.show', [ 'profissionals'   => $profissionals,
-                                            'cidade'          => $cidade,
-                                            'arEspecialidade' => $arEspecialidade,
-                                            'arEstados'       => $arEstados]);
+        $profissionals->load('especialidades');
+
+        return view('profissionals.show', compact('profissionals'));
     }
     
     /**
@@ -110,28 +90,15 @@ class ProfissionalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($idUsuario)
+    public function edit($idProfissional)
     {
-        $arCargos        = Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-        $arEstados       = Estado::orderBy('ds_estado')->get();
-        $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
+        $arEspecialidade = \App\Especialidade::all();
         
-        $usuarios = User::findorfail($idUsuario);
-        
-        $profissionals = Profissional::where('user_id', '=', $idUsuario)->get()->first();
-        $profissionals->load('especialidades');
-        $profissionals->load('user');
+        $profissionals = \App\Profissional::findorfail($idProfissional);
         $profissionals->load('documentos');
-        $profissionals->load('enderecos');
-        $profissionals->load('contatos');
+        $profissionals->load('especialidades');
         
-        $cidade = Cidade::findorfail($profissionals->enderecos->first()->cidade_id);
-        
-        return view('profissionals.edit', ['profissionals'   => $profissionals,
-                                           'cidade'          => $cidade,
-                                           'arEstados'       => $arEstados,
-                                           'arCargos'        => $arCargos,
-                                           'arEspecialidade' => $arEspecialidade]);
+        return view('profissionals.edit', compact('profissionals', 'arEspecialidade'));
     }
     
     /**
@@ -145,29 +112,10 @@ class ProfissionalController extends Controller
     {
         $dados = Request::all();
         
-        $profissional = Profissional::findorfail($idProfissional);
+        $profissional = \App\Profissional::findorfail($idProfissional);
         $profissional->update($dados);
-        $profissional->user()->update($dados);
-        $profissional->especialidades()->update($dados);
-        
-        foreach( $dados['contato_id'] as $indice=>$contato_id){
-            $contato = Contato::findorfail($contato_id);
-            $contato->update(['tp_contato'=>$dados['tp_contato'][$indice], 'ds_contato'=>$dados['ds_contato'][$indice]]);
-        }
-        
-        $endereco = Endereco::findorfail($dados['endereco_id']);
-        if(!empty($dados['cd_cidade_ibge'])) {
-            $dados['cidade_id'] = \App\Cidade::where('cd_ibge', '=', (int)$dados['cd_cidade_ibge'])->get(['id'])->first()->id;
-        }
-        $endereco->update($dados);
-        $profissional->enderecos()->sync($endereco);
-        
-        foreach( $dados['documentos_id'] as $indice=>$documentos_id){
-            $documentos = \App\Documento::findorfail($documentos_id);
-            $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice],
-                'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice]),
-                'estado_id'=>(int)$dados['estado_id'][0]]);
-        }
+        $profissional->documentos()->update(['tp_documento'=>$dados['tp_documento'], 'te_documento'=>$dados['te_documento']]);
+        if(!empty($dados['especialidade'])) $profissional->especialidades()->sync($dados['especialidade']);
         
         return redirect()->route('profissionals.index')->with('success', 'O usuário foi atualizado com sucesso!');
     }
@@ -180,16 +128,9 @@ class ProfissionalController extends Controller
      */
     public function destroy($idProfissional)
     {
-        DB::beginTransaction();
+
         
-        $profissionals = Profissional::findorfail($idProfissional);
-        $profissionals->forceDelete();
-        $profissionals->contatos()->forceDelete();
-        $profissionals->enderecos()->forceDelete();
-        $profissionals->documentos()->forceDelete();
-        $profissionals->user()->forceDelete();
-        
-        return redirect()->route('profissionals.index')->with('success', 'Usuário apagado com sucesso!');
+        return redirect()->route('profissionals.index')->with('success', 'Profissional inativado com sucesso!');
     }
     
     /**

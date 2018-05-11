@@ -2,7 +2,7 @@
     $(function(){
 		function acaoConfirmar(){
 			$.ajax({
-		        url : 'agenda/confirmar/'+$('#ticketConfirmacao').val(),
+		        url : 'agenda/confirmar/'+$('#confTicket').val()+'/20',
 		        beforeSend : function(){
 			        
 		        },
@@ -26,7 +26,28 @@
 		}
 
 		function acaoNaoConfirmado(){
+			$.ajax({
+		        url : 'agenda/confirmar/'+$('#confTicket').val()+'/30',
+		        beforeSend : function(){
+			        
+		        },
+		        success: function(response){
 
+		        }
+		    }).done(function(msg){
+				swal(
+				        {
+				            title : 'Solicitação Concluída!',
+				            text  : 'Cancelamento de consulta efetuado.',
+				            type  : 'success',
+				            confirmButtonClass : 'btn btn-confirm mt-2'
+				        }
+				    );
+		    }).fail(function(jqXHR, textStatus, msg){
+
+		    });
+			
+			dialogConfirmacao.dialog( "close" ); 
 		}
         
         dialogConfirmacao = $( "#dialog-confirmar" ).dialog({
@@ -47,6 +68,8 @@
         $( "#confirmacao" ).button().on( "click", function() {
         	$('#confClinica').html("<b>" + $(this).attr('prestador')   + "</b>");
         	$('#confPaciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
+        	$('#confProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");
+        	$('#confEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
         	$('#confDtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
 			$('#confTicket').val($(this).attr('ticket'));
         	
@@ -61,6 +84,19 @@
             <label for="clinica">Clínica:
                 <div id="confClinica"></div>
                 <input type="hidden" id="confTicket" name="confTicket" value="">
+            </label>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-5">
+            <label for="paciente">Profissional:
+                <div id="confProfissional"></div>
+            </label>
+        </div>
+        <div class="col-5">
+            <label for="paciente">Especialidade:
+                <div id="confEspecialidade"></div>
             </label>
         </div>
     </div>

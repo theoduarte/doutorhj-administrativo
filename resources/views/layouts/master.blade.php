@@ -70,7 +70,7 @@
     <!-- Begin page -->
     <div id="wrapper" class="forced enlarged">
     	<div class="page-loader page-loader-variant-1">
-            <div><img class='cvx-img-responsive' style='margin-top: -20px;margin-left: -18px;' width='330' height='67' src='/libs/home-template/img/logos/logo-doutor-hoje-vertical.svg' alt='' />
+            <div><img class='cvx-img-responsive' style='margin-top: -20px;margin-left: -18px;' width='330' height='67' src='' alt='' />
                 <div class="offset-top-41 text-center">
                     <!-- <div class="spinner"></div> -->
                     <i class="fa fa-spin fa-circle-o-notch text-danger" style="font-size: 300%;"></i>
@@ -94,12 +94,6 @@
             		<li class="list-inline-item notification-list hide-phone">
             			<a class="nav-link waves-light waves-effect" href="#" id="btn-fullscreen">
             				<i class="mdi mdi-crop-free noti-icon"></i>
-            			</a>
-            		</li>
-            		
-            		<li class="list-inline-item notification-list">
-            			<a class="nav-link right-bar-toggle waves-light waves-effect" href="#">
-            				<i class="mdi mdi-dots-horizontal noti-icon"></i>
             			</a>
             		</li>
             		
@@ -179,12 +173,7 @@
             				<i class="mdi mdi-menu"></i>
             			</button>
             		</li>
-            		<li class="hide-phone app-search">
-            			<form role="search" class="">
-            				<input type="text" id="main-search" placeholder="Pesquisar..." class="form-control">
-            				<a href=""><i class="fa fa-search"></i></a>
-            			</form>
-            		</li>
+      
             	</ul>
             </nav>
        	</div>

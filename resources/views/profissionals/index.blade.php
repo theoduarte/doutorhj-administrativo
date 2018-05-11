@@ -35,22 +35,14 @@
                                     <input type="radio" id="tp_filtro_nome" name="tp_filtro" value="nome" @if(old('tp_filtro')=='nome') checked @endif>
                                     <label for="tp_filtro_nome" style="cursor: pointer;">Nome&nbsp;&nbsp;&nbsp;</label>
                             
-                                    <input type="radio" id="tp_filtro_email" name="tp_filtro" value="email" @if(old('tp_filtro')=='email') checked @endif>
-                                    <label for="tp_filtro_email" style="cursor: pointer;">E-mail&nbsp;&nbsp;</label>
+                                    <input type="radio" id="tp_filtro_registro" name="tp_filtro" value="registro" @if(old('tp_filtro')=='registro') checked @endif>
+                                    <label for="tp_filtro_registro" style="cursor: pointer;">Registro&nbsp;&nbsp;</label>
                                 </div>
             				</div>
             				<div class="row">
             					<div class="col-4">
             						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
             					</div>
-      							<div style="width: 190px !important;">
-                					<input type="checkbox"  id="tp_usuario_somente_ativos" name="tp_usuario_somente_ativos" value="ativo" @if(old('tp_usuario_somente_ativos')=='ativo') checked @endif >
-                					<label for="tp_usuario_somente_ativos" style="cursor: pointer;">Profissionais Ativos</label>
-            						
-                					<label for="tp_usuario_somente_inativos"></label><br>
-                					<input type="checkbox"  id="tp_usuario_somente_inativos" name="tp_usuario_somente_inativos" value="inativo" @if(old('tp_usuario_somente_inativos')=='inativo') checked @endif>
-                					<label for="tp_usuario_somente_inativos" style="cursor: pointer;">Profissionais Inativos</label>
-                				</div>
                 				<div class="col-1" >
                 					<button type="submit" class="btn btn-primary" id="btnPesquisar">Pesquisar</button>
                 				</div>				
@@ -59,41 +51,44 @@
 					</div>
 				</div>
 				
+				<br>
+				
 				<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
 					<tr>
 						<th>ID</th>
 						<th>@sortablelink('name', 'Nome')</th>
-						<th>@sortablelink('email', 'E-mail')</th>
-						<th>CNPJ</th>
+						<th>Registro</th>
 						<th>Especialidade</th>
-						<th>Situação</th>
 						<th>Ações</th>
 					</tr>
 					@foreach ($profissionals as $profissional)
 						<tr>
     						<td>{{$profissional->id}}</td>
-    						<td>{{$profissional->user->name}}</td>
-    						<td>{{$profissional->user->email}}</td>
+    						<td>{{$profissional->nm_primario}} {{$profissional->nm_secundario}}</td>
                 	 		<td>
 								@foreach( $profissional->documentos as $documento )
-									@if( $documento->tp_documento == 'CNPJ' )
-										{{$documento->te_documento}}
+									@if($documento->tp_documento == 'CRM' or 
+										$documento->tp_documento == 'CRO' or 
+										$documento->tp_documento == 'CRF' or 
+										$documento->tp_documento == 'CRFA' or 
+										$documento->tp_documento == 'CRN' or 
+										$documento->tp_documento == 'CRP' or 
+										$documento->tp_documento == 'CREFITO' or 
+										$documento->tp_documento == 'COREN')
+
+										{{$documento->tp_documento}} {{$documento->te_documento}} @if($documento->estado) {{'/'.$documento->estado->sg_estado}} @endif
+
 									@endif
 								@endforeach
                 	 		</td>
                 	 		<td>
 								@foreach( $profissional->especialidades as $especialidade )
-    								{{$especialidade->cd_especialidade.' - '.$especialidade->ds_especialidade.' '}}
+    								{{$especialidade->cd_especialidade.' - '.$especialidade->ds_especialidade.'  '}}
 								@endforeach
+								
+								@if(count($profissional->especialidades)==0) <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA ESPECIALIDADE SELECIONADA</span> @endif
                 	 		</td>
                	 			<td>
-               	 				@if( $profissional->user->cs_status == 'A' ) 
-               	 					Ativo
-               	 				@elseif( $profissional->user->cs_status == 'I' )
-               	 					Inativo
-               	 				@endif
-                	 		</td>
-    						<td>
     							<a href="{{ route('profissionals.show', $profissional->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
     							<a href="{{ route('profissionals.edit', $profissional->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
     							<a href="{{ route('profissionals.destroy', $profissional->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o profissional {{$profissional->nm_primario}}?"><i class="ti-trash"></i></a>
