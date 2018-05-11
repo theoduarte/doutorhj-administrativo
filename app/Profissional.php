@@ -52,13 +52,7 @@ class Profissional extends Model
 	{
 	    return $this->belongsTo('App\User');
 	}
-	
-	public function getDtNascimentoAttribute()
-	{
-	    $date = new Carbon($this->attributes['dt_nascimento']);
-	    return $date->format('d/m/Y');
-	}
-	
+		
 	/*
 	 * Getters and Setters
 	 */
