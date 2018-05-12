@@ -51,7 +51,9 @@ class CupomDesconto extends Model
     }
     
     public function setDtNascimento() {
-        $this->attributes['dt_nascimento'] = date('Y-m-d', strtotime($this->attributes['dt_nascimento']) );
+                
+        $obData = new Carbon($this->attributes['dt_nascimento']);
+        $this->attributes['dt_nascimento'] =  $obData->format('Y-m-d');
     }
     
 }
