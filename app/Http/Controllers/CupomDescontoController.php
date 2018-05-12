@@ -55,7 +55,7 @@ class CupomDescontoController extends Controller
      */
     public function store(Request $request)
     {
-        dd($cupom_desconto);
+        dd($request);
         $cupom_desconto = CupomDesconto::create($request->all());
         
         $cupom_desconto->dt_inicio = preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", $cupom_desconto->dt_inicio);
