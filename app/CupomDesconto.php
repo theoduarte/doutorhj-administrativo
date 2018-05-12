@@ -32,7 +32,7 @@ class CupomDesconto extends Model
     }
     
     public function setDtInicio($value) {
-        $this->attributes['dt_inicio'] = date('Y-m-d', strtotime($value) );
+        $this->attributes['dt_inicio'] = date('Y-m-d H:i:s', strtotime($value) );
     }
     
     public function getDtFim() {
@@ -42,7 +42,7 @@ class CupomDesconto extends Model
     }
     
     public function setDtFim() {
-        $this->attributes['dt_fim'] = date('Y-m-d', strtotime($this->attributes['dt_fim']) );
+        $this->attributes['dt_fim'] = date('Y-m-d H:i:s', strtotime($this->attributes['dt_fim']) );
     }
     
     public function getDtNascimento() {
@@ -52,9 +52,7 @@ class CupomDesconto extends Model
     }
     
     public function setDtNascimento() {
-                
-        $obData = new Carbon($this->attributes['dt_nascimento']);
-        $this->attributes['dt_nascimento'] =  $obData->format('Y-m-d');
+        $this->attributes['dt_fim'] = date('Y-m-d', strtotime($this->attributes['dt_fim']) );
     }
     
 }
