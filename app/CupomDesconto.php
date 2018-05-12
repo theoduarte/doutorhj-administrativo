@@ -30,10 +30,18 @@ class CupomDesconto extends Model
         return $obData->format('d/m/Y');
     }
     
+    public function setDtInicio($value) {
+        $this->attributes['dt_inicio'] = date('Y-m-d', strtotime($value) );
+    }
+    
     public function getDtFim() {
         $data = $this->attributes['dt_fim'];
         $obData = new Carbon($data);
         return $obData->format('d/m/Y');
+    }
+    
+    public function setDtFim($value) {
+        $this->attributes['dt_fim'] = date('Y-m-d', strtotime($value) );
     }
     
     public function getDtNascimento() {
@@ -41,4 +49,9 @@ class CupomDesconto extends Model
         $obData = new Carbon($data);
         return $obData->format('d/m/Y');
     }
+    
+    public function setDtNascimento($value) {
+        $this->attributes['dt_nascimento'] = date('Y-m-d', strtotime($value) );
+    }
+    
 }
