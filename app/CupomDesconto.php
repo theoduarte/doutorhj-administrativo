@@ -40,8 +40,8 @@ class CupomDesconto extends Model
         return $obData->format('d/m/Y');
     }
     
-    public function setDtFim($value) {
-        $this->attributes['dt_fim'] = date('Y-m-d', strtotime($value) );
+    public function setDtFim() {
+        $this->attributes['dt_fim'] = date('Y-m-d', strtotime($this->attributes['dt_fim']) );
     }
     
     public function getDtNascimento() {
@@ -50,8 +50,8 @@ class CupomDesconto extends Model
         return $obData->format('d/m/Y');
     }
     
-    public function setDtNascimento($value) {
-        $this->attributes['dt_nascimento'] = date('Y-m-d', strtotime($value) );
+    public function setDtNascimento() {
+        $this->attributes['dt_nascimento'] = date('Y-m-d', strtotime($this->attributes['dt_nascimento']) );
     }
     
 }
