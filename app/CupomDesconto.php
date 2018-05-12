@@ -13,6 +13,7 @@ class CupomDesconto extends Model
     
     public $fillable  = ['id', 'titulo', 'codigo', 'descricao', 'percentual', 'dt_inicio', 'dt_fim', 'cs_status', 'cs_sexo', 'dt_nascimento'];
     public $sortable  = ['id', 'titulo', 'codigo', 'percentual', 'dt_inicio', 'dt_fim', 'cs_status', 'cs_sexo', 'dt_nascimento'];
+    public $dates 	  = ['dt_inicio', 'dt_fim', 'dt_atendimento'];
     
     public function agendamentos()
     {
