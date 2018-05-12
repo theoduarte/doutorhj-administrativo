@@ -237,7 +237,7 @@
             
             <!-- end content -->
             <footer class="footer">
-                    2018 © <span class="text-primary"><strong>Comvex</strong></span> <span class="hide-phone text-pink">- DoutorHJ</span>
+                    2018 © <span class="text-primary"><strong>Comvex</strong></span> <span class="hide-phone text-pink">- DoctorHJ</span>
             </footer>
             
       	</div>
@@ -411,15 +411,18 @@
         <script type="text/javascript" src="/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
         <script type="text/javascript" src="/libs/jquery-quicksearch/jquery.quicksearch.js"></script>
         <script type="text/javascript" src="/libs/select2/js/select2.min.js"></script>
+        <script src="/libs/select2/js/i18n/pt-BR.js"></script>
         <script type="text/javascript" src="/libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
 		
         <script type="text/javascript" src="/libs/moment/moment.js"></script>
+        <script type="text/javascript" src="/libs/moment/src/locale/pt-br.js"></script>
         <script type="text/javascript" src="/libs/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
         
         
         
         
         <script type="text/javascript" src="/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+        <script type="text/javascript" src="/libs/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js"></script>
         <script type="text/javascript" src="/libs/bootstrap-daterangepicker/daterangepicker.js"></script>
 		
 

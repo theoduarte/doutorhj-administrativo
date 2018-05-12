@@ -9,15 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Agendamento extends Model
 {
     use Sortable;
-    
-    
-    
-    
-    public $fillable  = ['id', 'te_ticket', 'profissional_id',
-                         'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
-    
+        
+    public $fillable  = ['id', 'te_ticket', 'profissional_id', 'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
     public $sortable  = ['id', 'te_ticket', 'dt_atendimento', 'cs_status'];
-    
     public $dates 	  = ['dt_atendimento'];
     
 
@@ -52,20 +46,23 @@ class Agendamento extends Model
      */
     public function paciente()
     {
-        return $this->belongsTo(Paciente::class);
+        return $this->belongsTo('App\Paciente');
     }
     
     public function clinica()
     {
-        return $this->belongsTo(Clinica::class);
+        return $this->belongsTo('App\Clinica');
     }
     
     public function profissional()
     {
-        return $this->belongsTo(Profissional::class);
+        return $this->belongsTo('App\Profissional');
     }
     
-    
+    public function cupom_desconto()
+    {
+        return $this->belongsTo('App\CupomDesconto');
+    }
     
     /*
      * Getters and Setters

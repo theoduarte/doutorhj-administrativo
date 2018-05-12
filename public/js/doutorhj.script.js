@@ -104,3 +104,21 @@ function moedaParaNumero(valor)
 {
     return isNaN(valor) == false ? parseFloat(valor) :   parseFloat(valor.replace("R$","").replace(".","").replace(",","."));
 }
+
+function onlyNumbers(evt) {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+
+    var keychar = String.fromCharCode(key);
+    //alert(keychar);
+    var keycheck = /^[0-9_\b]+$/;
+
+    if (!(key == 8 || key == 9 || key == 17 || key == 27 || key == 44 || key == 46 || key == 37 || key == 39)) {
+        if (!keycheck.test(keychar)) {
+            theEvent.returnValue = false;//for IE
+            if (theEvent.preventDefault) {
+                theEvent.preventDefault();//Firefox
+            }
+        }
+    }
+}

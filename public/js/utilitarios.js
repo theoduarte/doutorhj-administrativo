@@ -21,10 +21,18 @@ $(document).ready(function() {
 		keepStatic: true
 	});
 	
-	$('.input-daterange-datepicker').daterangepicker({
+	jQuery('.input-datepicker').datepicker({
+		format:'dd/mm/yyyy',
+		language: 'pt-BR'
+	});
+	
+	$('#date-range').daterangepicker({
 	    buttonClasses: ['btn', 'btn-sm'],
 	    applyClass: 'btn-secondary',
 	    cancelClass: 'btn-primary'
+	}, function(start, end){
+		$('#date-range').find('input#dt1').val(start.format('DD/MM/YYYY'));
+		$('#date-range').find('input#dt2').val(end.format('DD/MM/YYYY'));
 	});
 	
 	$('.input-daterange-timepicker').daterangepicker({
