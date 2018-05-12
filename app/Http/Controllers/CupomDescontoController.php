@@ -57,6 +57,10 @@ class CupomDescontoController extends Controller
     {
         $cupom_desconto = CupomDesconto::create($request->all());
         
+        $cupom_desconto->dt_inicio = preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", $cupom_desconto->dt_inicio);
+        $cupom_desconto->dt_fim = preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", $cupom_desconto->dt_fim);
+        $cupom_desconto->dt_nascimento = preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", $cupom_desconto->dt_nascimento);
+        
         $cupom_desconto->save();
         
         return redirect()->route('cupom_descontos.index')->with('success', 'O Cupom de Desconto foi cadastrado com sucesso!');
