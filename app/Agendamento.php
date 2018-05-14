@@ -40,7 +40,6 @@ class Agendamento extends Model
     );
     
     
-    
     /*
      * Relationship
      */
