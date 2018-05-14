@@ -65,7 +65,7 @@
 
 
 		
-        $( "#confirmacao" ).button().on( "click", function() {
+        $( ".confirmacao" ).button().on( "click", function() {
         	$('#confClinica').html("<b>" + $(this).attr('prestador')   + "</b>");
         	$('#confPaciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
         	$('#confProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");

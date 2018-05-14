@@ -60,10 +60,7 @@ class Paciente extends Model
 	 */
 	public function setDtNascimentoAttribute($data)
 	{
-	    $date = new Carbon($data);
-	    $date->format('Y-m-d H:i:s');
-        
-	    $this->attributes['dt_nascimento'] = $date;
+	    $this->attributes['dt_nascimento'] = Carbon::createFromFormat('d/m/Y', $data);
 	}
     
 	public function getDtNascimentoAttribute()

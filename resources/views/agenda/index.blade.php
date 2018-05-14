@@ -117,7 +117,7 @@
     								<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
                                 </div>            					
     							
-                				<div style="width: 210px !important;">
+                				<div class="col-3">
             				        <label for="data">Data:<span class="text-danger">*</span></label>
         							<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="{{old('data')}}">                
                                 </div>
@@ -145,8 +145,6 @@
         						<th>Ações</th>
         					</tr>
                         @foreach($agenda as $obAgenda)
-                           @if( $obAgenda->agendamento != null && $obAgenda->agendamento->clinica != null && 
-                           	    $obAgenda->agendamento->profissional != null && $obAgenda->agendamento->paciente->user != null ) 
                             <tr>
                             	<td>{{$obAgenda->agendamento->te_ticket}}</td>
                             	<td>{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}</td>
@@ -205,7 +203,7 @@
                             		   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
                             		   id-paciente     = "{{$obAgenda->agendamento->paciente->id}}"
                             		   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
-                            		   class		   = "btn btn-icon waves-effect btn-primary btn-sm m-b-5"
+                            		   class		   = "btn btn-icon waves-effect btn-primary btn-sm m-b-5 confirmacao"
                             		   title 		   = "Confirmar Consulta" id="confirmacao">
                             		 	<i class="mdi mdi-thumb-up"></i>
                             		 </a>
@@ -237,7 +235,6 @@
 								@endif                           	
                             	</td>
                             </tr>
-                           @endif 
                         @endforeach
     					</table>
                         <tfoot>

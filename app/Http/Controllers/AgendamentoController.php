@@ -17,8 +17,7 @@ class AgendamentoController extends Controller
     {
         $clinicas = \App\Clinica::all();
         
-        $agenda = \App\Itempedido::with([
-                                         'agendamento' => function($query){
+        $agenda = \App\Itempedido::WhereHas('agendamento', function($query){
                                              if(Request::get('data')){
                                                  $data = UtilController::getDataRangeTimePickerToCarbon(Request::get('data'));
                                                  
@@ -36,23 +35,24 @@ class AgendamentoController extends Controller
                                              if( !empty(Request::get('ckRetornoConsultas'))       ) $arCsStatus[] = \App\Agendamento::RETORNO;
                                              if( !empty(Request::get('ckConsultasFinalizadas'))   ) $arCsStatus[] = \App\Agendamento::FINALIZADO;
                                              if( count($arCsStatus) > 0) $query->whereIn('cs_status', $arCsStatus);
-                                         },
-                                         'agendamento.clinica' => function ($query){
+                                         })->WhereHas(
+                                         'agendamento.clinica', function ($query){
                                              $clinica_id = Request::get('clinica_id');
                                              if(!empty($clinica_id)){
                                                  $query->where(DB::raw('id'), '=', Request::get('clinica_id'));
                                              }
-                                         }, 
+                                         })->With([ 
                                          'agendamento.profissional', 
                                          'agendamento.profissional.especialidades', 
-                                         'agendamento.paciente',
-                                         'agendamento.paciente.user'=> function ($query){
+                                         'agendamento.paciente'])
+                                         ->WhereHas(
+                                         'agendamento.paciente.user', function ($query){
                                               $nm_paciente = Request::get('nm_paciente');
                                               if(!empty($nm_paciente)){
                                                   $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr($nm_paciente).'%');
                                               }
-                                         }])->sortable()
-                                            ->paginate(20);
+                                         })->sortable()
+                                           ->paginate(20);
         Request::flash();
         
         return view('agenda.index', compact('agenda', 'clinicas'));

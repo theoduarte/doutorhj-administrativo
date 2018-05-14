@@ -29,7 +29,7 @@
         
         dialogCancelamento = $( "#dialog-cancelar" ).dialog({
             autoOpen : false,
-            height	 : 400,
+            height	 : 480,
             width	 : 698,
             modal	 : true,
             buttons	 : {
@@ -44,6 +44,9 @@
         $( ".cancelamento" ).button().on( "click", function() {
         	$('#clinica').html("<b>" + $(this).attr('prestador')   + "</b>");
         	$('#paciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
+        	$('#cancProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");
+        	$('#cancEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
+        	
         	$('#dtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
 			$('#ticketCancelamento').val($(this).attr('ticket'));
         	
@@ -61,7 +64,18 @@
             </label>
         </div>
     </div>
-    
+    <div class="row">
+        <div class="col-5">
+            <label for="cancProfissional">Profissional:
+                <div id="cancProfissional"></div>
+            </label>
+        </div>
+        <div class="col-5">
+            <label for="cancEspecialidade">Especialidade:
+                <div id="cancEspecialidade"></div>
+            </label>
+        </div>
+    </div>
     <div class="row">
         <div class="col-10">
             <label for="paciente">Paciente:
@@ -69,7 +83,6 @@
             </label>
         </div>
     </div>
-    
     <div class="row">
         <div class="col-10">
             <label for="paciente">Consulta:

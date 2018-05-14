@@ -123,7 +123,7 @@
         
         dialogAgendamento = $( "#dialog-agendar" ).dialog({
             autoOpen : false,
-            height	 : 470,
+            height	 : 530,
             width	 : 698,
             modal	 : true,
             buttons	 : {
@@ -215,6 +215,8 @@
 		    <div class="col-2">
     			<label for="divDtHora">Valor Pago:<div id="divValorConsulta"></div></label>
             </div>
+		</div>
+		<div class="row">
         	<div class="col-3">    
                 <label>Agendar para:</label>
 				<input type="text" class="form-control" placeholder="dd/mm/yyyy" id="datepicker-autoclose">
