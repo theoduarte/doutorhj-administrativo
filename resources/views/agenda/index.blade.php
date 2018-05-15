@@ -12,7 +12,7 @@
     }
     
     * html .ui-autocomplete {
-        height      : 200px;
+        height      : 200px;AGENDA
     }
     
     .ui-dialog .ui-state-error {
@@ -147,9 +147,9 @@
                         @foreach($agenda as $obAgenda)
                             <tr>
                             	<td>{{$obAgenda->agendamento->te_ticket}}</td>
-                            	<td>{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}</td>
-                            	<td>{{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}</td>
-                            	<td>{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}</td>
+                            	<td>{{$obAgenda->agendamento->clinica->nm_razao_social}}</td>
+                            	<td>{{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}</td>
+                            	<td>{{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}</td>
                             	<td>{{$obAgenda->agendamento->dt_atendimento}}</td>
                             	<td>{{$obAgenda->agendamento->cs_status}}</td>
                             	<td style="width:100px;">
@@ -166,10 +166,10 @@
            													{{$especialidade->ds_especialidade}}
            												@endforeach
            												"
-                            		   nm-paciente    = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
+                            		   nm-paciente    = "{{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                             		   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
-                            		   prestador	  = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
-                            		   nm-profissional= "{{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+                            		   prestador	  = "{{$obAgenda->agendamento->clinica->nm_razao_social}}" 
+                            		   nm-profissional= "{{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
                             		   valor-consulta = "{{$obAgenda->valor}}"
                             		   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
                             		   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
@@ -194,10 +194,10 @@
            													{{$especialidade->ds_especialidade}}
            												@endforeach
            												"
-                            		   nm-paciente     = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
+                            		   nm-paciente     = "{{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                             		   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
-                            		   prestador	   = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
-                            		   nm-profissional = "{{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+                            		   prestador	   = "{{$obAgenda->agendamento->clinica->nm_razao_social}}" 
+                            		   nm-profissional = "{{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
                             		   valor-consulta  = "{{$obAgenda->valor}}"
                             		   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
                             		   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
@@ -219,10 +219,10 @@
            													{{$especialidade->ds_especialidade}}
            												@endforeach
            												"
-                            		   nm-paciente     = "{{$obAgenda->agendamento->paciente->id}} - {{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
+                            		   nm-paciente     = "{{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}" 
                             		   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
-                            		   prestador	   = "{{$obAgenda->agendamento->clinica->id}} - {{$obAgenda->agendamento->clinica->nm_razao_social}}" 
-                            		   nm-profissional = "{{$obAgenda->agendamento->profissional->id}} - {{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+                            		   prestador	   = "{{$obAgenda->agendamento->clinica->nm_razao_social}}" 
+                            		   nm-profissional = "{{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
                             		   valor-consulta  = "{{$obAgenda->valor}}"
                             		   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
                             		   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"

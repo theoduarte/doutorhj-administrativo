@@ -41,12 +41,13 @@ class Agendamento extends Model
     );
     
     
+    
     /*
      * Relationship
      */
     public function paciente()
     {
-        return $this->belongsTo('App\Paciente');
+        return $this->belongsTo('App\Paciente');    
     }
     
     public function clinica()
@@ -63,6 +64,8 @@ class Agendamento extends Model
     {
         return $this->belongsTo('App\CupomDesconto');
     }
+    
+    
     
     /*
      * Getters and Setters

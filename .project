@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>cvxdoutorhj</name>
+	<name>doutorhj-administrativo</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -24,6 +24,5 @@
 	<natures>
 		<nature>org.eclipse.php.core.PHPNature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
-		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
 </projectDescription>
