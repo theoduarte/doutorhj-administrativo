@@ -1,0 +1,193 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Mensagem;
+
+class MensagemController extends Controller
+{
+    
+    /**
+     * Marca notificaao como visualizada.
+     * 
+     * @param integer $idMensagem
+     */
+    public function setStatusVisualizado($idMensagem){
+        $mensagem = Mensagem::findorfail($idMensagem);
+        $mensagem->update(['visualizado'=>true]);   
+    }
+    
+    /**
+     * Consulta 
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function getListaNotificacoes(){
+        
+        $mensagems = Mensagem::where('cs_status', \App\Mensagem::ATIVO)
+                          ->whereHas('clinica.responsavel', function($query){
+                              $query->where('user_id', Auth::user()->id);
+                          })
+                          ->where('visualizado', false)
+                          ->orderBy('created_at', 'desc')
+                          ->sortable()
+                          ->paginate(6);
+        
+        return view('notificacao.index', compact('mensagems'));
+    }
+    
+    /**
+     * participe a newly external user created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function participe(Request $request)
+    {
+    	
+    	 
+    	# dados da mensagem
+    	$mensagem            		= new Mensagem();
+    	$mensagem->remetente     	= $request->input('nome');
+    	$mensagem->destinatario     = 'doctorhoje';
+    	$mensagem->titulo     		= 'Campanha de Lançamento';
+    	$mensagem->descricao     	= 'Contato de Interessado';
+    	
+    	$nome 		= $request->input('nome');
+    	$email 		= $request->input('email');
+    	$telefone 	= $request->input('telefone');
+
+    	if(!$mensagem->save()) {
+    		return redirect()->route('provisorio')->with('error', 'A Sua mensagem não foi enviada. Por favor, tente novamente');
+    	}
+    	
+    	$from = 'contato@doctorhoje.com.br';
+    	$to = 'theo@comvex.com.br';
+    	$subject = 'Contato de Interessado';
+    	 
+    	$html_message = <<<HEREDOC
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+        <title>DoctorHoje</title>
+    </head>
+    <body style='margin: 0;'>
+        <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+            <tr style='background-color:#fff;'>
+                <td width='480' style='text-align:left'>&nbsp;</td>
+                <td width='120' style='text-align:right'>&nbsp;</td>
+            </tr>
+        </table>
+        <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+            <tr style='background-color:#fff;'>
+                <td width='480' style='text-align:left'><span style='font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#434342;'>DoctorHoje - Contato de Interessado</span></td>
+                <td width='120' style='text-align:right'><a href='#' target='_blank' style='font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#434342;'>Abrir no navegador</a></td>
+            </tr>
+        </table>
+        <br>
+        <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+            <tr>
+                <td><img src='https://doctorhoje.com.br/libs/home-template/img/email/h1.png' width='600' height='113' alt=''/></td>
+            </tr>
+        </table>
+        <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+            <tr>
+                <td style='background: #1d70b7; font-family:Arial, Helvetica, sans-serif; text-align: center; color: #ffffff; font-size: 28px; line-height: 80px;'><strong>Contato de Interessado</strong></td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+            <tr>
+                <td width='30' style='background-color: #fff;'>&nbsp;</td>
+                <td width='540' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; background-color: #fff; text-align: justify;'>
+                    <strong>O Interessado abaixo fez cadastro para a Campanha de Lançamento:</strong>
+                    <br>
+                    <br>
+                    <p><strong>Nome: </strong> $nome</p>
+                    <p><strong>E-mail: </strong> $email</p>
+                    <p><strong>Telefone: </strong> $telefone</p>
+                </td>
+                <td width='30' style='background-color: #fff;'>&nbsp;</td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+            <tr>
+                <td width='220' style='background-color: #fff;'>&nbsp;</td>
+                <td width='159' style='text-align: center;'>
+                    <img src='https://doctorhoje.com.br/libs/home-template/img/email/devices.png' width='155' height='74' alt=''/>
+                </td>
+                <td width='221' style='background-color: #fff;'>&nbsp;</td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+            <tr>
+                <td width='30' style='background-color: #fff;'>&nbsp;</td>
+                <td width='540' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;'>
+                    Abraços,<br>
+                    Equipe Doctor Hoje
+                </td>
+                <td width='30' style='background-color: #fff;'>&nbsp;</td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
+            <tr style='background-color: #f9f9f9;'>
+                <td width='513'>
+                    &nbsp;
+                </td>
+            </tr>
+        </table>
+        <table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
+            <tr style='background-color: #f9f9f9;'>
+                <td width='209'></td>
+                <td width='27'><a href='#'><img src='https://doctorhoje.com.br/libs/home-template/img/email/facebook.png' width='27' height='24' alt=''/></a></td>
+                <td width='27'><a href='#'><img src='https://doctorhoje.com.br/libs/home-template/img/email/youtube.png' width='27' height='24' alt=''/></a></td>
+                <td width='27'><a href='#'><img src='https://doctorhoje.com.br/libs/home-template/img/email/instagram.png' width='27' height='24' alt=''/></a></td>
+                <td width='210'></td>
+            </tr>
+        </table>
+        <table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
+            <tr style='background-color: #f9f9f9;'>
+                <td width='513'>
+                    &nbsp;
+                </td>
+            </tr>
+        </table>
+        <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+            <tr style='background-color: #f9f9f9;'>
+                <td width='30'></td>
+                <td width='540' style='line-height:16px; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#434342; text-align: center;'>
+                    <strong>Doctor Hoje</strong> 2018
+                </td>
+                <td width='30'></td>
+            </tr>
+        </table>
+        <table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
+            <tr style='background-color: #f9f9f9;'>
+                <td width='513'>
+                    &nbsp;
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
+HEREDOC;
+    	 
+    	$html_message = str_replace(array("\r", "\n"), '', $html_message);
+    	 
+    	$send_message = UtilController::sendMail($to, $from, $subject, $html_message);
+    	 
+    	echo "<script>console.log( 'Debug Objects: " . $send_message . "' );</script>";
+    	return redirect()->route('provisorio')->with('success', 'A Sua mensagem foi enviada com sucesso!');
+    }
+}
