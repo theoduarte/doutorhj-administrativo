@@ -14,7 +14,7 @@ class Itempedido extends Model
     
     public function agendamento()
     {
-        return $this->belongsTo(Agendamento::class);
+        return $this->belongsTo('App\Agendamento');
     }
     
     public function getValorAttribute($valor){
