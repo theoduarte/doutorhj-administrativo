@@ -3,25 +3,28 @@
 namespace App;
 
 use Illuminate\Support\Carbon;
-use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
-class Mensagem extends Model
+class MensagemDestinatario extends Model
 {
     use Sortable;
     
-    public $fillable = ['assunto', 'conteudo', 'remetente_id'];
-    public $sortable = ['assunto', 'conteudo'];
+    public $fillable = ['visualizado', 'cs_status', 'tipo_destinario', 'mensagem_id', 'destinatario_id'];
+    public $sortable = ['visualizado', 'cs_status', 'tipo_destinario', 'mensagem_id', 'destinatario_id'];
     
     protected $dates = ['created_at', 'updated_at'];
     protected $dateFormat = 'Y-m-d H:i:s.u';
+    
+    const ATIVO = 'A';
+    const INATIVO = 'I';
     
     public function remetente(){
         return $this->belongsTo('App\User');
     }
     
-    public function mensagem_destinatarios(){
-        return $this->hasMany('App\MensagemDestinatario', 'mensagem_id');
+    public function mensagem(){
+        return $this->belongsTo('App\Mensagem');
     }
     
     public function getCreatedAtAttribute($data){

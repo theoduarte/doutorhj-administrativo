@@ -12,7 +12,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'DoutorHj: Admin') }}</title>
+    <title>{{ config('app.name', 'DoctorHj: Painel Administrativo') }}</title>
 
     <!-- Styles -->
     <!-- Switchery CSS-->

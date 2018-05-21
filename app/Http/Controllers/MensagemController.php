@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mensagem;
+use App\MensagemDestinatario;
 
 class MensagemController extends Controller
 {
@@ -50,18 +51,32 @@ class MensagemController extends Controller
     	 
     	# dados da mensagem
     	$mensagem            		= new Mensagem();
-    	$mensagem->remetente     	= $request->input('nome');
-    	$mensagem->destinatario     = 'doctorhoje';
-    	$mensagem->titulo     		= 'Campanha de Lançamento';
-    	$mensagem->descricao     	= 'Contato de Interessado';
+//     	$mensagem->remetente     	= $request->input('nome');
+//     	$mensagem->destinatario     = 'doctorhoje';
+    	$mensagem->assunto     		= 'Campanha de Lançamento';
     	
     	$nome 		= $request->input('nome');
     	$email 		= $request->input('email');
     	$telefone 	= $request->input('telefone');
+    	
+    	$mensagem->conteudo     	= "<h4>Contato de Interessado:</h4><br><br><ul><li>Nome: $nome</li><li>E-mail: $email</li><li>Telefone: $telefone</li></ul>";
 
     	if(!$mensagem->save()) {
     		return redirect()->route('provisorio')->with('error', 'A Sua mensagem não foi enviada. Por favor, tente novamente');
     	}
+    	
+    	$destinatario                      = new MensagemDestinatario();
+    	$destinatario->tipo_destinatario   = 'DH';
+    	$destinatario->mensagem_id         = $mensagem->id;
+    	$destinatario->destinatario_id     = 1;
+    	$destinatario->save();
+    	
+    	$destinatario                      = new MensagemDestinatario();
+    	$destinatario->tipo_destinatario   = 'DH';
+    	$destinatario->mensagem_id         = $mensagem->id;
+    	$destinatario->destinatario_id     = 3;
+    	$destinatario->save();
+    	
     	
     	$from = 'contato@doctorhoje.com.br';
     	$to = 'theo@comvex.com.br';

@@ -78,28 +78,34 @@
 				</li>
 				<li class="list-inline-item dropdown notification-list">
 					<a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-						<i class="mdi mdi-bell noti-icon"></i><span class="badge badge-pink noti-icon-badge">4</span>
+						<i class="mdi mdi-bell noti-icon"></i><span class="badge badge-pink noti-icon-badge">{{ $num_total_notificacoes }}</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-menu-lg" aria-labelledby="Preview">
 						<!-- item-->
 						<div class="dropdown-item noti-title">
-							<h5 class="font-16"><span class="badge badge-danger float-right">5</span>Notificações</h5>
+							<h5 class="font-16"><span class="badge badge-danger float-right">{{ $num_total_notificacoes }}</span>Notificações</h5>
 						</div>
+						@for($i = 0; $i < sizeof($notificacoes_app); $i++)
 						<!-- item-->
 						<a href="javascript:void(0);" class="dropdown-item notify-item">
+							<div class="notify-icon bg-primary"><i class="mdi mdi-calendar-multiple-check"></i></div>
+							<p class="notify-details">Contato <b>{{ $notificacoes_app[$i]->nome_remetente }}</b><small class="text-muted">{{ $notificacoes_app[$i]->updated_at }} atrás</small></p>
+						</a>
+						@endfor
+						<!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
 							<div class="notify-icon bg-success"><i class="mdi mdi-stethoscope"></i></div>
 							<p class="notify-details">Dr. Theogenes <b>Adicionado</b><small class="text-muted">Adicionado</small></p>
 						</a>
-						<!-- item-->
+						
 						<a href="javascript:void(0);" class="dropdown-item notify-item">
 							<div class="notify-icon bg-primary"><i class="mdi mdi-calendar-multiple-check"></i></div>
 							<p class="notify-details">Consulta(s) <b>Agendada(s)</b><small class="text-muted">1 min ago</small></p>
 						</a>
-						<!-- item-->
+						
 						<a href="javascript:void(0);" class="dropdown-item notify-item">
 							<div class="notify-icon bg-danger"><i class="mdi mdi-hospital"></i></div>
 							<p class="notify-details">Clínica Marcela <b>Adicionada</b><small class="text-muted">1 min ago</small></p>
-						</a>
+						</a> -->
 						<!-- All-->
 						<a href="javascript:void(0);" class="dropdown-item notify-item notify-all">Ver tudo</a>
 					</div>
