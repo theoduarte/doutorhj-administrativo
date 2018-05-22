@@ -157,7 +157,7 @@
 												   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
 												   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
 												   ticket         = "{{$obAgenda->agendamento->te_ticket}}"
-												   class		  = "btn btn-icon waves-effect btn-secondary btn-sm m-b-5 agendamento"
+												   class		  = "btn btn-icon waves-effect btn-agenda-remarcar btn-sm m-b-5 agendamento"
 												   id			  = "agendamento"
 												   @if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' )
 												   title = "Agendar Consulta"
@@ -181,7 +181,7 @@
 												   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
 												   id-paciente     = "{{$obAgenda->agendamento->paciente->id}}"
 												   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
-												   class		   = "btn btn-icon waves-effect btn-success btn-sm m-b-5 confirmacao"
+												   class		   = "btn btn-icon waves-effect btn-agenda-confirmar btn-sm m-b-5 confirmacao"
 												   title 		   = "Confirmar Consulta" id="confirmacao">
 													<i class="mdi mdi-check"></i>
 												</a>
@@ -203,7 +203,7 @@
 												   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
 												   id-paciente     = "{{$obAgenda->agendamento->paciente->id}}"
 												   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
-												   class		   = "btn btn-warning waves-effect btn-sm m-b-5 cancelamento"
+												   class		   = "btn btn-icon waves-effect btn-agenda-cancelar btn-sm m-b-5 cancelamento"
 												   title 		   = "Cancelar Consulta" id="cancelamento">
 													<i class="mdi mdi-close"></i>
 												</a>

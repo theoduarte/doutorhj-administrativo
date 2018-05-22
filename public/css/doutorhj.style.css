@@ -201,3 +201,45 @@ select[readonly], input[readonly] {
 .navbar-custom, .topbar .topbar-left, .button-menu-mobile {
     background-color: #1e2535;
 }
+
+.btn-agenda-remarcar i.mdi,
+.btn-agenda-confirmar i.mdi,
+.btn-agenda-cancelar i.mdi {
+    color: #fff !important;
+}
+
+.btn-agenda-remarcar {
+    border: 0;
+    background: #007aff;
+}
+
+.btn-agenda-remarcar:hover,
+.btn-agenda-remarcar:focus,
+.btn-agenda-remarcar:active {
+    border: 0!important;
+    background: #0565ce!important;
+}
+
+.btn-agenda-confirmar {
+    border: 0;
+    background: #4cd964;
+}
+
+.btn-agenda-confirmar:hover,
+.btn-agenda-confirmar:focus,
+.btn-agenda-confirmar:active {
+    border: 0!important;
+    background: #3ab34e!important;
+}
+
+.btn-agenda-cancelar {
+    border: 0;
+    background: #ff3a30;
+}
+
+.btn-agenda-cancelar:hover,
+.btn-agenda-cancelar:focus,
+.btn-agenda-cancelar:active {
+    border: 0!important;
+    background: #ce2a22!important;
+}
