@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="62154c7c-eb6a-4437-893f-66bc5b25cb89" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/doutorhj.style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/doutorhj.style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/agenda/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/agenda/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/agenda/modal_agenda_consulta.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/agenda/modal_agenda_consulta.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/agenda/modal_cancelamento.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/agenda/modal_cancelamento.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/agenda/modal_confirmacao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/agenda/modal_confirmacao.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/clinicas/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/clinicas/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/master.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/master.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doutorhj-landing/public/libs/home-template/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../doutorhj-landing/public/libs/home-template/css/style.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -108,8 +102,8 @@
       <file leaf-file-name="create.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/clinicas/create.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="686">
-              <caret line="115" column="13" selection-start-line="115" selection-start-column="13" selection-end-line="115" selection-end-column="13" />
+            <state relative-caret-position="732">
+              <caret line="117" column="11" lean-forward="true" selection-start-line="117" selection-start-column="11" selection-end-line="117" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -330,7 +324,7 @@
       <workItem from="1526469526177" duration="1655000" />
       <workItem from="1526471304049" duration="1994000" />
       <workItem from="1526475596001" duration="6517000" />
-      <workItem from="1526556919200" duration="1620000" />
+      <workItem from="1526556919200" duration="2264000" />
     </task>
     <task id="LOCAL-00001" summary="Teste PHPStorm">
       <created>1526475519248</created>
@@ -343,7 +337,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13411000" />
+    <option name="totallyTimeSpent" value="14055000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
@@ -515,8 +509,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/clinicas/create.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="686">
-          <caret line="115" column="13" selection-start-line="115" selection-start-column="13" selection-end-line="115" selection-end-column="13" />
+        <state relative-caret-position="732">
+          <caret line="117" column="11" lean-forward="true" selection-start-line="117" selection-start-column="11" selection-end-line="117" selection-end-column="11" />
         </state>
       </provider>
     </entry>
