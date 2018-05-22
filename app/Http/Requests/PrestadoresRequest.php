@@ -27,6 +27,8 @@ class PrestadoresRequest extends FormRequest
             'telefone_responsavel'  => 'Telefone do Responsável',
             'cpf_responsavel'       => 'CPF do Responsável',
             'password'              => 'Senha',
+        	'nr_latitude_gps'       => 'Latitude',
+        	'nr_longitute_gps'      => 'Longitude',
         ];
     }
     
@@ -52,7 +54,9 @@ class PrestadoresRequest extends FormRequest
                     'password'              => 'required|string|min:6|confirmed',
                     'name_responsavel'      => 'required|max:50',
                     'cpf_responsavel'       => 'required|max:14|min:11|unique:responsavels,cpf,'.$this->responsavel_id,
-                    'telefone_responsavel'  => 'required|max:20|unique:responsavels,telefone,'.$this->responsavel_id
+                    'telefone_responsavel'  => 'required|max:20|unique:responsavels,telefone,'.$this->responsavel_id,
+                    'nr_latitude_gps'       => 'required',
+                    'nr_longitute_gps'      => 'required'
                 ];
                 break;
                 
@@ -74,7 +78,9 @@ class PrestadoresRequest extends FormRequest
                     'password'              => 'required|string|min:6|confirmed',
                     'name_responsavel'      => 'required|max:50',
                     'cpf_responsavel'       => 'required|max:14|min:11|unique:responsavels,cpf',
-                    'telefone_responsavel'  => 'required|max:20|unique:responsavels,telefone'
+                    'telefone_responsavel'  => 'required|max:20|unique:responsavels,telefone',
+                    'nr_latitude_gps'       => 'required',
+                    'nr_longitute_gps'      => 'required'
                 ];
                 break;
         }

@@ -5,6 +5,7 @@
 /vendor
 /database
 /.idea
+.idea
 /.vagrant
 Homestead.json
 Homestead.yaml
@@ -12,3 +13,17 @@ npm-debug.log
 yarn-error.log
 .env
 .settings/*
+.idea/laravel-plugin.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/php.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.project
+.settings/.jsdtscope
+.settings/org.eclipse.php.core.prefs
+.settings/org.eclipse.wst.common.project.facet.core.xml
+.settings/org.eclipse.wst.jsdt.ui.superType.container
+.settings/org.eclipse.wst.jsdt.ui.superType.name
+.buildpath
+..gitignore.swp

@@ -29,6 +29,26 @@ class UtilController extends Controller
 	}
 	
 	/**
+	 * getBetween method
+	 *
+	 * @param string $input
+	 * @return string
+	 */
+	public static function getBetween($string, $start = "", $end = ""){
+		if (strpos($string, $start)) { // required if $start not exist in $string
+			$startCharCount = strpos($string, $start) + strlen($start);
+			$firstSubStr = substr($string, $startCharCount, strlen($string));
+			$endCharCount = strpos($firstSubStr, $end);
+			if ($endCharCount == 0) {
+				$endCharCount = strlen($firstSubStr);
+			}
+			return substr($firstSubStr, 0, $endCharCount);
+		} else {
+			return '';
+		}
+	}
+	
+	/**
 	 * Retira máscara de CPF, CNPJ, Telefone e outros.
 	 * @param string $input
 	 */
