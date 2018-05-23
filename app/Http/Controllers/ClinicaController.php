@@ -368,7 +368,12 @@ class ClinicaController extends Controller
     {
         $clinica = Clinica::findorfail($idClinica);
         $clinica_obj = $clinica->toJson();
-        $clinica->contatos()->delete();
+        
+        $contatos = $clinica->contatos();
+        foreach ($contatos as $contato) {
+            
+        }
+        //$clinica->contatos()->delete();
         $clinica->enderecos()->delete();
         $clinica->documentos()->delete();
         $clinica->delete();
