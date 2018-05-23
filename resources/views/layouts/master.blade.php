@@ -32,6 +32,8 @@
 		<link rel="stylesheet" href="/libs/comvex-template/css/style_dark.css">
 		<!-- DoutorHJ Reset CSS -->
 		<link rel="stylesheet" href="/css/doutorhj.style.css">
+        <!-- Footable -->
+        <link rel="stylesheet" href="/libs/footable/css/footable.core.css">
 		<!-- Datapicker -->
 		<link href="/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 		<link href="/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
@@ -358,6 +360,10 @@
 	<script src="/libs/comvex-template/js/jquery.tree.js"></script>
 	<script src="/libs/jquery-ui/jquery-ui.js"></script>
 	<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+	
+	<!-- Footable -->	
+    <script src="/libs/footable/js/footable.all.min.js"></script>
+    
 	<script type="text/javascript">
         jQuery(document).ready(function($) {
             $('.counter').counterUp({
