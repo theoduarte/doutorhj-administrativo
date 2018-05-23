@@ -90,7 +90,7 @@
 						@for($i = 0; $i < sizeof($notificacoes_app); $i++)
 						<!-- item-->
 						<a href="javascript:void(0);" class="dropdown-item notify-item">
-							<div class="notify-icon bg-primary">
+							<div class="notify-icon @if($notificacoes_app[$i]->visualizado) bg-primary @else bg-success @endif">
 								<i class="mdi @if($notificacoes_app[$i]->visualizado)  mdi mdi-email-open-outline  @else mdi mdi-email-outline @endif"></i>
 							</div>
 							<p class="notify-details">Contato <b>{{ $notificacoes_app[$i]->nome_remetente }}</b><small class="text-muted">{{ $notificacoes_app[$i]->time_ago }}</small></p>
