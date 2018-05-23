@@ -88,8 +88,10 @@
 						@for($i = 0; $i < sizeof($notificacoes_app); $i++)
 						<!-- item-->
 						<a href="javascript:void(0);" class="dropdown-item notify-item">
-							<div class="notify-icon bg-primary"><i class="mdi mdi-calendar-multiple-check"></i></div>
-							<p class="notify-details">Contato <b>{{ $notificacoes_app[$i]->nome_remetente }}</b><small class="text-muted">{{ $notificacoes_app[$i]->updated_at }} atrás</small></p>
+							<div class="notify-icon bg-primary">
+								<i class="mdi @if($notificacoes_app[$i]->visualizado)  mdi mdi-email-open-outline  @else mdi mdi-email-outline @endif"></i>
+							</div>
+							<p class="notify-details">Contato <b>{{ $notificacoes_app[$i]->nome_remetente }}</b><small class="text-muted">{{ $notificacoes_app[$i]->time_ago }}</small></p>
 						</a>
 						@endfor
 						<!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
@@ -107,7 +109,7 @@
 							<p class="notify-details">Clínica Marcela <b>Adicionada</b><small class="text-muted">1 min ago</small></p>
 						</a> -->
 						<!-- All-->
-						<a href="javascript:void(0);" class="dropdown-item notify-item notify-all">Ver tudo</a>
+						<a href="/notificacoes" class="dropdown-item notify-item notify-all">Ver Tudo</a>
 					</div>
 				</li>
 				<li class="list-inline-item dropdown notification-list">

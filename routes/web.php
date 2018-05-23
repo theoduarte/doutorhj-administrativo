@@ -41,6 +41,9 @@ Route::get('agenda/cancelar/{ticket}/{obs?}', 'AgendamentoController@addCancelam
 Route::get('horarios/{data}', 'AgendamentoController@getHorariosLivres')->middleware('auth');
 Route::get('agenda/confirmar/{ticket}/{cdStatus}', 'AgendamentoController@setStatus')->middleware('auth');
 
+Route::get('notificacoes','MensagemController@getListaNotificacoes')->middleware('auth');
+Route::get('notificacoes/visualizado/{id}','MensagemController@setStatusVisualizado')->middleware('auth');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
