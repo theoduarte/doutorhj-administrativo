@@ -26,14 +26,14 @@
 		<div class="form-group{{ $errors->has('nm_razao_social') ? ' has-error' : '' }}">
             <label for="nm_razao_social" class="col-3 control-label">Razão Social<span class="text-danger">*</span></label>
             <div class="col-8">
-                <input id="nm_razao_social" type="text" class="form-control" name="nm_razao_social" value="{{ $prestador->nm_razao_social}}" required  maxlength="100" autofocus>
+                <input id="nm_razao_social" type="text" class="form-control" name="nm_razao_social" value="{{ $prestador->nm_razao_social}}" required  maxlength="150" autofocus>
             </div>	
         </div>
         
         <div class="form-group{{ $errors->has('nm_fantasia') ? ' has-error' : '' }}">
             <label for="nm_fantasia" class="col-3 control-label">Nome Fantasia<span class="text-danger">*</span></label>
             <div class="col-8">
-                <input id="nm_fantasia" type="text" class="form-control" name="nm_fantasia" value="{{$prestador->nm_fantasia}}" required  maxlength="100">
+                <input id="nm_fantasia" type="text" class="form-control" name="nm_fantasia" value="{{$prestador->nm_fantasia}}" required  maxlength="150">
             </div>	
         </div>
         
@@ -134,8 +134,8 @@
 		<div class="form-group{{ $errors->has('nr_cep') | $errors->has('cd_cidade_ibge') ? ' has-error' : '' }}">
             <label for="nr_cep" class="col-3 control-label">CEP<span class="text-danger">*</span></label>
             <input id="nr_cep" type="text" class="form-control mascaraCEP consultaCep" name="nr_cep" value="{{$prestador->enderecos->first()->nr_cep}}" required  maxlength="10">
-            <input type="hidden" id="nr_latitude_gps" name="nr_latitude_gps" value="{{ $prestador->enderecos->first()->nr_latitude_gps }}" >
-            <input type="hidden" id="nr_longitute_gps" name="nr_longitute_gps" value="{{ $prestador->enderecos->first()->nr_longitute_gps }}" >
+            <!-- <input type="hidden" id="nr_latitude_gps" name="nr_latitude_gps" value="{{ $prestador->enderecos->first()->nr_latitude_gps }}" > -->
+            <!-- <input type="hidden" id="nr_longitute_gps" name="nr_longitute_gps" value="{{ $prestador->enderecos->first()->nr_longitute_gps }}" > -->
             <input type="hidden" id="endereco_id" name="endereco_id" value="{{$prestador->enderecos->first()->id}}">
             @if ($errors->has('cd_cidade_ibge'))
             <span class="help-block text-danger">
@@ -200,6 +200,7 @@
 		<div class="form-group{{ $errors->has('te_endereco') ? ' has-error' : '' }}">
     		<label for="te_endereco" class="col-3 control-label">Endereço<span class="text-danger">*</span></label>
     		<input id="te_endereco" type="text" class="form-control" name="te_endereco" value="{{$prestador->enderecos->first()->te_endereco}}" required  maxlength="200">
+    		<i id="cvx-input-loading" class="cvx-input-loading cvx-no-loading fa fa-spin fa-circle-o-notch"></i>
     	</div>
 	</div>
 	<div class="col-md-1">
