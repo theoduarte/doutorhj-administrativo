@@ -55,7 +55,7 @@
 					
 					<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
     					<tr>
-    						<th>Cód.</th>
+    						<th>@sortablelink('id', 'Cód.')</th>
     						<th>@sortablelink('nm_razao_social', 'Razão Social')</th>
     						<th>@sortablelink('nm_primario', 'Responsável')</th>
     						<th>Contato</th>

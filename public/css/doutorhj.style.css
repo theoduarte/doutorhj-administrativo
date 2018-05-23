@@ -103,6 +103,22 @@ ul.list-profissional-especialidade li {
 .select2-container--default .select2-results__option[aria-selected=true] {
     color: #aaa;
 }
+
+.cvx-input-loading {
+	display: inline-block;
+    position: relative;
+    top: -30px;
+    left: -10px;
+    font-size: 20px;
+    color: rgb(163, 36, 49);
+    visibility: visible;
+    float: right;
+}
+
+.cvx-no-loading {
+	visibility: hidden;
+}
+
 @media screen and (max-width:520px) {
     ul.list-profissional-especialidade li#three {
         clear:left;

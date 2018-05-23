@@ -93,6 +93,7 @@
 	    });
 
 	    $( "#nr_cep" ).blur(function() {
+	    	$('#cvx-input-loading').removeClass('cvx-no-loading');
 	    	jQuery.ajax({
         		type: 'GET',
         	  	url: '/consulta-cep/cep/'+this.value,
@@ -102,6 +103,7 @@
 				},
 				success: function (result) {
 					$( this ).addClass( "done" );
+					$('#cvx-input-loading').addClass('cvx-no-loading');
 
 					if( result != null) {
 						var json = JSON.parse(result.endereco);
@@ -130,6 +132,7 @@
 	            },
 	            error: function (result) {
 	            	$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+	            	$('#cvx-input-loading').addClass('cvx-no-loading');
 	            }
         	});
 		});

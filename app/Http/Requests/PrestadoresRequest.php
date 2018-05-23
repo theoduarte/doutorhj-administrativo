@@ -43,8 +43,8 @@ class PrestadoresRequest extends FormRequest
         switch ($this->method()) {
             case 'PUT':
                 $rules = [
-                    'nm_razao_social'       => 'required|max:100',
-                    'nm_fantasia'           => 'required|max:100',
+                    'nm_razao_social'       => 'required|max:150',
+                    'nm_fantasia'           => 'required|max:150',
                     'cd_cidade_ibge'        => 'required',
                     'tp_documento'          => 'required|max:5',
                     'te_documento'          => 'required|max:30|unique:documentos,te_documento,'.$this->cnpj_id,
@@ -62,8 +62,8 @@ class PrestadoresRequest extends FormRequest
                 
             default:
                 $rules = [
-                    'nm_razao_social'       => 'required|max:100',
-                    'nm_fantasia'           => 'required|max:100',
+                    'nm_razao_social'       => 'required|max:150',
+                    'nm_fantasia'           => 'required|max:150',
                     //             'nm_primario'   => 'required|max:20|min:3',
                     //             'nm_secundario' => 'required|max:50',
                     //             'cs_sexo'       => 'required|max:1',
