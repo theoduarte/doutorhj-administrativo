@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mensagem;
 use App\MensagemDestinatario;
+use Illuminate\Support\Facades\DB;
 
 class MensagemController extends Controller
 {
@@ -16,7 +17,7 @@ class MensagemController extends Controller
      * @param integer $idMensagem
      */
     public function setStatusVisualizado($idMensagem){
-        $mensagem = Mensagem::findorfail($idMensagem);
+        $mensagem = MensagemDestinatario::findorfail($idMensagem);
         $mensagem->update(['visualizado'=>true]);   
     }
     
@@ -27,16 +28,13 @@ class MensagemController extends Controller
      */
     public function getListaNotificacoes(){
         
-        $mensagems = Mensagem::where('cs_status', \App\Mensagem::ATIVO)
-                          ->whereHas('clinica.responsavel', function($query){
-                              $query->where('user_id', Auth::user()->id);
-                          })
-                          ->where('visualizado', false)
-                          ->orderBy('created_at', 'desc')
-                          ->sortable()
-                          ->paginate(6);
+        $user_session = Auth::user();
         
-        return view('notificacao.index', compact('mensagems'));
+        $mensagems = Mensagem::with('remetente')
+            ->join('mensagem_destinatarios', function($join1) { $join1->on('mensagem_destinatarios.mensagem_id', '=', 'mensagems.id');})
+            ->where(function ($query) use ($user_session) { $query->where('mensagem_destinatarios.destinatario_id', $user_session->id);})->where(DB::raw('mensagem_destinatarios.cs_status'), '=', 'A')->where(DB::raw('mensagem_destinatarios.tipo_destinatario'), '=', 'CN')->orderBy('mensagem_destinatarios.updated_at', 'desc')->paginate(20);
+        
+        return view('mensagems.index', compact('mensagems'));
     }
     
     /**

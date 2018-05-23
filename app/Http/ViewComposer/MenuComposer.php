@@ -44,7 +44,7 @@ class MenuComposer
 	    	$nome_remetente = UtilController::getBetween($notificacoes_app[$i]->conteudo, '<li>Nome:', '</li>');
 	    	
 	    	$notificacoes_app[$i]->nome_remetente = trim($nome_remetente);
-	    	$notificacoes_app[$i]->time_ago = UtilController::timeAgo(date('Y-m-d H:i:s', strtotime($notificacoes_app[$i]->updated_at)));
+	    	$notificacoes_app[$i]->time_ago = UtilController::timeAgo(date('Y-m-d H:i:s', strtotime($notificacoes_app[$i]->getRawCreatedAtAttribute())));
 	    }
 	    
 	    $total_notificacoes = Mensagem::with('remetente')

@@ -29,4 +29,8 @@ class Mensagem extends Model
         
         return $obData->format('d/m/Y - H:i');
     }
+    
+    public function getRawCreatedAtAttribute() {
+        return $this->attributes['created_at'];
+    }
 }
