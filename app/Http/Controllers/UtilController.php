@@ -29,6 +29,26 @@ class UtilController extends Controller
 	}
 	
 	/**
+	 * getBetween method
+	 *
+	 * @param string $input
+	 * @return string
+	 */
+	public static function getBetween($string, $start = "", $end = ""){
+		if (strpos($string, $start)) { // required if $start not exist in $string
+			$startCharCount = strpos($string, $start) + strlen($start);
+			$firstSubStr = substr($string, $startCharCount, strlen($string));
+			$endCharCount = strpos($firstSubStr, $end);
+			if ($endCharCount == 0) {
+				$endCharCount = strlen($firstSubStr);
+			}
+			return substr($firstSubStr, 0, $endCharCount);
+		} else {
+			return '';
+		}
+	}
+	
+	/**
 	 * Retira máscara de CPF, CNPJ, Telefone e outros.
 	 * @param string $input
 	 */
@@ -118,5 +138,81 @@ class UtilController extends Controller
     	           'de'  => new Carbon($de[2].'-'.$de[1].'-'.$de[0].' 00:00:00'), 
 	               'ate' => new Carbon($ate[2].'-'.$ate[1].'-'.$ate[0].' 23:59:59')
 	           );
+	}
+	
+	/**
+	 * Recebe data de updated_at
+	 * o tempo desde esse momento
+	 *
+	 * Ex.: timeAgo("Y-m-d H:i:s")
+	 *
+	 * @param string $data
+	 * @return \App\Http\Controllers\Carbon
+	 */
+	public static function timeAgo($time_ago)
+	{
+	    $time_ago = strtotime($time_ago);
+	    $cur_time   = time();
+	    $time_elapsed   = $cur_time - $time_ago;
+	    $seconds    = $time_elapsed ;
+	    $minutes    = round($time_elapsed / 60 );
+	    $hours      = round($time_elapsed / 3600);
+	    $days       = round($time_elapsed / 86400 );
+	    $weeks      = round($time_elapsed / 604800);
+	    $months     = round($time_elapsed / 2600640 );
+	    $years      = round($time_elapsed / 31207680 );
+	    // Seconds
+	    if($seconds <= 60){
+	        return "Agora mesmo";
+	    }
+	    //Minutes
+	    else if($minutes <=60){
+	        if($minutes==1){
+	            return "1 min atrás";
+	        }
+	        else{
+	            return "$minutes min atrás";
+	        }
+	    }
+	    //Hours
+	    else if($hours <=24){
+	        if($hours==1){
+	            return "1 hr atrás";
+	        }else{
+	            return "$hours hrs atrás";
+	        }
+	    }
+	    //Days
+	    else if($days <= 7){
+	        if($days==1){
+	            return "ontem";
+	        }else{
+	            return "$days dias atrás";
+	        }
+	    }
+	    //Weeks
+	    else if($weeks <= 4.3){
+	        if($weeks==1){
+	            return "1 sem. atrás";
+	        }else{
+	            return "$weeks semanas";
+	        }
+	    }
+	    //Months
+	    else if($months <=12){
+	        if($months==1){
+	            return "1 mês atrás";
+	        }else{
+	            return "$months meses";
+	        }
+	    }
+	    //Years
+	    else{
+	        if($years==1){
+	            return "1 ano atrás";
+	        }else{
+	            return "$years anos";
+	        }
+	    }
 	}
 }

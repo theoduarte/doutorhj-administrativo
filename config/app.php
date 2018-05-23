@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Doutor HJ'),
+    'name' => env('APP_NAME', 'DoctorHj: Painel Administrativo'),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    //'timezone' => 'UTC',
+	'timezone' => 'America/Sao_Paulo',
 
     /*
     |--------------------------------------------------------------------------

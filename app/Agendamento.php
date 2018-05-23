@@ -28,6 +28,7 @@ class Agendamento extends Model
     const AGENDADO       = 70;
     const RETORNO        = 80;
     
+    
     protected static $cs_status = array(
         self::PRE_AGENDADO   => 'Pré-Agendado',
         self::CONFIRMADO     => 'Confirmado',
@@ -46,7 +47,7 @@ class Agendamento extends Model
      */
     public function paciente()
     {
-        return $this->belongsTo('App\Paciente');
+        return $this->belongsTo('App\Paciente');    
     }
     
     public function clinica()
@@ -63,6 +64,8 @@ class Agendamento extends Model
     {
         return $this->belongsTo('App\CupomDesconto');
     }
+    
+    
     
     /*
      * Getters and Setters

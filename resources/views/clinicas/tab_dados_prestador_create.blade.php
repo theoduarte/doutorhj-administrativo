@@ -186,7 +186,7 @@
     		</select>
         </div>
 	</div>
-	<div class="col-md-8">
+	<div class="col-md-7">
 		<div class="form-group{{ $errors->has('te_endereco') ? ' has-error' : '' }}">
     		<label for="te_endereco" class="col-3 control-label">Endereço<span class="text-danger">*</span></label>
     		<input id="te_endereco" type="text" class="form-control" name="te_endereco" value="{{ old('te_endereco') }}" required  maxlength="200">
@@ -198,10 +198,16 @@
     		<input id="nr_logradouro" type="text" class="form-control" name="nr_logradouro" value="{{ old('nr_logradouro') }}" required  maxlength="50">
 		</div>
 	</div>
+	<div class="col-md-1">
+		<div class="form-group{{ $errors->has('nr_latitude_gps') ? ' has-error' : '' }}">
+    		<label for="nr_latitude_gps" class="col-3 control-label">Latitude<span class="text-danger">*</span></label>
+    		<input id="nr_latitude_gps" type="text" class="form-control" name="nr_latitude_gps" value="{{ old('nr_latitude_gps') }}" onkeypress="onlyNumbers(event)" required  maxlength="50">
+		</div>
+	</div>
 </div>	
 
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-md-3">
 		<div class="form-group{{ $errors->has('te_complemento') ? ' has-error' : '' }}">
             <label for="te_complemento" class="col-3 control-label">Complemento</label>
             <textarea rows="1" cols="10" id="te_complemento" class="form-control" name="te_complemento" value="{{ old('te_complemento') }}"  maxlength="1000"></textarea>
@@ -231,6 +237,12 @@
                 @endforeach
     		</select>
         </div>
+	</div>
+	<div class="col-md-1">
+		<div class="form-group{{ $errors->has('nr_longitute_gps') ? ' has-error' : '' }}">
+    		<label for="nr_longitute_gps" class="col-3 control-label">Longitude<span class="text-danger">*</span></label>
+    		<input id="nr_longitute_gps" type="text" class="form-control" name="nr_longitute_gps" value="{{ old('nr_longitute_gps') }}" onkeypress="onlyNumbers(event)" required  maxlength="50">
+		</div>
 	</div>
 </div>
 

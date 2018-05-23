@@ -2,22 +2,23 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Carbon;
+use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Model;
 
 class Profissional extends Model
 {
 	use Sortable;
 	
-	public $fillable      = ['nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'tp_profissional', 'cs_status'];
-	public $sortable      = ['id', 'nm_primario', 'nm_secundario'];
-	public $dates 	      = ['dt_nascimento'];
+	public $fillable   = ['nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'tp_profissional', 'cs_status'];
+	public $sortable   = ['id', 'nm_primario', 'nm_secundario'];
+	public $dates 	   = ['dt_nascimento'];
+    
 	
-	/* public function cargo(){
-	    return $this->belongsTo(Cargo::class);
-	} */
-	
+    
+	/*
+	 * Relationship
+	 */
 	public function clinica(){
 	    return $this->belongsTo('App\Clinica');
 	}
@@ -47,6 +48,11 @@ class Profissional extends Model
 	    return $this->belongsTo('App\User');
 	}
 	
+	
+	
+	/*
+	 * Getters and Setters
+	 */
 	public function setDtNascimentoAttribute($value)
 	{
 	    $date = new Carbon($value);

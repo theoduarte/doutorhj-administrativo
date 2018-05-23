@@ -59,4 +59,12 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\RegistroLog');
     }
+    
+    public function mensagems(){
+    	return $this->hasMany('App\Mensagem', 'remetente_id');
+    }
+    
+    public function destinatarios(){
+    	return $this->hasMany('App\MensagemDestinatario', 'destinatario_id');
+    }
 }
