@@ -27,13 +27,11 @@
                         <input id="nm_razao_social" type="text" class="form-control" name="nm_razao_social" value="{{ $prestador->nm_razao_social}}" required  maxlength="150" autofocus>
                     </div>
                 </div>
-<<<<<<< HEAD
                 <div class="form-group{{ $errors->has('nm_fantasia') ? ' has-error' : '' }}">
                     <label for="nm_fantasia" class="control-label">Nome Fantasia<span class="text-danger">*</span></label>
                     <div class="">
                         <input id="nm_fantasia" type="text" class="form-control" name="nm_fantasia" value="{{$prestador->nm_fantasia}}" required  maxlength="150">
                     </div>
-=======
             @endforeach
             @if($documentosclinica->isEmpty())
             	<label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
@@ -50,7 +48,6 @@
                 </div>
             @endif
         </div>
-        
          <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
         	@foreach ( $prestador->contatos as $obContato )                
             <label for="tp_contato" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
@@ -61,7 +58,6 @@
     					<option value="CC" @if( $obContato->tp_contato == 'CC' ) selected='selected' @endif >Celular Comercial</option>
     					<option value="FX" @if( $obContato->tp_contato == 'FX' ) selected='selected' @endif >FAX</option>
     				</select>
->>>>>>> 7a0535ab02a777b64d8d596f5fe9cd5013e2812f
                 </div>
                 <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
                     @foreach( $documentosclinica as $documento )
@@ -79,7 +75,6 @@
                         </div>
                     @endforeach
                 </div>
-<<<<<<< HEAD
                 <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
                     @foreach ( $prestador->contatos as $obContato )
                         <label for="tp_contato" class="control-label">Telefone<span class="text-danger">*</span></label>
@@ -97,7 +92,6 @@
                             </div>
                         </div>
                     @endforeach
-=======
             </div>
             @endforeach
             @if($prestador->contatos->isEmpty())
@@ -129,7 +123,6 @@
                 <div class="col-8">
                     <input type="text"  id="name_responsavel" class="form-control" name="name_responsavel" value="{{$prestador->responsavel->user->name}}" required  maxlength="50">
                     <input type="hidden" id="responsavel_id" name="responsavel_id" value="{{$prestador->responsavel->id}}">
->>>>>>> 7a0535ab02a777b64d8d596f5fe9cd5013e2812f
                 </div>
             </div>
         </div>
@@ -332,7 +325,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}"> 
+                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                     <label for="password" class="control-label">Senha<span class="text-danger">*</span></label>
                     <input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{ $user->password }}" required  maxlength="50">
                     @if ($errors->has('password'))
