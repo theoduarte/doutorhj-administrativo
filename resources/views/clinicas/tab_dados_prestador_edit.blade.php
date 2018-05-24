@@ -332,7 +332,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}"> 
                     <label for="password" class="control-label">Senha<span class="text-danger">*</span></label>
                     <input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{ $user->password }}" required  maxlength="50">
                     @if ($errors->has('password'))
