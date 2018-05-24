@@ -127,16 +127,26 @@ class AgendamentoController extends Controller
      * @param integer $ano
      * @param string  $hora
      */
-    public function addAgendamento($teTicket, $idClinica, $idProfissional, 
-                                   $idPaciente, $dia, $mes, $ano, $hora, $boRemarcacao='N'){
+    public function addAgendamento($teTicket, $idClinica, $idProfissional, $idPaciente, 
+                                   $dia=null, $mes=null, $ano=null, $hora=null, $boRemarcacao='N'){
         
         $agendamento = \App\Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $teTicket);
         
-        $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
-                         'bo_remarcacao'  => $boRemarcacao, 
-                         'clinica_id'     => $idClinica,
-                         'profissional_id'=> $idProfissional,
-                         'cs_status'      => \App\Agendamento::AGENDADO);
+        if(is_null($ano) and is_null($hora)){
+            $arDados = array('bo_remarcacao'  => $boRemarcacao,
+                             'clinica_id'     => $idClinica,
+                             'te_ticket'      => $teTicket,
+                             'profissional_id'=> $idProfissional,
+                             'cs_status'      => \App\Agendamento::AGENDADO);
+        }else{
+            $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
+                             'bo_remarcacao'  => $boRemarcacao, 
+                             'clinica_id'     => $idClinica,
+                             'te_ticket'      => $teTicket,
+                             'profissional_id'=> $idProfissional,
+                             'cs_status'      => \App\Agendamento::AGENDADO);
+        }
+        
         $agendamento->update($arDados);
     }
     

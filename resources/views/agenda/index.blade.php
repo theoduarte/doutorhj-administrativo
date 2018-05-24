@@ -137,13 +137,15 @@
 										<td>{{$obAgenda->agendamento->dt_atendimento}}</td>
 										<td>{{$obAgenda->agendamento->cs_status}}</td>
 										<td style="width:100px;">
+											
 											<!-- botao agendar/remarcar -->
 											@if( $obAgenda->agendamento->cs_status == 'Pré-Agendado'
-                                            or $obAgenda->agendamento->cs_status == 'Agendado'
-                                            and $obAgenda->agendamento->cs_status!='Cancelado'
-                                            and $obAgenda->agendamento->cs_status!='Finalizado'
-                                            and $obAgenda->agendamento->cs_status!='Confirmado'
-                                            and $obAgenda->agendamento->bo_remarcacao=='N')
+                                                or $obAgenda->agendamento->cs_status == 'Agendado'
+                                                and $obAgenda->agendamento->cs_status!='Cancelado'
+                                                and $obAgenda->agendamento->cs_status!='Finalizado'
+                                                and $obAgenda->agendamento->cs_status!='Confirmado'
+                                                and $obAgenda->agendamento->bo_remarcacao=='N')
+											
 												<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
 												{{$especialidade->ds_especialidade}}
 												@endforeach
@@ -160,13 +162,14 @@
 												   class		  = "btn btn-icon waves-effect btn-agenda-remarcar btn-sm m-b-5 agendamento"
 												   id			  = "agendamento"
 												   @if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' )
-												   title = "Agendar Consulta"
+												   		title = "Agendar Consulta"
 												   @elseif( $obAgenda->agendamento->cs_status == 'Agendado' )
-												   title = "Remarcar Consulta"
-														@endif
+												   		title = "Remarcar Consulta"
+												   @endif
 												><i class="mdi mdi-calendar-plus"></i></a>
 											@endif
-										<!-- botao confirmar -->
+										    
+										    <!-- botao confirmar -->
 											@if( $obAgenda->agendamento->cs_status!='Cancelado' and $obAgenda->agendamento->cs_status=='Agendado')
 												<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
 												{{$especialidade->ds_especialidade}}
@@ -183,12 +186,13 @@
 												   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
 												   class		   = "btn btn-icon waves-effect btn-agenda-confirmar btn-sm m-b-5 confirmacao"
 												   title 		   = "Confirmar Consulta" id="confirmacao">
-													<i class="mdi mdi-check"></i>
+												   <i class="mdi mdi-check"></i>
 												</a>
 											@endif
-										<!-- botao cancelar -->
+											
+										    <!-- botao cancelar -->
 											@if( $obAgenda->agendamento->cs_status!='Cancelado' and
-                                            $obAgenda->agendamento->cs_status!='Finalizado'and
+                                            $obAgenda->agendamento->cs_status!='Finalizado' and
                                             $obAgenda->agendamento->cs_status!='Retorno')
 												<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
 												{{$especialidade->ds_especialidade}}
@@ -205,20 +209,21 @@
 												   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
 												   class		   = "btn btn-icon waves-effect btn-agenda-cancelar btn-sm m-b-5 cancelamento"
 												   title 		   = "Cancelar Consulta" id="cancelamento">
-													<i class="mdi mdi-close"></i>
+												   <i class="mdi mdi-close"></i>
 												</a>
 											@endif
 										</td>
 									</tr>
 								@endforeach
 							</table>
+							
 							<tfoot>
-							<div class="cvx-pagination">
-                                <span class="text-primary">
-                                {{ sprintf("%02d", $agenda->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $agenda->count()) }} Registro(s) exibido(s)
-                                </span>
-								{!! $agenda->links() !!}
-							</div>
+    							<div class="cvx-pagination">
+                                    <span class="text-primary">
+                                    	{{ sprintf("%02d", $agenda->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $agenda->count()) }} Registro(s) exibido(s)
+                                    </span>
+    								{!! $agenda->links() !!}
+    							</div>
 							</tfoot>
 						</div>
 					</div>
@@ -226,6 +231,7 @@
 			</div>
 		</div>
 	</div>
+	
 	@include('agenda/modal_agenda_consulta')
 	@include('agenda/modal_cancelamento')
 	@include('agenda/modal_confirmacao')

@@ -22,6 +22,7 @@
 
             });
 
+            location.reload();
             dialogConfirmacao.dialog( "close" );
         }
 
@@ -47,6 +48,7 @@
 
             });
 
+            location.reload();
             dialogConfirmacao.dialog( "close" );
         }
 

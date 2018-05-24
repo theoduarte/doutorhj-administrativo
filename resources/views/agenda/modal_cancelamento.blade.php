@@ -22,6 +22,7 @@
 
             });
 
+            location.reload();
             dialogCancelamento.dialog( "close" );
         }
 

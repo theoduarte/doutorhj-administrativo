@@ -46,11 +46,12 @@
                     $('.profissional_id').html(null);
 
                     response.forEach(function(x){
-                        $('.profissional_id').append('<option value="'+x.id+'">'+x.id+' - '+ x.nm_primario + ' '+ x.nm_secundario +'</option>');
+                        $('.profissional_id').append('<option value="'+x.id+'">' + x.nm_primario + ' ' + x.nm_secundario +'</option>');
                     });
                 }
             }).done(function(msg){
-                $('.profissional_id').val($('#agendamento').attr('id-profissional'));
+          
+                
             }).fail(function(jqXHR, textStatus, msg){
                 window.alert(msg);
             });
@@ -59,18 +60,32 @@
 
 
         function acaoAgendar(){
-            clinica_id = $('.clinica_id').val();
+            clinica_id      = $('.clinica_id').val();
             profissional_id = $('.profissional_id').val();
-            paciente_id = $('.paciente').val();
-            data = $('#datepicker-autoclose').val();
-            hora = $('select[name="time"]').val();
-            ticket = $('.ticket').val();
+            paciente_id     = $('.paciente').val();
+            data 		    = ($('#datepicker-autoclose').val().length == 0) ? null : $('#datepicker-autoclose').val();
+            hora 			= ($('select[name="time"]').val().length == 0) ? null : $('select[name="time"]').val();
+            ticket 			= $('.ticket').val();
 
-
-            if ( clinica_id != null && profissional_id != null && data != null && hora != '' ){
-                if( $('#agendamento').attr('title') == 'Agendar Consulta' ){
+            if ( clinica_id != null && profissional_id != null && ticket != null && paciente_id != '' ){
+                
+                if( $('#ui-id-2').text() == 'Agendar Consulta' ){
+                    
                     link = "/agenda/agendar/" + ticket + '/' + clinica_id + '/' + profissional_id + '/' + paciente_id + '/' + data + '/' + hora;
-                }else{
+                    
+                }else if( $('#ui-id-2').text() == 'Remarcar Consulta' ){
+					
+                	if( hora == null || data == null ){
+                        swal({
+                                    title: 'Preencha uma data e hora para remarcar a consulta!',
+                                    text: '',
+                                    type: 'error',
+                                    confirmButtonClass: 'btn btn-confirm mt-2'
+                             });
+
+                        return false;
+                	}
+                    
                     link = "/agenda/agendar/" + ticket + '/' + clinica_id + '/' + profissional_id + '/' + paciente_id + '/' + data + '/' + hora + '/S';
                 }
 
@@ -91,6 +106,8 @@
                             confirmButtonClass : 'btn btn-confirm mt-2'
                         }
                     );
+
+                    location.reload();
                 }).fail(function(jqXHR, textStatus, msg){
                     swal(
                         {
@@ -103,18 +120,9 @@
                 });
 
 
-                location.reload();
+                
                 dialogAgendamento.dialog( "close" );
 
-            }else{
-                swal(
-                    {
-                        title: 'Preencha todos os campos!',
-                        text: '',
-                        type: 'error',
-                        confirmButtonClass: 'btn btn-confirm mt-2'
-                    }
-                );
             }
 
             return true;
@@ -142,8 +150,8 @@
             $('#divEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
             $('#divValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
             $('.paciente').val($(this).attr('id-paciente'));
-            $('#ui-id-1, #ui-id-2').text($('#agendamento').attr('title'));
-
+            $('#ui-id-1, #ui-id-2').text($(this).attr('title'));
+			
             dialogAgendamento.dialog( "open"  );
 
             $('.clinica_id').val($(this).attr('id-clinica'));
@@ -160,6 +168,7 @@
                 success  : function(horarios) {
                     $('#time').html(null);
 
+                    $('#time').append('<option value=""></option>');
                     for( var indice = 0; indice<=horarios.length-1; indice++ ){
                         $('#time').append('<option value="' + horarios[indice].hora + '">' + horarios[indice].hora + '</option>');
                     }
@@ -183,7 +192,7 @@
 		<div class="row">
 			<div class="col-12">
 				<label for="profissional_id">Clínica:</label>
-				<select class="form-control clinica_id" id="clinica_id" name="clinica_id">
+				<select class="form-control clinica_id" id="clinica_id" name="clinica_id" readonly>
 					@foreach($clinicas as $clinica)
 						<option value="{{$clinica->id}}">{{$clinica->nm_razao_social}}</option>
 					@endforeach
@@ -230,6 +239,7 @@
 			<div class="col-4">
 				<label>Hora:</label>
 				<select class="form-control" id="time" name="time">
+					<option value=""></option>
 				</select>
 			</div>
 		</div>
