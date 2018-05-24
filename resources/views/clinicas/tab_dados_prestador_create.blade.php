@@ -217,7 +217,7 @@
 	<div class="col-md-2">
 		<div class="form-group{{ $errors->has('te_bairro') ? ' has-error' : '' }}">
     		<label for="te_bairro" class="col-3 control-label">Bairro<span class="text-danger">*</span></label>
-    		<input id="te_bairro" type="text" class="form-control" name="te_bairro" value="{{ old('te_bairro') }}" required  maxlength="50">
+    		<input id="te_bairro" type="text" class="form-control" name="te_bairro" value="{{ old('te_bairro') }}" required  maxlength="250">
 		</div>
 	</div>
 	<div class="col-md-4">
