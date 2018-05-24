@@ -27,11 +27,41 @@
                         <input id="nm_razao_social" type="text" class="form-control" name="nm_razao_social" value="{{ $prestador->nm_razao_social}}" required  maxlength="150" autofocus>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <div class="form-group{{ $errors->has('nm_fantasia') ? ' has-error' : '' }}">
                     <label for="nm_fantasia" class="control-label">Nome Fantasia<span class="text-danger">*</span></label>
                     <div class="">
                         <input id="nm_fantasia" type="text" class="form-control" name="nm_fantasia" value="{{$prestador->nm_fantasia}}" required  maxlength="150">
                     </div>
+=======
+            @endforeach
+            @if($documentosclinica->isEmpty())
+            	<label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
+                <div class="col-8">
+                	<input type="hidden" name="tp_documento" value="CNPJ">
+                    <input id="te_documento" type="text" class="form-control mascaraCNPJ" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required >
+                    <input type="hidden" id="te_documento_no_mask" name="te_documento" maxlength="30" >
+                    <input type="hidden" id="cnpj_id" name="cnpj_id">
+                    @if ($errors->has('te_documento'))
+                    <span class="help-block text-danger">
+                    	<strong>{{ $errors->first('te_documento') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            @endif
+        </div>
+        
+         <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
+        	@foreach ( $prestador->contatos as $obContato )                
+            <label for="tp_contato" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
+            <div class="row">
+            	<div class="col-md-4">
+    				<select id="tp_contato_{{$obContato->id}}" name="tp_contato_{{$obContato->id}}" class="form-control">
+    					<option value="FC" @if( $obContato->tp_contato == 'FC' ) selected='selected' @endif >Telefone Comercial</option>
+    					<option value="CC" @if( $obContato->tp_contato == 'CC' ) selected='selected' @endif >Celular Comercial</option>
+    					<option value="FX" @if( $obContato->tp_contato == 'FX' ) selected='selected' @endif >FAX</option>
+    				</select>
+>>>>>>> 7a0535ab02a777b64d8d596f5fe9cd5013e2812f
                 </div>
                 <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
                     @foreach( $documentosclinica as $documento )
@@ -49,6 +79,7 @@
                         </div>
                     @endforeach
                 </div>
+<<<<<<< HEAD
                 <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
                     @foreach ( $prestador->contatos as $obContato )
                         <label for="tp_contato" class="control-label">Telefone<span class="text-danger">*</span></label>
@@ -66,6 +97,39 @@
                             </div>
                         </div>
                     @endforeach
+=======
+            </div>
+            @endforeach
+            @if($prestador->contatos->isEmpty())
+            	<label for="tp_contato" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
+	            <div class="row">
+	            	<div class="col-md-4">
+	    				<select id="tp_contato" name="tp_contato" class="form-control">
+	    					<option value="FC" >Telefone Comercial</option>
+	    					<option value="CC" >Celular Comercial</option>
+	    					<option value="FX" >FAX</option>
+	    				</select>
+	                </div>
+	    	        <div class="col-md-4">
+	    				<input id="ds_contato" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato" required >
+	    				<input type="hidden" id="contato_id" name="contato_id" >
+	                </div>
+	            </div>
+            @endif
+        </div>
+        
+	</div>
+	<div class="col-md-6">
+	
+		<h4>Dados Pessoais do Responsável</h4>
+		
+        <div class="form-group{{ $errors->has('name_responsavel') ? ' has-error' : '' }}">
+        	<div class="row">
+                <label for="name_responsavel" class="col-12 control-label">Nome<span class="text-danger">*</span></label>
+                <div class="col-8">
+                    <input type="text"  id="name_responsavel" class="form-control" name="name_responsavel" value="{{$prestador->responsavel->user->name}}" required  maxlength="50">
+                    <input type="hidden" id="responsavel_id" name="responsavel_id" value="{{$prestador->responsavel->id}}">
+>>>>>>> 7a0535ab02a777b64d8d596f5fe9cd5013e2812f
                 </div>
             </div>
         </div>

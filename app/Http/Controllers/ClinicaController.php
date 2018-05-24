@@ -274,7 +274,7 @@ class ClinicaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(PrestadoresRequest $request, $idClinica)
-    {
+    {	
         $prestador = Clinica::findOrFail($idClinica);
         $ct_clinica_obj        = $prestador->toJson();
         
