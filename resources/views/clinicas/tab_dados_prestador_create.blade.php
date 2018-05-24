@@ -237,20 +237,6 @@
             </div>
         </div>
 	</div>
-	<div class="col-md-2">
-		<div class="form-group{{ $errors->has('te_bairro') ? ' has-error' : '' }}">
-    		<label for="te_bairro" class="col-3 control-label">Bairro<span class="text-danger">*</span></label>
-    		<input id="te_bairro" type="text" class="form-control" name="te_bairro" value="{{ old('te_bairro') }}" required  maxlength="250">
-		</div>
-	</div>
-	<div class="col-md-4">
-		<div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
-			<label for="nm_cidade" class="col-3 control-label">Cidade<span class="text-danger">*</span></label>
-
-            <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{ old('nm_cidade') }}" required  maxlength="50" readonly>
-    		<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ old('cd_cidade_ibge') }}" >
-    	</div>
-    </div>
 </div>
 <div class="row">
     <div class="col-md-12">
