@@ -52,6 +52,20 @@
                     @endif
                 </div>
             @endforeach
+            @if($documentosclinica->isEmpty())
+            	<label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
+                <div class="col-8">
+                	<input type="hidden" name="tp_documento" value="">
+                    <input id="te_documento" type="text" class="form-control mascaraCNPJ" value="" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required >
+                    <input type="hidden" id="te_documento_no_mask" name="te_documento" value="" maxlength="30" >
+                    <input type="hidden" id="cnpj_id" name="cnpj_id" value="">
+                    @if ($errors->has('te_documento'))
+                    <span class="help-block text-danger">
+                    	<strong>{{ $errors->first('te_documento') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            @endif
         </div>
         
          <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
@@ -71,6 +85,22 @@
                 </div>
             </div>
             @endforeach
+            @if($prestador->contatos->isEmpty())
+            	<label for="tp_contato" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
+	            <div class="row">
+	            	<div class="col-md-4">
+	    				<select id="tp_contato" name="tp_contato" class="form-control">
+	    					<option value="FC" >Telefone Comercial</option>
+	    					<option value="CC" >Celular Comercial</option>
+	    					<option value="FX" >FAX</option>
+	    				</select>
+	                </div>
+	    	        <div class="col-md-4">
+	    				<input id="ds_contato" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato" value="" required >
+	    				<input type="hidden" id="contato_id" name="contato_id" value="" >
+	                </div>
+	            </div>
+            @endif
         </div>
         
 	</div>
