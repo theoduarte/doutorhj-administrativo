@@ -240,10 +240,6 @@ class ClinicaController extends Controller
         $prestador->load('documentos');
         //$prestador->load('profissional');
         
-        if(sizeof($prestador->enderecos) == 0) {
-            
-        }
-        
         $documentosclinica = $prestador->documentos;
         
         $user   = User::findorfail($prestador->responsavel->user_id);
