@@ -32,8 +32,9 @@ class MensagemController extends Controller
         
         $mensagems = Mensagem::with('remetente')
             ->join('mensagem_destinatarios', function($join1) { $join1->on('mensagem_destinatarios.mensagem_id', '=', 'mensagems.id');})
-            ->where(function ($query) use ($user_session) { $query->where('mensagem_destinatarios.destinatario_id', $user_session->id);})->where(DB::raw('mensagem_destinatarios.cs_status'), '=', 'A')->where(DB::raw('mensagem_destinatarios.tipo_destinatario'), '=', 'DH')->orderBy('mensagem_destinatarios.updated_at', 'desc')->paginate(20);
-        
+            ->where(function ($query) use ($user_session) { $query->where('mensagem_destinatarios.destinatario_id', $user_session->id);})->where(DB::raw('mensagem_destinatarios.cs_status'), '=', 'A')->where(DB::raw('mensagem_destinatarios.tipo_destinatario'), '=', 'DH')
+            ->orderBy('mensagem_destinatarios.created_at', 'desc')->paginate(20);
+            
         return view('mensagems.index', compact('mensagems'));
     }
     

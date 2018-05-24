@@ -38,8 +38,8 @@
                 <p class="text-muted m-b-30 font-13"></p>
                 <table id="notificacoes" class="table table-bordered toggle-circle">
                     <colgroup>
-                        <col width="30">
-                        <col width="500">
+                        <col width="80">
+                        <col width="440">
                         <col width="10">
                         <col width="10">
                         <col width="10">
@@ -60,7 +60,7 @@
                     	@foreach( $mensagems as $msg )
                         <tr class="acaoVisualizar" id="{{$msg->id}}">
                         	<td>{{$msg->created_at}}</td>
-                            <td>{{$msg->assunto}}</td>
+                            <td>{{$msg->assunto}} @if($msg->visualizado) <span class="badge label-table badge-primary"> Lido </span> @else <span class="badge label-table badge-success"> Não Lido </span> @endif</td>
                             <td>{{$msg->rma_nome}}</td>
                             <td>{{$msg->rma_email}}</td>
                             <td>
@@ -73,9 +73,9 @@
                             		@case('UC') Usuário comum sem relacionamento @break;
                             	@endswitch
                             	</td>
-                            <td>{{$msg->conteudo}}</td>
+                            <td>{!! $msg->conteudo !!}</td>
                             <td>
-                            	<span class="badge label-table badge-success">
+                            	<span class="badge label-table badge-primary">
                             		Lido
                             	</span>
                             </td>

@@ -36,7 +36,8 @@ class MenuComposer
 // 	    DB::enableQueryLog();
 	    $notificacoes_app = Mensagem::with('remetente')
 		    ->join('mensagem_destinatarios', function($join1) { $join1->on('mensagem_destinatarios.mensagem_id', '=', 'mensagems.id');})
-		    ->where(function ($query) use ($user_session) { $query->where('mensagem_destinatarios.destinatario_id', $user_session->id);})->where(DB::raw('mensagem_destinatarios.cs_status'), '=', 'A')->orderBy('mensagem_destinatarios.updated_at', 'desc')->limit(3)->get();
+		    ->where(function ($query) use ($user_session) { $query->where('mensagem_destinatarios.destinatario_id', $user_session->id);})->where(DB::raw('mensagem_destinatarios.cs_status'), '=', 'A')
+		    ->orderBy('mensagem_destinatarios.created_at', 'desc')->limit(3)->get();
 	    //dd($notificacoes_app);
 	    for ($i=0; $i < sizeof($notificacoes_app); $i++) {
 	    	$nome_remetente = '';

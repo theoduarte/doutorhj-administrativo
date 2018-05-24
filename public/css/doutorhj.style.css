@@ -259,3 +259,18 @@ select[readonly], input[readonly] {
     border: 0!important;
     background: #ce2a22!important;
 }
+
+.h4, h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1976bc;
+}
+
+label {
+    font-weight: 400;
+}
+
+.tab-content {
+    padding: 20px 20px 20px 20px;
+}

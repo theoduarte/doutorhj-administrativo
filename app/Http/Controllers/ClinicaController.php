@@ -47,7 +47,8 @@ class ClinicaController extends Controller
                                                     $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
                                             }
                                         }
-                                    })->where(DB::raw('cs_status'), '=', 'A')->sortable()->paginate(20);
+                                    })->where(DB::raw('cs_status'), '=', 'A')->sortable()->paginate(10);
+        
         $prestadores->load('contatos');
         $prestadores->load('responsavel');
         
@@ -239,7 +240,6 @@ class ClinicaController extends Controller
         $prestador->load('documentos');
         //$prestador->load('profissional');
         
-        
         $documentosclinica = $prestador->documentos;
         
         $user   = User::findorfail($prestador->responsavel->user_id);
@@ -274,7 +274,7 @@ class ClinicaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(PrestadoresRequest $request, $idClinica)
-    {
+    {	
         $prestador = Clinica::findOrFail($idClinica);
         $ct_clinica_obj        = $prestador->toJson();
         

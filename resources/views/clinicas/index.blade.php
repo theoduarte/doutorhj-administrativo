@@ -57,6 +57,7 @@
     					<tr>
     						<th>@sortablelink('id', 'Cód.')</th>
     						<th>@sortablelink('nm_razao_social', 'Razão Social')</th>
+    						<th>@sortablelink('nm_fantasia', 'Nome Fantasia')</th>
     						<th>@sortablelink('nm_primario', 'Responsável')</th>
     						<th>Contato</th>
     						<th>Ações</th>
@@ -65,6 +66,7 @@
 						<tr>
     						<td>{{ sprintf("%04d", $prestador->id) }}</td>
     						<td>{{$prestador->nm_razao_social}}</td>
+    						<td>{{$prestador->nm_fantasia}}</td>
     						<td>{{ $prestador->responsavel->user->name }}</td>
                 	 		<td>
                 	 			@foreach($prestador->contatos as $contato)
@@ -84,7 +86,7 @@
                     		<span class="text-primary">
                     			{{ sprintf("%02d", $prestadores->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $prestadores->count()) }} Registro(s) exibido(s)
                     		</span>
-                    		{!! $prestadores->links() !!}
+                    		{!! $prestadores->appends(request()->input())->links() !!}
                     	</div>
                     </tfoot>
 				</div>
