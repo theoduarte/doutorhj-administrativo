@@ -50,11 +50,15 @@
                     });
                 }
             }).done(function(msg){
-          
-                
+
+            	$('.profissional_id').val($('.profissional').val());
+
+            	
             }).fail(function(jqXHR, textStatus, msg){
                 window.alert(msg);
             });
+
+             
         });
 
 
@@ -65,11 +69,12 @@
             paciente_id     = $('.paciente').val();
             data 		    = ($('#datepicker-autoclose').val().length == 0) ? null : $('#datepicker-autoclose').val();
             hora 			= ($('select[name="time"]').val().length == 0) ? null : $('select[name="time"]').val();
-            ticket 			= $('.ticket').val();
-
+            ticket 			= $('.ticket').val(); 
+	            
             if ( clinica_id != null && profissional_id != null && ticket != null && paciente_id != '' ){
                 
-                if( $('#ui-id-2').text() == 'Agendar Consulta' ){
+
+	            if( $('#ui-id-2').text() == 'Agendar Consulta' ){
                     
                     link = "/agenda/agendar/" + ticket + '/' + clinica_id + '/' + profissional_id + '/' + paciente_id + '/' + data + '/' + hora;
                     
@@ -119,10 +124,7 @@
                     );
                 });
 
-
-                
                 dialogAgendamento.dialog( "close" );
-
             }
 
             return true;
@@ -151,9 +153,10 @@
             $('#divValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
             $('.paciente').val($(this).attr('id-paciente'));
             $('#ui-id-1, #ui-id-2').text($(this).attr('title'));
+            $('.profissional').val($(this).attr('id-profissional'));
+            
+            dialogAgendamento.dialog( "open" );
 			
-            dialogAgendamento.dialog( "open"  );
-
             $('.clinica_id').val($(this).attr('id-clinica'));
             $('.clinica_id').change();
         });
@@ -186,6 +189,7 @@
 					<div id="divPaciente"></div>
 				</label>
 				<input type="hidden" name="paciente" class="paciente" value="">
+				<input type="hidden" name="profissional" class="profissional" value="">
 				<input type="hidden" name="ticket" class="ticket" value="">
 			</div>
 		</div>
