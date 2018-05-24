@@ -55,10 +55,10 @@
             @if($documentosclinica->isEmpty())
             	<label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
                 <div class="col-8">
-                	<input type="hidden" name="tp_documento" value="">
-                    <input id="te_documento" type="text" class="form-control mascaraCNPJ" value="" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required >
-                    <input type="hidden" id="te_documento_no_mask" name="te_documento" value="" maxlength="30" >
-                    <input type="hidden" id="cnpj_id" name="cnpj_id" value="">
+                	<input type="hidden" name="tp_documento" value="CNPJ">
+                    <input id="te_documento" type="text" class="form-control mascaraCNPJ" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required >
+                    <input type="hidden" id="te_documento_no_mask" name="te_documento" maxlength="30" >
+                    <input type="hidden" id="cnpj_id" name="cnpj_id">
                     @if ($errors->has('te_documento'))
                     <span class="help-block text-danger">
                     	<strong>{{ $errors->first('te_documento') }}</strong>
@@ -96,8 +96,8 @@
 	    				</select>
 	                </div>
 	    	        <div class="col-md-4">
-	    				<input id="ds_contato" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato" value="" required >
-	    				<input type="hidden" id="contato_id" name="contato_id" value="" >
+	    				<input id="ds_contato" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato" required >
+	    				<input type="hidden" id="contato_id" name="contato_id" >
 	                </div>
 	            </div>
             @endif
