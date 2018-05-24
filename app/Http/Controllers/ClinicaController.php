@@ -48,6 +48,7 @@ class ClinicaController extends Controller
                                             }
                                         }
                                     })->where(DB::raw('cs_status'), '=', 'A')->sortable()->paginate(10);
+        
         $prestadores->load('contatos');
         $prestadores->load('responsavel');
         
@@ -239,6 +240,9 @@ class ClinicaController extends Controller
         $prestador->load('documentos');
         //$prestador->load('profissional');
         
+        if(sizeof($prestador->enderecos) == 0) {
+            
+        }
         
         $documentosclinica = $prestador->documentos;
         
