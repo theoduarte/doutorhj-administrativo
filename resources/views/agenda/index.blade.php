@@ -235,4 +235,5 @@
 	@include('agenda/modal_agenda_consulta')
 	@include('agenda/modal_cancelamento')
 	@include('agenda/modal_confirmacao')
+	
 @endsection

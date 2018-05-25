@@ -102,4 +102,5 @@
             <textarea class="form-control" rows="3" cols="10" id="obs_cancelamento" name="obs_cancelamento"></textarea>
         </div>
     </div>
+    
 </div>

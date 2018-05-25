@@ -78,4 +78,5 @@ class Agendamento extends Model
         $obData = new Carbon($data);
         return $obData->format('d/m/Y H:i');
     }
+    
 }
