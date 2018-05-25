@@ -16,14 +16,14 @@ class AgendamentoController extends Controller
     public function index()
     {
         $clinicas = \App\Clinica::all();
+//         DB::enableQueryLog();
+        
+        $clinica_id = Request::get('clinica_id');
+        $nm_paciente = Request::get('nm_paciente');
+        $data = UtilController::getDataRangeTimePickerToCarbon(Request::get('data'));
         
         $agenda = \App\Itempedido::WhereHas('agendamento', function($query){
-                                             if(Request::get('data')){
-                                                 $data = UtilController::getDataRangeTimePickerToCarbon(Request::get('data'));
-                                                 
-                                                 $query->where('dt_atendimento', '>=', $data['de']);
-                                                 $query->where('dt_atendimento', '<=', $data['ate']);
-                                             }
+        			$query->where('dt_atendimento', '>=', $data['de'])->where('dt_atendimento', '<=', $data['ate']);
                                              
                                              $arCsStatus = array();
                                              if( !empty(Request::get('ckPreAgendada'))            ) $arCsStatus[] = \App\Agendamento::PRE_AGENDADO;          
@@ -35,24 +35,18 @@ class AgendamentoController extends Controller
                                              if( !empty(Request::get('ckRetornoConsultas'))       ) $arCsStatus[] = \App\Agendamento::RETORNO;
                                              if( !empty(Request::get('ckConsultasFinalizadas'))   ) $arCsStatus[] = \App\Agendamento::FINALIZADO;
                                              if( count($arCsStatus) > 0) $query->whereIn('cs_status', $arCsStatus);
-                                         })->WhereHas(
-                                         'agendamento.clinica', function ($query){
-                                             $clinica_id = Request::get('clinica_id');
-                                             if(!empty($clinica_id)){
-                                                 $query->where(DB::raw('id'), '=', Request::get('clinica_id'));
-                                             }
+                                         })->WhereHas('agendamento.clinica', function ($query) use ($clinica_id) { $query->where(DB::raw('id'), '=', Request::get('clinica_id'));
                                          })->With([ 
                                          'agendamento.profissional', 
                                          'agendamento.profissional.especialidades', 
                                          'agendamento.paciente'])
                                          ->WhereHas(
-                                         'agendamento.paciente.user', function ($query){
-                                              $nm_paciente = Request::get('nm_paciente');
-                                              if(!empty($nm_paciente)){
-                                                  $query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr($nm_paciente).'%');
-                                              }
-                                         })->sortable()
-                                           ->paginate(20);
+                                         'agendamento.paciente.user', function ($query) use ($nm_paciente) {$query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr($nm_paciente).'%');})
+                                         ->sortable()
+                                         ->paginate(20);
+//         $query_temp = DB::getQueryLog();
+//         dd($query_temp);
+//         dd($agenda);
         Request::flash();
         
         return view('agenda.index', compact('agenda', 'clinicas'));
