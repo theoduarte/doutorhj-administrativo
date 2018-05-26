@@ -17,6 +17,16 @@ class Itempedido extends Model
         return $this->belongsTo('App\Agendamento');
     }
     
+    public function pedido()
+    {
+        return $this->belongsTo('App\Pedido');
+    }
+    
+    public function getVlItempedido()
+    {
+        return number_format( $this->attributes['valor'],  2, ',', '.');
+    }
+    
     public function getValorAttribute($valor){
         return number_format( $valor,  2, ',', '.');
     }

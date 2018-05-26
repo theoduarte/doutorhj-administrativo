@@ -27,7 +27,7 @@
 					<h4 class="page-title">Doutor HJ</h4>
 					<ol class="breadcrumb float-right">
 						<li class="breadcrumb-item"><a href="/">Home</a></li>
-						<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
+						<li class="breadcrumb-item"><a href="/agenda">Cadastros</a></li>
 						<li class="breadcrumb-item active">Agenda</li>
 					</ol>
 					<div class="clearfix"></div>
@@ -42,7 +42,7 @@
 					<div class="row">
 						<div class="col-12">
 							<form class="form-edit-add" role="form" action="{{ route('agenda.index') }}" method="get" enctype="multipart/form-data">
-								{{ csrf_field() }}
+								
 								<div class="row">
 									<div class="col-4">
 										<label for="localAtendimento">Clínica:<span class="text-danger">*</span></label>
@@ -99,7 +99,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-4">
+									<div class="col-3">
 										<label for="localAtendimento">Paciente:</label>
 										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
 									</div>
@@ -109,8 +109,10 @@
 									</div>
 									<div class="col-1 col-lg-3">
 										<div style="height: 30px;"></div>
-										<button type="submit" class="btn btn-primary" id="submit">Pesquisar</button>
+										<button type="submit" class="btn btn-primary" id="submit" style="margin-right: 10px;"><i class="fa fa-search"></i> Pesquisar</button>
+										<a href="{{ route('agenda.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca" style="margin-bottom: 0px; "><i class="ion-close"></i> Limpar Busca</a>
 									</div>
+									
 								</div>
 							</form>
 						</div>
@@ -130,60 +132,60 @@
 								</tr>
 								@foreach($agenda as $obAgenda)
 									<tr>
-										<td>{{$obAgenda->agendamento->te_ticket}}</td>
-										<td>{{$obAgenda->agendamento->clinica->nm_razao_social}}</td>
-										<td>{{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}</td>
-										<td>{{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}</td>
-										<td>{{$obAgenda->agendamento->dt_atendimento}}</td>
-										<td>{{$obAgenda->agendamento->cs_status}}</td>
+										<td>{{$obAgenda->te_ticket}}</td>
+										<td>{{$obAgenda->clinica->nm_razao_social}}</td>
+										<td>{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
+										<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
+										<td>{{$obAgenda->dt_atendimento}}</td>
+										<td>{{$obAgenda->cs_status}}</td>
 										<td style="width:100px;">
 											
 											<!-- botao agendar/remarcar -->
-											@if( $obAgenda->agendamento->cs_status == 'Pré-Agendado'
-                                                or $obAgenda->agendamento->cs_status == 'Agendado'
-                                                and $obAgenda->agendamento->cs_status!='Cancelado'
-                                                and $obAgenda->agendamento->cs_status!='Finalizado'
-                                                and $obAgenda->agendamento->cs_status!='Confirmado'
-                                                and $obAgenda->agendamento->bo_remarcacao=='N')
+											@if( $obAgenda->cs_status == 'Pré-Agendado'
+                                                or $obAgenda->cs_status == 'Agendado'
+                                                and $obAgenda->cs_status!='Cancelado'
+                                                and $obAgenda->cs_status!='Finalizado'
+                                                and $obAgenda->cs_status!='Confirmado'
+                                                and $obAgenda->bo_remarcacao=='N')
 											
-												<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
+												<a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade )
 												{{$especialidade->ds_especialidade}}
 												@endforeach
 														"
-												   nm-paciente    = "{{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}"
-												   data-hora	  = "{{$obAgenda->agendamento->dt_atendimento}}"
-												   prestador	  = "{{$obAgenda->agendamento->clinica->nm_razao_social}}"
-												   nm-profissional= "{{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+												   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
+												   data-hora	  = "{{$obAgenda->dt_atendimento}}"
+												   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}"
+												   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
 												   valor-consulta = "{{$obAgenda->valor}}"
-												   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
-												   id-clinica     = "{{$obAgenda->agendamento->clinica->id}}"
-												   id-paciente    = "{{$obAgenda->agendamento->paciente->id}}"
-												   ticket         = "{{$obAgenda->agendamento->te_ticket}}"
+												   id-profissional = "{{$obAgenda->profissional->id}}"
+												   id-clinica     = "{{$obAgenda->clinica->id}}"
+												   id-paciente    = "{{$obAgenda->paciente->id}}"
+												   ticket         = "{{$obAgenda->te_ticket}}"
 												   class		  = "btn btn-icon waves-effect btn-agenda-remarcar btn-sm m-b-5 agendamento"
 												   id			  = "agendamento"
-												   @if( $obAgenda->agendamento->cs_status == 'Pré-Agendado' )
+												   @if( $obAgenda->cs_status == 'Pré-Agendado' )
 												   		title = "Agendar Consulta"
-												   @elseif( $obAgenda->agendamento->cs_status == 'Agendado' )
+												   @elseif( $obAgenda->cs_status == 'Agendado' )
 												   		title = "Remarcar Consulta"
 												   @endif
 												><i class="mdi mdi-calendar-plus"></i></a>
 											@endif
 										    
 										    <!-- botao confirmar -->
-											@if( $obAgenda->agendamento->cs_status!='Cancelado' and $obAgenda->agendamento->cs_status=='Agendado')
-												<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
+											@if( $obAgenda->cs_status!='Cancelado' and $obAgenda->cs_status=='Agendado')
+												<a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade )
 												{{$especialidade->ds_especialidade}}
 												@endforeach
 														"
-												   nm-paciente     = "{{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}"
-												   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
-												   prestador	   = "{{$obAgenda->agendamento->clinica->nm_razao_social}}"
-												   nm-profissional = "{{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+												   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
+												   data-hora	   = "{{$obAgenda->dt_atendimento}}"
+												   prestador	   = "{{$obAgenda->clinica->nm_razao_social}}"
+												   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
 												   valor-consulta  = "{{$obAgenda->valor}}"
-												   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
-												   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
-												   id-paciente     = "{{$obAgenda->agendamento->paciente->id}}"
-												   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
+												   id-profissional = "{{$obAgenda->profissional->id}}"
+												   id-clinica      = "{{$obAgenda->clinica->id}}"
+												   id-paciente     = "{{$obAgenda->paciente->id}}"
+												   ticket          = "{{$obAgenda->te_ticket}}"
 												   class		   = "btn btn-icon waves-effect btn-agenda-confirmar btn-sm m-b-5 confirmacao"
 												   title 		   = "Confirmar Consulta" id="confirmacao">
 												   <i class="mdi mdi-check"></i>
@@ -191,22 +193,22 @@
 											@endif
 											
 										    <!-- botao cancelar -->
-											@if( $obAgenda->agendamento->cs_status!='Cancelado' and
-                                            $obAgenda->agendamento->cs_status!='Finalizado' and
-                                            $obAgenda->agendamento->cs_status!='Retorno')
-												<a especialidade  = "@foreach( $obAgenda->agendamento->profissional->especialidades as $especialidade )
+											@if( $obAgenda->cs_status!='Cancelado' and
+                                            $obAgenda->cs_status!='Finalizado' and
+                                            $obAgenda->cs_status!='Retorno')
+												<a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade )
 												{{$especialidade->ds_especialidade}}
 												@endforeach
 														"
-												   nm-paciente     = "{{$obAgenda->agendamento->paciente->nm_primario}} {{$obAgenda->agendamento->paciente->nm_secundario}}"
-												   data-hora	   = "{{$obAgenda->agendamento->dt_atendimento}}"
-												   prestador	   = "{{$obAgenda->agendamento->clinica->nm_razao_social}}"
-												   nm-profissional = "{{$obAgenda->agendamento->profissional->nm_primario}} {{$obAgenda->agendamento->profissional->nm_secundario}}"
+												   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
+												   data-hora	   = "{{$obAgenda->dt_atendimento}}"
+												   prestador	   = "{{$obAgenda->clinica->nm_razao_social}}"
+												   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
 												   valor-consulta  = "{{$obAgenda->valor}}"
-												   id-profissional = "{{$obAgenda->agendamento->profissional->id}}"
-												   id-clinica      = "{{$obAgenda->agendamento->clinica->id}}"
-												   id-paciente     = "{{$obAgenda->agendamento->paciente->id}}"
-												   ticket          = "{{$obAgenda->agendamento->te_ticket}}"
+												   id-profissional = "{{$obAgenda->profissional->id}}"
+												   id-clinica      = "{{$obAgenda->clinica->id}}"
+												   id-paciente     = "{{$obAgenda->paciente->id}}"
+												   ticket          = "{{$obAgenda->te_ticket}}"
 												   class		   = "btn btn-icon waves-effect btn-agenda-cancelar btn-sm m-b-5 cancelamento"
 												   title 		   = "Cancelar Consulta" id="cancelamento">
 												   <i class="mdi mdi-close"></i>

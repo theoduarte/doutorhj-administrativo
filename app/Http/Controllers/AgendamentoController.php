@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use App\Agendamento;
+use App\Clinica;
 
 class AgendamentoController extends Controller
 {
@@ -15,39 +17,47 @@ class AgendamentoController extends Controller
      */
     public function index()
     {
-        $clinicas = \App\Clinica::all();
-//         DB::enableQueryLog();
+        $clinicas = Clinica::all();
         
         $clinica_id = Request::get('clinica_id');
-        $nm_paciente = Request::get('nm_paciente');
-        $data = UtilController::getDataRangeTimePickerToCarbon(Request::get('data'));
+        $nm_paciente = UtilController::toStr(Request::get('nm_paciente'));
+               
+        $data = Request::get('data') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data')) :'';
         
-        $agenda = \App\Itempedido::WhereHas('agendamento', function($query){
-        			$query->where('dt_atendimento', '>=', $data['de'])->where('dt_atendimento', '<=', $data['ate']);
-                                             
-                                             $arCsStatus = array();
-                                             if( !empty(Request::get('ckPreAgendada'))            ) $arCsStatus[] = \App\Agendamento::PRE_AGENDADO;          
-                                             if( !empty(Request::get('ckConsultasAgendadas'))     ) $arCsStatus[] = \App\Agendamento::AGENDADO;
-                                             if( !empty(Request::get('ckConsultasConfirmadas'))   ) $arCsStatus[] = \App\Agendamento::CONFIRMADO;
-                                             if( !empty(Request::get('ckConsultasNaoConfirmadas'))) $arCsStatus[] = \App\Agendamento::NAO_CONFIRMADO;
-                                             if( !empty(Request::get('ckConsultasCanceladas'))    ) $arCsStatus[] = \App\Agendamento::CANCELADO;
-                                             if( !empty(Request::get('ckAusencias'))              ) $arCsStatus[] = \App\Agendamento::AUSENTE;
-                                             if( !empty(Request::get('ckRetornoConsultas'))       ) $arCsStatus[] = \App\Agendamento::RETORNO;
-                                             if( !empty(Request::get('ckConsultasFinalizadas'))   ) $arCsStatus[] = \App\Agendamento::FINALIZADO;
-                                             if( count($arCsStatus) > 0) $query->whereIn('cs_status', $arCsStatus);
-                                         })->WhereHas('agendamento.clinica', function ($query) use ($clinica_id) { $query->where(DB::raw('id'), '=', Request::get('clinica_id'));
-                                         })->With([ 
-                                         'agendamento.profissional', 
-                                         'agendamento.profissional.especialidades', 
-                                         'agendamento.paciente'])
-                                         ->WhereHas(
-                                         'agendamento.paciente.user', function ($query) use ($nm_paciente) {$query->where(DB::raw('to_str(name)'), 'like', '%'.UtilController::toStr($nm_paciente).'%');})
-                                         ->sortable()
-                                         ->paginate(20);
+        $agenda = [];
+        
+        $arCsStatus = [];
+        if( !empty(Request::get('ckPreAgendada'))            ) $arCsStatus[] = Agendamento::PRE_AGENDADO;
+        if( !empty(Request::get('ckConsultasAgendadas'))     ) $arCsStatus[] = Agendamento::AGENDADO;
+        if( !empty(Request::get('ckConsultasConfirmadas'))   ) $arCsStatus[] = Agendamento::CONFIRMADO;
+        if( !empty(Request::get('ckConsultasNaoConfirmadas'))) $arCsStatus[] = Agendamento::NAO_CONFIRMADO;
+        if( !empty(Request::get('ckConsultasCanceladas'))    ) $arCsStatus[] = Agendamento::CANCELADO;
+        if( !empty(Request::get('ckAusencias'))              ) $arCsStatus[] = Agendamento::AUSENTE;
+        if( !empty(Request::get('ckRetornoConsultas'))       ) $arCsStatus[] = Agendamento::RETORNO;
+        if( !empty(Request::get('ckConsultasFinalizadas'))   ) $arCsStatus[] = Agendamento::FINALIZADO;
+        
+//         DB::enableQueryLog();
+        $agenda = Agendamento::with('paciente')->with('clinica')->with('atendimento')->with('profissional')->with('itempedidos')
+            ->join('pacientes', function($join1) { $join1->on('pacientes.id', '=', 'agendamentos.paciente_id');})
+            ->where(function($query1) use ($data) {       if( $data != '') {            $data_inicio = $data['de']; $data_fim = $data['ate']; $query1->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($data_inicio)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($data_fim)));}})
+            ->where(function($query2) use ($arCsStatus) { if( count($arCsStatus) > 0)   $query2->whereIn('agendamentos.cs_status', $arCsStatus);})
+            ->where(function($query3) use ($clinica_id) { if($clinica_id != null)       $query3->where(DB::raw('id'), '=', $clinica_id);})
+            ->where(function($query4) use ($nm_paciente) { if( $nm_paciente != '')      $query4->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%'.$nm_paciente.'%')->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%'.$nm_paciente.'%');})
+            ->select('agendamentos.*')
+            ->distinct()
+            ->orderBy('agendamentos.dt_atendimento', 'desc')
+            ->paginate(10);
+       
 //         $query_temp = DB::getQueryLog();
 //         dd($query_temp);
-//         dd($agenda);
-        Request::flash();
+        for ($i = 0; $i < sizeof($agenda); $i++) {
+            $agenda[$i]->clinica->load('enderecos');
+            $agenda[$i]->clinica->enderecos->first()->load('cidade');
+            $agenda[$i]->endereco_completo = $agenda[$i]->clinica->enderecos->first()->te_endereco.' - '.$agenda[$i]->clinica->enderecos->first()->te_bairro.' - '.$agenda[$i]->clinica->enderecos->first()->cidade->nm_cidade.'/'.$agenda[$i]->clinica->enderecos->first()->cidade->estado->sg_estado;
+            $agenda[$i]->itempedidos->first()->load('pedido');
+            $agenda[$i]->itempedidos->first()->pedido->load('pagamentos');
+            $agenda[$i]->valor_total = sizeof($agenda[$i]->itempedidos->first()->pedido->pagamentos) > 0 ? number_format( ($agenda[$i]->itempedidos->first()->pedido->pagamentos->first()->amount)/100,  2, ',', '.') : number_format( 0,  2, ',', '.');
+        }
         
         return view('agenda.index', compact('agenda', 'clinicas'));
     }

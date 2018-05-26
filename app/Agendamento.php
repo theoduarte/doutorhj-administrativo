@@ -45,9 +45,14 @@ class Agendamento extends Model
     /*
      * Relationship
      */
+    public function atendimento()
+    {
+        return $this->belongsTo('App\Atendimento');
+    }
+    
     public function paciente()
     {
-        return $this->belongsTo('App\Paciente');    
+        return $this->belongsTo('App\Paciente');
     }
     
     public function clinica()
@@ -63,6 +68,11 @@ class Agendamento extends Model
     public function cupom_desconto()
     {
         return $this->belongsTo('App\CupomDesconto');
+    }
+    
+    public function itempedidos()
+    {
+        return $this->hasMany('App\Itempedido');
     }
     
     
