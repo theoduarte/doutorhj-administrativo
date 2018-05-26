@@ -41,71 +41,71 @@
 					<p class="text-muted m-b-30 font-13"></p>
 					<div class="row">
 						<div class="col-12">
-							<form class="form-edit-add" role="form" action="{{ route('agenda.index') }}" method="get" enctype="multipart/form-data">
+							<form class="form-edit-add" role="form" action="{{ route('agenda.index') }}" method="get">
 								
 								<div class="row">
 									<div class="col-4">
 										<label for="localAtendimento">Clínica:<span class="text-danger">*</span></label>
-										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}">
-										<input type="hidden" id="clinica_id" name="clinica_id" value="{{old('clinica_id')}}">
+										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="@if(isset($_GET['localAtendimento'])) {{ $_GET['localAtendimento'] }} @endif">
+										<input type="hidden" id="clinica_id" name="clinica_id" value="@if(isset($_GET['clinica_id'])) {{ $_GET['clinica_id'] }} @endif">
 									</div>
 									<div class="form-group">
 										<div style="height: 20px;"></div>
 										<label class="custom-checkbox" style="cursor: pointer;width:210px;">
 											<input type="checkbox"  id="ckPreAgendada" name="ckPreAgendada"
-												   value="10" @if(old('ckPreAgendada')=='10') checked @endif> Consultas Pré-Agendadas
+												   value="10" @if(isset($_GET['ckPreAgendada']) && $_GET['ckPreAgendada'] =='10') checked @endif> Consultas Pré-Agendadas
 										</label>
 										<br>
 										<label class="custom-checkbox" style="cursor: pointer;">
 											<input type="checkbox" id="ckConsultasAgendadas" name="ckConsultasAgendadas"
-												   value="70" @if(old('ckConsultasAgendadas')=='70') checked @endif> Consultas Agendadas
+												   value="70" @if(isset($_GET['ckConsultasAgendadas']) && $_GET['ckConsultasAgendadas'] =='70') checked @endif> Consultas Agendadas
 										</label>
 									</div>
 									<div class="form-group">
 										<div style="height: 20px;"></div>
 										<label class="custom-checkbox" style="cursor: pointer;width:220px;">
 											<input type="checkbox"  id="ckConsultasConfirmadas" name="ckConsultasConfirmadas"
-												   value="20" @if(old('ckConsultasConfirmadas')=='20') checked @endif> Consultas Confirmadas
+												   value="20" @if(isset($_GET['ckConsultasConfirmadas']) && $_GET['ckConsultasConfirmadas'] =='20') checked @endif> Consultas Confirmadas
 										</label>
 										<br>
 										<label class="custom-checkbox" style="cursor: pointer;">
 											<input type="checkbox"  id="ckConsultasNaoConfirmadas" name="ckConsultasNaoConfirmadas"
-												   value="30" @if(old('ckConsultasNaoConfirmadas')=='30') checked @endif> Consultas Não Confirmadas
+												   value="30" @if(isset($_GET['ckConsultasNaoConfirmadas']) && $_GET['ckConsultasNaoConfirmadas'] =='30') checked @endif> Consultas Não Confirmadas
 										</label>
 									</div>
 									<div class="form-group">
 										<div style="height: 20px;"></div>
 										<label class="custom-checkbox" style="cursor: pointer;">
 											<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas"
-												   value="60" @if(old('ckConsultasCanceladas')=='60') checked @endif> Consultas Canceladas
+												   value="60" @if(isset($_GET['ckConsultasCanceladas']) && $_GET['ckConsultasCanceladas'] =='60') checked @endif> Consultas Canceladas
 										</label>
 										<br>
 										<label class="custom-checkbox" style="cursor: pointer;">
 											<input type="checkbox"  id="ckAusencias" name="ckAusencias"
-												   value="50" @if(old('ckAusencias')=='50') checked @endif> Não Compareceu
+												   value="50" @if(isset($_GET['ckAusencias']) && $_GET['ckAusencias'] =='50') checked @endif > Não Compareceu
 										</label>
 									</div>
 									<div class="form-group">
 										<div style="height: 20px;"></div>
 										<label class="custom-checkbox" style="cursor: pointer;">
 											<input type="checkbox"  id="ckRetornoConsultas" name="ckRetornoConsultas"
-												   value="80" @if(old('ckRetornoConsultas')=='80') checked @endif> Consultas de Retorno
+												   value="80" @if(isset($_GET['ckRetornoConsultas']) && $_GET['ckRetornoConsultas'] =='80') checked @endif> Consultas de Retorno
 										</label>
 										<br>
 										<label class="custom-checkbox" style="cursor: pointer;">
 											<input type="checkbox" id="ckConsultasFinalizadas" name="ckConsultasFinalizadas"
-												   value="80" @if(old('ckConsultasFinalizadas')=='80') checked @endif> Consultas Finalizadas
+												   value="80" @if(isset($_GET['ckConsultasFinalizadas']) && $_GET['ckConsultasFinalizadas'] =='80') checked @endif> Consultas Finalizadas
 										</label>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-3">
 										<label for="localAtendimento">Paciente:</label>
-										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
+										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="@if(isset($_GET['nm_paciente'])) {{ $_GET['nm_paciente'] }} @endif">
 									</div>
 									<div class="col-3">
 										<label for="data">Data:<span class="text-danger">*</span></label>
-										<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="{{old('data')}}">
+										<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="@if(isset($_GET['data'])) {{ $_GET['data'] }} @endif">
 									</div>
 									<div class="col-1 col-lg-3">
 										<div style="height: 30px;"></div>
