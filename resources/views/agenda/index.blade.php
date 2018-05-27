@@ -156,7 +156,7 @@
 												   data-hora	  = "{{$obAgenda->dt_atendimento}}"
 												   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}"
 												   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
-												   valor-consulta = "{{$obAgenda->valor}}"
+												   valor-consulta = "{{$obAgenda->valor_total}}"
 												   id-profissional = "{{$obAgenda->profissional->id}}"
 												   id-clinica     = "{{$obAgenda->clinica->id}}"
 												   id-paciente    = "{{$obAgenda->paciente->id}}"

@@ -215,4 +215,74 @@ class UtilController extends Controller
 	        }
 	    }
 	}
+	
+	/**
+	 * sendSms method
+	 *
+	 * @param string $number Destinatários que receberam a mensagem. DDD+Número, separados por vírgula caso possua mais de um.
+	 * @param string $remetente Nome do Remetente até 32 caracteres. Utilizado somente na organização dos relatórios
+	 * @param string $message Conteúdo da mensagem que será enviada. Tamanho máximo de 2048 caracteres.
+	 */
+	public static function sendSms($number, $remetente, $message)
+	{
+	    $comtele_api_key = env('COMTELE_API_KEY');
+	    $url = "https://sms.comtele.com.br/Api/$comtele_api_key/SendMessage";
+	    
+	    $data = [
+	        'content' => $message,
+	        'sender' => $remetente,
+	        'receivers' => $number
+	    ];
+	    
+	    $fields = http_build_query($data);
+	    $post = curl_init();
+	    
+	    $url = $url.'?'.$fields;
+	    
+	    curl_setopt($post, CURLOPT_URL, $url);
+	    curl_setopt($post, CURLOPT_POST, 1);
+	    curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
+	    curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
+	    
+	    $result['status'] = curl_exec($post);
+	    
+	    curl_close($post);
+	    
+	    if($result['status'] == false) {
+	        $result['error'] = 'Curl error: ' . curl_error($post);
+	    }
+	    
+	    return $result;
+	}
+	
+	/**
+	 * sendMail method
+	 *
+	 * @param string $number Destinatários que receberam a mensagem. DDD+Número, separados por vírgula caso possua mais de um.
+	 * @param string $remetente Nome do Remetente até 32 caracteres. Utilizado somente na organização dos relatórios
+	 * @param string $message Conteúdo da mensagem que será enviada. Tamanho máximo de 2048 caracteres.
+	 */
+	public static function sendMail($to, $from, $subject, $html_message)
+	{
+	    $token = env('SENDGRID_API_KEY');
+	    $url = 'https://api.sendgrid.com/v3/mail/send';
+	    
+	    $payload = '{"personalizations": [{"to": [{"email": "'.$to.'"}]}],"from": {"email": "'.$from.'"},"subject": "'.$subject.'","content": [{"type": "text/html", "value": "'.$html_message.'"}]}';
+	    //$payload = '{"personalizations": [{"to": [{"email": "teocomp@gmail.com"}]}],"from": {"email": "contato@doctorhoje.com.br"},"subject": "Hello, World!","content": [{"type": "text/html", "value": "<h1>teste3 DoctorHoje</h1>"}]}';
+	    
+	    //dd($payload);
+	    
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $token, 'Content-Type:application/json'));
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload );
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    $output = curl_exec($ch);
+	    
+	    if ($output == "") {
+	        return true;
+	    }
+	    
+	    return $output;
+	}
 }

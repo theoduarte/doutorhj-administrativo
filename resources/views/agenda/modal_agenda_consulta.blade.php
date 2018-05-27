@@ -16,7 +16,12 @@
             }
         });
 
-
+        jQuery('#datepicker-agenda').datepicker({
+    	    autoclose: true,
+    	    todayHighlight: true,
+    	    format:'dd/mm/yyyy',
+    		language: 'pt-BR'
+    	});
 
         $("#profissional").autocomplete({
             source: function( request, response ) {
@@ -67,7 +72,7 @@
             clinica_id      = $('.clinica_id').val();
             profissional_id = $('.profissional_id').val();
             paciente_id     = $('.paciente').val();
-            data 		    = ($('#datepicker-autoclose').val().length == 0) ? null : $('#datepicker-autoclose').val();
+            data 		    = ($('#datepicker-agenda').val().length == 0) ? null : $('#datepicker-agenda').val();
             hora 			= ($('select[name="time"]').val().length == 0) ? null : $('select[name="time"]').val();
             ticket 			= $('.ticket').val(); 
 	            
@@ -78,7 +83,7 @@
                     
                     link = "/agenda/agendar/" + ticket + '/' + clinica_id + '/' + profissional_id + '/' + paciente_id + '/' + data + '/' + hora;
                     
-                }else if( $('#ui-id-2').text() == 'Remarcar Consulta' ){
+                } else if( $('#ui-id-2').text() == 'Remarcar Consulta' ){
 					
                 	if( hora == null || data == null ){
                         swal({
@@ -103,16 +108,19 @@
 
                     }
                 }).done(function(msg){
-                    swal(
-                        {
-                            title : 'Solicitação Concluída!',
-                            text  : '',
-                            type  : 'success',
-                            confirmButtonClass : 'btn btn-confirm mt-2'
-                        }
-                    );
-
-                    location.reload();
+                    
+                     swal({
+                    	title : 'Solicitação Concluída!',
+                        text  : '',
+                        type  : 'success',
+                        showCancelButton: false,
+                        confirmButtonClass: 'btn btn-confirm mt-2',
+                        cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
+                        confirmButtonText: 'OK',
+                    }).then(function () {
+                    	location.reload();
+                    });
+                    
                 }).fail(function(jqXHR, textStatus, msg){
                     swal(
                         {
@@ -162,9 +170,10 @@
         });
 
 
-        $('#datepicker-autoclose').change(function(){
+        $('#datepicker-agenda').change(function(){
             var data = $(this).val().split('/');
-
+            var ct_data_hora = ($('#divDtHora b').html()).split(' ');
+            var ct_hora = ct_data_hora[1];
             $.ajax({
                 url 	 : '/horarios/' + data[2]+'-'+data[1]+'-'+data[0],
                 dataType : 'json',
@@ -173,7 +182,12 @@
 
                     $('#time').append('<option value=""></option>');
                     for( var indice = 0; indice<=horarios.length-1; indice++ ){
-                        $('#time').append('<option value="' + horarios[indice].hora + '">' + horarios[indice].hora + '</option>');
+                        if(horarios[indice].hora > ct_hora) {
+                        	$('#time').append('<option value="' + ct_hora + '">' + ct_hora + '</option>');
+                        	$('#time').append('<option value="' + horarios[indice].hora + '">' + horarios[indice].hora + '</option>');
+                        } else {
+                        	$('#time').append('<option value="' + horarios[indice].hora + '">' + horarios[indice].hora + '</option>');
+                        }
                     }
                 }
             });
@@ -228,9 +242,9 @@
 					<div id="divDtHora"></div>
 				</label>
 			</div>
-			<div class="col-2">
-				<label for="divDtHora">
-					Valor Pago:
+			<div class="col-3">
+				<label for="divValorConsulta">
+					Valor Pago (R$):
 					<div id="divValorConsulta"></div>
 				</label>
 			</div>
@@ -238,7 +252,7 @@
 		<div class="row">
 			<div class="col-3">
 				<label>Agendar para:</label>
-				<input type="text" class="form-control" placeholder="dd/mm/yyyy" id="datepicker-autoclose">
+				<input type="text" class="form-control mascaraData" placeholder="dd/mm/yyyy" id="datepicker-agenda">
 			</div>
 			<div class="col-4">
 				<label>Hora:</label>

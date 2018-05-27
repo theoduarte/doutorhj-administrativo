@@ -75,8 +75,6 @@ class Agendamento extends Model
         return $this->hasMany('App\Itempedido');
     }
     
-    
-    
     /*
      * Getters and Setters
      */
@@ -87,6 +85,14 @@ class Agendamento extends Model
     public function getDtAtendimentoAttribute($data) {
         $obData = new Carbon($data);
         return $obData->format('d/m/Y H:i');
+    }
+    
+    public function getRawDtAtendimentoAttribute() {
+        return $this->attributes['dt_atendimento'];
+    }
+    
+    public function getRawCsStatusAttribute() {
+        return $this->attributes['cs_status'];
     }
     
 }

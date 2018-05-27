@@ -3,7 +3,7 @@ $(document).ready(function() {
         mask: ["99/99/9999"],
         keepStatic: true
     });
-	
+		
 	$(".mascaraMonetaria").maskMoney({prefix:'', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
 	
 	$(".mascaraTelefone").inputmask({
@@ -56,7 +56,9 @@ $(document).ready(function() {
 	
 	jQuery('#datepicker-autoclose').datepicker({
 	    autoclose: true,
-	    todayHighlight: true
+	    todayHighlight: true,
+	    format:'dd/mm/yyyy',
+		language: 'pt-BR'
 	});
 	
 	$(".mascaraCEP").inputmask({

@@ -33,7 +33,6 @@ class Atendimento extends Model
 	    return $this->hasMany('App\Agendamento');
 	}
 	
-	
 	public function getVlNetAtendimentoAttribute($valor){
 	    return number_format( $valor,  2, ',', '.');
 	}
