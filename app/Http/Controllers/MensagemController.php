@@ -22,9 +22,10 @@ class MensagemController extends Controller
     }
     
     /**
-     * Consulta 
-     * 
-     * @return \Illuminate\View\View
+     * getListaNotificacoes a newly external user created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function getListaNotificacoes(){
         
