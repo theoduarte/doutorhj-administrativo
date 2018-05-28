@@ -45,7 +45,7 @@
 								
 								<div class="row">
 									<div class="col-4">
-										<label for="localAtendimento">Clínica:<span class="text-danger">*</span></label>
+										<label for="localAtendimento">Prestador:<span class="text-danger">*</span></label>
 										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="@if(isset($_GET['localAtendimento'])) {{ $_GET['localAtendimento'] }} @endif">
 										<input type="hidden" id="clinica_id" name="clinica_id" value="@if(isset($_GET['clinica_id'])) {{ $_GET['clinica_id'] }} @endif">
 									</div>

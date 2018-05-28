@@ -16,6 +16,8 @@
             }
         });
 
+
+        
         jQuery('#datepicker-agenda').datepicker({
     	    autoclose: true,
     	    todayHighlight: true,
@@ -23,6 +25,8 @@
     		language: 'pt-BR'
     	});
 
+
+        
         $("#profissional").autocomplete({
             source: function( request, response ) {
                 $.ajax({
@@ -60,10 +64,15 @@
 
             	
             }).fail(function(jqXHR, textStatus, msg){
-                window.alert(msg);
+                swal(
+                        {
+                            title: 'Um erro inesperado ocorreu!',
+                            text: '',
+                            type: 'error',
+                            confirmButtonClass: 'btn btn-confirm mt-2'
+                        }
+                    );
             });
-
-             
         });
 
 
@@ -77,7 +86,6 @@
             ticket 			= $('.ticket').val(); 
 	            
             if ( clinica_id != null && profissional_id != null && ticket != null && paciente_id != '' ){
-                
 
 	            if( $('#ui-id-2').text() == 'Agendar Consulta' ){
                     
@@ -139,6 +147,7 @@
         }
 
 
+        
         dialogAgendamento = $( "#dialog-agendar" ).dialog({
             autoOpen : false,
             height	 : 530,
@@ -152,6 +161,7 @@
         });
 
 
+        
         $( ".agendamento" ).button().on( "click", function() {
             $('.ticket').val($(this).attr('ticket'));
             $('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
@@ -170,24 +180,29 @@
         });
 
 
+
+		/**
+		* Verifica disponibilidade de atendimento em função de clinica, 
+		* profissional, data e hora.
+		*/
         $('#datepicker-agenda').change(function(){
-            var data = $(this).val().split('/');
-            var ct_data_hora = ($('#divDtHora b').html()).split(' ');
-            var ct_hora = ct_data_hora[1];
+			var clinica_id      = $('select[name=clinica_id]').val();
+			var profissional_id = $('select[name=profissional_id]').val();
+            var data 		    = $(this).val().split('/');
+            var ct_data_hora    = ($('#divDtHora b').html()).split(' ');
+            var ct_hora         = ct_data_hora[1];
+			
+            
             $.ajax({
-                url 	 : '/horarios/' + data[2]+'-'+data[1]+'-'+data[0],
+                url 	 : '/horarios/' + clinica_id + '/' + profissional_id + '/' + data[2] + '-' + data[1] + '-' + data[0],
                 dataType : 'json',
                 success  : function(horarios) {
                     $('#time').html(null);
 
                     $('#time').append('<option value=""></option>');
+
                     for( var indice = 0; indice<=horarios.length-1; indice++ ){
-                        if(horarios[indice].hora > ct_hora) {
-                        	$('#time').append('<option value="' + ct_hora + '">' + ct_hora + '</option>');
-                        	$('#time').append('<option value="' + horarios[indice].hora + '">' + horarios[indice].hora + '</option>');
-                        } else {
-                        	$('#time').append('<option value="' + horarios[indice].hora + '">' + horarios[indice].hora + '</option>');
-                        }
+                        $('#time').append('<option value="' + horarios[indice].hora + '">' + horarios[indice].hora + '</option>');
                     }
                 }
             });

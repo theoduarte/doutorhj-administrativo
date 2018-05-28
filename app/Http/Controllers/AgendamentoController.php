@@ -145,7 +145,7 @@ class AgendamentoController extends Controller
                              'te_ticket'      => $teTicket,
                              'profissional_id'=> $idProfissional,
                              'cs_status'      => Agendamento::AGENDADO);
-        } else{
+        } else {
             $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
                              'bo_remarcacao'  => $boRemarcacao, 
                              'clinica_id'     => $idClinica,
@@ -160,7 +160,6 @@ class AgendamentoController extends Controller
             $paciente->load('contatos');
             
             //--carrega os dados do agendamento para configurar a mensagem-----
-            
             $ct_agendamento = $agendamento->first();
             $ct_agendamento->load('itempedidos');
             $ct_agendamento->load('atendimento');
@@ -212,12 +211,12 @@ class AgendamentoController extends Controller
      * @param date $data
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHorariosLivres($data){
+    public function getHorariosLivres($idClinica, $idProfissional, $data){
         $arJson = array();
         
         for( $hora = 8; $hora <=18; $hora++ ){
-            $this->_verificaDisponibilidadeHorario($data, str_pad($hora, 2, 0, STR_PAD_LEFT).':00:00');
-            $this->_verificaDisponibilidadeHorario($data, str_pad($hora, 2, 0, STR_PAD_LEFT).':30:00');
+            $this->_verificaDisponibilidadeHorario($idClinica, $idProfissional, $data, str_pad($hora, 2, 0, STR_PAD_LEFT).':00:00');
+            $this->_verificaDisponibilidadeHorario($idClinica, $idProfissional, $data, str_pad($hora, 2, 0, STR_PAD_LEFT).':30:00');
         }
         
         return Response()->json($this->arHorariosLivres);
@@ -229,8 +228,11 @@ class AgendamentoController extends Controller
      * @param integer $hora
      * @return boolean
      */
-    private function _verificaDisponibilidadeHorario($data, $hora){
-        $agenda = \App\Agendamento::where('dt_atendimento', new Carbon($data.' '.$hora));
+    private function _verificaDisponibilidadeHorario($idClinica, $idProfissional, $data, $hora){
+        $agenda = \App\Agendamento::where('dt_atendimento', new Carbon($data.' '.$hora))
+                    ->where('clinica_id', $idClinica)
+                    ->where('profissional_id', $idProfissional);
+        
         if( $agenda->count() == 0 ){
             $this->arHorariosLivres[] = ['hora'=>substr($hora, 0, 5)];
             return true;

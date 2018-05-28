@@ -39,7 +39,7 @@ Route::get('profissionais/{idClinica}', 'ProfissionalController@getProfissionais
 
 Route::get('agenda/agendar/{a}/{b}/{c}/{d}/{e?}/{f?}/{g?}/{h?}/{i?}', 'AgendamentoController@addAgendamento')->middleware('auth');
 Route::get('agenda/cancelar/{ticket}/{obs?}', 'AgendamentoController@addCancelamento')->middleware('auth');
-Route::get('horarios/{data}', 'AgendamentoController@getHorariosLivres')->middleware('auth');
+Route::get('horarios/{clinica_id}/{profissional_id}/{data}', 'AgendamentoController@getHorariosLivres')->middleware('auth');
 Route::get('agenda/confirmar/{ticket}/{cdStatus}', 'AgendamentoController@setStatus')->middleware('auth');
 
 Route::get('notificacoes','MensagemController@getListaNotificacoes')->middleware('auth');

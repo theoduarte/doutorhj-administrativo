@@ -68,7 +68,7 @@
 						</tr>
 						<tr>
 							<td width="25%">Tipo de Logradouro</td>
-							<td width="75%">@if( $prestador->enderecos->first()->sg_logradouro != null ) $prestador->enderecos->first()->sg_logradouro @else <span class="text-danger">-- NÃO INFORMADO --</span> @endif</td>
+							<td width="75%">@if( $prestador->enderecos->first()->sg_logradouro != null ) {{$prestador->enderecos->first()->sg_logradouro}} @else <span class="text-danger">-- NÃO INFORMADO --</span> @endif</td>
 						</tr>
 						<tr>
 							<td width="25%">Endereço</td>
