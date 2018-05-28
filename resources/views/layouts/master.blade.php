@@ -118,23 +118,12 @@
 					<a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 						<img src="/files/{{ Auth::user()->avatar }}" alt="user" class="rounded-circle">
 					</a>
-					<div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
+					<div class="dropdown-menu dropdown-menu-right profile-dropdown " style="width:250px !important;" aria-labelledby="Preview">
 						<!-- item-->
 						<div class="dropdown-item noti-title">
 							<h5 class="text-overflow"><small>Bem vindo: <strong>{{ Auth::user()->name }}</strong></small> </h5>
 						</div>
-						<!-- item-->
-						<a href="javascript:void(0);" class="dropdown-item notify-item">
-							<i class="mdi mdi-account"></i> <span>Meus Dados</span>
-						</a>
-						<!-- item-->
-						<a href="javascript:void(0);" class="dropdown-item notify-item">
-							<i class="mdi mdi-settings"></i> <span>Configurações</span>
-						</a>
-						<!-- item-->
-						<a href="javascript:void(0);" class="dropdown-item notify-item">
-							<i class="mdi mdi-lock-open"></i> <span>Bloquear Sessão</span>
-						</a>
+		
 						<!-- item-->
 						<a href="/logout" class="dropdown-item notify-item">
 							<i class="mdi mdi-logout"></i> <span>Sair</span>

@@ -29,6 +29,9 @@
         
         $("#profissional").autocomplete({
             source: function( request, response ) {
+            	$('#time').html(null);
+            	$('#datepicker-agenda').val(null);
+            	
                 $.ajax({
                     url : "/agenda/profissional/" + $('#profissional').val(),
                     dataType: "json",
@@ -43,9 +46,19 @@
             }
         });
 
-
+        
+        $('#profissional_id').change(function(){
+        	$('#datepicker-agenda').val(null);
+        	$('#time').html(null);
+        });
+            
 
         $('.clinica_id').change(function(){
+        	$('#profissional_id').html(null);
+        	$('#datepicker-agenda').val(null);
+        	$('#time').html(null);
+			
+            
             $.ajax({
                 url : "/profissionais/" + $(this).val(),
                 beforeSend : function(){
@@ -82,7 +95,7 @@
             profissional_id = $('.profissional_id').val();
             paciente_id     = $('.paciente').val();
             data 		    = ($('#datepicker-agenda').val().length == 0) ? null : $('#datepicker-agenda').val();
-            hora 			= ($('select[name="time"]').val().length == 0) ? null : $('select[name="time"]').val();
+            hora 			= ($('select[name="time"]').val() == null) ? null : $('select[name="time"]').val();
             ticket 			= $('.ticket').val(); 
 	            
             if ( clinica_id != null && profissional_id != null && ticket != null && paciente_id != '' ){
@@ -163,6 +176,12 @@
 
         
         $( ".agendamento" ).button().on( "click", function() {
+
+        	$('#profissional_id').html(null);
+        	$('#datepicker-agenda').val(null);
+        	$('#time').html(null);
+
+        	
             $('.ticket').val($(this).attr('ticket'));
             $('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
             $('#divDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");

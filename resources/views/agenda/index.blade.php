@@ -20,6 +20,16 @@
 			font-weight : bold;
 		}
 	</style>
+	
+	<script>
+        $(function(){
+            $('#localAtendimento').change(function(){
+            	$('#datepicker-agenda').val(null);
+            	$('#clinica_id').val(null);
+            });
+        });
+	</script>
+	
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12">
@@ -99,7 +109,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-3">
+									<div class="col-4">
 										<label for="localAtendimento">Paciente:</label>
 										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="@if(isset($_GET['nm_paciente'])) {{ $_GET['nm_paciente'] }} @endif">
 									</div>
