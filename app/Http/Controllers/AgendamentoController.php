@@ -135,7 +135,8 @@ class AgendamentoController extends Controller
      * @param integer $ano
      * @param string  $hora
      */
-    public function addAgendamento($teTicket, $idClinica, $idProfissional, $idPaciente, $dia=null, $mes=null, $ano=null, $hora=null, $boRemarcacao='N'){
+    public function addAgendamento($teTicket, $idClinica, $idProfissional, $idPaciente, 
+                                   $dia=null, $mes=null, $ano=null, $hora=null, $boRemarcacao='N'){
         
         $agendamento = Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $teTicket);
         
@@ -177,7 +178,7 @@ class AgendamentoController extends Controller
             
             //--carrega os dados do pedido para configurar a mensagem-----
             $pedido_id = $ct_agendamento->itempedidos->first()->pedido_id;
-            //dd($pedido_id);
+ 
             $pedido = Pedido::findorfail($pedido_id);
             
             $token_atendimento = $teTicket;
@@ -265,6 +266,18 @@ class AgendamentoController extends Controller
         date_default_timezone_set('America/Sao_Paulo');
         
         $nome 		= $paciente->nm_primario.' '.$paciente->nm_secundario;
+        
+        /*
+         * se o paciente é um dependente então ele não tem um email, 
+         * utiliza o email do titular.
+         */ 
+        if( !is_null($paciente->responsavel_id) ){
+            $paciente = Paciente::findorfail($paciente->responsavel_id);
+            $paciente->load('user');
+            $paciente->load('documentos');
+            $paciente->load('contatos');
+        }
+        
         $email 		= $paciente->user->email;
         $telefone 	= $paciente->contatos->first()->ds_contato;
         
