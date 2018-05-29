@@ -9,8 +9,8 @@
 	<meta name="keywords" content="doutorhj saúde consulta médico sus plano de saúde">
 	<meta name="author" content="Theogenes Ferreira Duarte">
 	<title>@yield('title', 'Doutor HJ')</title>
-@push('style')
-	<!-- Sweet Alert css -->
+	@push('style')
+	    <!-- Sweet Alert css -->
 		<link href="/libs/sweet-alert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 		<!-- Treeview css -->
 		<link href="/libs/jstree/style.css" rel="stylesheet" type="text/css" />
@@ -83,12 +83,11 @@
 						<i class="mdi mdi-bell noti-icon"></i><span class="badge badge-pink noti-icon-badge">{{ $num_total_notificacoes }}</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-menu-lg" aria-labelledby="Preview">
-						<!-- item-->
+						
 						<div class="dropdown-item noti-title">
 							<h5 class="font-16"><span class="badge badge-danger float-right">{{ $num_total_notificacoes }}</span>Notificações</h5>
 						</div>
 						@for($i = 0; $i < sizeof($notificacoes_app); $i++)
-						<!-- item-->
 						<a href="javascript:void(0);" class="dropdown-item notify-item">
 							<div class="notify-icon @if($notificacoes_app[$i]->visualizado) bg-primary @else bg-success @endif">
 								<i class="mdi @if($notificacoes_app[$i]->visualizado)  mdi mdi-email-open-outline  @else mdi mdi-email-outline @endif"></i>
@@ -96,21 +95,7 @@
 							<p class="notify-details">Contato <b>{{ $notificacoes_app[$i]->nome_remetente }}</b><small class="text-muted">{{ $notificacoes_app[$i]->time_ago }}</small></p>
 						</a>
 						@endfor
-						<!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
-							<div class="notify-icon bg-success"><i class="mdi mdi-stethoscope"></i></div>
-							<p class="notify-details">Dr. Theogenes <b>Adicionado</b><small class="text-muted">Adicionado</small></p>
-						</a>
 						
-						<a href="javascript:void(0);" class="dropdown-item notify-item">
-							<div class="notify-icon bg-primary"><i class="mdi mdi-calendar-multiple-check"></i></div>
-							<p class="notify-details">Consulta(s) <b>Agendada(s)</b><small class="text-muted">1 min ago</small></p>
-						</a>
-						
-						<a href="javascript:void(0);" class="dropdown-item notify-item">
-							<div class="notify-icon bg-danger"><i class="mdi mdi-hospital"></i></div>
-							<p class="notify-details">Clínica Marcela <b>Adicionada</b><small class="text-muted">1 min ago</small></p>
-						</a> -->
-						<!-- All-->
 						<a href="/notificacoes" class="dropdown-item notify-item notify-all">Ver Tudo</a>
 					</div>
 				</li>

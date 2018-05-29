@@ -140,9 +140,10 @@ class ProfissionalController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getProfissionaisPorClinica($idClinica){
-        $profissional = \App\Profissional::where('clinica_id', '=', $idClinica)->orderBy('nm_primario', 'asc')
+        $profissional = \App\Profissional::where('clinica_id', '=', $idClinica)
+                            ->where('cs_status', 'A')
+                            ->orderBy('nm_primario', 'asc')
                             ->get(['id', 'nm_primario', 'nm_secundario']);
-        
         
         return Response()->json($profissional);
     }
