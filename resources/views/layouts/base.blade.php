@@ -10,7 +10,7 @@
     <meta name="keywords" content="doutorhj saúde consulta médico sus plano de saúde">
     <meta name="author" content="Theogenes Ferreira Duarte">
   
-    <title>@yield('title', 'Doutor HJ')</title>
+    <title>@yield('title', 'Doctor HJ')</title>
 
     @push('style')
     
