@@ -54,7 +54,7 @@ class AgendamentoController extends Controller
        
 //         $query_temp = DB::getQueryLog();
 //         dd($query_temp);
-		dd($agenda);
+		//dd($agenda);
         for ($i = 0; $i < sizeof($agenda); $i++) {
             $agenda[$i]->clinica->load('enderecos');
             $agenda[$i]->clinica->enderecos->first()->load('cidade');
