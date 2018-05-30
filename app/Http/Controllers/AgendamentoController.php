@@ -54,10 +54,12 @@ class AgendamentoController extends Controller
        
 //         $query_temp = DB::getQueryLog();
 //         dd($query_temp);
+		dd($agenda);
         for ($i = 0; $i < sizeof($agenda); $i++) {
             $agenda[$i]->clinica->load('enderecos');
             $agenda[$i]->clinica->enderecos->first()->load('cidade');
             $agenda[$i]->endereco_completo = $agenda[$i]->clinica->enderecos->first()->te_endereco.' - '.$agenda[$i]->clinica->enderecos->first()->te_bairro.' - '.$agenda[$i]->clinica->enderecos->first()->cidade->nm_cidade.'/'.$agenda[$i]->clinica->enderecos->first()->cidade->estado->sg_estado;
+            
             $agenda[$i]->itempedidos->first()->load('pedido');
             $agenda[$i]->itempedidos->first()->pedido->load('pagamentos');
             $agenda[$i]->valor_total = sizeof($agenda[$i]->itempedidos->first()->pedido->pagamentos) > 0 ? number_format( ($agenda[$i]->itempedidos->first()->pedido->pagamentos->first()->amount)/100,  2, ',', '.') : number_format( 0,  2, ',', '.');
