@@ -40,20 +40,20 @@ class AgendamentoController extends Controller
         if( !empty(Request::get('ckRetornoConsultas'))       ) $arCsStatus[] = Agendamento::RETORNO;
         if( !empty(Request::get('ckConsultasFinalizadas'))   ) $arCsStatus[] = Agendamento::FINALIZADO;
         
-//         DB::enableQueryLog();
+         DB::enableQueryLog();
         $agenda = Agendamento::with('paciente')->with('clinica')->with('atendimento')->with('profissional')->with('itempedidos')
             ->join('pacientes', function($join1) { $join1->on('pacientes.id', '=', 'agendamentos.paciente_id');})
             ->where(function($query1) use ($data) {       if( $data != '') {            $data_inicio = $data['de']; $data_fim = $data['ate']; $query1->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($data_inicio)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($data_fim)));}})
             ->where(function($query2) use ($arCsStatus) { if( count($arCsStatus) > 0)   $query2->whereIn('agendamentos.cs_status', $arCsStatus);})
             ->where(function($query3) use ($clinica_id) { if($clinica_id != null)       $query3->where(DB::raw('id'), '=', $clinica_id);})
-            ->where(function($query4) use ($nm_paciente) { if( $nm_paciente != '')      $query4->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%'.$nm_paciente.'%')->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%'.$nm_paciente.'%');})
+            ->where(function($query4) use ($nm_paciente) { if( $nm_paciente != '')      $query4->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%'.$nm_paciente.'%')->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%'.$nm_paciente.'%')->orWhere(DB::raw('concat(to_str(pacientes.nm_secundario), " ",to_str(pacientes.nm_secundario))'), 'like', '%'.$nm_paciente.'%');})
             ->select('agendamentos.*')
             ->distinct()
             ->orderBy('agendamentos.dt_atendimento', 'desc')
             ->paginate(10);
        
-//         $query_temp = DB::getQueryLog();
-//         dd($query_temp);
+         $query_temp = DB::getQueryLog();
+         dd($query_temp);
 		//dd($agenda);
         for ($i = 0; $i < sizeof($agenda); $i++) {
             $agenda[$i]->clinica->load('enderecos');
