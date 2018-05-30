@@ -174,7 +174,7 @@ class ClinicaController extends Controller
             DB::rollback();
             #############################################
             //return response()->json(['status' => false, 'mensagem' => 'O Pedido não foi salvo, devido a uma falha inesperada. Por favor, tente novamente.']);
-            return redirect()->route('clinicas.index')->with('error-alert', 'O prestador foi cadastrado. Por favor, tente novamente.');
+            return redirect()->route('clinicas.index')->with('error-alert', 'O prestador não foi cadastrado. Por favor, tente novamente.');
         }
 
         ########### FINISHIING TRANSACTION ##########
