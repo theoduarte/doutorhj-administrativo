@@ -83,87 +83,103 @@ class ClinicaController extends Controller
      */
     public function store(PrestadoresRequest $request)
     {  
-        # dados de acesso do usuário que é o profissional responsável pela empresa
-        $usuario            = new User();
-        $usuario->name      = $request->input('name_responsavel');
-        $usuario->email     = $request->input('email');
-        $usuario->password  = bcrypt($request->input('password'));
-        $usuario->tp_user   = 'CLI';
-        $usuario->cs_status = 'A';
-        $usuario->avatar = 'users/default.png';
-        $usuario->perfiluser_id = 2;
-        $usuario->save();
-        
-        # documento da empresa CNPJ
-        $documentoCnpj      = new Documento();
-        $documentoCnpj->tp_documento = $request->input('tp_documento');   
-        $documentoCnpj->te_documento = UtilController::retiraMascara($request->input('te_documento'));
-        $documentoCnpj->save();
-        $documento_ids = [$documentoCnpj->id];
-        
-        
-        # endereco da empresa
-        $endereco           = new Endereco($request->all());
-        $cidade             = Cidade::where(['cd_ibge'=>$request->input('cd_cidade_ibge')])->get()->first();
-        $endereco->nr_cep = UtilController::retiraMascara($request->input('nr_cep'));
-        $endereco->cidade()->associate($cidade);
-        $endereco->nr_latitude_gps = $request->input('nr_latitude_gps');
-        $endereco->nr_longitute_gps = $request->input('nr_longitute_gps');
-        $endereco->save();
-        $endereco_ids = [$endereco->id];
-        
-        # responsavel pela empresa
-        $responsavel      = new Responsavel();
-        $responsavel->telefone = $request->input('telefone_responsavel');
-        $responsavel->cpf = UtilController::retiraMascara($request->input('cpf_responsavel'));
-        $responsavel->user_id = $usuario->id;
-        $responsavel->save();
-                    
-        # telefones 
-        $arContatos = array();
-        
-        $contato1             = new Contato();
-        $contato1->tp_contato = $request->input('tp_contato');
-        $contato1->ds_contato = $request->input('ds_contato');
-        $contato1->save();
-        array_push($arContatos, $contato1->id);
-        
-        if(!empty($request->input('ds_contato2'))){
-            $contato2             = new \App\Contato();
-            $contato2->tp_contato = $request->input('tp_contato2');
-            $contato2->ds_contato = $request->input('ds_contato2');
-            $contato2->save();
-            array_push($arContatos, $contato2->id);
+    	########### STARTING TRANSACTION ############
+    	DB::beginTransaction();
+    	#############################################
+    	
+    	try {
+	        # dados de acesso do usuário que é o profissional responsável pela empresa
+	        $usuario            = new User();
+	        $usuario->name      = $request->input('name_responsavel');
+	        $usuario->email     = $request->input('email');
+	        $usuario->password  = bcrypt($request->input('password'));
+	        $usuario->tp_user   = 'CLI';
+	        $usuario->cs_status = 'A';
+	        $usuario->avatar = 'users/default.png';
+	        $usuario->perfiluser_id = 2;
+	        $usuario->save();
+	        
+	        # documento da empresa CNPJ
+	        $documentoCnpj      = new Documento();
+	        $documentoCnpj->tp_documento = $request->input('tp_documento');   
+	        $documentoCnpj->te_documento = UtilController::retiraMascara($request->input('te_documento'));
+	        $documentoCnpj->save();
+	        $documento_ids = [$documentoCnpj->id];
+	        
+	        
+	        # endereco da empresa
+	        $endereco           = new Endereco($request->all());
+	        $cidade             = Cidade::where(['cd_ibge'=>$request->input('cd_cidade_ibge')])->get()->first();
+	        $endereco->nr_cep = UtilController::retiraMascara($request->input('nr_cep'));
+	        $endereco->cidade()->associate($cidade);
+	        $endereco->nr_latitude_gps = $request->input('nr_latitude_gps');
+	        $endereco->nr_longitute_gps = $request->input('nr_longitute_gps');
+	        $endereco->save();
+	        $endereco_ids = [$endereco->id];
+	        
+	        # responsavel pela empresa
+	        $responsavel      = new Responsavel();
+	        $responsavel->telefone = $request->input('telefone_responsavel');
+	        $responsavel->cpf = UtilController::retiraMascara($request->input('cpf_responsavel'));
+	        $responsavel->user_id = $usuario->id;
+	        $responsavel->save();
+	                    
+	        # telefones 
+	        $arContatos = array();
+	        
+	        $contato1             = new Contato();
+	        $contato1->tp_contato = $request->input('tp_contato');
+	        $contato1->ds_contato = $request->input('ds_contato');
+	        $contato1->save();
+	        array_push($arContatos, $contato1->id);
+	        
+	        if(!empty($request->input('ds_contato2'))){
+	            $contato2             = new \App\Contato();
+	            $contato2->tp_contato = $request->input('tp_contato2');
+	            $contato2->ds_contato = $request->input('ds_contato2');
+	            $contato2->save();
+	            array_push($arContatos, $contato2->id);
+	        }
+	        
+	        if(!empty($request->input('ds_contato3'))){
+	            $contato3             = new \App\Contato();
+	            $contato3->tp_contato = $request->input('tp_contato3');
+	            $contato3->ds_contato = $request->input('ds_contato3');
+	            $contato3->save();
+	            array_push($arContatos, $contato3->id);
+	        }
+	        
+	        # clinica
+	        $clinica = Clinica::create($request->all());
+	        $clinica->responsavel_id = $responsavel->id;
+	        if ($clinica->save()) {
+	            
+	            # registra log
+	            $user_obj           = $usuario->toJson();
+	            $clinica_obj        = $clinica->toJson();
+	            $documento_obj      = $documentoCnpj->toJson();
+	            $endereco_obj       = $endereco->toJson();
+	            $responsavel_obj    = $responsavel->toJson();
+	            $contato_obj        = $contato1->toJson();
+	            
+	            $log = "[$user_obj, $clinica_obj, $documento_obj, $endereco_obj, $responsavel_obj, $contato_obj]";
+	            
+	            $this->registrarLog('Adicionar Clinica', $log, 1);
+	            
+	        }
+	        
+	        $prestador = $this->setClinicaRelations($clinica, $documento_ids, $endereco_ids, $arContatos);
+        } catch (\Exception $e) {
+        	########### FINISHIING TRANSACTION ##########
+        	DB::rollback();
+        	#############################################
+        	//return response()->json(['status' => false, 'mensagem' => 'O Pedido não foi salvo, devido a uma falha inesperada. Por favor, tente novamente.']);
+        	return redirect()->route('clinicas.index')->with('error-alert', 'O prestador foi cadastrado. Por favor, tente novamente.');
         }
         
-        if(!empty($request->input('ds_contato3'))){
-            $contato3             = new \App\Contato();
-            $contato3->tp_contato = $request->input('tp_contato3');
-            $contato3->ds_contato = $request->input('ds_contato3');
-            $contato3->save();
-            array_push($arContatos, $contato3->id);
-        }
-        
-        # clinica
-        $clinica = Clinica::create($request->all());
-        $clinica->responsavel_id = $responsavel->id;
-        if ($clinica->save()) {
-            
-            # registra log
-            $user_obj           = $usuario->toJson();
-            $clinica_obj        = $clinica->toJson();
-            $documento_obj      = $documentoCnpj->toJson();
-            $endereco_obj       = $endereco->toJson();
-            $responsavel_obj    = $responsavel->toJson();
-            $contato_obj        = $contato1->toJson();
-            
-            $log = "[$user_obj, $clinica_obj, $documento_obj, $endereco_obj, $responsavel_obj, $contato_obj]";
-            
-            $this->registrarLog('Adicionar Clinica', $log, 1);
-            
-        }
-        
-        $prestador = $this->setClinicaRelations($clinica, $documento_ids, $endereco_ids, $arContatos);
+        ########### FINISHIING TRANSACTION ##########
+        DB::commit();
+        #############################################
         
         return redirect()->route('clinicas.index')->with('success', 'O prestador foi cadastrado com sucesso!');
     }
