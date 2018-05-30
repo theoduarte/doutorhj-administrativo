@@ -40,7 +40,7 @@ class AgendamentoController extends Controller
         if( !empty(Request::get('ckRetornoConsultas'))       ) $arCsStatus[] = Agendamento::RETORNO;
         if( !empty(Request::get('ckConsultasFinalizadas'))   ) $arCsStatus[] = Agendamento::FINALIZADO;
         
-         DB::enableQueryLog();
+         //DB::enableQueryLog();
         $agenda = Agendamento::with('paciente')->with('clinica')->with('atendimento')->with('profissional')->with('itempedidos')
             ->join('pacientes', function($join1) { $join1->on('pacientes.id', '=', 'agendamentos.paciente_id');})
             ->where(function($query1) use ($data) {       if( $data != '') {            $data_inicio = $data['de']; $data_fim = $data['ate']; $query1->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($data_inicio)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($data_fim)));}})
@@ -52,8 +52,8 @@ class AgendamentoController extends Controller
             ->orderBy('agendamentos.dt_atendimento', 'desc')
             ->paginate(10);
        
-         $query_temp = DB::getQueryLog();
-         dd($query_temp);
+         //$query_temp = DB::getQueryLog();
+         //dd($query_temp);
 		//dd($agenda);
         for ($i = 0; $i < sizeof($agenda); $i++) {
             $agenda[$i]->clinica->load('enderecos');
