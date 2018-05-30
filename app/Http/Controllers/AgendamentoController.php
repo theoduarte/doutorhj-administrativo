@@ -60,9 +60,13 @@ class AgendamentoController extends Controller
             $agenda[$i]->clinica->enderecos->first()->load('cidade');
             $agenda[$i]->endereco_completo = $agenda[$i]->clinica->enderecos->first()->te_endereco.' - '.$agenda[$i]->clinica->enderecos->first()->te_bairro.' - '.$agenda[$i]->clinica->enderecos->first()->cidade->nm_cidade.'/'.$agenda[$i]->clinica->enderecos->first()->cidade->estado->sg_estado;
             
-            $agenda[$i]->itempedidos->first()->load('pedido');
-            $agenda[$i]->itempedidos->first()->pedido->load('pagamentos');
-            $agenda[$i]->valor_total = sizeof($agenda[$i]->itempedidos->first()->pedido->pagamentos) > 0 ? number_format( ($agenda[$i]->itempedidos->first()->pedido->pagamentos->first()->amount)/100,  2, ',', '.') : number_format( 0,  2, ',', '.');
+            if ( sizeof($agenda[$i]->itempedidos) > 0) {
+            	$agenda[$i]->itempedidos->first()->load('pedido');
+            	$agenda[$i]->itempedidos->first()->pedido->load('pagamentos');
+            	$agenda[$i]->valor_total = sizeof($agenda[$i]->itempedidos->first()->pedido->pagamentos) > 0 ? number_format( ($agenda[$i]->itempedidos->first()->pedido->pagamentos->first()->amount)/100,  2, ',', '.') : number_format( 0,  2, ',', '.');
+            } else {
+            	$agenda[$i]->valor_total = number_format( 0,  2, ',', '.');
+            }
         }
         
         return view('agenda.index', compact('agenda', 'clinicas'));
