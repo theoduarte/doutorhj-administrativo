@@ -136,7 +136,8 @@
 									<th>Prestador</th>
 									<th>Profissional</th>
 									<th>Paciente</th>
-									<th>Data / Hora</th>
+									<th>Dt.Atendimento</th>
+									<th>Dt.Pagamento</th>
 									<th>Situação</th>
 									<th>Ações</th>
 								</tr>
@@ -146,6 +147,7 @@
 										<td>{{$obAgenda->clinica->nm_razao_social}}</td>
 										<td>{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
 										<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
+										<td>{{$obAgenda->itempedidos->first()->pedido->dt_pagamento}}</td>
 										<td>{{$obAgenda->dt_atendimento}}</td>
 										<td>{{$obAgenda->cs_status}}</td>
 										<td style="width:100px;">

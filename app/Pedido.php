@@ -2,8 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Model;
 
 class Pedido extends Model
 {
@@ -30,5 +31,13 @@ class Pedido extends Model
 	public function pagamentos()
 	{
 		return $this->hasMany('App\Payment');
+	}
+	
+
+	
+	
+	public function getDtPagamentoAttribute($data) {
+	    $obData = new Carbon($data);
+	    return $obData->format('d/m/Y H:i');
 	}
 }
