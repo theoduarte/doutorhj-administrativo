@@ -136,8 +136,8 @@
 									<th>Prestador</th>
 									<th>Profissional</th>
 									<th>Paciente</th>
-									<th>Dt.Atendimento</th>
 									<th>Dt.Pagamento</th>
+									<th>Dt.Atendimento</th>
 									<th>Situação</th>
 									<th>Ações</th>
 								</tr>
