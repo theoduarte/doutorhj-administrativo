@@ -41,6 +41,7 @@ class Agendamento extends Model
     );
     
     
+ 
     
     /*
      * Relationship
@@ -74,6 +75,8 @@ class Agendamento extends Model
     {
         return $this->hasMany('App\Itempedido');
     }
+    
+    
     
     /*
      * Getters and Setters

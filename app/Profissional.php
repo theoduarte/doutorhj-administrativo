@@ -15,7 +15,9 @@ class Profissional extends Model
 	public $dates 	   = ['dt_nascimento'];
     
 	
+	
     
+	
 	/*
 	 * Relationship
 	 */

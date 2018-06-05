@@ -78,62 +78,12 @@
 										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="@if(!empty($_GET['localAtendimento'])) {{ $_GET['localAtendimento'] }} @endif">
 										<input type="hidden" id="clinica_id" name="clinica_id" value="@if(!empty($_GET['clinica_id'])) {{ $_GET['clinica_id'] }} @endif">
 									</div>
-									<div class="form-group">
-										<div style="height: 20px;"></div>
-										<label class="custom-checkbox" style="cursor: pointer;width:210px;">
-											<input type="checkbox"  id="ckPreAgendada" name="ckPreAgendada"
-												   value="10" @if(isset($_GET['ckPreAgendada']) && $_GET['ckPreAgendada'] =='10') checked @endif> Consultas Pré-Agendadas
-										</label>
-										<br>
-										<label class="custom-checkbox" style="cursor: pointer;">
-											<input type="checkbox" id="ckConsultasAgendadas" name="ckConsultasAgendadas"
-												   value="70" @if(isset($_GET['ckConsultasAgendadas']) && $_GET['ckConsultasAgendadas'] =='70') checked @endif> Consultas Agendadas
-										</label>
-									</div>
-									<div class="form-group">
-										<div style="height: 20px;"></div>
-										<label class="custom-checkbox" style="cursor: pointer;width:220px;">
-											<input type="checkbox"  id="ckConsultasConfirmadas" name="ckConsultasConfirmadas"
-												   value="20" @if(isset($_GET['ckConsultasConfirmadas']) && $_GET['ckConsultasConfirmadas'] =='20') checked @endif> Consultas Confirmadas
-										</label>
-										<br>
-										<label class="custom-checkbox" style="cursor: pointer;">
-											<input type="checkbox"  id="ckConsultasNaoConfirmadas" name="ckConsultasNaoConfirmadas"
-												   value="30" @if(isset($_GET['ckConsultasNaoConfirmadas']) && $_GET['ckConsultasNaoConfirmadas'] =='30') checked @endif> Consultas Não Confirmadas
-										</label>
-									</div>
-									<div class="form-group">
-										<div style="height: 20px;"></div>
-										<label class="custom-checkbox" style="cursor: pointer;">
-											<input type="checkbox"  id="ckConsultasCanceladas" name="ckConsultasCanceladas"
-												   value="60" @if(isset($_GET['ckConsultasCanceladas']) && $_GET['ckConsultasCanceladas'] =='60') checked @endif> Consultas Canceladas
-										</label>
-										<br>
-										<label class="custom-checkbox" style="cursor: pointer;">
-											<input type="checkbox"  id="ckAusencias" name="ckAusencias"
-												   value="50" @if(isset($_GET['ckAusencias']) && $_GET['ckAusencias'] =='50') checked @endif > Não Compareceu
-										</label>
-									</div>
-									<div class="form-group">
-										<div style="height: 20px;"></div>
-										<label class="custom-checkbox" style="cursor: pointer;">
-											<input type="checkbox"  id="ckRetornoConsultas" name="ckRetornoConsultas"
-												   value="80" @if(isset($_GET['ckRetornoConsultas']) && $_GET['ckRetornoConsultas'] =='80') checked @endif> Consultas de Retorno
-										</label>
-										<br>
-										<label class="custom-checkbox" style="cursor: pointer;">
-											<input type="checkbox" id="ckConsultasFinalizadas" name="ckConsultasFinalizadas"
-												   value="80" @if(isset($_GET['ckConsultasFinalizadas']) && $_GET['ckConsultasFinalizadas'] =='80') checked @endif> Consultas Finalizadas
-										</label>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-4">
+									<div class="col-3">
 										<label for="localAtendimento">Paciente:</label>
 										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="@if(isset($_GET['nm_paciente'])) {{ $_GET['nm_paciente'] }} @endif">
 									</div>
-									<div class="col-3">
-										<label for="data">Data:<span class="text-danger">*</span></label>
+									<div class="col-2">
+										<label for="data">Data de Atendimento:<span class="text-danger">*</span></label>
 										<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="@if(isset($_GET['data'])) {{ $_GET['data'] }} @endif">
 									</div>
 									<div class="col-1 col-lg-3">
@@ -141,23 +91,23 @@
 										<button type="submit" class="btn btn-primary" id="submit" style="margin-right: 10px;"><i class="fa fa-search"></i> Pesquisar</button>
 										<a href="{{ route('agenda.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca" style="margin-bottom: 0px; "><i class="ion-close"></i> Limpar Busca</a>
 									</div>
-									
 								</div>
 							</form>
 						</div>
-						<div style="height: 180px !important;"></div>
+						<div style="height: 100px !important;">
+						</div>
 					</div>
 					<div class="row">
 						<div class="col-12">
 							<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
 								<tr>
-									<th>Ticket</th>
-									<th>Prestador</th>
-									<th>Profissional</th>
-									<th>Paciente</th>
-									<th>Dt.Pagamento</th>
-									<th>Dt.Atendimento</th>
-									<th>Situação</th>
+									<th>@sortablelink('te_ticket', 'Ticket')</th>
+									<th>@sortablelink('nm_razao_social', 'Prestador')</th>
+									<th>@sortablelink('nm_primario', 'Profissional', ['filter' => 'active, visible'])</th>
+									<th>@sortablelink('nm_primario', 'Paciente')</th>
+									<th>@sortablelink('dt_pagamento', 'Dt.Pagamento')</th>
+									<th>@sortablelink('dt_atendimento', 'Dt.Atendimento')</th>
+									<th>@sortablelink('cs_status', 'Situação')</th>
 									<th>Ações</th>
 								</tr>
 								@foreach($agenda as $obAgenda)
@@ -170,7 +120,6 @@
 										<td>{{$obAgenda->dt_atendimento}}</td>
 										<td>{{$obAgenda->cs_status}}</td>
 										<td style="width:100px;">
-											
 											<!-- botao agendar/remarcar -->
 											@if( $obAgenda->cs_status == 'Pré-Agendado'
                                                 or $obAgenda->cs_status == 'Agendado'
