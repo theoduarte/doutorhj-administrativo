@@ -1,6 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Doctor HJ: Agenda')
 @section('container')
+
 	<style>
 		.ui-autocomplete {
 			max-height  : 200px;
@@ -23,9 +24,28 @@
 	
 	<script>
         $(function(){
+            $("#localAtendimento").autocomplete({
+                source: function( request, response ) {
+                    $.ajax({
+                        url : "/consultas/localatendimento/"+$('#localAtendimento').val(),
+                        dataType: "json",
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 5,
+                select: function(event, ui) {
+                    $('input[name="clinica_id"]').val(parseInt(ui.item.id));
+                }
+            });
+
+            
             $('#localAtendimento').change(function(){
-            	$('#datepicker-agenda').val(null);
-            	$('#clinica_id').val(null);
+                if( $(this).val().length == 0 ){
+                	$('#datepicker-agenda').val(null);
+                	$('input[name="clinica_id"').val(null);
+                }
             });
         });
 	</script>
@@ -52,12 +72,11 @@
 					<div class="row">
 						<div class="col-12">
 							<form class="form-edit-add" role="form" action="{{ route('agenda.index') }}" method="get">
-								
 								<div class="row">
 									<div class="col-4">
 										<label for="localAtendimento">Prestador:<span class="text-danger">*</span></label>
-										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="@if(isset($_GET['localAtendimento'])) {{ $_GET['localAtendimento'] }} @endif">
-										<input type="hidden" id="clinica_id" name="clinica_id" value="@if(isset($_GET['clinica_id'])) {{ $_GET['clinica_id'] }} @endif">
+										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="@if(!empty($_GET['localAtendimento'])) {{ $_GET['localAtendimento'] }} @endif">
+										<input type="hidden" id="clinica_id" name="clinica_id" value="@if(!empty($_GET['clinica_id'])) {{ $_GET['clinica_id'] }} @endif">
 									</div>
 									<div class="form-group">
 										<div style="height: 20px;"></div>
@@ -161,8 +180,8 @@
                                                 and $obAgenda->bo_remarcacao=='N')
 											
 												<a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade )
-												{{$especialidade->ds_especialidade}}
-												@endforeach
+                    													{{$especialidade->ds_especialidade}}
+                    												 @endforeach
 														"
 												   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
 												   data-hora	  = "{{$obAgenda->dt_atendimento}}"
@@ -186,8 +205,8 @@
 										    <!-- botao confirmar -->
 											@if( $obAgenda->cs_status!='Cancelado' and $obAgenda->cs_status=='Agendado')
 												<a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade )
-												{{$especialidade->ds_especialidade}}
-												@endforeach
+                    												 	{{$especialidade->ds_especialidade}}
+                    												 @endforeach
 														"
 												   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
 												   data-hora	   = "{{$obAgenda->dt_atendimento}}"
@@ -206,12 +225,13 @@
 											
 										    <!-- botao cancelar -->
 											@if( $obAgenda->cs_status!='Cancelado' and
-                                            $obAgenda->cs_status!='Finalizado' and
-                                            $obAgenda->cs_status!='Retorno')
-												<a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade )
-												{{$especialidade->ds_especialidade}}
-												@endforeach
-														"
+                                                 $obAgenda->cs_status!='Finalizado' and
+                                                 $obAgenda->cs_status!='Retorno')
+												<a especialidade  = "
+																	 @foreach( $obAgenda->profissional->especialidades as $especialidade )
+                    													{{$especialidade->ds_especialidade}}
+                    												 @endforeach
+                    												 "
 												   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
 												   data-hora	   = "{{$obAgenda->dt_atendimento}}"
 												   prestador	   = "{{$obAgenda->clinica->nm_razao_social}}"
@@ -247,7 +267,9 @@
 	</div>
 	
 	@include('agenda/modal_agenda_consulta')
+	
 	@include('agenda/modal_cancelamento')
+	
 	@include('agenda/modal_confirmacao')
 	
 @endsection

@@ -1,23 +1,5 @@
 <script>
     $(function(){
-        $("#localAtendimento").autocomplete({
-            source: function( request, response ) {
-                $.ajax({
-                    url : "/consultas/localatendimento/"+$('#localAtendimento').val(),
-                    dataType: "json",
-                    success: function(data) {
-                        response(data);
-                    }
-                });
-            },
-            minLength: 5,
-            select: function(event, ui) {
-                $('input[name="clinica_id"]').val(parseInt(ui.item.id));
-            }
-        });
-
-
-        
         jQuery('#datepicker-agenda').datepicker({
     	    autoclose: true,
     	    todayHighlight: true,
@@ -51,9 +33,8 @@
         	$('#datepicker-agenda').val(null);
         	$('#time').html(null);
         });
-            
 
-        $('.clinica_id').change(function(){
+      	$('.clinica_id').change(function(){
         	$('#profissional_id').html(null);
         	$('#datepicker-agenda').val(null);
         	$('#time').html(null);
@@ -87,7 +68,6 @@
                     );
             });
         });
-
 
 
         function acaoAgendar(){
@@ -296,5 +276,4 @@
 			</div>
 		</div>
 	</form>
-	
 </div>
