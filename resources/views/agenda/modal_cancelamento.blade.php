@@ -1,8 +1,9 @@
 <script>
     $(function(){
+        
         function acaoCancelar(){
-            $.ajax({
-                url : 'agenda/cancelar/'+$('#ticketCancelamento').val()+'/'+$('#obs_cancelamento').val(),
+			$.ajax({
+                url : 'agenda/cancelar/'+$('#ticketCancelamento').val()+'/'+$('.dtAtendimento').val()+'/'+$('#obs_cancelamento').val(),
                 beforeSend : function(){
 
                 },
@@ -10,18 +11,16 @@
 
                 }
             }).done(function(msg){
-                swal(
-                    {
+                swal({
                         title : 'Solicitação Concluída!',
                         text  : 'Cancelamento de consulta efetuado.',
                         type  : 'success',
                         confirmButtonClass : 'btn btn-confirm mt-2'
-                    }
-                );
+                    });
             }).fail(function(jqXHR, textStatus, msg){
 
             });
-
+			
             location.reload();
             dialogCancelamento.dialog( "close" );
         }
@@ -51,10 +50,16 @@
             $('#dtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
             $('#ticketCancelamento').val($(this).attr('ticket'));
 
+            var arDtAtnd = $(this).attr('data-hora').replace('/', ' ').replace('/', ' ').split(' ');
+            $('.dtAtendimento').val(arDtAtnd[2]+'-'+arDtAtnd[1]+'-'+arDtAtnd[0]+' '+arDtAtnd[3]+':00');
+			
+            
             dialogCancelamento.dialog( "open"  );
         });
     });
 </script>
+
+
 <div id="dialog-cancelar" title="Cancelar Consulta">
     <div class="row">
         <div class="col-10">
@@ -62,6 +67,7 @@
                 Clínica:
                 <div id="clinica"></div>
                 <input type="hidden" id="ticketCancelamento" name="ticketCancelamento" value="">
+                <input type="hidden" id="dtAtendimento" name="dtAtendimento" class="dtAtendimento" value="">
             </label>
         </div>
     </div>
@@ -102,5 +108,4 @@
             <textarea class="form-control" rows="3" cols="10" id="obs_cancelamento" name="obs_cancelamento"></textarea>
         </div>
     </div>
-    
 </div>

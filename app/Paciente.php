@@ -68,4 +68,14 @@ class Paciente extends Model
 	    $date = new Carbon($this->attributes['dt_nascimento']);
 	    return $date->format('d/m/Y');
 	}
+	
+	public function getNmPrimarioAttribute()
+	{
+	    return mb_strtoupper($this->attributes['nm_primario']);
+	}
+	
+	public function getNmSecundarioAttribute()
+	{
+	    return mb_strtoupper($this->attributes['nm_secundario']);
+	}
 }

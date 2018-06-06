@@ -1,14 +1,5 @@
 <script>
     $(function(){
-        jQuery('#datepicker-agenda').datepicker({
-    	    autoclose: true,
-    	    todayHighlight: true,
-    	    format:'dd/mm/yyyy',
-    		language: 'pt-BR'
-    	});
-
-
-        
         $("#profissional").autocomplete({
             source: function( request, response ) {
             	$('#time').html(null);
@@ -28,12 +19,15 @@
             }
         });
 
+
         
         $('#profissional_id').change(function(){
         	$('#datepicker-agenda').val(null);
         	$('#time').html(null);
         });
 
+
+        
       	$('.clinica_id').change(function(){
         	$('#profissional_id').html(null);
         	$('#datepicker-agenda').val(null);
@@ -156,7 +150,6 @@
 
         
         $( ".agendamento" ).button().on( "click", function() {
-
         	$('#profissional_id').html(null);
         	$('#datepicker-agenda').val(null);
         	$('#time').html(null);

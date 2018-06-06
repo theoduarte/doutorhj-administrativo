@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Doctor HJ: Agenda')
 @section('container')
-
+	
 	<style>
 		.ui-autocomplete {
 			max-height  : 200px;
@@ -9,7 +9,7 @@
 			overflow-x  : hidden;
 		}
 		* html .ui-autocomplete {
-			height      : 200px;AGENDA
+			height      : 200px;
 		}
 		.ui-dialog .ui-state-error {
 			padding     : .3em;
@@ -24,6 +24,14 @@
 	
 	<script>
         $(function(){
+        	jQuery('#datepicker-agenda').datepicker({
+        	    autoclose: true,
+        	    todayHighlight: true,
+        	    format:'dd/mm/yyyy',
+        		language: 'pt-BR'
+        	});
+
+        	
             $("#localAtendimento").autocomplete({
                 source: function( request, response ) {
                     $.ajax({
@@ -38,15 +46,18 @@
                 select: function(event, ui) {
                     $('input[name="clinica_id"]').val(parseInt(ui.item.id));
                 }
-            });
-
-            
-            $('#localAtendimento').change(function(){
+            }).change(function(){
                 if( $(this).val().length == 0 ){
                 	$('#datepicker-agenda').val(null);
                 	$('input[name="clinica_id"').val(null);
                 }
             });
+        });
+		
+        $( window ).on( "load", function() {
+            window.setTimeout(function(){
+            	$('.calendar-time').hide();
+            }, 1000);
         });
 	</script>
 	
@@ -71,20 +82,20 @@
 					<p class="text-muted m-b-30 font-13"></p>
 					<div class="row">
 						<div class="col-12">
-							<form class="form-edit-add" role="form" action="{{ route('agenda.index') }}" method="get">
+							<form class="form-edit-add" action="{{ route('agenda.index') }}" method="get">
 								<div class="row">
 									<div class="col-4">
-										<label for="localAtendimento">Prestador:<span class="text-danger">*</span></label>
-										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="@if(!empty($_GET['localAtendimento'])) {{ $_GET['localAtendimento'] }} @endif">
-										<input type="hidden" id="clinica_id" name="clinica_id" value="@if(!empty($_GET['clinica_id'])) {{ $_GET['clinica_id'] }} @endif">
+										<label for="localAtendimento">Razão Social do Prestador:</label>
+										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}">
+										<input type="hidden" id="clinica_id" name="clinica_id" value="{{old('clinica_id')}}">
 									</div>
 									<div class="col-3">
-										<label for="localAtendimento">Paciente:</label>
-										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="@if(isset($_GET['nm_paciente'])) {{ $_GET['nm_paciente'] }} @endif">
+										<label for="localAtendimento">Nome do Paciente:</label>
+										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
 									</div>
-									<div class="col-2">
+									<div style="width:13em !important;">
 										<label for="data">Data de Atendimento:<span class="text-danger">*</span></label>
-										<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="@if(isset($_GET['data'])) {{ $_GET['data'] }} @endif">
+										<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="{old('data')}}" required>
 									</div>
 									<div class="col-1 col-lg-3">
 										<div style="height: 30px;"></div>
@@ -100,12 +111,22 @@
 					<div class="row">
 						<div class="col-12">
 							<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
+							    <colgroup>
+									<col width="100">
+									<col width="250">
+									<col width="250">
+									<col width="250">
+									<col width="100">
+									<col width="100">
+									<col width="5">
+									<col width="5">
+                                </colgroup>
 								<tr>
 									<th>@sortablelink('te_ticket', 'Ticket')</th>
-									<th>@sortablelink('nm_razao_social', 'Prestador')</th>
-									<th>@sortablelink('nm_primario', 'Profissional', ['filter' => 'active, visible'])</th>
-									<th>@sortablelink('nm_primario', 'Paciente')</th>
-									<th>@sortablelink('dt_pagamento', 'Dt.Pagamento')</th>
+									<th>@sortablelink('clinica.nm_razao_social', 'Prestador')</th>
+									<th>Profissional</th>
+									<th>Paciente</th>
+									<th>Dt.Pagamento</th>
 									<th>@sortablelink('dt_atendimento', 'Dt.Atendimento')</th>
 									<th>@sortablelink('cs_status', 'Situação')</th>
 									<th>Ações</th>
@@ -114,11 +135,11 @@
 									<tr>
 										<td>{{$obAgenda->te_ticket}}</td>
 										<td>{{$obAgenda->clinica->nm_razao_social}}</td>
-										<td>{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
-										<td>{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
+										<td style="text-align: left !important;">{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
+										<td style="text-align: left !important;">{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
 										<td>{{$obAgenda->itempedidos->first()->pedido->dt_pagamento}}</td>
 										<td>{{$obAgenda->dt_atendimento}}</td>
-										<td>{{$obAgenda->cs_status}}</td>
+										<td >{{$obAgenda->cs_status}}</td>
 										<td style="width:100px;">
 											<!-- botao agendar/remarcar -->
 											@if( $obAgenda->cs_status == 'Pré-Agendado'

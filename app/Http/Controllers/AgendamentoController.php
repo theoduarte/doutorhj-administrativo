@@ -41,9 +41,10 @@ class AgendamentoController extends Controller
             
             ->select(['agendamentos.*'])
             ->distinct()
-            ->sortable(['dt_atendimento'=>'asc'])
+//             ->sortable(['dt_atendimento'=>'asc'])
             ->paginate(10);
-       
+
+            
         //$query_temp = DB::getQueryLog();
         //dd($query_temp);
 		//dd($agenda);
@@ -60,7 +61,9 @@ class AgendamentoController extends Controller
             	$agenda[$i]->valor_total = number_format( 0,  2, ',', '.');
             }
         }
-
+        
+        Request::flash();
+        
         return view('agenda.index', compact('agenda', 'clinicas'));
     }
     
@@ -78,15 +81,7 @@ class AgendamentoController extends Controller
         
         foreach ($consultas as $query)
         {
-            $nrDocumento = null;
-            foreach($query->documentos as $objDocumento){
-                if( $objDocumento->tp_documento == 'CNPJ' ){
-                    $nrDocumento = $objDocumento->te_documento;
-                }
-            }
-            
-            $teDocumento = (!empty($nrDocumento)) ? ' - CNPJ: ' . $nrDocumento : null;
-            $arJson[] = [ 'id' => $query->id, 'value' => $query->nm_razao_social . $teDocumento];
+            $arJson[] = [ 'id' => $query->id, 'value' => $query->nm_razao_social];
         }
         
         return Response()->json($arJson);
@@ -195,13 +190,13 @@ class AgendamentoController extends Controller
      * 
      * @param string $teTicket
      */
-    public function addCancelamento($teTicket, $obsCancelamento=null){
+    public function addCancelamento($teTicket, $dtAtendimento, $obsCancelamento=null){
+   
+        $agendamento = Agendamento::where('te_ticket', '=', $teTicket)
+                       ->where('dt_atendimento', Carbon::createFromFormat("Y-m-d H:i:s", $dtAtendimento));
         
-        $agendamento = Agendamento::where('te_ticket', '=', $teTicket);
-        
-        $arDados = array('cs_status'=> Agendamento::CANCELADO, 'obs_cancelamento'=> $obsCancelamento);
-        
-        $agendamento->update($arDados);
+        $agendamento->update(array('cs_status' => Agendamento::CANCELADO,
+                                   'obs_cancelamento' => $obsCancelamento));
     }
     
     /**
