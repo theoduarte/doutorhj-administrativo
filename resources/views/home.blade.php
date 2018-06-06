@@ -27,36 +27,37 @@
 <div class="row">
 	<div class="col-sm-6 col-xl-3">
 		<div class="widget-simple-chart text-right card-box">
-			<div class="circliful-chart" data-dimension="90" data-text="35%" data-width="5" data-fontsize="14" data-percent="35" data-fgcolor="#5fbeaa" data-bgcolor="#ebeff2"></div>
-			<h3 class="text-success counter m-t-10">2562</h3>
-			<p class="text-muted text-nowrap m-b-10">Pagamentos Compensados</p>
+			<div class="circliful-chart" data-dimension="90" data-text="{{$percent_payment_finished}}%" data-width="5" data-fontsize="14" data-percent="{{$percent_payment_finished}}" data-fgcolor="#5fbeaa" data-bgcolor="#ebeff2"></div>
+			<h3 class="text-success counter m-t-10">{{$num_pagamentos_finalizados}}</h3>
+			<p class="text-muted text-nowrap m-b-10">Pagamentos Finalizados</p>
 		</div>
 	</div>
 	
 	<div class="col-sm-6 col-xl-3">
 		<div class="widget-simple-chart text-right card-box">
-			<div class="circliful-chart" data-dimension="90" data-text="75%" data-width="5" data-fontsize="14" data-percent="75" data-fgcolor="#3bafda" data-bgcolor="#ebeff2"></div>
-			<h3 class="text-primary counter m-t-10">5685</h3>
-			<p class="text-muted text-nowrap m-b-10">Pagamentos Agendados</p>
+			<div class="circliful-chart" data-dimension="90" data-text="{{$percent_payment_authorized}}%" data-width="5" data-fontsize="14" data-percent="{{$percent_payment_authorized}}" data-fgcolor="#3bafda" data-bgcolor="#ebeff2"></div>
+			<h3 class="text-primary counter m-t-10">{{$num_pagamentos_autorizados}}</h3>
+			<p class="text-muted text-nowrap m-b-10">Pagamentos Autorizados</p>
 		</div>
 	</div>
 	
 	<div class="col-sm-6 col-xl-3">
 		<div class="widget-simple-chart text-right card-box">
-			<div class="circliful-chart" data-dimension="90" data-text="49%" data-width="5" data-fontsize="14" data-percent="49" data-fgcolor="#98a6ad" data-bgcolor="#ebeff2"></div>
-			<h3 class="text-inverse counter m-t-10">62</h3>
+			<div class="circliful-chart" data-dimension="90" data-text="{{$percent_profissionals_ativos}}%" data-width="5" data-fontsize="14" data-percent="{{$percent_profissionals_ativos}}" data-fgcolor="#98a6ad" data-bgcolor="#ebeff2"></div>
+			<h3 class="text-inverse counter m-t-10">{{$num_profissionals_ativos}}</h3>
 			<p class="text-muted text-nowrap m-b-10">Profissionais Ativos</p>
 		</div>
 	</div>
-
-                            <div class="col-sm-6 col-xl-3">
-                                <div class="widget-simple-chart text-right card-box">
-                                    <div class="circliful-chart" data-dimension="90" data-text="58%" data-width="5" data-fontsize="14" data-percent="58" data-fgcolor="#f76397" data-bgcolor="#ebeff2"></div>
-                                    <h3 class="text-pink m-t-10">R$ <span class="counter">12.480,00</span></h3>
-                                    <p class="text-muted text-nowrap m-b-10">Fluxo de caixa em <span class="text-uppercase"><strong>{{ strftime('%B', strtotime('today')) }}</strong></span></p>
-                                </div>
-                            </div>
-                        </div>
+	
+	<div class="col-sm-6 col-xl-3">
+		<div class="widget-simple-chart text-right card-box">
+			<div class="circliful-chart" data-dimension="90" data-text="{{$percent_recebimentos}}%" data-width="5" data-fontsize="14" data-percent="{{$percent_recebimentos}}" data-fgcolor="#f76397" data-bgcolor="#ebeff2">
+			</div>
+			<h3 class="text-pink m-t-10">R$ {{$valor_total_mes}}</h3>
+			<p class="text-muted text-nowrap m-b-10">Fluxo de caixa em <span class="text-uppercase"><strong>{{ strftime('%B', strtotime('today')) }}</strong></span></p>
+		</div>
+	</div>
+</div>
                         <!-- end row -->
                         
                         <!-- 
@@ -232,7 +233,7 @@
                                     </p>
 
                                     <div class="table-responsive">
-                                        <table class="table mb-0">
+                                        <!-- <table class="table mb-0">
                                             <thead>
                                             <tr>
                                                 <th>#</th>
@@ -288,6 +289,34 @@
     
                                             </tbody>
                                         </table>
+                                         -->
+										<table class="table table-hover table mb-0" data-page-size="7">
+											<tr>
+												<th>@sortablelink('id', '#')</th>
+												<th>@sortablelink('merchant_order_id', 'Nome do Parceiro')</th>
+												<th>@sortablelink('created_at', 'Data Atendimento')</th>
+												<th>@sortablelink('updated_at', 'Data Pagamento')</th>
+												<th>@sortablelink('capture', 'Status')</th>
+												<th>@sortablelink('country', 'Clínica')</th>
+											</tr>
+											@foreach($pagamentos as $pagamento)
+										
+											<tr>
+												<td>{{$pagamento->id}}</td>
+												<td>{{$pagamento->pedido->paciente->nm_primario.' '.$pagamento->pedido->paciente->nm_secundario}}</td>
+												<td>{{$pagamento->agendamento->dt_atendimento}}</td>
+												<td>{{$pagamento->pedido->dt_pagamento}}</td>
+												<td>@if($pagamento->status_payment == 0) <span class="badge badge-warning">Não Autorizado</span> @elseif($pagamento->status_payment == 1) <span class="badge badge-purple">Autorizado</span> @elseif($pagamento->status_payment == 2) <span class="badge badge-success">Finalizado</span> @else <span class="badge badge-danger">Negado</span> @endif</td>
+												<td>{{$pagamento->clinica->nm_fantasia}}</td>
+											</tr>
+											@endforeach
+										</table>
+										<tfoot>
+											<div class="cvx-pagination">
+												<span class="text-primary">{{ sprintf("%02d", $pagamentos->total()) }} Pagamento(s) encontrado(s) e {{ sprintf("%02d", $pagamentos->count()) }} Pagamento(s) exibido(s)</span>
+												{!! $pagamentos->appends(request()->input())->links() !!}
+											</div>
+										</tfoot>
                                     </div>
                                 </div>
                             </div>
