@@ -241,7 +241,8 @@
 	<div class="col-md-1">
 		<div class="form-group{{ $errors->has('nr_latitude_gps') ? ' has-error' : '' }}">
     		<label for="nr_latitude_gps" class="col-3 control-label">Latitude<span class="text-danger">*</span></label>
-    		<input id="nr_latitude_gps" type="text" class="form-control" name="nr_latitude_gps" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->nr_latitude_gps }} @endif" onkeypress="onlyNumbers(event)" required  maxlength="50">
+    		<input id="nr_latitude_gps" type="text" class="form-control" name="nr_latitude_gps" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->nr_latitude_gps }} @endif" required  maxlength="50">
+    		<!-- onkeypress="onlyNumbers(event)"  -->
 		</div>
 	</div>
 </div>	
@@ -281,7 +282,7 @@
 	<div class="col-md-1">
 		<div class="form-group{{ $errors->has('nr_longitute_gps') ? ' has-error' : '' }}">
     		<label for="nr_longitute_gps" class="col-3 control-label">Longitude<span class="text-danger">*</span></label>
-    		<input id="nr_longitute_gps" type="text" class="form-control" name="nr_longitute_gps" value="@if(!$prestador->enderecos->isEmpty()) {{$prestador->enderecos->first()->nr_longitute_gps}} @endif" onkeypress="onlyNumbers(event)" required  maxlength="50">
+    		<input id="nr_longitute_gps" type="text" class="form-control" name="nr_longitute_gps" value="@if(!$prestador->enderecos->isEmpty()) {{$prestador->enderecos->first()->nr_longitute_gps}} @endif" required  maxlength="50">
 		</div>
 	</div>
 </div>
