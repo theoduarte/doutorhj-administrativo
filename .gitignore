@@ -42,3 +42,4 @@ yarn-error.log
 .settings/org.eclipse.wst.jsdt.ui.superType.name
 .buildpath
 ..gitignore.swp
+readme\.md
