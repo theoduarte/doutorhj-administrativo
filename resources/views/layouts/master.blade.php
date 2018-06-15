@@ -37,6 +37,8 @@
 		<!-- Datapicker -->
 		<link href="/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 		<link href="/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/google.loader.css">
+		
 		<script src="/libs/comvex-template/js/jquery.min.js"></script>
 		<script src="/libs/comvex-template/js/popper.min.js"></script>
 		<script src="/libs/comvex-template/js/bootstrap.min.js"></script>
@@ -54,11 +56,18 @@
 <div id="wrapper" class="forced enlarged">
 	<div class="page-loader page-loader-variant-1">
 		<div>
-			<img class='cvx-img-responsive' style='margin-top: -20px;margin-left: -18px;' width='330' height='67' src='' alt='' />
-			<div class="offset-top-41 text-center">
-				<!-- <div class="spinner"></div> -->
-				<i class="fa fa-spin fa-circle-o-notch text-danger" style="font-size: 300%;"></i>
+			<div>
+				<img class='cvx-img-responsive' style='margin-top: -129px;margin-left: -18px;' width='330' height='67' src='/libs/home-template/img/logo-padrao.png' alt='' />
 			</div>
+			
+			<div class="showbox">
+				<div class="loader">
+					<svg class="circular" viewBox="25 25 50 50">
+						<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/>
+					</svg>
+				</div>
+			</div>
+			<span class="cvx-lbl-loading">Carregando...</span>
 		</div>
 	</div>
 	<!-- Top Bar Start -->
