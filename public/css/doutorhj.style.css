@@ -275,3 +275,12 @@ label {
 .tab-content {
     padding: 20px 20px 20px 20px;
 }
+
+#sidebar-menu > ul > li > a.active {
+  background: #343d52 !important;
+  color: #3bafda !important;
+}
+
+#wrapper.enlarged .left.side-menu #sidebar-menu ul ul li.active a {
+    color: #f76397 !important;
+}
