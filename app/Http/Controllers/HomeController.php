@@ -31,7 +31,7 @@ class HomeController extends Controller
         $data_inicio = date('Y-m-1 H:i:s');
         $data_fim = date('Y-m-t H:i:s');
         
-        $pagamentos = Payment::whereDate('payments.created_at', '>=', date('Y-m-d H:i:s', strtotime($data_inicio)))->whereDate('payments.created_at', '<=', date('Y-m-d H:i:s', strtotime($data_fim)))->sortable()->paginate(10);
+        $pagamentos = Payment::whereDate('payments.created_at', '>=', date('Y-m-d H:i:s', strtotime($data_inicio)))->whereDate('payments.created_at', '<=', date('Y-m-d H:i:s', strtotime($data_fim)))->orderBy('id', 'desc')->sortable()->paginate(10);
         
         foreach($pagamentos as $pagamento) {
         	$pagamento->load('pedido');
