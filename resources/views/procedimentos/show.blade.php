@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Cargos')
+@section('title', 'Doctor HJ: Procedimentos')
 
 @section('container')
 <div class="container-fluid">
@@ -10,8 +10,8 @@
 				<h4 class="page-title">Doctor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item"><a href="{{ route('cargos.index') }}">Lista de Cargos</a></li>
-					<li class="breadcrumb-item active">Detalhes do Cargo</li>
+					<li class="breadcrumb-item"><a href="{{ route('procedimentos.index') }}">Lista de Procedimentos</a></li>
+					<li class="breadcrumb-item active">Detalhes da Procedimentos</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
@@ -21,24 +21,32 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				<h4 class="header-title m-t-0 m-b-20">Detalhes do Cargo</h4>
+				<h4 class="header-title m-t-0 m-b-20">Detalhes do Procedimento</h4>
 				
 				<table class="table table-bordered table-striped view-doutorhj">
 					<tbody>
 						<tr>
 							<td width="25%">Código:</td>
-							<td width="75%">{{ $cargo->cd_cargo }}</td>
+							<td width="75%">{{ $procedimento->cd_procedimento }}</td>
 						</tr>
 						<tr>
 							<td>Descrição:</td>
-							<td>{{ $cargo->ds_cargo }}</td>
+							<td>{{ $procedimento->ds_procedimento }}</td>
+						</tr>
+						<tr>
+							<td>Tipo de Atendimento:</td>
+							<td>@if( $procedimento->tipoatendimento != null ) <a href="/tipo_atendimentos/{{ $procedimento->tipoatendimento->id }}" class="btn-link text-primary">{{ $procedimento->tipoatendimento->ds_atendimento }} <i class="ion-ios7-search-strong"></i></a> @else <span class="text-danger"> -- NÃO INFORMADO --</span> @endif</td>
+						</tr>
+						<tr>
+							<td>Grupo de Procedimento:</td>
+							<td>@if( $procedimento->grupoprocedimento != null ) <a href="/grupoprocedimentos/{{ $procedimento->grupoprocedimento->id }}" class="btn-link text-primary">{{ $procedimento->grupoprocedimento->ds_grupo }} <i class="ion-ios7-search-strong"></i></a> @else <span class="text-danger"> -- NÃO INFORMADO --</span> @endif</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="form-group text-right m-b-0">
-				<a href="{{ route('cargos.edit', $cargo->id) }}" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-lead-pencil"></i> Editar</a>
-				<a href="{{ route('cargos.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
+				<a href="{{ route('procedimentos.edit', $procedimento->id) }}" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-lead-pencil"></i> Editar</a>
+				<a href="{{ route('procedimentos.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
 			</div>
 		</div>
 	</div>

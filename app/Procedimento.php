@@ -9,12 +9,17 @@ class Procedimento extends Model
 {
 	use Sortable;
 	
-	public $fillable = ['cd_procedimento', 'ds_procedimento'];
-    public $sortable = ['id', 'cd_procedimento', 'ds_procedimento'];
+	public $fillable = ['cd_procedimento', 'ds_procedimento', 'tipoatendimento_id', 'grupoprocedimento_id'];
+    public $sortable = ['id', 'cd_procedimento', 'ds_procedimento', 'tipoatendimento_id', 'grupoprocedimento_id'];
     
-    public function tipo_atendimento()
+    public function tipoatendimento()
     {
-        return $this->belongsTo('App\TipoAtendimento');
+        return $this->belongsTo('App\Tipoatendimento');
+    }
+    
+    public function grupoprocedimento()
+    {
+    	return $this->belongsTo('App\GrupoProcedimento');
     }
     
     public function atendimentos()
@@ -31,5 +36,6 @@ class Procedimento extends Model
     {
         return $this->belongsToMany('App\CupomDesconto');
     }
+    
     
 }
