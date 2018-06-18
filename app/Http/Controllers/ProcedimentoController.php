@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use App\Procedimento;
+use App\GrupoProcedimento;
+use App\Tipoatendimento;
 
 class ProcedimentoController extends Controller
 {
@@ -45,7 +47,10 @@ class ProcedimentoController extends Controller
      */
     public function create()
     {
-    	return view('procedimentos.create');
+    	$grupo_atendimentos = GrupoProcedimento::orderBy('ds_grupo', 'asc')->pluck('ds_grupo', 'id');
+    	$tipo_atendimentos = Tipoatendimento::orderBy('ds_atendimento', 'asc')->pluck('ds_atendimento', 'id');
+    	
+    	return view('procedimentos.create', compact('grupo_atendimentos', 'tipo_atendimentos'));
     }
 
     /**
@@ -72,6 +77,8 @@ class ProcedimentoController extends Controller
     public function show($id)
     {
     	$procedimento = Procedimento::findOrFail($id);
+    	$procedimento->load('tipoatendimento');
+    	$procedimento->load('grupoprocedimento');
     	
     	return view('procedimentos.show', compact('procedimento'));
     }
@@ -86,7 +93,10 @@ class ProcedimentoController extends Controller
     {
     	$procedimento = Procedimento::findOrFail($id);
     	
-    	return view('procedimentos.edit', compact('procedimento'));
+    	$grupo_atendimentos = GrupoProcedimento::orderBy('ds_grupo', 'asc')->pluck('ds_grupo', 'id');
+    	$tipo_atendimentos = Tipoatendimento::orderBy('ds_atendimento', 'asc')->pluck('ds_atendimento', 'id');
+    	
+    	return view('procedimentos.edit', compact('procedimento', 'grupo_atendimentos', 'tipo_atendimentos'));
     }
 
     /**

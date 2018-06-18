@@ -157,6 +157,7 @@ ul.list-profissional-especialidade li {
     visibility: hidden;
     z-index: -1;
 }
+
 .cvx-img-responsive {
     display: block;
     max-width: 100%;
@@ -273,4 +274,13 @@ label {
 
 .tab-content {
     padding: 20px 20px 20px 20px;
+}
+
+#sidebar-menu > ul > li > a.active {
+  background: #343d52 !important;
+  color: #3bafda !important;
+}
+
+#wrapper.enlarged .left.side-menu #sidebar-menu ul ul li.active a {
+    color: #f76397 !important;
 }

@@ -56,6 +56,8 @@
 						<th>@sortablelink('id')</th>
 						<th>@sortablelink('cd_procedimento', 'Código')</th>
 						<th>@sortablelink('ds_procedimento', 'Descrição')</th>
+						<th>@sortablelink('tipoatendimento_id', 'Tipo Atendt.')</th>
+						<th>@sortablelink('grupoprocedimento_id', 'Grupo Procedimento')</th>
 						<th>Ações</th>
 					</tr>
 					@foreach($procedimentos as $procedimento)
@@ -64,6 +66,8 @@
 						<td>{{$procedimento->id}}</td>
 						<td>{{$procedimento->cd_procedimento}}</td>
 						<td>{{$procedimento->ds_procedimento}}</td>
+						<td>@if($procedimento->tipoatendimento != null) {{ $procedimento->tipoatendimento->ds_atendimento }} @else <span class="text-danger"><strong><i class="ion-close-circled"></i> Não informado</strong></span> @endif</td>
+						<td>@if($procedimento->grupoprocedimento != null) {{ $procedimento->grupoprocedimento->ds_grupo }} @else <span class="text-danger"><strong><i class="ion-close-circled"></i> Não informado</strong></span> @endif</td>
 						<td>
 							<a href="{{ route('procedimentos.show', $procedimento->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
 							<a href="{{ route('procedimentos.edit', $procedimento->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>

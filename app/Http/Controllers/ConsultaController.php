@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use App\Consulta;
+use App\Especialidade;
+use App\Tipoatendimento;
 
 class ConsultaController extends Controller
 {
@@ -45,7 +47,10 @@ class ConsultaController extends Controller
      */
     public function create()
     {
-    	return view('consultas.create');
+    	$especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->pluck('ds_especialidade', 'id');
+    	$tipo_atendimentos = Tipoatendimento::orderBy('ds_atendimento', 'asc')->pluck('ds_atendimento', 'id');
+    	 
+    	return view('consultas.create', compact('especialidades', 'tipo_atendimentos'));
     }
 
     /**
@@ -72,6 +77,8 @@ class ConsultaController extends Controller
     public function show($id)
     {
     	$consulta = Consulta::findOrFail($id);
+    	$consulta->load('especialidade');
+    	$consulta->load('tipoatendimento');
     	
     	return view('consultas.show', compact('consulta'));
     }
@@ -85,8 +92,10 @@ class ConsultaController extends Controller
     public function edit($id)
     {
     	$consulta = Consulta::findOrFail($id);
+    	$especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->pluck('ds_especialidade', 'id');
+    	$tipo_atendimentos = Tipoatendimento::orderBy('ds_atendimento', 'asc')->pluck('ds_atendimento', 'id');
     	
-    	return view('consultas.edit', compact('consulta'));
+    	return view('consultas.edit', compact('consulta', 'especialidades', 'tipo_atendimentos'));
     }
 
     /**

@@ -56,6 +56,8 @@
 						<th>@sortablelink('id')</th>
 						<th>@sortablelink('cd_consulta', 'Código')</th>
 						<th>@sortablelink('ds_consulta', 'Descrição')</th>
+						<th>@sortablelink('especialidade_id', 'Especialidade')</th>
+						<th>@sortablelink('tipoatendimento_id', 'Tipo Atendt.')</th>
 						<th>Ações</th>
 					</tr>
 					@foreach($consultas as $consulta)
@@ -64,6 +66,8 @@
 						<td>{{$consulta->id}}</td>
 						<td>{{$consulta->cd_consulta}}</td>
 						<td>{{$consulta->ds_consulta}}</td>
+						<td>@if($consulta->especialidade != null) {{ $consulta->especialidade->ds_especialidade }} @else <span class="text-danger"><strong><i class="ion-close-circled"></i> Não informada</strong></span> @endif</td>
+						<td>@if($consulta->tipoatendimento != null) {{ $consulta->tipoatendimento->ds_atendimento }} @else <span class="text-danger"><strong><i class="ion-close-circled"></i> Não informado</strong></span> @endif</td>
 						<td>
 							<a href="{{ route('consultas.show', $consulta->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
 							<a href="{{ route('consultas.edit', $consulta->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
