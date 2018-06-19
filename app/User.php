@@ -15,7 +15,7 @@ class User extends Authenticatable
     
     public $sortable  = ['id', 'name', 'email', 'tp_user', 'cs_status', 'perfiluser_id'];
 
-    protected $fillable = ['name', 'email', 'password', 'tp_user', 'cs_status'];
+    protected $fillable = ['name', 'email', 'password', 'tp_user', 'cs_status', 'perfiluser_id'];
 
     protected $hidden = ['password', 'remember_token'];
     
@@ -31,7 +31,6 @@ class User extends Authenticatable
         self::ATIVO   => 'Ativo',
         self::INATIVO => 'Inativo'
     );
-    
     
     
     /*

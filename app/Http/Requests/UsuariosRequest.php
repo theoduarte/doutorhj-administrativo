@@ -15,6 +15,15 @@ class UsuariosRequest extends FormRequest
     {
         return true;
     }
+    
+    public function attributes()
+    {
+    	return [
+    			'name'          			=> 'Nome',
+    			'email'       				=> 'E-mail',
+    			'password'           		=> 'Senha',
+    	];
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,8 +32,26 @@ class UsuariosRequest extends FormRequest
      */
     public function rules()
     {
-        return [ 
-            //
-        ];
+    	switch ($this->method()) {
+    		case 'PUT':
+    			$rules = [
+	    			'name'       => 'required|max:250',
+	    			'email'      => 'required|max:250|min:3|email|unique:users,email'.$this->user_id,
+	    			'password'   => 'required|string|min:6|confirmed'
+    			];
+    			
+    			break;
+    	
+    		default:
+    			$rules = [
+	    			'name'      => 'required|max:250',
+	    			'email'     => 'required|max:250|min:3|email|unique:users,email',
+	    			'password'  => 'required|string|min:6|confirmed'
+    			];
+    			
+    			break;
+    	}
+    	
+    	return $rules;
     }
 }

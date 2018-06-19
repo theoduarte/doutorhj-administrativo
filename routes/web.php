@@ -19,6 +19,7 @@ Route::resource('menus','MenuController')->middleware('auth');
 Route::resource('itemmenus','ItemmenuController')->middleware('auth');
 Route::resource('perfilusers','PerfiluserController')->middleware('auth');
 Route::resource('permissaos','PermissaoController')->middleware('auth');
+Route::resource('users','UserController')->middleware('auth');
 Route::resource('agenda','AgendamentoController')->only(['index'])->middleware('auth');
 Route::resource('registro_logs','RegistroLogController')->middleware('auth');
 Route::resource('cupom_descontos','CupomDescontoController')->middleware('auth');

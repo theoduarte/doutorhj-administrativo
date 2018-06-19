@@ -141,6 +141,107 @@ class UtilController extends Controller
 	}
 	
 	/**
+	 * getExtensao method
+	 * //realiza busca pela extensao de um arquivo para o correto preenchimento de dados no momento do envio para o servidor
+	 * @throws NotFoundException
+	 * @param string $nome
+	 * @return string
+	 */
+	public function getExtensao($nome){
+		$ext = explode('.',$nome);
+		$ext = array_reverse($ext);
+		$ext = strtolower($ext[0]);
+	
+		return $ext;
+	}
+	
+	/**
+	 * createThumb method
+	 * //realiza a criacao de uma miniatura para uma determinada imagem
+	 * @throws NotFoundException
+	 * @param string $name, string $filename, integer $new_w, integer $new_h
+	 * @return void
+	 */
+	public function createThumb($name, $filename, $new_w, $new_h){
+	
+		$system = explode('.',$name);
+		//dd($name);
+	
+		if (preg_match('/jpg|jpeg/',strtolower($system[sizeof($system)-1]))){
+			$src_img = imagecreatefromjpeg($name);
+		}
+	
+		if (preg_match('/png/',strtolower($system[sizeof($system)-1]))){
+			$src_img = imagecreatefrompng($name);
+		}
+	
+		$old_x=imageSX($src_img);
+		$old_y=imageSY($src_img);
+		if ($old_x > $old_y) {
+			$thumb_w=$new_w;
+			$thumb_h=$old_y*($new_h/$old_x);
+		}
+	
+		if ($old_x < $old_y) {
+			$thumb_w=$old_x*($new_w/$old_y);
+			$thumb_h=$new_h;
+		}
+	
+		if ($old_x == $old_y) {
+			$thumb_w=$new_w;
+			$thumb_h=$new_h;
+		}
+	
+		$dst_img=ImageCreateTrueColor($thumb_w,$thumb_h);
+		imagecopyresampled($dst_img,$src_img,0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y);
+	
+		if (preg_match("/png/",strtolower($system[sizeof($system)-1]))) {
+			imagepng($dst_img, $filename);
+		} else {
+			imagejpeg($dst_img, $filename);
+		}
+	
+		//imagedestroy($dst_img);
+		//imagedestroy($src_img);
+	}
+	
+	/**
+	 * getImage method
+	 * //converte e transfere imagens, produzindo miniatura
+	 * @throws NotFoundException
+	 * @param User $user_obj, integer $user_id
+	 * @return $user_obj
+	 */
+	public function getImage($image, $user_id) {
+	
+		if(!file_exists(public_path('files/users/'.$user_id))) {
+			mkdir(public_path('files/users/'.$user_id), 0777);
+			mkdir(public_path('files/users/'.$user_id).'/thumb', 0777);
+		}
+			
+		//$file_tmp = $image['tmp_name'];
+		//$file_ext = $this->getExtensao($image['name']);
+		$file_ext = $image->getClientOriginalExtension();
+		$imgpath = '';
+		//dd(str_replace(' ', '_', $image->getClientOriginalName()));
+		if($file_ext != "" && ($file_ext == "png" | $file_ext == "jpg" | $file_ext == "gif" | $file_ext == "jpeg")) {
+			$filename = str_replace(' ', '_', $image->getClientOriginalName());
+			$destination = public_path('files/users/'.$user_id);
+			$destination_thumb = public_path('files/users/'.$user_id).'/thumb/'.$filename;
+			//move_uploaded_file($file_tmp, $destination);
+			
+			$image->move($destination, $filename);
+			
+			$imgpath = public_path('files/users/'.$user_id).'/'.$filename;
+			//dd($filename);
+			$path_name = $destination.'/'.$filename;
+			$this->createThumb($path_name, $destination_thumb, 64, 64);
+		}
+	
+		return $imgpath;
+	}
+	
+	/**
 	 * Recebe data de updated_at
 	 * o tempo desde esse momento
 	 *
