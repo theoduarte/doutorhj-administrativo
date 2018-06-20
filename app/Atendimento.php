@@ -11,6 +11,16 @@ class Atendimento extends Model
 	
 	public $fillable  = ['id', 'vl_com_atendimento', 'vl_net_atendimento', 'ds_preco'];
 	public $sortable  = ['id', 'vl_com_atendimento', 'vl_net_atendimento', 'ds_preco'];
+	
+	public function agendamentos()
+	{
+	    return $this->hasMany('App\Agendamento');
+	}
+	
+	public function tag_populars()
+	{
+	    return $this->hasMany('App\TagPopular');
+	}
 
 	public function clinica(){
 	    return $this->belongsTo('App\Clinica');
@@ -26,11 +36,6 @@ class Atendimento extends Model
     
 	public function profissional(){
 	    return $this->belongsTo('App\Profissional');
-	}
-	
-	public function agendamentos()
-	{
-	    return $this->hasMany('App\Agendamento');
 	}
 	
 	public function getVlNetAtendimentoAttribute($valor){

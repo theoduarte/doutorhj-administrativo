@@ -40,4 +40,9 @@ class Clinica extends Model
     {
         return $this->hasMany('App\Profissional');
     }
+    
+    public function filials()
+    {
+        return $this->hasMany('App\Filial');
+    }
 }

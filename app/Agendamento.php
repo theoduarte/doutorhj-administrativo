@@ -71,6 +71,11 @@ class Agendamento extends Model
         return $this->belongsTo('App\CupomDesconto');
     }
     
+    public function filial()
+    {
+        return $this->belongsTo('App\Filial');
+    }
+    
     public function itempedidos()
     {
         return $this->hasMany('App\Itempedido');

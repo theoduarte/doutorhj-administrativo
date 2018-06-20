@@ -16,13 +16,21 @@ class Profissional extends Model
     
 	
 	
-    
-	
 	/*
 	 * Relationship
 	 */
+	
 	public function clinica(){
 	    return $this->belongsTo('App\Clinica');
+	}
+	
+	public function user(){
+	    return $this->belongsTo('App\User');
+	}
+	
+	public function atendimentos()
+	{
+	    return $this->hasMany('App\Atendimento');
 	}
 
 	public function contatos(){
@@ -41,16 +49,10 @@ class Profissional extends Model
 	    return $this->belongsToMany('App\Especialidade');
 	}
 	
-	public function atendimentos()
+	public function filials()
 	{
-	    return $this->hasMany('App\Atendimento');
+	    return $this->belongsToMany('App\Filial');
 	}
-	
-	public function user(){
-	    return $this->belongsTo('App\User');
-	}
-	
-	
 	
 	/*
 	 * Getters and Setters
