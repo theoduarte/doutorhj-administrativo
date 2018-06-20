@@ -294,6 +294,16 @@
 </div>
 
 <div class="col-10">
+	<h4>Lista de Filiais</h4>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+    	<hr>
+    </div>
+</div>
+
+<div class="col-10">
 	<h4>Dados de Acesso</h4>
 </div>
 
