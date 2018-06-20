@@ -247,118 +247,7 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-10">
-    	<h4>Lista de Filiais</h4>
-    </div>
-    <div class="col-md-2">
-    	<button type="button" class="btn btn-primary btn-rounded w-md waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Adicionar Filial</button>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-12">
-    	<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
-			<tr>
-				<th>
-					<div class="row">
-						<div class="col-md-2">
-							<label for="filial_nm_nome_fantasia" class="control-label">Nome de Fantasia<span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-1">
-							<label for="filial_cep" class="control-label">CEP<span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-2">
-							<label for="filial_endereco" class="control-label">Endereço<span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-1">
-							<label for="filial_nr_logradouro" class="control-label">Número<span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-1">
-							<label for="filial_te_bairro" class="control-label">Bairro<span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-1">
-							<label for="filial_nr_latitude" class="control-label">Latitude<span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-1">
-							<label for="filial_nr_longitute" class="control-label">Longitude<span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-2">
-							<label for="filial_nm_cidade" class="control-label">Cidade<span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-1">
-							<label for="filial_sg_estado" class="control-label">UF<span class="text-danger">*</span></label>
-						</div>
-					</div>
-				</th>
-			</tr>
-			<tr>
-				<td>
-					<div class="row">
-						<div class="col-md-2">
-                            <div class="">
-                                <input type="text" id="nm_nome_fantasia" class="form-control" name="nm_nome_fantasia" value="" maxlength="250" >
-                            </div>
-						</div>
-						<div class="col-md-1">
-                            <div class="">
-                                <input type="text" id="filial_cep" class="form-control  mascaraCEP consultaCepFilial" name="filial_cep" value="" maxlength="10" >
-                            </div>
-						</div>
-						<div class="col-md-2">
-                            <div class="">
-                                <input type="text" id="filial_endereco" class="form-control" name="filial_endereco" value="" maxlength="250" >
-                            </div>
-						</div>
-						<div class="col-md-1">
-                            <div class="">
-                                <input type="text" id="filial_nr_logradouro" class="form-control" name="filial_nr_logradouro" value="" maxlength="10" >
-                            </div>
-						</div>
-						<div class="col-md-1">
-                            <div class="">
-                                <input type="text" id="filial_te_bairro" class="form-control" name="filial_te_bairro" value="" maxlength="250" >
-                            </div>
-						</div>
-						<div class="col-md-1">
-                            <div class="">
-                                <input type="text" id="filial_nr_latitude" class="form-control" name="filial_nr_latitude" value="" >
-                            </div>
-						</div>
-						<div class="col-md-1">
-                            <div class="">
-                                <input type="text" id="filial_nr_longitute" class="form-control" name="filial_nr_longitute" value="" >
-                            </div>
-						</div>
-						<div class="col-md-2">
-                            <div class="">
-                                <input type="text" id="filial_nm_cidade" class="form-control" name="nm_cidade" value="" maxlength="80" >
-                                 <input id="filial_cd_cidade_ibge" type="hidden" name="filial_cd_cidade_ibge" value="" >
-                            </div>
-						</div>
-						<div class="col-md-1">
-                            <div class="">
-                                <select id="filial_sg_estado" name="filial_sg_estado" class="form-control">
-                                    <option></option>
-                                    @foreach ($estados as $uf)
-                                        <option value="{{ $uf->sg_estado }}" >{{ $uf->ds_estado }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-						</div>
-					</div>
-				</td>
-			</tr>
-		</table>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <hr>
-        <br>
-    </div>
-</div>
 <div class="row">
     <div class="col-sm-12 col-md-12">
         <h4>Dados de Acesso da Empresa</h4>
@@ -406,25 +295,24 @@
     </div>
 </div>
 <script type="text/javascript">
-    $( function() {
-        $( function() {
-            var availableTags = [
-                @foreach ($cargos as $cargo)
-                    '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
-                @endforeach
-            ];
+$(document).ready(function () {
+	
+	var availableTags = [
+        @foreach ($cargos as $cargo)
+            '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
+        @endforeach
+    ];
 
-            $( "#ds_cargo" ).autocomplete({
-                source: availableTags,
-                select: function (event, ui) {
-                    var id_cargo = ui.item.value.split(' | ');
-                    $("#cargo_id").val(id_cargo[0]);
-                },
-                delay: 500,
-                minLength: 4
-            });
-        });
-
-
+    $( "#ds_cargo" ).autocomplete({
+        source: availableTags,
+        select: function (event, ui) {
+            var id_cargo = ui.item.value.split(' | ');
+            $("#cargo_id").val(id_cargo[0]);
+        },
+        delay: 500,
+        minLength: 4
     });
+    
+});
+
 </script>

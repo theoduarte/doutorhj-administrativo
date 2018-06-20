@@ -33,6 +33,10 @@ Route::get('agenda/profissional/{profissional}', 'AgendamentoController@getProfi
 Route::post('add-profissional', 'ClinicaController@addProfissionalStore')->middleware('auth');
 Route::post('view-profissional', 'ClinicaController@viewProfissionalShow')->middleware('auth');
 Route::post('delete-profissional', 'ClinicaController@deleteProfissionalDestroy')->middleware('auth');
+
+Route::post('add-filial', 'FilialController@addFilialStore')->middleware('auth');
+Route::post('delete-filial', 'FilialController@deleteFilialDestroy')->middleware('auth');
+
 Route::post('clinicas/{clinica}/edit/add-precificacao-procedimento', 'ClinicaController@addProcedimentoPrecoStore')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/delete-procedimento', 'ClinicaController@deleteProcedimentoDestroy')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/add-precificacao-consulta', 'ClinicaController@addConsultaPrecoStore')->middleware('auth');

@@ -293,6 +293,70 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-10">
+    	<h4>Lista de Filiais</h4>
+    </div>
+    <div class="col-md-2 text-right" style="margin-bottom: 10px;">
+    	<button type="button" class="btn btn-outline-primary btn-rounded btn-sm w-md waves-effect waves-light" onclick="addFilial(this)"><i class="mdi mdi-map-marker-plus"></i> Adicionar Filial</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+    	<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
+			<tr>
+				<th style="width: 30px; text-align: center;">
+				#
+				</th>
+				<th>
+					<div class="row">
+						<div class="col-md-2">
+							<label for="filial_nm_nome_fantasia" class="control-label"><strong>Nome de Fantasia</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-1">
+							<label for="filial_cep" class="control-label"><strong>CEP</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-2">
+							<label for="filial_endereco" class="control-label"><strong>Endereço</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-1">
+							<label for="filial_nr_logradouro" class="control-label"><strong>Número</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-1">
+							<label for="filial_te_bairro" class="control-label"><strong>Bairro</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-1">
+							<label for="filial_nr_latitude" class="control-label"><strong>Latitude</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-1">
+							<label for="filial_nr_longitute" class="control-label"><strong>Longitude</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-2">
+							<label for="filial_nm_cidade" class="control-label"><strong>Cidade</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-1">
+							<label for="filial_sg_estado" class="control-label"><strong>UF</strong><span class="text-danger">*</span></label>
+						</div>
+					</div>
+				</th>
+				<th style="width: 20px; text-align: center;">
+				(-)
+				</th>
+			</tr>
+			<tbody id="list-all-filiais">
+			</tbody>
+		</table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <hr>
+        <br>
+    </div>
+</div>
+
 <div class="col-10">
 	<h4>Lista de Filiais</h4>
 </div>
@@ -355,24 +419,339 @@
 	</div>
 </div>
 
-<script>
-    $( function() {
-        $( function() {
-            var availableTags = [
-                @foreach ($cargos as $cargo)
-                    '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
-                @endforeach
-            ];
+<select id="filial_sg_estado" class="form-control" style="display: none;">
+	<option></option>
+	@foreach ($estados as $uf)
+	<option value="{{ $uf->sg_estado }}" >{{ $uf->sg_estado }}</option>
+	@endforeach
+</select>
 
-            $( "#ds_cargo" ).autocomplete({
-              source: availableTags,
-              select: function (event, ui) {
-                  var id_cargo = ui.item.value.split(' | ');
-                  $("#cargo_id").val(id_cargo[0]); 	
-              },
-              delay: 500,
-              minLength: 4 
-            });
-        });
+<script type="text/javascript">
+$(document).ready(function () {
+	
+	var availableTags = [
+        @foreach ($cargos as $cargo)
+            '{{ $cargo->id ." | ". $cargo->ds_cargo }}',
+        @endforeach
+    ];
+
+    $( "#ds_cargo" ).autocomplete({
+        source: availableTags,
+        select: function (event, ui) {
+            var id_cargo = ui.item.value.split(' | ');
+            $("#cargo_id").val(id_cargo[0]);
+        },
+        delay: 500,
+        minLength: 4
     });
+
+    $('.nm_nome_fantasia').blur(function(){
+
+    	var ct_element = $(this).parent().parent();
+    	
+    	if(salvarFilial(ct_element)) {
+    		$.Notification.notify('success','top right', 'DrHoje', 'A Filial foi adicionada com sucesso!');
+    	}
+    });
+    
+});
+
+function addFilial(input) {
+
+  	var num_elements = $('#list-all-filiais tr').length;
+  	var filial_sg_estado = $('#filial_sg_estado').html();
+  	num_elements++;
+
+  	var content = '<tr> \
+  	  	<td class="num_filial">'+num_elements+'</td> \
+    		<td> \
+    			<div class="row"> \
+    				<div class="col-md-2"> \
+    					<input type="text" class="form-control nm_nome_fantasia" maxlength="250" > \
+    				</div> \
+    				<div class="col-md-1"> \
+                        <input type="text" class="form-control  mascaraCEP consultaCepFilial filial_cep" maxlength="10" > \
+    				</div> \
+    				<div class="col-md-2"> \
+    					<input type="text"  class="form-control filial_endereco" maxlength="250" > \
+    					<i class="cvx-cep-filial cvx-input-loading cvx-no-loading fa fa-spin fa-circle-o-notch"></i> \
+    				</div> \
+    				<div class="col-md-1"> \
+    					<input type="text" class="form-control filial_nr_logradouro" maxlength="10" > \
+    				</div> \
+    				<div class="col-md-1"> \
+    					<input type="text" class="form-control filial_te_bairro" maxlength="250" > \
+    				</div> \
+    				<div class="col-md-1"> \
+                        <input type="text" class="form-control filial_nr_latitude" > \
+                    </div> \
+    				<div class="col-md-1"> \
+    					<input type="text" class="form-control filial_nr_longitute" > \
+    				</div> \
+    				<div class="col-md-2"> \
+    					<input type="text" class="form-control filial_nm_cidade" maxlength="80" > \
+    					<input type="hidden" class="filial_cd_cidade_ibge" > \
+    				</div> \
+    				<div class="col-md-1"> \
+    					<select class="form-control filial_sg_estado">'+filial_sg_estado+'</select> \
+    				</div> \
+    			</div> \
+    		</td> \
+    		<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Filial" onclick="removerFilial(this)" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
+    	</tr>';
+   
+	$('#list-all-filiais').append(content);
+
+	$('#list-all-filiais').find(".consultaCepFilial:last" ).blur(function() {
+
+		if($(this).val().length <= 3) { return false; }
+
+		var cvx_cep_filial = $(this).parent().parent();
+		cvx_cep_filial.find('.cvx-cep-filial').removeClass('cvx-no-loading');
+    	
+    	var nr_cep = $(this).val();
+    	jQuery.ajax({
+    		type: 'GET',
+    	  	url: '/consulta-cep/cep/'+nr_cep,
+    	  	data: {
+				'nr_cep': nr_cep,
+				'_token': laravel_token
+			},
+			timeout: 15000,
+			success: function (result) {
+				
+				cvx_cep_filial.find('.cvx-cep-filial').addClass('cvx-no-loading');
+
+				if( result != null) {
+					var json = JSON.parse(result.endereco);
+
+					cvx_cep_filial.find('.filial_endereco').val(json.logradouro);
+					cvx_cep_filial.find('.filial_te_bairro').val(json.bairro);
+					cvx_cep_filial.find('.filial_nm_cidade').val(json.cidade);
+					//$('#sg_logradouro').val(json.tp_logradouro);
+					cvx_cep_filial.find('.filial_sg_estado').val(json.estado);
+					cvx_cep_filial.find('.filial_cd_cidade_ibge').val(json.ibge);
+					cvx_cep_filial.find('.filial_nr_latitude').val(json.latitude);
+					cvx_cep_filial.find('.filial_nr_longitute').val(json.longitude);
+					
+				} else {
+
+					cvx_cep_filial.find('.filial_endereco').val('');
+					cvx_cep_filial.find('.filial_te_bairro').val('');
+					cvx_cep_filial.find('.filial_nm_cidade').val('');
+					//$('#sg_logradouro').prop('selectedIndex',0);
+					cvx_cep_filial.find('.filial_sg_estado').val('');
+					cvx_cep_filial.find('.filial_cd_cidade_ibge').val('');
+					cvx_cep_filial.find('.filial_nr_latitude').val('');
+					cvx_cep_filial.find('.filial_nr_longitute').val('');
+				}
+            },
+            error: function (result) {
+            	$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+            	cvx_cep_filial.find('.cvx-cep-filial').addClass('cvx-no-loading');
+            }
+    	});
+	}).inputmask({
+		mask: ['99.999-999'],
+		keepStatic: true
+	});
+
+	//$(content).find(".consultaCepFilial" ).trigger('input');
+
+	/* $(".mascaraCEP").inputmask({
+		mask: ['99.999-999'],
+		keepStatic: true
+	}); */
+}
+
+function removerFilial(input) {
+
+	var nome_filial = $(input).parent().parent().find('input#nm_nome_fantasia').val();
+	var mensagem = 'Tem certeza que deseja remover a Filial: '+nome_filial;
+    swal({
+        title: mensagem,
+        text: "O Registro será removido da lista",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-confirm mt-2',
+        cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Cancelar'
+    }).then(function () {
+
+    	$(input).parent().parent().css('background-color', '#ffbfbf');
+		$(input).parent().parent().fadeOut(400, function(){
+	    	$(input).parent().parent().remove();
+	
+	    	var i = 1;
+	
+	    	$('.num_filial').each(function(index){
+	        	$(this).html(index+1);
+	        });
+	    });
+    	
+        swal({
+                title: 'Concluído !',
+                text: "A Filial foi excluída com sucesso",
+                type: 'success',
+                confirmButtonClass: 'btn btn-confirm mt-2'
+            }
+        );
+    });
+}
+
+function salvarFilial(ct_element) {
+	
+	var nm_nome_fantasia 	 	= ct_element.find('.nm_nome_fantasia').val();
+	var filial_cep 			 	= ct_element.find('.filial_cep').val();
+	var filial_endereco 	 	= ct_element.find('.filial_endereco').val();
+	var filial_nr_logradouro 	= ct_element.find('.filial_nr_logradouro').val();
+	var filial_te_bairro 	 	= ct_element.find('.filial_te_bairro').val();
+	var filial_nr_latitude 	 	= ct_element.find('.filial_nr_latitude').val();
+	var filial_nr_longitute  	= ct_element.find('.filial_nr_longitute').val();
+	var filial_nm_cidade  	 	= ct_element.find('.filial_nm_cidade').val();
+	var filial_cd_cidade_ibge 	= ct_element.find('.filial_cd_cidade_ibge').val();
+	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
+	
+    if(nm_nome_fantasia.val().length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O Nome de fantasia da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_cep.val().length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O CEP da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_endereco.val().length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O Endereço da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_nr_logradouro.val().length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O Número do logradouro da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_te_bairro.val().length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O nome do Bairro da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_nr_latitude.val().length == 0 | filial_nr_longitute.val().length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "A Latitude e a Longitude da Filial são campos obrigatórios!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_nm_cidade.val().length == 0 | filial_cd_cidade_ibge.val().length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O nome do cidade e o Código do IBGE são campos obrigatórios!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_sg_estado.val().length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "A UF da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    var nm_nome_fantasia 	 	= ct_element.find('.nm_nome_fantasia').val();
+	var filial_cep 			 	= ct_element.find('.filial_cep').val();
+	var filial_endereco 	 	= ct_element.find('.filial_endereco').val();
+	var filial_nr_logradouro 	= ct_element.find('.filial_nr_logradouro').val();
+	var filial_te_bairro 	 	= ct_element.find('.filial_te_bairro').val();
+	var filial_nr_latitude 	 	= ct_element.find('.filial_nr_latitude').val();
+	var filial_nr_longitute  	= ct_element.find('.filial_nr_longitute').val();
+	var filial_nm_cidade  	 	= ct_element.find('.filial_nm_cidade').val();
+	var filial_cd_cidade_ibge 	= ct_element.find('.filial_cd_cidade_ibge').val();
+	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
+
+    jQuery.ajax({
+		type: 'POST',
+	  	url: '/add-filial',
+	  	data: {
+			'nm_nome_fantasia': nm_nome_fantasia,
+			'filial_cep': filial_cep,
+			'filial_endereco': filial_endereco,
+			'filial_nr_logradouro': filial_nr_logradouro,
+			'filial_te_bairro': filial_te_bairro,
+			'filial_nr_latitude': filial_nr_latitude,
+			'filial_nr_longitute': filial_nr_longitute,
+			'filial_nm_cidade': filial_nm_cidade,
+			'filial_cd_cidade_ibge': filial_cd_cidade_ibge,
+			'filial_sg_estado': filial_sg_estado,
+			'_token': laravel_token
+		},
+		success: function (result) {
+
+			if( result != null) {
+				var json = JSON.parse(result.atendimento);
+				
+				$('#tipo_especialidade').empty();
+				for(var i=0; i < json.length; i++) {
+					var option = '<option value="'+json[i].id+'">'+json[i].descricao+'</option>';
+					$('#tipo_especialidade').append($(option));
+				}
+				
+			}
+        },
+        error: function (result) {
+        	$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+        }
+	});
+}
 </script>
