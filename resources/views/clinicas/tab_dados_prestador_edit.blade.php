@@ -845,6 +845,21 @@ function salvarFilial(input) {
 function removerFilial(input) {
 
 	var nome_filial = $(input).parent().parent().find('input.nm_nome_fantasia').val();
+	var ct_element = $(input).parent().parent();
+	var filial_id = ct_element.find('.filial_id').val();
+
+	if(filial_id.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "Nenhuma Filial foi selecionada!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+	
 	var mensagem = 'Tem certeza que deseja remover a Filial: '+nome_filial;
     swal({
         title: mensagem,
@@ -856,6 +871,41 @@ function removerFilial(input) {
         confirmButtonText: 'Sim',
         cancelButtonText: 'Cancelar'
     }).then(function () {
+
+    	$(input).find('i').removeClass('ion-trash-a').addClass('fa fa-spin fa-spinner');
+
+    	jQuery.ajax({
+    		type: 'POST',
+    	  	url: '/delete-filial',
+    	  	data: {
+    		  	'filial_id': filial_id,
+    			'_token': laravel_token
+    		},
+    		success: function (result) {
+
+    			if( result.status) {
+    				
+    				swal({
+                        title: 'DoctorHoje',
+                        text: result.mensagem,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-confirm mt-2',
+                        confirmButtonText: 'OK'
+                    }).then(function () {
+                        window.location.reload(false); 
+                    });
+    				
+    			} else {
+    				$.Notification.notify('error','top right', 'DoctorHoje', result.mensagem);
+    			}
+
+    			$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('ion-trash-a');
+            },
+            error: function (result) {
+            	$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('ion-trash-a');
+            	$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+            }
+    	});
 
     	$(input).parent().parent().css('background-color', '#ffbfbf');
 		$(input).parent().parent().fadeOut(400, function(){

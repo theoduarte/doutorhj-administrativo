@@ -90,7 +90,7 @@ class FilialController extends Controller
     
     //############# AJAX SERVICES ##################
     /**
-     * addProfissionalStore a newly created resource in storage.
+     * addFilialStore a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -195,5 +195,34 @@ class FilialController extends Controller
         #############################################
     
     	return response()->json(['status' => true, 'mensagem' => 'A Filial foi salva com sucesso!', 'endereco_id' => $endereco_id, 'filial_id' => $filial_id]);
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteFilialDestroy()
+    {
+    	$filial_id = CVXRequest::post('filial_id');
+    	$filial = Filial::findorfail($filial_id);
+    	$filial->cs_status = 'I';
+    
+    	if ($filial->save()) {
+    
+    		# registra log
+    		$filial_obj           = $filial->toJson();
+    		$registro_obj 		= new RegistroLogController();
+    
+    		$log = "[$filial_obj]";
+    
+    		$this->registrarLog('Excluir Filial', $log, 4);
+    
+    	} else {
+    		return response()->json(['status' => false, 'mensagem' => 'A Filial não foi removida. Por favor, tente novamente.']);
+    	}
+    
+    	return response()->json(['status' => true, 'mensagem' => 'A Filial foi removida com sucesso!', 'filial' => $filial->toJson()]);
     }
 }

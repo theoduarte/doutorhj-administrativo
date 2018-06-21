@@ -24,6 +24,7 @@ use App\Responsavel;
 use App\RegistroLog;
 use Illuminate\Support\Facades\Auth;
 use App\Consulta;
+use App\Filial;
 
 class ClinicaController extends Controller
 {
@@ -255,10 +256,11 @@ class ClinicaController extends Controller
         $prestador->load('contatos');
         $prestador->load('documentos');
         $prestador->load('filials');
-        $prestador->filials->load('endereco');
+        //$prestador->filials->load('endereco');
+                
         //$prestador->filials->endereco->load('cidade');
         
-        $list_filials = $prestador->filials;
+        $list_filials = Filial::with('endereco')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('eh_matriz','desc')->get();
 
         $documentosclinica = $prestador->documentos;
 
