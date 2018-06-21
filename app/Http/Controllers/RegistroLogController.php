@@ -6,6 +6,7 @@ use App\RegistroLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RegistroLogController extends Controller
 {
@@ -88,5 +89,21 @@ class RegistroLogController extends Controller
     public function destroy(RegistroLog $registroLog)
     {
         //
+    }
+    
+    /**
+     * Registra os logs of specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function registrarLog($titulo, $descricao, $tipo_log)
+    {
+    	$log = new RegistroLog();
+    	$log->titulo = $titulo;
+    	$log->descricao = $descricao;
+    	$log->tipolog_id = $tipo_log;
+    	$log->user_id = Auth::user()->id;
+    	$log->save();
     }
 }

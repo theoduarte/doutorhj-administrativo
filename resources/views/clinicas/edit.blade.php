@@ -73,8 +73,8 @@
 	jQuery(document).ready(function($) {
 
 		$('button[data-toggle="modal"]').on('click', function() {
-			 $('input.form-control').val('');
-			 $('select.form-control').prop('selectedIndex',0);
+			 $('.modal').find('input.form-control').val('');
+			 $('.modal').find('select.form-control').prop('selectedIndex',0);
 			 $('#edit-profisisonal-title-modal').html('Adicionar Profissional');
 			 $('#profisisonal-type-operation').val('add');
 		});
@@ -151,6 +151,11 @@
 			$('#especialidade_profissional :selected').each(function(i, selected) {
 				especialidade_profissional[i] = $(selected).val();
 			});
+
+			var filial_profissional = new Array();
+			$('#filial_profissional :selected').each(function(i, selected) {
+				filial_profissional[i] = $(selected).val();
+			});
 			
 			var tp_profissional = $('#tp_profissional').val();
 			var profissional_id = $('#profissional_id').val();
@@ -162,6 +167,7 @@
 			if( dt_nascimento.length == 0 ) { $('#dt_nascimento').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
 			if( te_documento_profissional.length == 0 ) { $('#te_documento_profissional').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
 			if( especialidade_profissional.length == 0 ) { $('#especialidade_profissional').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
+			if( filial_profissional.length == 0 ) { $('#filial_profissional').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
 
 			var tp_operation = $('#profisisonal-type-operation').val();
 			
@@ -176,6 +182,7 @@
 					'dt_nascimento': dt_nascimento,
 					'cs_status': cs_status,
 					'especialidade_profissional': especialidade_profissional,
+					'filial_profissional': filial_profissional,
 					'tp_profissional': tp_profissional,
 					'profissional_id': profissional_id,
 					'tp_documento': tp_documento_profissional,
@@ -274,7 +281,7 @@
 		            	$('#con-close-modal').find('#tp_documento_profissional').val(profissional.documentos[0].tp_documento);
 			            $('#con-close-modal').find('#te_documento_profissional').val(profissional.documentos[0].te_documento);
 		            }
-
+		            //--realiza o carregamento das especialidades do profissional-------------
 		            $('#con-close-modal').find("#especialidade_profissional option:selected").prop("selected", false);
 		            for(var i = 0; i < profissional.especialidades.length > 0; i++) {
 
@@ -287,6 +294,19 @@
 		            }
 
 		            $('#con-close-modal').find("#especialidade_profissional").trigger('change.select2');
+
+		          //--realiza o carregamento dos locais de atendimento do profissional-------------
+		            $('#con-close-modal').find("#filial_profissional option:selected").prop("selected", false);
+		            for(var i = 0; i < profissional.filials.length > 0; i++) {
+
+		            	$('#con-close-modal').find("#filial_profissional option").each(function(){
+			            	if($(this).val() == profissional.filials[i].id) {
+				            	$(this).prop("selected", true);
+			            	}
+			            });
+		            }
+
+		            $('#con-close-modal').find("#filial_profissional").trigger('change.select2');
 		            
 	            }
             },

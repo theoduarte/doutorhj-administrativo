@@ -43,6 +43,6 @@ class Clinica extends Model
     
     public function filials()
     {
-        return $this->hasMany('App\Filial');
+        return $this->hasMany('App\Filial')->orderBy('eh_matriz','desc');
     }
 }

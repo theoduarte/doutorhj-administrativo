@@ -36,6 +36,8 @@ $(document).ready(function () {
 		language: 'pt-BR'
 	});
 	
+	$('[data-toggle="tooltip"]').tooltip()
+	
 	/*$( "#local_atendimento" ).keyup(function() {
 		
 		var search_term = $(this).val();

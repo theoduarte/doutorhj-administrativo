@@ -309,6 +309,9 @@
 				<th style="width: 30px; text-align: center;">
 				#
 				</th>
+				<th style="width: 40px; text-align: center;" data-toggle="tooltip" data-placement="right" title="É a Unidade Matriz">
+				M
+				</th>
 				<th>
 					<div class="row">
 						<div class="col-md-2">
@@ -341,10 +344,90 @@
 					</div>
 				</th>
 				<th style="width: 20px; text-align: center;">
+				(+)
+				</th>
+				<th style="width: 20px; text-align: center;">
 				(-)
 				</th>
 			</tr>
 			<tbody id="list-all-filiais">
+			@for ($i = 0; $i < sizeof($list_filials); $i++)
+			<tr>
+				<td class="num_filial text-center">{{$i+1}}</td>
+				<td data-toggle="tooltip" data-placement="right" title="Unidade Matriz" class="text-center">
+					<div class="checkbox checkbox-primary">
+						<input type="checkbox" id="filial_eh_matriz_{{$i}}" class="filial_eh_matriz" name="filial_eh_matriz" @if( $list_filials[$i]->eh_matriz == 'S' ) checked="checked" @endif>
+						<label for="filial_eh_matriz_{{$i}}"></label>
+					</div>
+				</td>
+				<td>
+					<div class="row">
+						<div class="col-md-2">
+							<input type="text" class="form-control nm_nome_fantasia" value="{{ $list_filials[$i]->nm_nome_fantasia }}" maxlength="250">
+							<input type="hidden" class="filial_id" value="{{ $list_filials[$i]->id }}">
+						</div>
+						<div class="col-md-1">
+							<input type="text" class="form-control  mascaraCEP consultaCepFilial filial_cep" value="{{ $list_filials[$i]->endereco->nr_cep }}" maxlength="10">
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control filial_endereco" value="{{ $list_filials[$i]->endereco->te_endereco }}" maxlength="250">
+							<input type="hidden"  class="filial_endereco_id" value="{{ $list_filials[$i]->endereco->id }}" >
+							<i class="cvx-cep-filial cvx-input-loading cvx-no-loading fa fa-spin fa-circle-o-notch"></i>
+						</div>
+						<div class="col-md-1">
+							<input type="text" class="form-control filial_nr_logradouro" value="{{ $list_filials[$i]->endereco->nr_logradouro }}" maxlength="10">
+						</div>
+						<div class="col-md-1">
+							<input type="text" class="form-control filial_te_bairro" value="{{ $list_filials[$i]->endereco->te_bairro }}" maxlength="250">
+						</div>
+						<div class="col-md-1">
+							<input type="text" class="form-control filial_nr_latitude" value="{{ $list_filials[$i]->endereco->nr_latitude_gps }}">
+						</div>
+						<div class="col-md-1">
+							<input type="text" class="form-control filial_nr_longitute" value="{{ $list_filials[$i]->endereco->nr_longitute_gps }}">
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control filial_nm_cidade" value="{{ $list_filials[$i]->endereco->cidade->nm_cidade }}" maxlength="80">
+							<input type="hidden" class="filial_cd_cidade_ibge" value="{{ $list_filials[$i]->endereco->cidade->cd_ibge }}">
+						</div>
+						<div class="col-md-1">
+							<select class="form-control filial_sg_estado">
+								<option></option>
+								<option value="AC" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'AC' ) selected="selected" @endif >AC</option>
+								<option value="AL" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'AL' ) selected="selected" @endif >AL</option>
+								<option value="AP" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'AP' ) selected="selected" @endif >AP</option>
+								<option value="AM" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'AM' ) selected="selected" @endif >AM</option>
+								<option value="BA" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'BA' ) selected="selected" @endif >BA</option>
+								<option value="CE" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'CE' ) selected="selected" @endif >CE</option>
+								<option value="DF" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'DF' ) selected="selected" @endif >DF</option>
+								<option value="ES" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'ES' ) selected="selected" @endif >ES</option>
+								<option value="GO" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'GO' ) selected="selected" @endif >GO</option>
+								<option value="MA" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'MA' ) selected="selected" @endif >MA</option>
+								<option value="MT" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'MT' ) selected="selected" @endif >MT</option>
+								<option value="MS" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'MS' ) selected="selected" @endif >MS</option>
+								<option value="MG" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'MG' ) selected="selected" @endif >MG</option>
+								<option value="PA" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'PA' ) selected="selected" @endif >PA</option>
+								<option value="PB" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'PB' ) selected="selected" @endif >PB</option>
+								<option value="PR" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'PR' ) selected="selected" @endif >PR</option>
+								<option value="PE" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'PE' ) selected="selected" @endif >PE</option>
+								<option value="PI" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'PI' ) selected="selected" @endif >PI</option>
+								<option value="RJ" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'RJ' ) selected="selected" @endif >RJ</option>
+								<option value="RN" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'RN' ) selected="selected" @endif >RN</option>
+								<option value="RS" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'RS' ) selected="selected" @endif >RS</option>
+								<option value="RO" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'RO' ) selected="selected" @endif >RO</option>
+								<option value="RR" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'RR' ) selected="selected" @endif >RR</option>
+								<option value="SC" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'SC' ) selected="selected" @endif >SC</option>
+								<option value="SP" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'SP' ) selected="selected" @endif >SP</option>
+								<option value="SE" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'SE' ) selected="selected" @endif >SE</option>
+								<option value="TO" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'TO' ) selected="selected" @endif >TO</option>
+							</select>
+						</div>     			
+					</div>
+				</td>
+				<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td>
+				<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Filial" onclick="removerFilial(this)" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td>
+			</tr>
+			@endfor
 			</tbody>
 		</table>
     </div>
@@ -445,13 +528,9 @@ $(document).ready(function () {
         minLength: 4
     });
 
-    $('.nm_nome_fantasia').blur(function(){
-
-    	var ct_element = $(this).parent().parent();
-    	
-    	if(salvarFilial(ct_element)) {
-    		$.Notification.notify('success','top right', 'DrHoje', 'A Filial foi adicionada com sucesso!');
-    	}
+    $(".filial_eh_matriz").change(function() {
+        $(".filial_eh_matriz").prop('checked', false);
+        $(this).prop('checked', true);
     });
     
 });
@@ -463,17 +542,25 @@ function addFilial(input) {
   	num_elements++;
 
   	var content = '<tr> \
-  	  	<td class="num_filial">'+num_elements+'</td> \
+  	  		<td class="num_filial">'+num_elements+'</td> \
+  	  		<td data-toggle="tooltip" data-placement="right" title="É a Unidade Matriz" class="text-center"> \
+				<div class="checkbox checkbox-primary"> \
+					<input type="checkbox" id="filial_eh_matriz_'+num_elements+'" class="filial_eh_matriz" name="filial_eh_matriz"> \
+					<label for="filial_eh_matriz_'+num_elements+'"></label> \
+				</div> \
+			</td> \
     		<td> \
     			<div class="row"> \
     				<div class="col-md-2"> \
     					<input type="text" class="form-control nm_nome_fantasia" maxlength="250" > \
+    					<input type="hidden" class="filial_id" > \
     				</div> \
     				<div class="col-md-1"> \
                         <input type="text" class="form-control  mascaraCEP consultaCepFilial filial_cep" maxlength="10" > \
     				</div> \
     				<div class="col-md-2"> \
     					<input type="text"  class="form-control filial_endereco" maxlength="250" > \
+    					<input type="hidden"  class="filial_endereco_id" > \
     					<i class="cvx-cep-filial cvx-input-loading cvx-no-loading fa fa-spin fa-circle-o-notch"></i> \
     				</div> \
     				<div class="col-md-1"> \
@@ -497,6 +584,7 @@ function addFilial(input) {
     				</div> \
     			</div> \
     		</td> \
+    		<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td> \
     		<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Filial" onclick="removerFilial(this)" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
     	</tr>';
    
@@ -556,6 +644,11 @@ function addFilial(input) {
 		keepStatic: true
 	});
 
+	$(".filial_eh_matriz").change(function() {
+        $(".filial_eh_matriz").prop('checked', false);
+        $(this).prop('checked', true);
+    });
+
 	//$(content).find(".consultaCepFilial" ).trigger('input');
 
 	/* $(".mascaraCEP").inputmask({
@@ -564,9 +657,194 @@ function addFilial(input) {
 	}); */
 }
 
+function salvarFilial(input) {
+
+	var ct_element = $(input).parent().parent();
+
+	var filial_id 	 			= ct_element.find('.filial_id').val();
+	var filial_eh_matriz 	 	= ct_element.find('.filial_eh_matriz').is(":checked");
+	var nm_nome_fantasia 	 	= ct_element.find('.nm_nome_fantasia').val();
+	var filial_cep 			 	= ct_element.find('.filial_cep').val();
+	var filial_endereco 	 	= ct_element.find('.filial_endereco').val();
+	var filial_nr_logradouro 	= ct_element.find('.filial_nr_logradouro').val();
+	var filial_te_bairro 	 	= ct_element.find('.filial_te_bairro').val();
+	var filial_nr_latitude 	 	= ct_element.find('.filial_nr_latitude').val();
+	var filial_nr_longitute  	= ct_element.find('.filial_nr_longitute').val();
+	var filial_nm_cidade  	 	= ct_element.find('.filial_nm_cidade').val();
+	var filial_cd_cidade_ibge 	= ct_element.find('.filial_cd_cidade_ibge').val();
+	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
+	var endereco_id 	 		= ct_element.find('.filial_endereco_id').val();
+	var clinica_id 				= $('#clinica_id').val();
+	
+    if(nm_nome_fantasia.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O Nome de fantasia da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_cep.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O CEP da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_endereco.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O Endereço da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_nr_logradouro.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O Número do logradouro da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_te_bairro.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O nome do Bairro da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_nr_latitude.length == 0 | filial_nr_longitute.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "A Latitude e a Longitude da Filial são campos obrigatórios!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_nm_cidade.length == 0 | filial_cd_cidade_ibge.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "O nome do cidade e o Código do IBGE são campos obrigatórios!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_sg_estado.length == 0) {
+
+    	swal({
+	            title: 'DoctorHoje: Alerta!',
+	            text: "A UF da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    $(input).find('i').removeClass('mdi mdi-content-save').addClass('fa fa-spin fa-spinner');
+
+    var nm_nome_fantasia 	 	= ct_element.find('.nm_nome_fantasia').val();
+	var filial_cep 			 	= ct_element.find('.filial_cep').val();
+	var filial_endereco 	 	= ct_element.find('.filial_endereco').val();
+	var filial_nr_logradouro 	= ct_element.find('.filial_nr_logradouro').val();
+	var filial_te_bairro 	 	= ct_element.find('.filial_te_bairro').val();
+	var filial_nr_latitude 	 	= ct_element.find('.filial_nr_latitude').val();
+	var filial_nr_longitute  	= ct_element.find('.filial_nr_longitute').val();
+	var filial_nm_cidade  	 	= ct_element.find('.filial_nm_cidade').val();
+	var filial_cd_cidade_ibge 	= ct_element.find('.filial_cd_cidade_ibge').val();
+	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
+	var eh_matriz				= 'N';
+
+	if(filial_eh_matriz) {
+		eh_matriz = 'S';
+	}
+
+    jQuery.ajax({
+		type: 'POST',
+	  	url: '/add-filial',
+	  	data: {
+		  	'filial_id': filial_id,
+		  	'filial_eh_matriz': eh_matriz,
+			'nm_nome_fantasia': nm_nome_fantasia,
+			'filial_cep': filial_cep,
+			'filial_endereco': filial_endereco,
+			'filial_nr_logradouro': filial_nr_logradouro,
+			'filial_te_bairro': filial_te_bairro,
+			'filial_nr_latitude': filial_nr_latitude,
+			'filial_nr_longitute': filial_nr_longitute,
+			'filial_nm_cidade': filial_nm_cidade,
+			'filial_cd_cidade_ibge': filial_cd_cidade_ibge,
+			'filial_sg_estado': filial_sg_estado,
+			'clinica_id': clinica_id,
+			'endereco_id': endereco_id,
+			'_token': laravel_token
+		},
+		success: function (result) {
+
+			if( result.status) {
+				var endereco_id = result.endereco_id;
+				var filial_id 	= result.filial_id;
+
+				ct_element.find('.filial_id').val(filial_id)
+				ct_element.find('.filial_endereco_id').val(endereco_id)
+				
+				swal({
+                    title: 'DoctorHoje',
+                    text: result.mensagem,
+                    type: 'success',
+                    confirmButtonClass: 'btn btn-confirm mt-2',
+                    confirmButtonText: 'OK'
+                }).then(function () {
+                    window.location.reload(false); 
+                });
+				
+			} else {
+				$.Notification.notify('error','top right', 'DoctorHoje', result.mensagem);
+			}
+
+			$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('mdi mdi-content-save');
+        },
+        error: function (result) {
+        	$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('mdi mdi-content-save');
+        	$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+        }
+	});
+}
+
 function removerFilial(input) {
 
-	var nome_filial = $(input).parent().parent().find('input#nm_nome_fantasia').val();
+	var nome_filial = $(input).parent().parent().find('input.nm_nome_fantasia').val();
 	var mensagem = 'Tem certeza que deseja remover a Filial: '+nome_filial;
     swal({
         title: mensagem,
@@ -598,160 +876,5 @@ function removerFilial(input) {
             }
         );
     });
-}
-
-function salvarFilial(ct_element) {
-	
-	var nm_nome_fantasia 	 	= ct_element.find('.nm_nome_fantasia').val();
-	var filial_cep 			 	= ct_element.find('.filial_cep').val();
-	var filial_endereco 	 	= ct_element.find('.filial_endereco').val();
-	var filial_nr_logradouro 	= ct_element.find('.filial_nr_logradouro').val();
-	var filial_te_bairro 	 	= ct_element.find('.filial_te_bairro').val();
-	var filial_nr_latitude 	 	= ct_element.find('.filial_nr_latitude').val();
-	var filial_nr_longitute  	= ct_element.find('.filial_nr_longitute').val();
-	var filial_nm_cidade  	 	= ct_element.find('.filial_nm_cidade').val();
-	var filial_cd_cidade_ibge 	= ct_element.find('.filial_cd_cidade_ibge').val();
-	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
-	
-    if(nm_nome_fantasia.val().length == 0) {
-
-    	swal({
-	            title: 'DoctorHoje: Alerta!',
-	            text: "O Nome de fantasia da Filial é campo obrigatório!",
-	            type: 'warning',
-	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        }
-	    );
-        return false;
-    }
-
-    if(filial_cep.val().length == 0) {
-
-    	swal({
-	            title: 'DoctorHoje: Alerta!',
-	            text: "O CEP da Filial é campo obrigatório!",
-	            type: 'warning',
-	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        }
-	    );
-        return false;
-    }
-
-    if(filial_endereco.val().length == 0) {
-
-    	swal({
-	            title: 'DoctorHoje: Alerta!',
-	            text: "O Endereço da Filial é campo obrigatório!",
-	            type: 'warning',
-	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        }
-	    );
-        return false;
-    }
-
-    if(filial_nr_logradouro.val().length == 0) {
-
-    	swal({
-	            title: 'DoctorHoje: Alerta!',
-	            text: "O Número do logradouro da Filial é campo obrigatório!",
-	            type: 'warning',
-	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        }
-	    );
-        return false;
-    }
-
-    if(filial_te_bairro.val().length == 0) {
-
-    	swal({
-	            title: 'DoctorHoje: Alerta!',
-	            text: "O nome do Bairro da Filial é campo obrigatório!",
-	            type: 'warning',
-	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        }
-	    );
-        return false;
-    }
-
-    if(filial_nr_latitude.val().length == 0 | filial_nr_longitute.val().length == 0) {
-
-    	swal({
-	            title: 'DoctorHoje: Alerta!',
-	            text: "A Latitude e a Longitude da Filial são campos obrigatórios!",
-	            type: 'warning',
-	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        }
-	    );
-        return false;
-    }
-
-    if(filial_nm_cidade.val().length == 0 | filial_cd_cidade_ibge.val().length == 0) {
-
-    	swal({
-	            title: 'DoctorHoje: Alerta!',
-	            text: "O nome do cidade e o Código do IBGE são campos obrigatórios!",
-	            type: 'warning',
-	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        }
-	    );
-        return false;
-    }
-
-    if(filial_sg_estado.val().length == 0) {
-
-    	swal({
-	            title: 'DoctorHoje: Alerta!',
-	            text: "A UF da Filial é campo obrigatório!",
-	            type: 'warning',
-	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        }
-	    );
-        return false;
-    }
-
-    var nm_nome_fantasia 	 	= ct_element.find('.nm_nome_fantasia').val();
-	var filial_cep 			 	= ct_element.find('.filial_cep').val();
-	var filial_endereco 	 	= ct_element.find('.filial_endereco').val();
-	var filial_nr_logradouro 	= ct_element.find('.filial_nr_logradouro').val();
-	var filial_te_bairro 	 	= ct_element.find('.filial_te_bairro').val();
-	var filial_nr_latitude 	 	= ct_element.find('.filial_nr_latitude').val();
-	var filial_nr_longitute  	= ct_element.find('.filial_nr_longitute').val();
-	var filial_nm_cidade  	 	= ct_element.find('.filial_nm_cidade').val();
-	var filial_cd_cidade_ibge 	= ct_element.find('.filial_cd_cidade_ibge').val();
-	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
-
-    jQuery.ajax({
-		type: 'POST',
-	  	url: '/add-filial',
-	  	data: {
-			'nm_nome_fantasia': nm_nome_fantasia,
-			'filial_cep': filial_cep,
-			'filial_endereco': filial_endereco,
-			'filial_nr_logradouro': filial_nr_logradouro,
-			'filial_te_bairro': filial_te_bairro,
-			'filial_nr_latitude': filial_nr_latitude,
-			'filial_nr_longitute': filial_nr_longitute,
-			'filial_nm_cidade': filial_nm_cidade,
-			'filial_cd_cidade_ibge': filial_cd_cidade_ibge,
-			'filial_sg_estado': filial_sg_estado,
-			'_token': laravel_token
-		},
-		success: function (result) {
-
-			if( result != null) {
-				var json = JSON.parse(result.atendimento);
-				
-				$('#tipo_especialidade').empty();
-				for(var i=0; i < json.length; i++) {
-					var option = '<option value="'+json[i].id+'">'+json[i].descricao+'</option>';
-					$('#tipo_especialidade').append($(option));
-				}
-				
-			}
-        },
-        error: function (result) {
-        	$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
-        }
-	});
 }
 </script>
