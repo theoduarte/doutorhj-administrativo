@@ -94,6 +94,18 @@
 							<td width="25%">Estado</td>
 							<td width="75%">{{$cidade->sg_estado}}</td>
 						</tr>
+						<tr>
+							<td width="25%"><h4>**** LISTA DE FILIAIS ****</h4></td>
+							<td width="75%"></td>
+						</tr>
+						@foreach ( $list_filials as $filial )
+						<tr>
+							<td width="25%">
+                                <strong><em>@if( $filial->eh_matriz == 'S' ) (Matriz) @endif {{ $filial->nm_nome_fantasia }}</em></strong>
+							</td>
+							<td width="75%"><strong>Endr:</strong> {{ $filial->endereco->te_endereco.', '.$filial->endereco->nr_logradouro.', '.$filial->endereco->te_complemento.', '.$filial->endereco->te_bairro.', '.$filial->endereco->cidade->nm_cidade.' - '.$filial->endereco->cidade->sg_estado.', CEP: '.$filial->endereco->nr_cep }}</td>
+						</tr>
+                         @endforeach
 					</tbody>
 				</table>
 

@@ -37,6 +37,10 @@ Route::post('delete-profissional', 'ClinicaController@deleteProfissionalDestroy'
 Route::post('add-filial', 'FilialController@addFilialStore')->middleware('auth');
 Route::post('delete-filial', 'FilialController@deleteFilialDestroy')->middleware('auth');
 
+Route::post('add-tag-popular', 'TagPopularController@addTagPopularStore')->middleware('auth');
+Route::post('load-tag-popular', 'TagPopularController@loadTagPopularList')->middleware('auth');
+Route::post('delete-tag-popular', 'TagPopularController@deleteTagPopularDestroy')->middleware('auth');
+
 Route::post('clinicas/{clinica}/edit/add-precificacao-procedimento', 'ClinicaController@addProcedimentoPrecoStore')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/delete-procedimento', 'ClinicaController@deleteProcedimentoDestroy')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/add-precificacao-consulta', 'ClinicaController@addConsultaPrecoStore')->middleware('auth');

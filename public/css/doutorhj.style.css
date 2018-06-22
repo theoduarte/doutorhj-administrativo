@@ -119,6 +119,30 @@ ul.list-profissional-especialidade li {
 	visibility: hidden;
 }
 
+.cvx-card-header a,
+.cvx-card-list a {
+	color: #4c5667;
+}
+
+.cvx-card-list i {
+	color:  #3bafda;
+}
+
+.cvx-card-header i:before {
+	font-family: "Ionicons";
+	font-weight: bold;
+  	font-style: normal;
+	content: "\f123";
+	color:  #3bafda;
+}
+
+.cvx-card-header a.collapsed i:before{
+	font-family: "Ionicons";
+	font-weight: bold;
+  	font-style: normal;
+	content:"\f125"
+}
+
 @media screen and (max-width:520px) {
     ul.list-profissional-especialidade li#three {
         clear:left;

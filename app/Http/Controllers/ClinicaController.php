@@ -218,6 +218,8 @@ class ClinicaController extends Controller
         $prestador->load('contatos');
         $prestador->load('documentos');
         $prestador->load('profissionals');
+        
+        $list_filials = Filial::with('endereco')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('eh_matriz','desc')->get();
 
         $list_profissionals = $prestador->profissionals;
         $list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->get();
@@ -234,7 +236,7 @@ class ClinicaController extends Controller
         $precoconsultas->load('consulta');
 
 
-        return view('clinicas.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'list_profissionals', 'list_especialidades', 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
+        return view('clinicas.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'list_filials', 'list_profissionals', 'list_especialidades', 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
     }
 
     /**

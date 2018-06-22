@@ -210,6 +210,8 @@ class FilialController extends Controller
     	$filial->cs_status = 'I';
     
     	if ($filial->save()) {
+    		
+    		$filial->profissionals()->detach();
     
     		# registra log
     		$filial_obj           = $filial->toJson();
@@ -217,7 +219,7 @@ class FilialController extends Controller
     
     		$log = "[$filial_obj]";
     
-    		$this->registrarLog('Excluir Filial', $log, 4);
+    		$registro_obj->registrarLog('Excluir Filial', $log, 4);
     
     	} else {
     		return response()->json(['status' => false, 'mensagem' => 'A Filial não foi removida. Por favor, tente novamente.']);
