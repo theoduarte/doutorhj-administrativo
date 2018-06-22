@@ -60,8 +60,9 @@
     					<td>{{$atendimento->getVlComercialAtendimento()}}</td>
     					<td>{{$atendimento->getVlNetAtendimento()}}</td>
     					<td>
+    						<a onclick="loadTags(this, {{ $atendimento->id }}, '{{$atendimento->ds_preco}}')" class="btn btn-icon waves-effect btn-success btn-sm m-b-5" data-toggle="tooltip" data-placement="left" title="Nomes Populares"><i class="mdi mdi-tag-multiple"></i> Tags</a>
     						<a onclick="loadDataConsulta(this, {{ $atendimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
-	                 		<a onclick="delLinhaConsulta(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Remover</a>
+	                 		<a onclick="delLinhaConsulta(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Excluir</a>
     					</td>
     				</tr>
 				@endforeach 
