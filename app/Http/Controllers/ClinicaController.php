@@ -755,6 +755,7 @@ class ClinicaController extends Controller
         $ds_atendimento = CVXRequest::post('ds_atendimento');
         $vl_com_atendimento = CVXRequest::post('vl_com_atendimento');
         $vl_net_atendimento = CVXRequest::post('vl_net_atendimento');
+        $profissional_id = CVXRequest::post('profissional_id');
 
         if (isset($atendimento)) {
 
@@ -763,6 +764,7 @@ class ClinicaController extends Controller
             $atendimento->ds_preco =  $ds_atendimento;
             $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_atendimento);
             $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_atendimento);
+            $atendimento->profissional_id = $profissional_id;
 
             if ($atendimento->save()) {
 

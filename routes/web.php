@@ -42,9 +42,12 @@ Route::post('load-tag-popular', 'TagPopularController@loadTagPopularList')->midd
 Route::post('delete-tag-popular', 'TagPopularController@deleteTagPopularDestroy')->middleware('auth');
 
 Route::post('clinicas/{clinica}/edit/add-precificacao-procedimento', 'ClinicaController@addProcedimentoPrecoStore')->middleware('auth');
+Route::post('load-data-atendimento', 'AtendimentoController@loadAtendimentoShow')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/delete-procedimento', 'ClinicaController@deleteProcedimentoDestroy')->middleware('auth');
+
 Route::post('clinicas/{clinica}/edit/add-precificacao-consulta', 'ClinicaController@addConsultaPrecoStore')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/delete-consulta', 'ClinicaController@deleteConsultaDestroy')->middleware('auth');
+
 Route::post('clinicas/{clinica}/edit/edit-precificacao-atendimento', 'ClinicaController@editAtendimentoPrecoUpdate')->middleware('auth');
 Route::get('profissionais/{idClinica}', 'ProfissionalController@getProfissionaisPorClinica')->middleware('auth');
 

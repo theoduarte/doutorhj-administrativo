@@ -857,6 +857,8 @@ function removerFilial(input) {
 	            confirmButtonClass: 'btn btn-confirm mt-2'
 	        }
 	    );
+
+    	$(input).parent().parent().remove();
         return false;
     }
 	

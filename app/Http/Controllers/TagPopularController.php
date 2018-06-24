@@ -123,6 +123,9 @@ class TagPopularController extends Controller
     	   
     			return response()->json(['status' => false, 'mensagem' => 'O Nome Popular não foi salvo. Por favor, tente novamente.']);
     		}
+    		
+    		$list_tag_popular = TagPopular::where('atendimento_id', $tag_atendimento_id)->orderBy('cs_tag','asc')->get();
+    		
     	} catch (\Exception $e) {
     		########### FINISHIING TRANSACTION ##########
     		DB::rollback();
@@ -134,7 +137,7 @@ class TagPopularController extends Controller
     	DB::commit();
     	#############################################
     
-    	return response()->json(['status' => true, 'mensagem' => 'O Nome Popular foi salvo com sucesso!', 'tipo_atendimento' => $tipo_atendimento, 'tag_popular' => $tag_popular->toJson()]);
+    	return response()->json(['status' => true, 'mensagem' => 'O Nome Popular foi salvo com sucesso!', 'tipo_atendimento' => $tipo_atendimento, 'list_tag_popular' => $list_tag_popular->toJson()]);
     }
     
     /**

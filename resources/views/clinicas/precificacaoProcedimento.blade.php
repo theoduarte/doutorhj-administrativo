@@ -60,12 +60,12 @@
     					<td>{{$procedimento->id}} <input type="hidden" class="procedimento_id" value="{{ $procedimento->procedimento->id }}"> <input type="hidden" class="profissional_id" value="{{ $procedimento->profissional->id }}"></td>
     					<td>{{$procedimento->procedimento->cd_procedimento}}</td>
     					<td>{{$procedimento->ds_preco}}</td>
-    					<td>{{$procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }}</td>
+    					<td>@if($procedimento->profissional->cs_status == 'A') {{$procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }} @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA PROFISSIONAL SELECIONADO</span> @endif</td>
     					<td>{{$procedimento->getVlComercialAtendimento()}}</td>
     					<td>{{$procedimento->getVlNetAtendimento()}}</td>
     					<td>
     						<a onclick="loadTags(this, {{ $procedimento->id }}, '{{$procedimento->ds_preco}}')" class="btn btn-icon waves-effect btn-success btn-sm m-b-5" data-toggle="tooltip" data-placement="left" title="Nomes Populares"><i class="mdi mdi-tag-multiple"></i> Tags</a>
-    						<a onclick="loadDataProcedimento(this, {{ $procedimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+    						<a onclick="loadDataAtendimento(this, {{ $procedimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
 	                 		<a onclick="delLinhaProcedimento(this, '{{ $procedimento->ds_preco }}', '{{ $procedimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Excluir</a>
     					</td>
     				</tr>
@@ -105,7 +105,13 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="nm_profissional_edit" class="control-label">Profissional</label>
-                            <input type="text" id="nm_profissional_edit" class="form-control" name="nm_profissional_edit" placeholder="Nome do Profissional" readonly="readonly">
+                            <!-- <input type="text" id="nm_profissional_edit" class="form-control" name="nm_profissional_edit" placeholder="Nome do Profissional" > -->
+                            <select id="proced_profissional_id" class="form-control" name="nm_profissional_edit">
+                            	<option value="">--- NENHUM PROFISSIONAL SELECIONADO ----</option>
+        			            @foreach($list_profissionals as $profissional)
+        			            <option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.' ('.$profissional->documentos->first()->tp_documento.': '.$profissional->documentos->first()->te_documento.')' }}</option>
+        			            @endforeach
+        		            </select>
                         </div>
                     </div>
                 </div>
@@ -138,7 +144,7 @@
             <div class="modal-body" style="padding: 0px;">
             	<div id="accordion" role="tablist" aria-multiselectable="true">
             		<div class="card">
-            			<div class="card-header cvx-card-header" role="tab" id="headingOne">
+            			<div class="card-header cvx-card-header cvx-card-header-procedimento" role="tab" id="headingOne">
             				<h5 class="mb-0 mt-0">
             					<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i></i> ADICIONAR NOME POPULAR</a>
             				</h5>
@@ -250,10 +256,12 @@
 			var ds_atendimento = $('#ds_procedimento_edit').val();
 			var vl_com_atendimento = $('#vl_com_atendimento_edit').val();
 			var vl_net_atendimento = $('#vl_net_atendimento_edit').val();
+			var proced_profissional_id = $('#proced_profissional_id').val();
 			
 			if( ds_atendimento.length == 0 ) { $('#ds_procedimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; } 
 			if( vl_com_atendimento.length == 0 ) { $('#vl_com_atendimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
 			if( vl_net_atendimento.length == 0 ) { $('#vl_net_atendimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
+			if( proced_profissional_id.length == 0 ) { $('#proced_profissional_id').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Nenhum Profissional Selecionado</strong></span>'); return false; }
 			
 			jQuery.ajax({
 				type: 'POST',
@@ -263,6 +271,7 @@
 					'ds_atendimento': ds_atendimento,
 					'vl_com_atendimento': vl_com_atendimento,
 					'vl_net_atendimento': vl_net_atendimento,
+					'profissional_id': proced_profissional_id,
 					'_token': laravel_token
 				},
 	            success: function (result) {
@@ -415,24 +424,46 @@
 		});
     }
 
-    function loadDataProcedimento(element, atendimento_id) {
+    function loadDataAtendimento(element, atendimento_id) {
 
-    	/* var atendimento_id = $(element).parent().parent().find('td:nth-child(1)').html();
-    	var procedimento_id = $(element).parent().parent().find('input.procedimento_id').val();
-    	var ds_preco = $(element).parent().parent().find('td:nth-child(3)').html();
-    	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
-    	var profissional_id = $(element).parent().parent().find('input.profissional_id').val();
-    	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(5)').html();
-    	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
+    	jQuery.ajax({
+			type: 'POST',
+			url: '/load-data-atendimento',
+			data: {
+				'atendimento_id': atendimento_id,
+				'_token': laravel_token
+			},
+            success: function (result) {
+                
+	            if(result.status) {
 
-    	$('#atendimento_id').val(atendimento_id);
-    	$('#procedimento_id').val(procedimento_id);
-    	$('#atendimento_profissional_id').val(profissional_id);
-    	$('#nm_profissional').val(nm_profissional);
-    	$('#ds_procedimento').val(ds_preco);
-    	$('#cd_procedimento').val(cd_procedimento);
-    	$('#vl_com_procedimento').val(vl_com_atendimento);
-    	$('#vl_net_procedimento').val(vl_net_atendimento); */
+		            var atendimento = JSON.parse(result.atendimento);
+		            var nao_tem_atendimento = true;
+
+		            $('#proced_profissional_id option').each(function(index){
+			            if($(this).val() == atendimento.profissional_id) {
+			            	//$(this).attr('selected','selected');
+			            	$('#proced_profissional_id').prop("selectedIndex", index);
+			            	nao_tem_atendimento = false;
+			            }
+			        });
+
+			        if(nao_tem_atendimento) {
+			        	$('#proced_profissional_id').prop("selectedIndex", 0);
+			        }
+	                 
+	            }
+            },
+            error: function (result) {
+            	
+                swal(({
+    	            title: "Oops",
+    	            text: "Falha na operação!",
+    	            type: 'error',
+    	            confirmButtonClass: 'btn btn-confirm mt-2'
+    			}));
+            }
+		});
 
     	var cd_procedimento = $(element).parent().parent().find('td:nth-child(2)').html();
     	var ds_procedimento = $(element).parent().parent().find('td:nth-child(3)').html();
@@ -585,19 +616,30 @@
                 
 	            if(result.status) {
 
-		            var tag_popular = JSON.parse(result.tag_popular);
+	            	var list_tag_popular = JSON.parse(result.list_tag_popular);
 
-		            var num_elements = $('#list-all-tags-populares tr').length;
-		          	num_elements++;
+		            var num_tags = list_tag_popular.length;
 
-		            var content = '<tr> \
-		      	  		<td class="num_filial">'+tag_popular.id+'</td> \
-		        		<td>'+tag_popular.cs_tag+'</td> \
-		        		<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Editar Tag Popular" onclick="editTagPopular(this)" style="margin-top: 2px;"><i class="ion-edit"></i></button></td> \
-		        		<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Tag Popular" onclick="removerTagPopular(this, '+"'"+tag_popular.cs_tag+"'"+', '+tag_popular.id+')" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
-		        	</tr>';
+		            $('#list-all-tags-populares').empty();
+		            
+		            for(var i = 0; i < num_tags; i++) {
 
-		            $('#list-all-tags-populares').append(content);
+			            var index = i+1;
+			            var tag_id = list_tag_popular[i].id;
+			            var cs_tag = list_tag_popular[i].cs_tag;
+			            
+		            	var content_item = '<tr> \
+			      	  		<td class="num_filial">'+tag_id+'</td> \
+			        		<td>'+cs_tag+'</td> \
+			        		<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Editar Tag Popular" onclick="editTagPopular(this)" style="margin-top: 2px;"><i class="ion-edit"></i></button></td> \
+			        		<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Tag Popular" onclick="removerTagPopular(this, '+"'"+cs_tag+"'"+', '+tag_id+')" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
+			        	</tr>';
+
+		            	 $('#list-all-tags-populares').append(content_item);
+		            	    
+		            }
+
+		            $('#ct_tag_id').val('');
 		            $('#cs_tag').val('');
 
 		            $.Notification.notify('success','top right', 'DrHoje', result.mensagem);
@@ -632,10 +674,10 @@
     	$('#ct_tag_id').val(ct_tag_id);
     	$('#cs_tag').val(cs_tag);
 
-    	if($('.cvx-card-header').find('a').hasClass('collapsed')) {
+    	if($('.cvx-card-header-procedimento').find('a').hasClass('collapsed')) {
 //     		$('.cvx-card-header').find('a').removeClass('collapsed');
 //     		$('.cvx-card-header').find('a').attr('aria-expanded, 'false');
-			$('.cvx-card-header').find('a').trigger("click");
+			$('.cvx-card-header-procedimento').find('a').trigger("click");
     	}
     }
 
