@@ -35,7 +35,7 @@ class ConsultaController extends Controller
         $get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	
-    	$consultas = Consulta::where(DB::raw('to_str(cd_consulta)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(ds_consulta)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    	$consultas = Consulta::with('tag_populars')->where(DB::raw('to_str(cd_consulta)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(ds_consulta)'), 'LIKE', '%'.$search_term.'%')->orderby('ds_consulta', 'asc')->sortable()->paginate(10);
     	
     	return view('consultas.index', compact('consultas'));
     }

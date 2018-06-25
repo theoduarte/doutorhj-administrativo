@@ -17,11 +17,6 @@ class Atendimento extends Model
 	    return $this->hasMany('App\Agendamento');
 	}
 	
-	public function tag_populars()
-	{
-	    return $this->hasMany('App\TagPopular');
-	}
-
 	public function clinica(){
 	    return $this->belongsTo('App\Clinica');
 	}

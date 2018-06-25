@@ -26,4 +26,9 @@ class Consulta extends Model
     {
         return $this->hasMany('App\Atendimento');
     }
+    
+    public function tag_populars()
+    {
+    	return $this->hasMany('App\TagPopular');
+    }
 }

@@ -116,16 +116,18 @@ class TagPopularController extends Controller
     			$tag_popular = new TagPopular();
     		}
     
-    		$tag_popular->cs_tag 			= $cs_tag;
-    		$tag_popular->atendimento_id 	= $tag_atendimento_id;
+    		$tag_popular->cs_tag = $cs_tag;
+    		
+    		if ($tipo_atendimento == 'proced') {
+    			$tag_popular->procedimento_id = $tag_atendimento_id;
+    		} elseif ($tipo_atendimento == 'consulta') {
+    			$tag_popular->consulta_id = $tag_atendimento_id;
+    		}
     		    	  
     		if (!$tag_popular->save()) {
     	   
     			return response()->json(['status' => false, 'mensagem' => 'O Nome Popular não foi salvo. Por favor, tente novamente.']);
     		}
-    		
-    		$list_tag_popular = TagPopular::where('atendimento_id', $tag_atendimento_id)->orderBy('cs_tag','asc')->get();
-    		
     	} catch (\Exception $e) {
     		########### FINISHIING TRANSACTION ##########
     		DB::rollback();
@@ -137,7 +139,7 @@ class TagPopularController extends Controller
     	DB::commit();
     	#############################################
     
-    	return response()->json(['status' => true, 'mensagem' => 'O Nome Popular foi salvo com sucesso!', 'tipo_atendimento' => $tipo_atendimento, 'list_tag_popular' => $list_tag_popular->toJson()]);
+    	return response()->json(['status' => true, 'mensagem' => 'O Nome Popular foi salvo com sucesso!', 'tipo_atendimento' => $tipo_atendimento, 'tag_popular' => $tag_popular->toJson()]);
     }
     
     /**
@@ -149,8 +151,15 @@ class TagPopularController extends Controller
     public function loadTagPopularList(Request $request)
     {
     	$tag_atendimento_id 	= CVXRequest::post('tag_atendimento_id');
+    	$tipo_tag 				= CVXRequest::post('tipo_tag');
     	
-    	$list_tag_popular = TagPopular::where('atendimento_id', $tag_atendimento_id)->orderBy('cs_tag','asc')->get();
+    	$list_tag_popular = [];
+    	
+    	if($tipo_tag == 'proced') {
+    		$list_tag_popular = TagPopular::where('procedimento_id', $tag_atendimento_id)->orderBy('cs_tag','asc')->get();
+    	} elseif ($tipo_tag == 'consulta') {
+    		$list_tag_popular = TagPopular::where('consulta_id', $tag_atendimento_id)->orderBy('cs_tag','asc')->get();
+    	}
     	
     	return response()->json(['status' => true, 'list_tag_popular' => $list_tag_popular->toJson()]);
     }

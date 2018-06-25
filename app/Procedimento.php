@@ -27,6 +27,11 @@ class Procedimento extends Model
         return $this->hasMany('App\Atendimento');
     }
     
+    public function tag_populars()
+    {
+    	return $this->hasMany('App\TagPopular');
+    }
+    
     public function especialidades()
     {
         return $this->belongsToMany('App\Especialidade');

@@ -13,8 +13,13 @@ class TagPopular extends Model
     
     public $sortable = ['id', 'cs_tag', 'atendimento_id'];
     
-    public function atendimento()
+    public function procedimento()
     {
-        return $this->belongsTo('App\Atendimento');
+        return $this->belongsTo('App\Procedimento');
+    }
+    
+    public function consulta()
+    {
+    	return $this->belongsTo('App\Consulta');
     }
 }
