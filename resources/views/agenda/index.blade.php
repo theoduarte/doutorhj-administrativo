@@ -226,7 +226,7 @@
                                     <span class="text-primary">
                                     	{{ sprintf("%02d", $agenda->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $agenda->count()) }} Registro(s) exibido(s)
                                     </span>
-    								{!! $agenda->links() !!}
+    								{!! $agenda->appends(request()->input())->links() !!}
     							</div>
 							</tfoot>
 						</div>
