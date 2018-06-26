@@ -60,7 +60,7 @@
     					<td>{{$procedimento->id}} <input type="hidden" class="procedimento_id" value="{{ $procedimento->procedimento->id }}"> <input type="hidden" class="profissional_id" value="{{ $procedimento->profissional->id }}"></td>
     					<td>{{$procedimento->procedimento->cd_procedimento}}</td>
     					<td>{{$procedimento->ds_preco}}</td>
-    					<td>{{$procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }}</td>
+    					<td>@if($procedimento->profissional->cs_status == 'A') {{$procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }} @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA PROFISSIONAL SELECIONADO</span> @endif</td>
     					<td>{{$procedimento->getVlComercialAtendimento()}}</td>
     					<td>{{$procedimento->getVlNetAtendimento()}}</td>
     					<td>
