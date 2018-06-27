@@ -47,6 +47,7 @@
 					<th width="80">Código</th>
 					<th width="380">Consulta</th>
 					<th width="300">Profissional</th>
+					<th width="300">Nomes Populares</th>
 					<th width="100">Vl. Com. (R$)</th>
 					<th width="100">Vl. NET (R$)</th>
 					<th width="10">Ação</th>
@@ -54,9 +55,10 @@
     			@foreach( $precoconsultas as $atendimento )
     				<tr id="tr-{{$atendimento->id}}">
     					<td>{{$atendimento->id}} <input type="hidden" class="consulta_id" value="{{ $atendimento->consulta->id }}"> <input type="hidden" class="profissional_id" value="{{ $atendimento->profissional->id }}"></td>
-    					<td>{{$atendimento->consulta->cd_consulta}}</td>
+    					<td><a href="{{ route('consultas.show', $atendimento->consulta->id) }}" title="Exibir" class="cvx-link-login"><i class="ion-search"></i> {{$atendimento->consulta->cd_consulta}}</a></td>
     					<td>{{$atendimento->ds_preco}}</td>
     					<td>@if($atendimento->profissional->cs_status == 'A') {{$atendimento->profissional->nm_primario.' '.$atendimento->profissional->nm_secundario.' ('.$atendimento->profissional->documentos()->first()->tp_documento.': '.$atendimento->profissional->documentos->first()->te_documento.')' }} @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA PROFISSIONAL SELECIONADO</span> @endif</td>
+    					<td>@if( isset($atendimento->consulta->tag_populars) && sizeof($atendimento->consulta->tag_populars) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->consulta->tag_populars as $tag) <li><i class="mdi mdi-check"></i> {{ $tag->cs_tag }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="ion-close-circled"></i></span>  @endif</td>
     					<td>{{$atendimento->getVlComercialAtendimento()}}</td>
     					<td>{{$atendimento->getVlNetAtendimento()}}</td>
     					<td>

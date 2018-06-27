@@ -51,21 +51,23 @@
 					<th width="80">Código</th>
 					<th width="380">Procedimento</th>
 					<th width="300">Profissional</th>
+					<th width="300">Nomes Populares</th>
 					<th width="100">Vl. Com. (R$)</th>
 					<th width="100">Vl. NET (R$)</th>
 					<th width="10">Ação</th>
 				</tr>
-    			@foreach( $precoprocedimentos as $procedimento )
-    				<tr id="tr-{{$procedimento->id}}">
-    					<td>{{$procedimento->id}} <input type="hidden" class="procedimento_id" value="{{ $procedimento->procedimento->id }}"> <input type="hidden" class="profissional_id" value="{{ $procedimento->profissional->id }}"></td>
-    					<td>{{$procedimento->procedimento->cd_procedimento}}</td>
-    					<td>{{$procedimento->ds_preco}}</td>
-    					<td>{{$procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }}</td>
-    					<td>{{$procedimento->getVlComercialAtendimento()}}</td>
-    					<td>{{$procedimento->getVlNetAtendimento()}}</td>
+    			@foreach( $precoprocedimentos as $atendimento )
+    				<tr id="tr-{{$atendimento->id}}">
+    					<td>{{$atendimento->id}} <input type="hidden" class="procedimento_id" value="{{ $atendimento->procedimento->id }}"> <input type="hidden" class="profissional_id" value="{{ $atendimento->profissional->id }}"></td>
+    					<td><a href="{{ route('procedimentos.show', $atendimento->procedimento->id) }}" title="Exibir" class="cvx-link-login"><i class="ion-search"></i> {{$atendimento->procedimento->cd_procedimento}}</a></td>
+    					<td>{{$atendimento->ds_preco}}</td>
+    					<td>{{$atendimento->profissional->nm_primario.' '.$atendimento->profissional->nm_secundario.' ('.$atendimento->profissional->documentos()->first()->tp_documento.': '.$atendimento->profissional->documentos->first()->te_documento.')' }}</td>
+    					<td>@if( isset($atendimento->procedimento->tag_populars) && sizeof($atendimento->procedimento->tag_populars) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->procedimento->tag_populars as $tag) <li><i class="mdi mdi-check"></i> {{ $tag->cs_tag }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="ion-close-circled"></i></span>  @endif</td>
+    					<td>{{$atendimento->getVlComercialAtendimento()}}</td>
+    					<td>{{$atendimento->getVlNetAtendimento()}}</td>
     					<td>
-    						<a onclick="loadDataProcedimento(this, {{ $procedimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
-	                 		<a onclick="delLinhaProcedimento(this, '{{ $procedimento->ds_preco }}', '{{ $procedimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Excluir</a>
+    						<a onclick="loadDataProcedimento(this, {{ $atendimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+	                 		<a onclick="delLinhaProcedimento(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Excluir</a>
     					</td>
     				</tr>
 				@endforeach 
