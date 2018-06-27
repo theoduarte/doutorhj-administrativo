@@ -9,8 +9,8 @@ class Clinica extends Model
 {
 	use Sortable;
 	
-    public $fillable = ['nm_razao_social', 'nm_fantasia'];
-    public $sortable = ['id', 'nm_razao_social', 'nm_fantasia'];
+    public $fillable = ['nm_razao_social', 'nm_fantasia', 'cs_status', 'obs_procedimento'];
+    public $sortable = ['id', 'nm_razao_social', 'nm_fantasia', 'cs_status', 'obs_procedimento'];
 	
     public function responsavel(){
         return $this->belongsTo('App\Responsavel');

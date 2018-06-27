@@ -101,6 +101,19 @@
                         @endif
                     </div>
                 </div>
+                <div class="form-group{{ $errors->has('obs_procedimento') ? ' has-error' : '' }}">
+                    <div class="row">
+                        <label for="obs_procedimento" class="col-12 control-label">Observação para Exames/Procedimentos</label>
+                        <div class="col-8">
+                            <textarea rows="1" cols="10" id="obs_procedimento" class="form-control" name="obs_procedimento" value="{{ old('obs_procedimento') }}"></textarea>
+                            @if ($errors->has('obs_procedimento'))
+                            <span class="help-block text-danger">
+                            	<strong>{{ $errors->first('obs_procedimento') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

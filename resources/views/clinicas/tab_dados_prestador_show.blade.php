@@ -13,6 +13,10 @@
 							<td width="75%">{{$prestador->nm_fantasia}}</td>
 						</tr>
 						<tr>
+							<td width="25%">Obs. Exames/Procedimentos</td>
+							<td width="75%">@if($prestador->obs_procedimento != '') <em>{{$prestador->obs_procedimento}} </em> @else -------- @endif </td>
+						</tr>
+						<tr>
 							<td width="25%"><h4>Dados do Responsável</h4></td>
 							<td width="75%"></td>
 						</tr>
