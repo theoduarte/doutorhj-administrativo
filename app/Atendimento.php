@@ -33,6 +33,11 @@ class Atendimento extends Model
 	    return $this->belongsTo('App\Profissional');
 	}
 	
+	public function filials()
+	{
+		return $this->belongsToMany('App\Filial');
+	}
+	
 	public function getVlNetAtendimentoAttribute($valor){
 	    return number_format( $valor,  2, ',', '.');
 	}

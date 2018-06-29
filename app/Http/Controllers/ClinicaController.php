@@ -548,6 +548,19 @@ class ClinicaController extends Controller
 
         return $profissional;
     }
+    
+    /**
+     * Perform relationship.
+     *
+     * @param  \App\Profissional  $profissional
+     * @return \Illuminate\Http\Response
+     */
+    private function setAtendimentoRelations(Atendimento $atendimento, array $filial_ids)
+    {
+    	$atendimento->filials()->sync($filial_ids);
+    
+    	return $atendimento;
+    }
 
     //############# AJAX SERVICES ##################
     /**
@@ -755,7 +768,8 @@ class ClinicaController extends Controller
         $ds_atendimento = CVXRequest::post('ds_atendimento');
         $vl_com_atendimento = CVXRequest::post('vl_com_atendimento');
         $vl_net_atendimento = CVXRequest::post('vl_net_atendimento');
-        $profissional_id = CVXRequest::post('profissional_id');
+        //$profissional_id = CVXRequest::post('profissional_id');
+        $filial_ids = CVXRequest::post('atendimento_filial');
 
         if (isset($atendimento)) {
 
@@ -764,7 +778,9 @@ class ClinicaController extends Controller
             $atendimento->ds_preco =  $ds_atendimento;
             $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_atendimento);
             $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_atendimento);
-            $atendimento->profissional_id = $profissional_id;
+            //$atendimento->profissional_id = $profissional_id;
+            
+            $atendimento = $this->setAtendimentoRelations($atendimento, $filial_ids);
 
             if ($atendimento->save()) {
 

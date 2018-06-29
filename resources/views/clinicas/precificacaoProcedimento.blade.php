@@ -50,7 +50,7 @@
 					<th width="12">Id</th>
 					<th width="80">Código</th>
 					<th width="380">Procedimento</th>
-					<th width="300">Profissional</th>
+					<th class="text-left" style="width: 400px;">Locais Disponíveis</th>
 					<th width="300">Nomes Populares</th>
 					<th width="100">Vl. Com. (R$)</th>
 					<th width="100">Vl. NET (R$)</th>
@@ -61,7 +61,8 @@
     					<td>{{$atendimento->id}} <input type="hidden" class="procedimento_id" value="{{ $atendimento->procedimento->id }}"> <input type="hidden" class="profissional_id" value="{{ $atendimento->profissional->id }}"></td>
     					<td><a href="{{ route('procedimentos.show', $atendimento->procedimento->id) }}" title="Exibir" class="btn-link text-primary"><i class="ion-search"></i> {{$atendimento->procedimento->cd_procedimento}}</a></td>
     					<td>{{$atendimento->ds_preco}}</td>
-    					<td>@if($atendimento->profissional->cs_status == 'A') {{$atendimento->profissional->nm_primario.' '.$atendimento->profissional->nm_secundario.' ('.$atendimento->profissional->documentos()->first()->tp_documento.': '.$atendimento->profissional->documentos->first()->te_documento.')' }} @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA PROFISSIONAL SELECIONADO</span> @endif</td>
+    					<!-- <td>@if($atendimento->profissional->cs_status == 'A') {{$atendimento->profissional->nm_primario.' '.$atendimento->profissional->nm_secundario.' ('.$atendimento->profissional->documentos()->first()->tp_documento.': '.$atendimento->profissional->documentos->first()->te_documento.')' }} @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA PROFISSIONAL SELECIONADO</span> @endif</td> -->
+    					<td>@if( isset($atendimento->filials) && sizeof($atendimento->filials) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->filials as $filial) <li><i class="mdi mdi-check"></i> @if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA FILIAL SELECIONADA</span>  @endif</td>
     					<td>@if( isset($atendimento->procedimento->tag_populars) && sizeof($atendimento->procedimento->tag_populars) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->procedimento->tag_populars as $tag) <li><i class="mdi mdi-check"></i> {{ $tag->cs_tag }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="ion-close-circled"></i></span>  @endif</td>
     					<td>{{$atendimento->getVlComercialAtendimento()}}</td>
     					<td>{{$atendimento->getVlNetAtendimento()}}</td>
@@ -102,17 +103,29 @@
                         </div>
                     </div>
                 </div>
+                <!-- 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="nm_profissional_edit" class="control-label">Profissional</label>
-                            <!-- <input type="text" id="nm_profissional_edit" class="form-control" name="nm_profissional_edit" placeholder="Nome do Profissional" readonly="readonly"> -->
                             <select id="proced_profissional_id" class="form-control" name="proced_profissional_id">
                             	<option value="">--- NENHUM PROFISSIONAL SELECIONADO ----</option>
         			            @foreach($list_profissionals as $profissional)
         			            <option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.' ('.$profissional->documentos->first()->tp_documento.': '.$profissional->documentos->first()->te_documento.')' }}</option>
         			            @endforeach
         		            </select>
+                        </div>
+                    </div>
+                </div>  -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group no-margin">
+                            <label for="atendimento_filial" class="control-label">Locais de Atendimento</label>
+                            <select id="atendimento_filial" class="select2 select2-multiple" name="atendimento_filial" multiple="multiple" multiple data-placeholder="Selecione ...">
+                            	@foreach($list_filials as $filial)
+								<option value="{{ $filial->id }}">@if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</option>
+								@endforeach  
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -186,12 +199,17 @@
 			var ds_atendimento = $('#ds_procedimento_edit').val();
 			var vl_com_atendimento = $('#vl_com_atendimento_edit').val();
 			var vl_net_atendimento = $('#vl_net_atendimento_edit').val();
-			var proced_profissional_id = $('#proced_profissional_id').val();
+			//var proced_profissional_id = $('#proced_profissional_id').val();
+
+			var atendimento_filial = new Array();
+			$('#atendimento_filial :selected').each(function(i, selected) {
+				atendimento_filial[i] = $(selected).val();
+			});
 			
 			if( ds_atendimento.length == 0 ) { $('#ds_procedimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; } 
 			if( vl_com_atendimento.length == 0 ) { $('#vl_com_atendimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
 			if( vl_net_atendimento.length == 0 ) { $('#vl_net_atendimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
-			if( proced_profissional_id.length == 0 ) { $('#proced_profissional_id').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Nenhum Profissional Selecionado</strong></span>'); return false; }
+			//if( proced_profissional_id.length == 0 ) { $('#proced_profissional_id').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Nenhum Profissional Selecionado</strong></span>'); return false; }
 			
 			jQuery.ajax({
 				type: 'POST',
@@ -201,7 +219,8 @@
 					'ds_atendimento': ds_atendimento,
 					'vl_com_atendimento': vl_com_atendimento,
 					'vl_net_atendimento': vl_net_atendimento,
-					'profissional_id': proced_profissional_id,
+					//'profissional_id': proced_profissional_id,
+					'atendimento_filial': atendimento_filial,
 					'_token': laravel_token
 				},
 	            success: function (result) {

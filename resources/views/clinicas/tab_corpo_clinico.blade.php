@@ -162,7 +162,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group no-margin">
-                            <label for="tp_especialidade" class="control-label">Locais de Atendimento</label>
+                            <label for="filial_profissional" class="control-label">Locais de Atendimento</label>
                             <select id="filial_profissional" class="select2 select2-multiple" name="filial_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
                             	@foreach($list_filials as $filial)
 								<option value="{{ $filial->id }}">@if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</option>

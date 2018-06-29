@@ -28,8 +28,13 @@ class Filial extends Model
         return $this->hasMany('App\Agendamento');
     }
     
+    public function atendimentos()
+    {
+        return $this->belongsToMany('App\Atendimento');
+    }
+    
     public function profissionals()
     {
-        return $this->belongsToMany('App\Profissional');
+    	return $this->belongsToMany('App\Profissional');
     }
 }
