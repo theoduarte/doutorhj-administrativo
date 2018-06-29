@@ -356,6 +356,8 @@
 
     function loadDataProcedimento(element, atendimento_id) {
 
+    	var cd_procedimento = $(element).parent().parent().find('td:nth-child(2)').html();
+
     	jQuery.ajax({
 			type: 'POST',
 			url: '/load-data-atendimento',
@@ -380,6 +382,9 @@
 			        if(nao_tem_atendimento) {
 			        	$('#proced_profissional_id').prop("selectedIndex", 0);
 			        }
+
+			        cd_procedimento = atendimento.procedimento.cd_procedimento;
+			        $('#cd_procedimento_edit').val(cd_procedimento);
 	                 
 	            }
             },
@@ -393,18 +398,16 @@
     			}));
             }
 		});
-
-    	var cd_procedimento = $(element).parent().parent().find('td:nth-child(2)').html();
+		
     	var ds_procedimento = $(element).parent().parent().find('td:nth-child(3)').html();
     	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
-    	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(5)').html();
-    	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
+    	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
+    	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(7)').html();
 
     	$('#profissional-procedimento-modal').find('input.form-control').val('');
     	$('#profissional-procedimento-modal').find('select.form-control').prop('selectedIndex',0);
 
 		$('#atendimento_id_edit').val(atendimento_id);
-		$('#cd_procedimento_edit').val(cd_procedimento);
 		$('#ds_procedimento_edit').val(ds_procedimento);
 		$('#nm_profissional_edit').val(nm_profissional);
 		$('#vl_com_atendimento_edit').val(vl_com_atendimento);

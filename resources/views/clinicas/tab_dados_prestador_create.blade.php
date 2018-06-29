@@ -35,20 +35,40 @@
                         <input id="nm_fantasia" type="text" class="form-control" name="nm_fantasia" value="{{ old('nm_fantasia') }}" required  maxlength="150">
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
-                    <label for="te_documento" class="control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
-                    <div class="">
-                        <input type="text" id="te_documento" class="form-control mascaraCNPJ" value="{{ old('te_documento') }}" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" maxlength="30" >
-                        <input type="hidden" id="te_documento_no_mask" name="te_documento" value="{{ preg_replace('/[^0-9]/', '', old('te_documento')) }}" maxlength="30" >
-                        <input type="hidden" name="tp_documento" value="CNPJ">
-                        <input type="hidden" id="cnpj_id" name="cnpj_id" >
-                        @if ($errors->has('te_documento'))
-                            <span class="help-block text-danger">
-                        <strong>{{ $errors->first('te_documento') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-                </div>
+                <div class="row">
+            		<div class="col-sm-8 col-md-8">
+		                <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
+		                    <label for="te_documento" class="control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
+		                    <div class="">
+		                        <input type="text" id="te_documento" class="form-control mascaraCNPJ" value="{{ old('te_documento') }}" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" maxlength="30" >
+		                        <input type="hidden" id="te_documento_no_mask" name="te_documento" value="{{ preg_replace('/[^0-9]/', '', old('te_documento')) }}" maxlength="30" >
+		                        <input type="hidden" name="tp_documento" value="CNPJ">
+		                        <input type="hidden" id="cnpj_id" name="cnpj_id" >
+		                        @if ($errors->has('te_documento'))
+		                            <span class="help-block text-danger">
+		                        <strong>{{ $errors->first('te_documento') }}</strong>
+		                        </span>
+		                        @endif
+		                    </div>
+		                </div>
+		           	</div>
+		           	<div class="col-sm-4 col-md-4">
+		                <div class="form-group{{ $errors->has('tp_prestador') ? ' has-error' : '' }}">
+		                    <label for="tp_prestador" class="control-label">Tipo Prestador<span class="text-danger">*</span></label>
+		                    <div class="">
+		                        <select id="tp_contato" name="tp_prestador" class="form-control">
+	                                <option value="CLI" @if ( old('tp_prestador') == 'CLI') selected="selected"  @endif>Clínica</option>
+	                                <option value="LAB" @if ( old('tp_prestador') == 'LAB') selected="selected"  @endif>Laboratório</option>
+	                            </select>
+		                        @if ($errors->has('tp_prestador'))
+		                            <span class="help-block text-danger">
+		                        <strong>{{ $errors->first('tp_prestador') }}</strong>
+		                        </span>
+		                        @endif
+		                    </div>
+		                </div>
+		           	</div>
+		        </div>
                 <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
                     <label for="tp_contato1" class="control-label">Telefone<span class="text-danger">*</span></label>
                     <div class="row">

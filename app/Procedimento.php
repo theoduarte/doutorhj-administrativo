@@ -42,5 +42,4 @@ class Procedimento extends Model
         return $this->belongsToMany('App\CupomDesconto');
     }
     
-    
 }

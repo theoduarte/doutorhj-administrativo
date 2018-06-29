@@ -321,6 +321,8 @@
 
     function loadDataConsulta(element, atendimento_id) {
 
+    	var cd_consulta = $(element).parent().parent().find('td:nth-child(2)').html();
+
     	jQuery.ajax({
 			type: 'POST',
 			url: '/load-data-atendimento',
@@ -345,6 +347,9 @@
 			        if(nao_tem_atendimento) {
 			        	$('#consult_profissional_id').prop("selectedIndex", 0);
 			        }
+
+			        cd_consulta = atendimento.consulta.cd_consulta;
+			        $('#cd_consulta_edit').val(cd_consulta);
 	                 
 	            }
             },
@@ -358,18 +363,16 @@
     			}));
             }
 		});
-
-    	var cd_consulta = $(element).parent().parent().find('td:nth-child(2)').html();
+		
     	var ds_consulta = $(element).parent().parent().find('td:nth-child(3)').html();
     	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
-    	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(5)').html();
-    	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
+    	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
+    	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(7)').html();
 
     	$('#profissional-consulta-modal').find('input.form-control').val('');
     	$('#profissional-consulta-modal').find('select.form-control').prop('selectedIndex',0);
 
 		$('#consulta_id_edit').val(atendimento_id);
-		$('#cd_consulta_edit').val(cd_consulta);
 		$('#ds_consulta_edit').val(ds_consulta);
 		$('#nm_profissional_consulta_edit').val(nm_profissional);
 		$('#vl_com_consulta_edit').val(vl_com_atendimento);

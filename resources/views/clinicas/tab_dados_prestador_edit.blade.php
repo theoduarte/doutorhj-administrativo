@@ -37,36 +37,56 @@
             </div>	
         </div>
         
-        <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
-        	 @foreach( $documentosclinica as $documento )
-                <label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
-                <div class="col-8">
-                	<input type="hidden" name="tp_documento" value="{{ $prestador->documentos->first()->tp_documento }}">
-                    <input id="te_documento_{{$documento->id}}" type="text" class="form-control mascaraCNPJ" value="{{ $prestador->documentos->first()->te_documento }}" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required readonly >
-                    <input type="hidden" id="te_documento_no_mask" name="te_documento" value="{{ preg_replace('/[^0-9]/', '', $prestador->documentos->first()->te_documento) }}" maxlength="30" >
-                    <input type="hidden" id="cnpj_id" name="cnpj_id" value="{{ $documento->id }}">
-                    @if ($errors->has('te_documento'))
-                    <span class="help-block text-danger">
-                    	<strong>{{ $errors->first('te_documento') }}</strong>
-                    </span>
-                    @endif
-                </div>
-            @endforeach
-            @if($documentosclinica->isEmpty())
-            	<label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
-                <div class="col-8">
-                	<input type="hidden" name="tp_documento" value="CNPJ">
-                    <input id="te_documento" type="text" class="form-control mascaraCNPJ" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required >
-                    <input type="hidden" id="te_documento_no_mask" name="te_documento" maxlength="30" >
-                    <input type="hidden" id="cnpj_id" name="cnpj_id">
-                    @if ($errors->has('te_documento'))
-                    <span class="help-block text-danger">
-                    	<strong>{{ $errors->first('te_documento') }}</strong>
-                    </span>
-                    @endif
-                </div>
-            @endif
-        </div>
+        <div class="row">
+            <div class="col-sm-5 col-md-5">
+		        <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
+		        	 @foreach( $documentosclinica as $documento )
+		                <label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
+		                <div class="col-12">
+		                	<input type="hidden" name="tp_documento" value="{{ $prestador->documentos->first()->tp_documento }}">
+		                    <input id="te_documento_{{$documento->id}}" type="text" class="form-control mascaraCNPJ" value="{{ $prestador->documentos->first()->te_documento }}" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required readonly >
+		                    <input type="hidden" id="te_documento_no_mask" name="te_documento" value="{{ preg_replace('/[^0-9]/', '', $prestador->documentos->first()->te_documento) }}" maxlength="30" >
+		                    <input type="hidden" id="cnpj_id" name="cnpj_id" value="{{ $documento->id }}">
+		                    @if ($errors->has('te_documento'))
+		                    <span class="help-block text-danger">
+		                    	<strong>{{ $errors->first('te_documento') }}</strong>
+		                    </span>
+		                    @endif
+		                </div>
+		            @endforeach
+		            @if($documentosclinica->isEmpty())
+		            	<label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
+		                <div class="col-4">
+		                	<input type="hidden" name="tp_documento" value="CNPJ">
+		                    <input id="te_documento" type="text" class="form-control mascaraCNPJ" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required >
+		                    <input type="hidden" id="te_documento_no_mask" name="te_documento" maxlength="30" >
+		                    <input type="hidden" id="cnpj_id" name="cnpj_id">
+		                    @if ($errors->has('te_documento'))
+		                    <span class="help-block text-danger">
+		                    	<strong>{{ $errors->first('te_documento') }}</strong>
+		                    </span>
+		                    @endif
+		                </div>
+		            @endif
+		        </div>
+		   	</div>
+		   	<div class="col-sm-3 col-md-3">
+		   		<div class="form-group{{ $errors->has('tp_prestador') ? ' has-error' : '' }}">
+		   			<label for="tp_prestador" class="control-label">Tipo Prestador<span class="text-danger">*</span></label>
+		   			<div class="col-12">
+		   				<select id="tp_contato" name="tp_prestador" class="form-control">
+		   					<option value="CLI" @if ( $prestador->dt_prestador == 'CLI') selected="selected"  @endif>Clínica</option>
+		   					<option value="LAB" @if ( $prestador->dt_prestador == 'LAB') selected="selected"  @endif>Laboratório</option>
+		   				</select>
+		   				@if ($errors->has('tp_prestador'))
+		   					<span class="help-block text-danger">
+	                        	<strong>{{ $errors->first('tp_prestador') }}</strong>
+	                        </span>
+	                    @endif
+	               </div>
+	           	</div>
+	      	</div>
+		 </div>
         
          <div class="form-group{{ $errors->has('tp_contato') ? ' has-error' : '' }}">
         	@foreach ( $prestador->contatos as $obContato )                
@@ -329,7 +349,7 @@
 				<th>
 					<div class="row">
 						<div class="col-md-2">
-							<label for="filial_nm_nome_fantasia" class="control-label"><strong>Nome de Fantasia</strong><span class="text-danger">*</span></label>
+							<label for="filial_nm_nome_fantasia" class="control-label"><strong>Unidade</strong><span class="text-danger">*</span></label>
 						</div>
 						<div class="col-md-1">
 							<label for="filial_cep" class="control-label"><strong>CEP</strong><span class="text-danger">*</span></label>

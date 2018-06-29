@@ -20,6 +20,14 @@ class AtendimentoController extends Controller
         
         $atendimento = Atendimento::findorfail($atendimento_id);
         
+        if($atendimento->procedimento_id != null) {
+        	$atendimento->load('procedimento');
+        }
+        
+        if($atendimento->consulta_id != null) {
+        	$atendimento->load('consulta');
+        }
+        
         return response()->json(['status' => true, 'atendimento' => $atendimento->toJson()]);
     }
 }
