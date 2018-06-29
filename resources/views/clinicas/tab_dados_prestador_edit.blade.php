@@ -74,9 +74,9 @@
 		   		<div class="form-group{{ $errors->has('tp_prestador') ? ' has-error' : '' }}">
 		   			<label for="tp_prestador" class="control-label">Tipo Prestador<span class="text-danger">*</span></label>
 		   			<div class="col-12">
-		   				<select id="tp_contato" name="tp_prestador" class="form-control">
-		   					<option value="CLI" @if ( $prestador->dt_prestador == 'CLI') selected="selected"  @endif>Clínica</option>
-		   					<option value="LAB" @if ( $prestador->dt_prestador == 'LAB') selected="selected"  @endif>Laboratório</option>
+		   				<select id="tp_prestador" name="tp_prestador" class="form-control">
+		   					<option value="CLI" @if ( $prestador->tp_prestador == 'CLI') selected="selected"  @endif>Clínica</option>
+		   					<option value="LAB" @if ( $prestador->tp_prestador == 'LAB') selected="selected"  @endif>Laboratório</option>
 		   				</select>
 		   				@if ($errors->has('tp_prestador'))
 		   					<span class="help-block text-danger">
