@@ -193,6 +193,8 @@
       	  }
       });
 
+        $('#con-close-modal').find("#filial_profissional").trigger('change.select2');
+
         $('#btn-save-profissional-procedimento').click(function(){
 
 			var atendimento_id = $('#atendimento_id_edit').val();
@@ -404,6 +406,19 @@
 
 			        cd_procedimento = atendimento.procedimento.cd_procedimento;
 			        $('#cd_procedimento_edit').val(cd_procedimento);
+
+			        //--realiza o carregamento dos locais onde o atendimento esta disponivel-------------
+			        $('#profissional-procedimento-modal').find("#atendimento_filial option:selected").prop("selected", false);
+			        for(var i = 0; i < atendimento.filials.length > 0; i++) {
+
+			        	$('#profissional-procedimento-modal').find("#atendimento_filial option").each(function(){
+			            	if($(this).val() == atendimento.filials[i].id) {
+				            	$(this).prop("selected", true);
+			            	}
+			            });
+			        }
+
+			        $('#profissional-procedimento-modal').find("#atendimento_filial").trigger('change.select2');
 	                 
 	            }
             },

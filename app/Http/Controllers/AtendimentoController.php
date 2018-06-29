@@ -28,6 +28,8 @@ class AtendimentoController extends Controller
         	$atendimento->load('consulta');
         }
         
+        $atendimento->load('filials');
+        
         return response()->json(['status' => true, 'atendimento' => $atendimento->toJson()]);
     }
 }
