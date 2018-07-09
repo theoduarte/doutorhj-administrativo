@@ -23,6 +23,7 @@ Route::resource('users','UserController')->middleware('auth');
 Route::resource('agenda','AgendamentoController')->only(['index'])->middleware('auth');
 Route::resource('registro_logs','RegistroLogController')->middleware('auth');
 Route::resource('cupom_descontos','CupomDescontoController')->middleware('auth');
+Route::resource('checkups','CheckupsController')->middleware('auth');
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
 Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');
