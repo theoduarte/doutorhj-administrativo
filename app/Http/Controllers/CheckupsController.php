@@ -113,11 +113,13 @@ class CheckupsController extends Controller
      */
     public function configure(Checkups $checkup)
     {
-        $item_checkups = ItemCheckups::where('checkup_id', $checkup->id)->get();
+        $itemCheckup = new ItemCheckups();
+        $itemCheckups = $itemCheckup->getItensGrouped($checkup->id);
+
         $especialidade = new Especialidade();
         $especialidades = $especialidade->getActive();
 
-        return view('checkups.configure', ['checkup' => $checkup, 'item_checkups' => $item_checkups, 'especialidades' => $especialidades] );
+        return view('checkups.configure', ['checkup' => $checkup, 'itemCheckups' => $itemCheckups, 'especialidades' => $especialidades] );
     }
 
     /**

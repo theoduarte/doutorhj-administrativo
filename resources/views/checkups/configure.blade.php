@@ -30,8 +30,8 @@
                             <td>Tipo</td>
                         </tr>
                         <tr>
-                            <td>{{ $checkup->titulo }}</td>
-                            <td>{{ $checkup->tipo }}</td>
+                            <td>{{ $checkup->titulo  }}</td>
+                            <td>{{ $checkup->tipo  }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -43,7 +43,7 @@
         <div class="col-12">
             <div class="card-box">
                 <div class="float-left">
-                    <h4 class="m-t-0 header-title">Itens</h4>
+                    <h4 class="m-t-0 header-title">Itens de Consulta</h4>
                 </div>
                 <div class="float-right">
                     <a href="#" id="addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i>Adicionar Consulta</a>
@@ -51,25 +51,25 @@
 
                 <br>
                 
-                <table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
+                <table class="table table-striped table-bordered" data-page-size="4">
                     <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Tipo</th>
-                        <th>Situação</th>
+                        <th>Consulta</th>
+                        <th>NET</th>
+                        <th>Comercial</th>
+                        <th>Profissinais</th>
                         <!-- <th>Ações</th> -->
                     </tr>
-                    @foreach ($item_checkups as $item_checkup)
+                    @foreach ($itemCheckups as $itemCheckup)
                         <tr>
-                            <td>{{$item_checkup->id}}</td>
-                            <td>{{$item_checkup->titulo}}</td>
-                            <td>{{$item_checkup->tipo}}</td>
-                            <td>{{$item_checkup->cs_status == 'A' ? "Ativo" : "Inativo"}}</td>
+                            <td>{{ $itemCheckup->cd_consulta }} - {{ $itemCheckup->ds_consulta }}</td>
+                            <td>{{ number_format($itemCheckup->vl_net_checkup, 2, ',', '.') }}</td>
+                            <td>{{ number_format($itemCheckup->vl_com_checkup, 2, ',', '.') }}</td>
+                            <td>{{ $itemCheckup->profissionals }}</td>
                             <!-- <td>
                                 <a href="{{ route('checkups.show', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
                                 <a href="{{ route('checkups.configure', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Editar"><i class="ti-settings"></i></a>
                                 <a href="{{ route('checkups.edit', $checkup) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-                                <a href="{{ route('checkups.destroy', $checkup) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar o checkup? {{$checkup->titulo}} {{$checkup->tipo}}"><i class="ti-trash"></i></a>
+                                <a href="{{ route('checkups.destroy', $checkup) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar o checkup? {{ $checkup->titulo}} {{ $checkup->tipo}}"><i class="ti-trash"></i></a>
                             </td> -->
                         </tr>
                     @endforeach
@@ -78,7 +78,7 @@
        </div>
     </div>
 
-    @include('checkups.new-item-consulta', ['checkup' => $checkup, 'item_checkups' => $item_checkups, 'especialidades' => $especialidades])
+    @include('checkups.new-item-consulta', ['checkup' => $checkup, 'itemCheckups' => $itemCheckups, 'especialidades' => $especialidades])
 
 </div>
 @endsection
