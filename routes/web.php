@@ -24,6 +24,15 @@ Route::resource('agenda','AgendamentoController')->only(['index'])->middleware('
 Route::resource('registro_logs','RegistroLogController')->middleware('auth');
 Route::resource('cupom_descontos','CupomDescontoController')->middleware('auth');
 Route::resource('checkups','CheckupsController')->middleware('auth');
+Route::get('checkups-configure/{checkup}','CheckupsController@configure')->name('checkups.configure')->middleware('auth');
+Route::post('checkups-configure/{checkup}/store','CheckupsController@configureStore')->name('checkups.configure-store')->middleware('auth');
+Route::get('get-active-clinicas-by-especialidade','CheckupsController@getClinicasByEspecidalide')->name('get-active-clinicas-by-especialidade')->middleware('auth');
+Route::get('get-active-consultas-by-especialidade','CheckupsController@getConsultasByEspecidalide')->name('get-active-consultas-by-especialidade')->middleware('auth');
+Route::get('get-active-profissionals-by-clinica','CheckupsController@getProfissionalsByClinica')->name('get-active-profissionals-by-clinica')->middleware('auth');
+Route::get('get-atendimento-values-by-consulta','CheckupsController@getAtendimentoValuesByConsulta')->name('get-atendimento-values-by-consulta')->middleware('auth');
+
+
+
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
 Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');

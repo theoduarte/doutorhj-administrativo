@@ -3,6 +3,7 @@
 namespace App;
 
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Clinica extends Model
@@ -44,5 +45,15 @@ class Clinica extends Model
     public function filials()
     {
         return $this->hasMany('App\Filial');
+    }
+
+    public function getActiveByEspecialidade($especialidade){
+        return DB::select(" SELECT DISTINCT c.*
+                              FROM clinicas c
+                              JOIN atendimentos at ON (c.id = at.clinica_id)
+                                JOIN consultas cs ON (at.consulta_id = cs.id)
+                             WHERE cs.especialidade_id = ?
+                               AND c.cs_status = 'A'
+                               AND at.cs_status = 'A'", [$especialidade]);
     }
 }

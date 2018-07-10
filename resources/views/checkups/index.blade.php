@@ -46,7 +46,7 @@
                             <td>{{$checkup->cs_status == 'A' ? "Ativo" : "Inativo"}}</td>
                             <td>
                                 <a href="{{ route('checkups.show', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-    							<a href="{{ route('checkups.index', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Editar"><i class="ti-settings"></i></a>
+    							<a href="{{ route('checkups.configure', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Editar"><i class="ti-settings"></i></a>
                                 <a href="{{ route('checkups.edit', $checkup) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
                                 <a href="{{ route('checkups.destroy', $checkup) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar o checkup? {{$checkup->titulo}} {{$checkup->tipo}}"><i class="ti-trash"></i></a>
     						</td>

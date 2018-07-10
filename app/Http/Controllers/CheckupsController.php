@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Checkups;
+use App\ItemCheckups;
+use App\Especialidade;
+use App\Clinica;
+use App\Consulta;
+use App\Profissional;
+use App\Atendimento;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -96,5 +103,95 @@ class CheckupsController extends Controller
         $checkup->save();
 
         return redirect()->route('checkups.index')->with('success', 'O Checkup foi inativado com sucesso!');
+    }
+
+    /**
+     * Configure the specified resource from storage.
+     *
+     * @param  \App\Checkups  $checkups
+     * @return \Illuminate\Http\Response
+     */
+    public function configure(Checkups $checkup)
+    {
+        $item_checkups = ItemCheckups::where('checkup_id', $checkup->id)->get();
+        $especialidade = new Especialidade();
+        $especialidades = $especialidade->getActive();
+
+        return view('checkups.configure', ['checkup' => $checkup, 'item_checkups' => $item_checkups, 'especialidades' => $especialidades] );
+    }
+
+    /**
+     * Get clinicas by especialidade
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getClinicasByEspecidalide(Request $request)
+    {
+        $clinica = new Clinica();
+        $especialidades = $clinica->getActiveByEspecialidade( $request->get('especialidade_id') );
+
+        echo json_encode($especialidades);
+        exit;
+    }
+
+    /**
+     * Get clinicas by especialidade
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getConsultasByEspecidalide(Request $request)
+    {
+        $consulta = new Consulta();
+        $especialidades = $consulta->getActiveByEspecialidade( $request->get('especialidade_id') );
+
+        echo json_encode($especialidades);
+        exit;
+    }
+
+    /**
+     * Get clinicas by especialidade
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getProfissionalsByClinica(Request $request)
+    {
+        $profissional = new Profissional();
+        $profissionals = $profissional->getActiveProfissionalsByClinicaEspecialidade( $request->get('clinica_id'), $request->get('especialidade_id') );
+
+        echo json_encode($profissionals);
+        exit;
+    }
+
+    /**
+     * Get atendimento values
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getAtendimentoValuesByConsulta(Request $request)
+    {
+        $atendimento = new Atendimento;
+        $atendimentoResult = $atendimento->getValuesByConsulta( $request );
+
+        echo json_encode($atendimentoResult);
+        exit;
+    }
+
+    
+
+    /**
+     * Store the itens of Checkups.
+     *
+     * @param  \App\Checkups  $checkups
+     * @return \Illuminate\Http\Response
+     */
+    public function configureStore(Request $request, Checkups $checkup)
+    {
+        dd($request);
+
+        return redirect()->route('checkups.configure')->with('success', 'O item foi adicionado ao checkup com sucesso!');
     }
 }

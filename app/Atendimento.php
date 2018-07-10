@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Http\Request;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -54,5 +55,9 @@ class Atendimento extends Model
 	public function getVlNetAtendimento()
 	{
 		return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
+	}
+
+	public function getValuesByConsulta(Request $request){
+		return $this::where('clinica_id',$request->get('clinica_id'))->where('consulta_id',$request->get('consulta_id'))->where('profissional_id',$request->get('profissional_id'))->get();
 	}
 }
