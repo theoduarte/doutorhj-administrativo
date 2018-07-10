@@ -14,8 +14,9 @@ class Especialidade extends Model
                               FROM especialidades e
                               JOIN consultas c ON (e.id = c.especialidade_id)
                               JOIN atendimentos at ON (c.id = at.consulta_id)
-                              JOIN profissionals p ON (at.profissional_id = p.id)
+                              JOIN clinicas cl ON (at.clinica_id = cl.id)
                              WHERE at.profissional_id IS NOT NULL
-                               AND at.cs_status = 'A'");
+                               AND at.cs_status = 'A'
+                               AND cl.cs_status = 'A'");
     }
 }

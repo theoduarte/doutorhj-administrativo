@@ -57,7 +57,41 @@ class Atendimento extends Model
 		return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
 	}
 
-	public function getValuesByConsulta(Request $request){
-		return $this::where('clinica_id',$request->get('clinica_id'))->where('consulta_id',$request->get('consulta_id'))->where('profissional_id',$request->get('profissional_id'))->get();
+	public function getFirst(Request $request) {
+
+		$atendimentos =  $this::where(function ($query) use ($request) {
+                if ( !empty($request->get('clinica_id')) ) {
+                	$query->where('clinica_id',$request->get('clinica_id'))->get();
+                }
+
+                if ( !empty($request->get('consulta_id')) ) {
+                	$query->where('consulta_id',$request->get('consulta_id'))->get();
+                }
+
+                if ( !empty($request->get('profissional_id')) ) {
+                	$query->where('profissional_id',$request->get('profissional_id'))->get();
+                }
+            })->first();
+
+		return $atendimentos->toArray();
+	}
+
+	public function getAll(Request $request) {
+
+		$atendimentos =  $this::where(function ($query) use ($request) {
+                if ( !empty($request->get('clinica_id')) ) {
+                	$query->where('clinica_id',$request->get('clinica_id'))->get();
+                }
+
+                if ( !empty($request->get('consulta_id')) ) {
+                	$query->where('consulta_id',$request->get('consulta_id'))->get();
+                }
+
+                if ( !empty($request->get('profissional_id')) ) {
+                	$query->where('profissional_id',$request->get('profissional_id'))->get();
+                }
+            })->get();
+
+		return $atendimentos;
 	}
 }

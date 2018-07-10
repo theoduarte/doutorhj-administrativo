@@ -174,24 +174,9 @@ class CheckupsController extends Controller
     public function getAtendimentoValuesByConsulta(Request $request)
     {
         $atendimento = new Atendimento;
-        $atendimentoResult = $atendimento->getValuesByConsulta( $request );
+        $atendimentoResult = $atendimento->getFirst( $request );
 
         echo json_encode($atendimentoResult);
         exit;
-    }
-
-    
-
-    /**
-     * Store the itens of Checkups.
-     *
-     * @param  \App\Checkups  $checkups
-     * @return \Illuminate\Http\Response
-     */
-    public function configureStore(Request $request, Checkups $checkup)
-    {
-        dd($request);
-
-        return redirect()->route('checkups.configure')->with('success', 'O item foi adicionado ao checkup com sucesso!');
     }
 }

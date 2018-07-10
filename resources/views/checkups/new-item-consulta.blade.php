@@ -4,7 +4,7 @@
             <div class="card-box">
                 <h4 class="header-title m-t-0">Adicionar novo item ao checkup</h4>
                 
-                <form action="{{ route('checkups.store') }}" method="post">
+                <form action="{{ route('item-checkups.store', $checkup) }}" method="post">
                 
                     {!! csrf_field() !!}
 
@@ -52,22 +52,25 @@
                         </div>
                         
                         <div class="form-group col-md-3">
-                            <label for="vl_com_checkup">Vl. comercial checkup</label>
+                            <label for="vl_com_checkup">Vl. com. checkup<span class="text-danger">*</span></label>
                             <input type="text" id="vl_com_checkup" class="form-control" name="vl_com_checkup" required>
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="vl_net_checkup">Vl. NET checkup</label>
+                            <label for="vl_net_checkup">Vl. NET checkup<span class="text-danger">*</span></label>
                             <input type="text" id="vl_net_checkup" class="form-control" name="vl_net_checkup" required>
                         </div>
-                        
-                        
+                    </div>
 
+
+                    <div class="form-group">
+                        <label for="ds_item">Observação</label>
+                            <textarea id="ds_item" class="form-control" name="ds_item"></textarea>
+                    </div>
                         
-                        <div class="form-group text-right m-b-0">
-                            <button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>
-                            <a href="#" class="btn btn-secondary waves-effect m-l-5 cancel-new"><i class="mdi mdi-cancel"></i> Cancelar</a>
-                        </div>
+                    <div class="form-group text-right m-b-0">
+                        <button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>
+                        <a href="#" class="btn btn-secondary waves-effect m-l-5 cancel-new"><i class="mdi mdi-cancel"></i> Cancelar</a>
                     </div>
                 </form>
             </div>
@@ -93,6 +96,11 @@
                     dataType : 'json',
                     data     : {especialidade_id: $(this).val()},
                     success  : function(data) {
+                        $('#vl_com_atendimento').val('');
+                        $('#vl_net_atendimento').val('');
+                        $('#profissional_id').html('');
+                        $('#profissional_id').html('<option value="">Selecione</option>');
+
                         $('#clinica_id').html('');
                         $('#clinica_id').append('<option value="">Selecione</option>');
                         console.log(data);
@@ -136,6 +144,17 @@
                         }
                     }
                 });
+
+                $.ajax({
+                    type     : 'get',
+                    url      : "/get-atendimento-values-by-consulta",
+                    dataType : 'json',
+                    data     : {clinica_id: $('#clinica_id').val(),consulta_id: $('#consulta_id').val()},
+                    success  : function(data) {
+                        $('#vl_com_atendimento').val(data.vl_com_atendimento);
+                        $('#vl_net_atendimento').val(data.vl_net_atendimento);
+                    }
+                });
             });
 
             $('#profissional_id').change(function(){
@@ -145,8 +164,8 @@
                     dataType : 'json',
                     data     : {clinica_id: $('#clinica_id').val(),consulta_id: $('#consulta_id').val(),profissional_id: $(this).val()},
                     success  : function(data) {
-                        $('#vl_com_atendimento').val(data[0].vl_com_atendimento);
-                        $('#vl_net_atendimento').val(data[0].vl_net_atendimento);
+                        $('#vl_com_atendimento').val(data.vl_com_atendimento);
+                        $('#vl_net_atendimento').val(data.vl_net_atendimento);
                     }
                 });
             });
