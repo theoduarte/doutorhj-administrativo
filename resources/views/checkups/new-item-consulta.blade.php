@@ -84,7 +84,7 @@
                 $('.new-item-consulta form').find(':radio').prop('checked', false); 
                 $('.new-item-consulta').hide();
             });
-            
+
             $('#especialidade_id').change(function(){
                 $.ajax({
                     type     : 'get',
@@ -95,7 +95,6 @@
                         $('#vl_com_atendimento').val('');
                         $('#vl_net_atendimento').val('');
                         $('#profissional_id').html('');
-                        $('#profissional_id').html('<option value="">Selecione</option>');
 
                         $('#clinica_id').html('');
                         $('#clinica_id').append('<option value="">Selecione</option>');

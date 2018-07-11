@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataHoraCheckups;
 use App\Atendimento;
 use App\ItemCheckups;
 use App\Checkups;
@@ -54,14 +55,29 @@ class ItemCheckupsController extends Controller
      */
     public function destroy($checkupId, $consultaId, $clinicas, $profissionals)
     {
-        
         $atendimento = new Atendimento;
         $atendimentoResult = $atendimento->getAll( ['consulta_id' => $consultaId, 'clinica_id' => $clinicas, 'profissional_id' => explode(',', $profissionals)] );
 
+        $hasItemCheckup = false;
         foreach ($atendimentoResult as $atendimento) {
-            ItemCheckups::where('checkup_id', $checkupId)->where('atendimento_id', $atendimento->id )->delete();
+            $itemCheckup = ItemCheckups::where('checkup_id', $checkupId)->where('atendimento_id', $atendimento->id );
+            $dataHoraCheckup = DataHoraCheckups::where('itemcheckup_id', $itemCheckup->first()->id );
+
+            if( empty( $dataHoraCheckup->first() ) ) {
+                $itemCheckup->delete();
+            }
+            else {
+                $hasItemCheckup = true;
+            }
+        }
+
+        if ( $hasItemCheckup ) {
+            return redirect()->route('checkups.configure', Checkups::find($checkupId))->with('warning', 'Existem alguns itens que já foram agendados e por isso não foram excluídos!');
+        }
+        else {
+            return redirect()->route('checkups.configure', Checkups::find($checkupId))->with('success', 'Item(s) de checkup excluídos(s) com sucesso!');
         }
         
-        return redirect()->route('checkups.configure', Checkups::find($checkupId))->with('success', 'Item(s) de checkup excluídos(s) com sucesso!');
+        
     }
 }
