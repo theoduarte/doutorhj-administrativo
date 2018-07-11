@@ -31,9 +31,8 @@ Route::get('get-active-consultas-by-especialidade','CheckupsController@getConsul
 Route::get('get-active-profissionals-by-clinica','CheckupsController@getProfissionalsByClinica')->name('get-active-profissionals-by-clinica')->middleware('auth');
 Route::get('get-atendimento-values-by-consulta','CheckupsController@getAtendimentoValuesByConsulta')->name('get-atendimento-values-by-consulta')->middleware('auth');
 
-Route::post('item-checkups.store/{checkup}','ItemCheckupsController@store')->name('item-checkups.store')->middleware('auth');
-
-
+Route::post('item-checkups-consulta.store/{checkup}','ItemCheckupsController@store')->name('item-checkups-consulta.store')->middleware('auth');
+Route::delete('item-checkups-consulta.destroy/{checkupId}/checkupId/{clinicaId}/clinicaId','ItemCheckupsController@destroy')->name('item-checkups-consulta.destroy')->middleware('auth');
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
 Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');

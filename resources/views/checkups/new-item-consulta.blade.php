@@ -1,10 +1,10 @@
-<div class="container-fluid new" style="display: none">
+<div class="container-fluid new-item-consulta" style="display: none">
 	<div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card-box">
                 <h4 class="header-title m-t-0">Adicionar novo item ao checkup</h4>
                 
-                <form action="{{ route('item-checkups.store', $checkup) }}" method="post">
+                <form action="{{ route('item-checkups-consulta.store', $checkup) }}" method="post">
                 
                     {!! csrf_field() !!}
 
@@ -33,10 +33,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="profissional_id">Profissional</label>
-                        <select id="profissional_id" class="form-control" name="profissional_id">
-                            <option value="">Selecione</option>
-                        </select>
+                        <label for="profissional_id">Profissional<span class="text-danger">*</span></label>
+                        <select id="profissional_id" class="form-control" name="profissional_id[]" multiple required></select>
                     </div>
                     
                     
@@ -119,7 +117,6 @@
                     success  : function(data) {
                         $('#consulta_id').html('');
                         $('#consulta_id').append('<option value="">Selecione</option>');
-                        console.log(data);
 
                         for( var i = 0; i < data.length; i++ ){
                             $('#consulta_id').append('<option value="' + data[i].id + '">' + data[i].cd_consulta + ' - ' + data[i].ds_consulta + '</option>');
@@ -136,9 +133,6 @@
                     data     : {clinica_id: $(this).val(),especialidade_id: $('#especialidade_id').val()},
                     success  : function(data) {
                         $('#profissional_id').html('');
-                        $('#profissional_id').append('<option value="">Selecione</option>');
-                        console.log(data);
-
                         for( var i = 0; i < data.length; i++ ){
                             $('#profissional_id').append('<option value="' + data[i].id + '">' + data[i].nm_primario + ' ' + data[i].nm_secundario + '</option>');
                         }

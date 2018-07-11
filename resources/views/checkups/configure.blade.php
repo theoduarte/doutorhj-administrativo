@@ -53,24 +53,65 @@
                 
                 <table class="table table-striped table-bordered" data-page-size="4">
                     <tr>
-                        <th>Consulta</th>
-                        <th>NET</th>
-                        <th>Comercial</th>
-                        <th>Profissinais</th>
-                        <!-- <th>Ações</th> -->
+                        <th width="20%">Consulta</th>
+                        <th>Com. Atend.</th>
+                        <th>Com.  CHeckup</th>
+                        <th>NET Atend.</th>
+                        <th>NET CHeckup</th>
+                        <th width="20%">Clinicas</th>
+                        <th width="25%">Profissinais</th>
+                        <th>Ações</th>
                     </tr>
+                    <tfoot>
+                        <tr>
+                            <td>Totais</td>
+                            <td>R$ {{ number_format($itemCheckups[0]->total_vl_com_atendimento, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckups[0]->total_vl_com_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckups[0]->total_vl_net_atendimento, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckups[0]->total_vl_net_checkup, 2, ',', '.') }}</td>
+                        </tr>
+                    </tfoot>
                     @foreach ($itemCheckups as $itemCheckup)
                         <tr>
                             <td>{{ $itemCheckup->cd_consulta }} - {{ $itemCheckup->ds_consulta }}</td>
-                            <td>{{ number_format($itemCheckup->vl_net_checkup, 2, ',', '.') }}</td>
-                            <td>{{ number_format($itemCheckup->vl_com_checkup, 2, ',', '.') }}</td>
-                            <td>{{ $itemCheckup->profissionals }}</td>
-                            <!-- <td>
-                                <a href="{{ route('checkups.show', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+                            <td>R$ {{ number_format($itemCheckup->vl_com_atendimento, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_com_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_net_atendimento, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_net_checkup, 2, ',', '.') }}</td>
+
+                            @php 
+                                $clinicas = json_decode( str_replace('\\','', $itemCheckup->clinicas) );
+                                $profissionals = json_decode( str_replace('\\','', $itemCheckup->profissionals) );
+
+                                $profissionalsArray = [];
+                                foreach ( $profissionals as $profissional ) {
+                                    $profissionalsArray[] =  $profissional->name;
+                                }
+
+                                $clinicasArray = [];
+                                foreach ( $clinicas as $clinica ) {
+                                    $clinicasArray[] =  $clinica->name;
+                                }
+
+                                $clinicasIdArray = [];
+                                foreach ( $clinicas as $clinica ) {
+                                    $clinicasIdArray[] =  $clinica->id;
+                                }
+                            @endphp
+                            
+                            <td> 
+                                {{ implode($clinicasArray,', ') }}
+                            </td>
+                            <td> 
+                                {{ implode($profissionalsArray,', ') }}
+                            </td>
+                            <td>
+
+                                <!-- <a href="{{ route('checkups.show', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
                                 <a href="{{ route('checkups.configure', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Editar"><i class="ti-settings"></i></a>
-                                <a href="{{ route('checkups.edit', $checkup) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-                                <a href="{{ route('checkups.destroy', $checkup) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar o checkup? {{ $checkup->titulo}} {{ $checkup->tipo}}"><i class="ti-trash"></i></a>
-                            </td> -->
+                                <a href="{{ route('checkups.edit', $checkup) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a> -->
+                                <a href="{{ route('item-checkups-consulta.destroy', [$itemCheckup->checkup_id, implode($clinicasIdArray,',') ]) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar este item de checkup?"><i class="ti-trash"></i></a>
+                            </td>
                         </tr>
                     @endforeach
                 </table>
@@ -87,7 +128,10 @@
     <script type="text/javascript">
         $(document).ready(function($) {
             $('#addrow').click(function(){
-                $('.new').show();
+                $('.new-item-consulta').show();
+                $([document.documentElement, document.body]).animate({
+                        scrollTop: $(".new-item-consulta").offset().top
+                    }, 600);
             });
         });
     </script>

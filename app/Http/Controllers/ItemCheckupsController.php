@@ -77,6 +77,6 @@ class ItemCheckupsController extends Controller
      */
     public function destroy(ItemCheckups $itemCheckups)
     {
-        //
+        dd($itemCheckups);
     }
 }
