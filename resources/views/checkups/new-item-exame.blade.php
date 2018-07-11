@@ -2,10 +2,9 @@
 	<div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card-box">
-                <h4 class="header-title m-t-0">Adicionar novo item de consulta ao checkup</h4>
+                <h4 class="header-title m-t-0">Adicionar novo item de exame ao checkup</h4>
                 
-                <form action="{{ route('item-checkups-consulta.store', $checkup) }}" method="post">
-                
+                <form action="{{ route('item-checkups-exame.store', $checkup) }}" method="post">
                     {!! csrf_field() !!}
 
                     <div class="form-group">

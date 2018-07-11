@@ -37,6 +37,32 @@ class ItemCheckupsController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeExame(Request $request, Checkups $checkup)
+    {
+        ItemCheckups::validationRules($request);
+
+        $atendimento = new Atendimento;
+        $atendimentos = $atendimento->getAll( $request->all() );
+
+        foreach ($atendimentos as $atendimento) {
+            $itemCheckup = new ItemCheckups;
+            $itemCheckup->checkup_id = $checkup->id;
+            $itemCheckup->atendimento_id = $atendimento->id;
+            $itemCheckup->ds_item = $request->get('ds_item');
+            $itemCheckup->vl_net_checkup = $request->get('vl_net_checkup');
+            $itemCheckup->vl_com_checkup = $request->get('vl_com_checkup');
+            $itemCheckup->save();
+        }
+
+        return redirect()->route('checkups.configure', $checkup)->with('success', 'Item(s) de checkup cadastrado(s) com sucesso!');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\ItemCheckups  $itemCheckups
@@ -77,7 +103,37 @@ class ItemCheckupsController extends Controller
         else {
             return redirect()->route('checkups.configure', Checkups::find($checkupId))->with('success', 'Item(s) de checkup excluídos(s) com sucesso!');
         }
-        
-        
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\ItemCheckups  $itemCheckups
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyExame($checkupId, $consultaId, $clinicas, $profissionals)
+    {
+        $atendimento = new Atendimento;
+        $atendimentoResult = $atendimento->getAll( ['consulta_id' => $consultaId, 'clinica_id' => $clinicas, 'profissional_id' => explode(',', $profissionals)] );
+
+        $hasItemCheckup = false;
+        foreach ($atendimentoResult as $atendimento) {
+            $itemCheckup = ItemCheckups::where('checkup_id', $checkupId)->where('atendimento_id', $atendimento->id );
+            $dataHoraCheckup = DataHoraCheckups::where('itemcheckup_id', $itemCheckup->first()->id );
+
+            if( empty( $dataHoraCheckup->first() ) ) {
+                $itemCheckup->delete();
+            }
+            else {
+                $hasItemCheckup = true;
+            }
+        }
+
+        if ( $hasItemCheckup ) {
+            return redirect()->route('checkups.configure', Checkups::find($checkupId))->with('warning', 'Existem alguns itens que já foram agendados e por isso não foram excluídos!');
+        }
+        else {
+            return redirect()->route('checkups.configure', Checkups::find($checkupId))->with('success', 'Item(s) de checkup excluídos(s) com sucesso!');
+        }
     }
 }
