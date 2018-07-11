@@ -38,6 +38,11 @@
                     </div>
                     
                     <div class="form-group">
+                        <label for="ds_checkup">Observação</label>
+                        <textarea  id="ds_checkup" class="form-control" name="ds_checkup">{{ $checkup->ds_checkup }}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="cs_status">Ativo?<span class="text-danger">*</span></label>
 
                         <label class="radio-inline">

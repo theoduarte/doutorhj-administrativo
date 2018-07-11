@@ -8,7 +8,7 @@ use Validator;
 
 class Checkups extends Model
 {
-    public $fillable = ['titulo', 'vl_total_com', 'vl_total_net', 'cs_status', 'tipo'];
+    public $fillable = ['titulo', 'cs_status', 'tipo', 'ds_checkup'];
 
     /*
     -- Validation Rules --

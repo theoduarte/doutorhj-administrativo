@@ -36,6 +36,11 @@
                         <label for="tipo">Tipo<span class="text-danger">*</span></label>
                         <input type="text" id="tipo" class="form-control" name="tipo" placeholder="Tipo do checkup" maxlength="150" required>
                     </div>
+
+                    <div class="form-group">
+                        <label for="ds_checkup">Observação</label>
+                        <textarea  id="ds_checkup" class="form-control" name="ds_checkup"></textarea>
+                    </div>
                     
                     <div class="form-group text-right m-b-0">
                         <button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>
