@@ -176,7 +176,7 @@ class CheckupsController extends Controller
     public function getAtendimentoValuesByConsulta(Request $request)
     {
         $atendimento = new Atendimento;
-        $atendimentoResult = $atendimento->getFirst( $request );
+        $atendimentoResult = $atendimento->getFirst( $request->all() );
 
         echo json_encode($atendimentoResult);
         exit;

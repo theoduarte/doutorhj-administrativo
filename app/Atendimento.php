@@ -57,38 +57,40 @@ class Atendimento extends Model
 		return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
 	}
 
-	public function getFirst(Request $request) {
-		$atendimentos =  $this::where(function ($query) use ($request) {
+	public function getFirst($data) {
+
+		$atendimentos =  $this::where(function ($query) use ($data) {
             $query->where('cs_status','A')->get();
-            if ( !empty($request->get('clinica_id')) ) {
-            	$query->where('clinica_id',$request->get('clinica_id'))->get();
+
+            if ( !empty($data['clinica_id']) ) {
+            	$query->where('clinica_id', $data['clinica_id'])->get();
             }
 
-            if ( !empty($request->get('consulta_id')) ) {
-            	$query->where('consulta_id',$request->get('consulta_id'))->get();
+            if ( !empty($data['consulta_id']) ) {
+            	$query->where('consulta_id', $data['consulta_id'])->get();
             }
 
-            if ( !empty($request->get('profissional_id')) ) {
-            	$query->where('profissional_id',$request->get('profissional_id'))->get();
+            if ( !empty($data['profissional_id']) ) {
+            	$query->whereIn('profissional_id', $data['profissional_id'])->get();
             }
         })->first();
 
-		return $atendimentos->toArray();
+		return !empty($atendimentos) ? $atendimentos->toArray() : [];
 	}
 
-	public function getAll(Request $request) {
-		$atendimentos =  $this::where(function ($query) use ($request) {
+	public function getAll($data) {
+		$atendimentos =  $this::where(function ($query) use ($data) {
             $query->where('cs_status','A')->get();
-            if ( !empty($request->get('clinica_id')) ) {
-            	$query->where('clinica_id',$request->get('clinica_id'))->get();
+            if ( !empty($data['clinica_id']) ) {
+                $query->where('clinica_id', $data['clinica_id'])->get();
             }
 
-            if ( !empty($request->get('consulta_id')) ) {
-            	$query->where('consulta_id',$request->get('consulta_id'))->get();
+            if ( !empty($data['consulta_id']) ) {
+                $query->where('consulta_id', $data['consulta_id'])->get();
             }
 
-            if ( !empty($request->get('profissional_id')) ) {
-            	$query->whereIn('profissional_id', $request->get('profissional_id'))->get();
+            if ( !empty($data['profissional_id']) ) {
+                $query->whereIn('profissional_id', $data['profissional_id'])->get();
             }
         })->get();
 

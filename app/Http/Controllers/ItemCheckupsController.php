@@ -20,7 +20,7 @@ class ItemCheckupsController extends Controller
         ItemCheckups::validationRules($request);
 
         $atendimento = new Atendimento;
-        $atendimentos = $atendimento->getAll( $request );
+        $atendimentos = $atendimento->getAll( $request->all() );
 
         foreach ($atendimentos as $atendimento) {
             $itemCheckup = new ItemCheckups;
@@ -47,36 +47,21 @@ class ItemCheckupsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ItemCheckups  $itemCheckups
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ItemCheckups $itemCheckups)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ItemCheckups  $itemCheckups
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ItemCheckups $itemCheckups)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\ItemCheckups  $itemCheckups
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ItemCheckups $itemCheckups)
+    public function destroy($checkupId, $consultaId, $clinicas, $profissionals)
     {
-        dd($itemCheckups);
+        
+        $atendimento = new Atendimento;
+        $atendimentoResult = $atendimento->getAll( ['consulta_id' => $consultaId, 'clinica_id' => $clinicas, 'profissional_id' => explode(',', $profissionals)] );
+
+        foreach ($atendimentoResult as $atendimento) {
+            ItemCheckups::where('checkup_id', $checkupId)->where('atendimento_id', $atendimento->id )->delete();
+        }
+        
+        return redirect()->route('checkups.configure', Checkups::find($checkupId))->with('success', 'Item(s) de checkup excluídos(s) com sucesso!');
     }
 }

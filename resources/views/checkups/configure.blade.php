@@ -62,6 +62,7 @@
                         <th width="25%">Profissinais</th>
                         <th>Ações</th>
                     </tr>
+                    @if ( !empty($itemCheckups) )
                     <tfoot>
                         <tr>
                             <td>Totais</td>
@@ -71,6 +72,7 @@
                             <td>R$ {{ number_format($itemCheckups[0]->total_vl_net_checkup, 2, ',', '.') }}</td>
                         </tr>
                     </tfoot>
+                    @endif
                     @foreach ($itemCheckups as $itemCheckup)
                         <tr>
                             <td>{{ $itemCheckup->cd_consulta }} - {{ $itemCheckup->ds_consulta }}</td>
@@ -97,6 +99,11 @@
                                 foreach ( $clinicas as $clinica ) {
                                     $clinicasIdArray[] =  $clinica->id;
                                 }
+
+                                $profissionalsIdArray = [];
+                                foreach ( $profissionals as $profissional ) {
+                                    $profissionalsIdArray[] =  $profissional->id;
+                                }
                             @endphp
                             
                             <td> 
@@ -106,11 +113,7 @@
                                 {{ implode($profissionalsArray,', ') }}
                             </td>
                             <td>
-
-                                <!-- <a href="{{ route('checkups.show', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-                                <a href="{{ route('checkups.configure', $checkup) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Editar"><i class="ti-settings"></i></a>
-                                <a href="{{ route('checkups.edit', $checkup) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a> -->
-                                <a href="{{ route('item-checkups-consulta.destroy', [$itemCheckup->checkup_id, implode($clinicasIdArray,',') ]) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar este item de checkup?"><i class="ti-trash"></i></a>
+                                <a href="{{ route('item-checkups-consulta.destroy', [$itemCheckup->checkup_id, $itemCheckup->consulta_id, implode($clinicasIdArray,','), implode($profissionalsIdArray,',') ]) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar este item de checkup?"><i class="ti-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach

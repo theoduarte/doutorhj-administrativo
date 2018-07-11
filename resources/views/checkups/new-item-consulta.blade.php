@@ -80,13 +80,11 @@
     <script type="text/javascript">
         $(document).ready(function($) {
             $('.cancel-new').click(function(){
-                $('.new form').find('text').val('');
-                $('.new form').find(':radio').prop('checked', false); 
-                $('.new').hide();
+                $('.new-item-consulta form').find('text').val('');
+                $('.new-item-consulta form').find(':radio').prop('checked', false); 
+                $('.new-item-consulta').hide();
             });
-        });
-
-        $(document).ready(function($) {
+            
             $('#especialidade_id').change(function(){
                 $.ajax({
                     type     : 'get',
