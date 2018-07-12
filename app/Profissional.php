@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Support\Carbon;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Profissional extends Model
@@ -70,4 +71,15 @@ class Profissional extends Model
 	    $date = new Carbon($this->attributes['dt_nascimento']);
 	    return $date->format('d/m/Y');
 	}
+
+	public function getActiveProfissionalsByClinicaEspecialidade($clinica,$especialidade){
+        return DB::select(" SELECT DISTINCT p.*
+							  FROM profissionals p
+							  JOIN atendimentos at ON (at.profissional_id = p.id)
+							  JOIN consultas c ON (at.consulta_id = c.id)
+							 WHERE at.cs_status = 'A'
+							   AND p.cs_status = 'A'
+							   AND at.clinica_id = ?
+							   AND c.especialidade_id = ?", [$clinica,$especialidade]);
+    }
 }

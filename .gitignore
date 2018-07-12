@@ -16,6 +16,7 @@ npm-debug.log
 yarn-error.log
 .buildpath
 .env
+resources/views/.DS_Store
 
 /.buildpath/*
 /.project/*
