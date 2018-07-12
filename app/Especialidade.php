@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Especialidade extends Model
 {	  
-	public $fillable   = ['cd_especialidade', 'ds_especialidade'];
+	 public $fillable   = ['cd_especialidade', 'ds_especialidade'];
 
     public function getActive(){
         return DB::select(" SELECT DISTINCT e.*

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Http\Request;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Atendimento extends Model
@@ -59,28 +60,9 @@ class Atendimento extends Model
 
 	public function getFirst($data) {
 
-		$atendimentos =  $this::where(function ($query) use ($data) {
+        $atendimentos =  $this::where(function ($query) use ($data) {
             $query->where('cs_status','A')->get();
 
-            if ( !empty($data['clinica_id']) ) {
-            	$query->where('clinica_id', $data['clinica_id'])->get();
-            }
-
-            if ( !empty($data['consulta_id']) ) {
-            	$query->where('consulta_id', $data['consulta_id'])->get();
-            }
-
-            if ( !empty($data['profissional_id']) ) {
-            	$query->whereIn('profissional_id', $data['profissional_id'])->get();
-            }
-        })->first();
-
-		return !empty($atendimentos) ? $atendimentos->toArray() : [];
-	}
-
-	public function getAll($data) {
-		$atendimentos =  $this::where(function ($query) use ($data) {
-            $query->where('cs_status','A')->get();
             if ( !empty($data['clinica_id']) ) {
                 $query->where('clinica_id', $data['clinica_id'])->get();
             }
@@ -92,8 +74,57 @@ class Atendimento extends Model
             if ( !empty($data['profissional_id']) ) {
                 $query->whereIn('profissional_id', $data['profissional_id'])->get();
             }
+        })->first();
+
+        return !empty($atendimentos) ? $atendimentos->toArray() : [];
+    }
+
+    public function getFirstProcedimento($data) {
+
+        $atendimentos =  $this::where(function ($query) use ($data) {
+            $query->where('cs_status','A')->get();
+
+            if ( !empty($data['clinica_id']) ) {
+                $query->where('clinica_id', $data['clinica_id'])->get();
+            }
+
+            if ( !empty($data['procedimento_id']) ) {
+                $query->where('procedimento_id', $data['procedimento_id'])->get();
+            }
+        })->first();
+
+        return !empty($atendimentos) ? $atendimentos->toArray() : [];
+    }
+
+    public function getAll($data) {
+		$atendimentos =  $this::where(function ($query) use ($data) {
+            $query->where('cs_status','A')->get();
+            if ( !empty($data['clinica_id']) ) {
+                $query->where('clinica_id', $data['clinica_id'])->get();
+            }
+
+            if ( !empty($data['consulta_id']) ) {
+                $query->where('consulta_id', $data['consulta_id'])->get();
+            }
+
+            if ( !empty($data['procedimento_id']) ) {
+                $query->where('procedimento_id', $data['procedimento_id'])->get();
+            }
+
+            if ( !empty($data['profissional_id']) ) {
+                $query->whereIn('profissional_id', $data['profissional_id'])->get();
+            }
         })->get();
 
 		return $atendimentos;
 	}
+
+    public function getAtendsProcedimentoByCheckup($data){
+        return DB::select(" SELECT at.*
+                              FROM atendimentos at
+                              JOIN item_checkups ic ON (ic.atendimento_id = at.id)
+                             WHERE ic.checkup_id = ?
+                               AND at.clinica_id = ?
+                               AND at.procedimento_id = ?", [$data['checkup_id'], $data['clinica_id'], $data['procedimento_id']]);
+    }
 }

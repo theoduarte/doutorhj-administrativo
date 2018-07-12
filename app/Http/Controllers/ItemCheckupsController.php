@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataHoraCheckups;
 use App\Atendimento;
+use App\Procedimento;
 use App\ItemCheckups;
 use App\Checkups;
 use Illuminate\Http\Request;
@@ -44,20 +45,18 @@ class ItemCheckupsController extends Controller
      */
     public function storeExame(Request $request, Checkups $checkup)
     {
-        ItemCheckups::validationRules($request);
+        ItemCheckups::validationRulesExame($request);
 
         $atendimento = new Atendimento;
-        $atendimentos = $atendimento->getAll( $request->all() );
+        $atendimentoResult = $atendimento->getFirstProcedimento( $request->all() );
 
-        foreach ($atendimentos as $atendimento) {
-            $itemCheckup = new ItemCheckups;
-            $itemCheckup->checkup_id = $checkup->id;
-            $itemCheckup->atendimento_id = $atendimento->id;
-            $itemCheckup->ds_item = $request->get('ds_item');
-            $itemCheckup->vl_net_checkup = $request->get('vl_net_checkup');
-            $itemCheckup->vl_com_checkup = $request->get('vl_com_checkup');
-            $itemCheckup->save();
-        }
+        $itemCheckup = new ItemCheckups;
+        $itemCheckup->checkup_id = $checkup->id;
+        $itemCheckup->atendimento_id = $atendimentoResult['id'];
+        $itemCheckup->ds_item = $request->get('ds_item');
+        $itemCheckup->vl_net_checkup = $request->get('vl_net_checkup');
+        $itemCheckup->vl_com_checkup = $request->get('vl_com_checkup');
+        $itemCheckup->save();
 
         return redirect()->route('checkups.configure', $checkup)->with('success', 'Item(s) de checkup cadastrado(s) com sucesso!');
     }
@@ -111,14 +110,16 @@ class ItemCheckupsController extends Controller
      * @param  \App\ItemCheckups  $itemCheckups
      * @return \Illuminate\Http\Response
      */
-    public function destroyExame($checkupId, $consultaId, $clinicas, $profissionals)
+    public function destroyExame($checkupId, $procedimentoId, $clinicas)
     {
         $atendimento = new Atendimento;
-        $atendimentoResult = $atendimento->getAll( ['consulta_id' => $consultaId, 'clinica_id' => $clinicas, 'profissional_id' => explode(',', $profissionals)] );
+        $atendimentoResult = $atendimento->getAtendsProcedimentoByCheckup( ['checkup_id' => $checkupId, 'procedimento_id' => $procedimentoId, 'clinica_id' => $clinicas] );
+
 
         $hasItemCheckup = false;
         foreach ($atendimentoResult as $atendimento) {
             $itemCheckup = ItemCheckups::where('checkup_id', $checkupId)->where('atendimento_id', $atendimento->id );
+
             $dataHoraCheckup = DataHoraCheckups::where('itemcheckup_id', $itemCheckup->first()->id );
 
             if( empty( $dataHoraCheckup->first() ) ) {

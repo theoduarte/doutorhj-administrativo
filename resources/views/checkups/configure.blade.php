@@ -48,7 +48,7 @@
                     <h4 class="m-t-0 header-title">Itens de Consulta</h4>
                 </div>
                 <div class="float-right">
-                    <a href="#" id="addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i>Adicionar Consulta</a>
+                    <a href="#" id="addrow-consulta" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i>Adicionar Consulta</a>
                 </div>
 
                 <br>
@@ -131,20 +131,19 @@
                     <h4 class="m-t-0 header-title">Itens de Exames/procedimentos</h4>
                 </div>
                 <div class="float-right">
-                    <a href="#" id="addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i>Adicionar Exame/Procedimento</a>
+                    <a href="#" id="addrow-exame" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i>Adicionar Exame/Procedimento</a>
                 </div>
 
                 <br>
                 
                 <table class="table table-striped table-bordered" data-page-size="4">
                     <tr>
-                        <th width="20%">Exame/Procedimento</th>
+                        <th width="35%">Exame/Procedimento</th>
                         <th>Com. Atend.</th>
                         <th>Com.  CHeckup</th>
                         <th>NET Atend.</th>
                         <th>NET CHeckup</th>
-                        <th width="20%">Clinicas</th>
-                        <th width="25%">Profissinais</th>
+                        <th width="30%">Clinicas</th>
                         <th>Ações</th>
                     </tr>
                     @if ( !empty($itemCheckupsExame) )
@@ -160,7 +159,7 @@
                     @endif
                     @foreach ($itemCheckupsExame as $itemCheckup)
                         <tr>
-                            <td>{{ $itemCheckup->cd_consulta }} - {{ $itemCheckup->ds_consulta }}</td>
+                            <td>{{ $itemCheckup->cd_procedimento }} - {{ $itemCheckup->ds_procedimento }}</td>
                             <td>R$ {{ number_format($itemCheckup->vl_com_atendimento, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckup->vl_com_checkup, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckup->vl_net_atendimento, 2, ',', '.') }}</td>
@@ -168,12 +167,6 @@
 
                             @php 
                                 $clinicas = json_decode( str_replace('\\','', $itemCheckup->clinicas) );
-                                $profissionals = json_decode( str_replace('\\','', $itemCheckup->profissionals) );
-
-                                $profissionalsArray = [];
-                                foreach ( $profissionals as $profissional ) {
-                                    $profissionalsArray[] =  $profissional->name;
-                                }
 
                                 $clinicasArray = [];
                                 foreach ( $clinicas as $clinica ) {
@@ -184,21 +177,13 @@
                                 foreach ( $clinicas as $clinica ) {
                                     $clinicasIdArray[] =  $clinica->id;
                                 }
-
-                                $profissionalsIdArray = [];
-                                foreach ( $profissionals as $profissional ) {
-                                    $profissionalsIdArray[] =  $profissional->id;
-                                }
                             @endphp
                             
                             <td> 
                                 {{ implode($clinicasArray,', ') }}
                             </td>
-                            <td> 
-                                {{ implode($profissionalsArray,', ') }}
-                            </td>
                             <td>
-                                <a href="{{ route('item-checkups-exame.destroy', [$itemCheckup->checkup_id, $itemCheckup->consulta_id, implode($clinicasIdArray,','), implode($profissionalsIdArray,',') ]) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar este item de checkup?"><i class="ti-trash"></i></a>
+                                <a href="{{ route('item-checkups-exame.destroy', [$itemCheckup->checkup_id, $itemCheckup->procedimento_id, implode($clinicasIdArray,','), implode($profissionalsIdArray,',') ]) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar este item de checkup?"><i class="ti-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -208,7 +193,7 @@
     </div>
 
     @include('checkups.new-item-consulta', ['checkup' => $checkup, 'itemCheckups' => $itemCheckupsConsulta, 'especialidades' => $especialidades])
-    @include('checkups.new-item-exame', ['checkup' => $checkup, 'itemCheckups' => $itemCheckupsExame, 'especialidades' => $especialidades])
+    @include('checkups.new-item-exame', ['checkup' => $checkup, 'itemCheckups' => $itemCheckupsExame, 'grupoProcedimentos' => $grupoProcedimentos])
 
 </div>
 @endsection
@@ -216,10 +201,19 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function($) {
-            $('#addrow').click(function(){
+            $('#addrow-consulta').click(function(){
+                $('.new-item-exame').hide();
                 $('.new-item-consulta').show();
                 $([document.documentElement, document.body]).animate({
                         scrollTop: $(".new-item-consulta").offset().top
+                    }, 600);
+            });
+
+            $('#addrow-exame').click(function(){
+                $('.new-item-consulta').hide();
+                $('.new-item-exame').show();
+                $([document.documentElement, document.body]).animate({
+                        scrollTop: $(".new-item-exame").offset().top
                     }, 600);
             });
         });

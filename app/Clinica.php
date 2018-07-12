@@ -56,4 +56,15 @@ class Clinica extends Model
                                AND c.cs_status = 'A'
                                AND at.cs_status = 'A'", [$especialidade]);
     }
+
+    public function getActiveByProcedimento($procedimento){
+        return DB::select(" SELECT DISTINCT c.*
+                              FROM clinicas c
+                              JOIN atendimentos at ON (c.id = at.clinica_id)
+                              JOIN procedimentos p ON (at.procedimento_id = p.id)
+                             WHERE p.id = ?
+                               AND at.cs_status = 'A'
+                               AND EXISTS (SELECT 1 FROM filials f WHERE f.clinica_id = c.id AND cs_status = 'A')
+                             ORDER BY nm_fantasia;", [$procedimento]);
+    }
 }

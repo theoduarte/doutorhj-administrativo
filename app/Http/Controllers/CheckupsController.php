@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Checkups;
+use App\Procedimento;
 use App\ItemCheckups;
+use App\GrupoProcedimento;
 use App\Especialidade;
 use App\Clinica;
 use App\Consulta;
@@ -115,12 +117,16 @@ class CheckupsController extends Controller
     {
         $itemCheckup = new ItemCheckups();
         $itemCheckupsConsulta = $itemCheckup->getItensGrouped($checkup->id);
-        $itemCheckupsExame = $itemCheckup->getItensGrouped($checkup->id);
+        $itemCheckupsExame = $itemCheckup->getItensExameGrouped($checkup->id);
 
         $especialidade = new Especialidade();
         $especialidades = $especialidade->getActive();
 
-        return view('checkups.configure', ['checkup' => $checkup, 'itemCheckupsConsulta' => $itemCheckupsConsulta, 'itemCheckupsExame' => $itemCheckupsExame, 'especialidades' => $especialidades] );
+        $grupoProcedimento = new GrupoProcedimento();
+        $grupoProcedimentos = $grupoProcedimento->getActive();
+
+        return view('checkups.configure', ['checkup' => $checkup, 'itemCheckupsConsulta' => $itemCheckupsConsulta, 'itemCheckupsExame' => $itemCheckupsExame, 
+            'especialidades' => $especialidades, 'grupoProcedimentos' => $grupoProcedimentos] );
     }
 
     /**
@@ -182,4 +188,51 @@ class CheckupsController extends Controller
         echo json_encode($atendimentoResult);
         exit;
     }
+
+    /**
+     * Get procedimentos by grupo procedimento
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getProcedimentosByGrupoProcedimento(Request $request)
+    {
+        $procedimento = new Procedimento();
+        $procedimentos = $procedimento->getActiveByGrupoProcedimento( $request->get('grupo_procedimento_id') );
+
+        echo json_encode($procedimentos);
+        exit;
+    }
+
+    /**
+     * Get clinias by procedimento
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getClinicasByProcedimento(Request $request)
+    {
+        $clinica = new Clinica();
+        $clinicas = $clinica->getActiveByProcedimento( $request->get('procedimento_id') );
+
+        echo json_encode($clinicas);
+        exit;
+    }
+
+    /**
+     * Get atendimento values by procedimento
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getAtendimentoValuesByProcedimento(Request $request)
+    {
+        $atendimento = new Atendimento;
+        $atendimentoResult = $atendimento->getFirstProcedimento( $request->all() );
+
+        echo json_encode($atendimentoResult);
+        exit;
+    }
+
+    
 }

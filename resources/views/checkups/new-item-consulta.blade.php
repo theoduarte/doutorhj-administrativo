@@ -63,7 +63,7 @@
 
                     <div class="form-group">
                         <label for="ds_item">Observação</label>
-                            <textarea id="ds_item" class="form-control" name="ds_item"></textarea>
+                        <textarea id="ds_item" class="form-control" name="ds_item"></textarea>
                     </div>
                         
                     <div class="form-group text-right m-b-0">
