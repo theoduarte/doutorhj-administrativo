@@ -183,7 +183,7 @@
                                 {{ implode($clinicasArray,', ') }}
                             </td>
                             <td>
-                                <a href="{{ route('item-checkups-exame.destroy', [$itemCheckup->checkup_id, $itemCheckup->procedimento_id, implode($clinicasIdArray,','), implode($profissionalsIdArray,',') ]) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar este item de checkup?"><i class="ti-trash"></i></a>
+                                <a href="{{ route('item-checkups-exame.destroy', [$itemCheckup->checkup_id, $itemCheckup->procedimento_id, implode($clinicasIdArray,',')]) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar este item de checkup?"><i class="ti-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach
