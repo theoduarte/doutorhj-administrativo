@@ -61,9 +61,20 @@ class CheckupsController extends Controller
      * @param  \App\Checkups  $checkups
      * @return \Illuminate\Http\Response
      */
-    public function show(Checkups $checkups)
+    public function show(Checkups $checkup)
     {
-        //
+        $itemCheckup = new ItemCheckups();
+        $itemCheckupsConsulta = $itemCheckup->getItensGrouped($checkup->id);
+        $itemCheckupsExame = $itemCheckup->getItensExameGrouped($checkup->id);
+
+        $especialidade = new Especialidade();
+        $especialidades = $especialidade->getActive();
+
+        $grupoProcedimento = new GrupoProcedimento();
+        $grupoProcedimentos = $grupoProcedimento->getActive();
+
+        return view('checkups.show', ['checkup' => $checkup, 'itemCheckupsConsulta' => $itemCheckupsConsulta, 'itemCheckupsExame' => $itemCheckupsExame, 
+            'especialidades' => $especialidades, 'grupoProcedimentos' => $grupoProcedimentos] );
     }
 
     /**

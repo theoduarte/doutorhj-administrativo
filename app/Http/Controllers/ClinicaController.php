@@ -909,4 +909,25 @@ class ClinicaController extends Controller
 
         return response()->json(['status' => true, 'mensagem' => 'A Consulta foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
+
+    /**
+     * Consulta Cidade através da UF
+     *
+     * @param  \Illuminate\Http\Request  $request
+     
+     */
+    public function consultaCidade() {
+        $output = null;
+
+        $uf = CVXRequest::get('uf');
+        $term = CVXRequest::get('term');
+
+        if ( !empty($uf) ) { 
+            $cidades = Cidade::where('sg_estado',$uf)->whereRaw( "UPPER(nm_cidade) LIKE UPPER('%$term%')")->orderBy('nm_cidade')->select('id','nm_cidade as label','nm_cidade as value','cd_ibge')->get();
+
+            return response()->json($cidades);
+        }
+        
+        return response()->json(['status' => false, 'mensagem' => 'UF não informada.']);
+    }
 }

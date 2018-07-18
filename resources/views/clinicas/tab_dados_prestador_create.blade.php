@@ -239,21 +239,21 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-2">
-                <div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
-                    <label for="nm_cidade" class="control-label">Cidade<span class="text-danger">*</span></label>
-                    <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{ old('nm_cidade') }}" required  maxlength="50" readonly>
-                    <input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ old('cd_cidade_ibge') }}" >
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-2">
                 <div class="form-group{{ $errors->has('sg_estado') ? ' has-error' : '' }}">
                     <label for="sg_estado" class="control-label">Estado<span class="text-danger">*</span></label>
-                    <select id="sg_estado" name="sg_estado" class="form-control" readonly>
+                    <select id="sg_estado" name="sg_estado" class="form-control">
                         <option></option>
                         @foreach ($estados as $uf)
                             <option value="{{ $uf->sg_estado }}" @if ( old('sg_estado') == $uf->sg_estado) selected="selected" @endif >{{ $uf->ds_estado }}</option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-2">
+                <div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
+                    <label for="nm_cidade" class="control-label">Cidade<span class="text-danger">*</span></label>
+                    <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{ old('nm_cidade') }}" required  maxlength="50">
+                    <input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ old('cd_cidade_ibge') }}" >
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
