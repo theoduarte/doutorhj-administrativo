@@ -294,18 +294,10 @@
     		<input id="te_bairro" type="text" class="form-control" name="te_bairro" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->te_bairro }} @endif" required  maxlength="250">
 		</div>
 	</div>
-	<div class="col-md-4">
-		<div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
-			<label for="nm_cidade" class="col-3 control-label">Cidade<span class="text-danger">*</span></label>
-
-            <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->nm_cidade }} @endif" required  maxlength="50" readonly>
-    		<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->cd_ibge }} @endif">
-    	</div>
-    </div>
 	<div class="col-md-2">
 		<div class="form-group{{ $errors->has('sg_estado') ? ' has-error' : '' }}">
             <label for="sg_estado" class="col-3 control-label">Estado<span class="text-danger">*</span></label>
-            <select id="sg_estado" name="sg_estado" class="form-control" disabled>
+            <select id="sg_estado" name="sg_estado" class="form-control">
     			<option></option>
                 @foreach ($estados as $uf)
     				<option value="{{ $uf->sg_estado }}" {{ (!$prestador->enderecos->isEmpty() && $prestador->enderecos->first()->cidade->sg_estado == $uf->sg_estado ? 'selected' : '')}}>{{ $uf->ds_estado }}</option>
@@ -313,7 +305,15 @@
     		</select>
         </div>
 	</div>
-	<div class="col-md-1">
+	<div class="col-md-4">
+        <div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
+            <label for="nm_cidade" class="col-3 control-label">Cidade<span class="text-danger">*</span></label>
+
+            <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->nm_cidade }} @endif" required  maxlength="50">
+            <input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->cd_ibge }} @endif">
+        </div>
+    </div>
+    <div class="col-md-1">
 		<div class="form-group{{ $errors->has('nr_longitute_gps') ? ' has-error' : '' }}">
     		<label for="nr_longitute_gps" class="col-3 control-label">Longitude<span class="text-danger">*</span></label>
     		<input id="nr_longitute_gps" type="text" class="form-control" name="nr_longitute_gps" value="@if(!$prestador->enderecos->isEmpty()) {{$prestador->enderecos->first()->nr_longitute_gps}} @endif" required  maxlength="50">

@@ -92,7 +92,7 @@
 	        $(this).removeData('bs.modal');
 	    });
 
-	    $( "#nr_cep" ).blur(function() {
+	    $( "#nr_cep" ).on('blur',function() {
 	    	$('#cvx-input-loading').removeClass('cvx-no-loading');
 	    	jQuery.ajax({
         		type: 'GET',
@@ -246,6 +246,34 @@
 	            }
 			});
 		});
+
+        $('#sg_estado').on('change', function() {
+            var uf = $(this).val();
+            if ( !uf ) return false;
+
+            $("#nm_cidade").val('');
+            $("#cd_cidade_ibge").val('');
+
+            var instance = $( "#nm_cidade" ).autocomplete( "instance" );
+            if( instance ) {
+                $( "#nm_cidade" ).autocomplete('destroy');
+            }
+            
+            $( "#nm_cidade" ).autocomplete({
+                source: function(request, response) {
+                $.getJSON(
+                        "/consulta-cidade",
+                        { term: request.term, uf: uf }, 
+                        response
+                    );
+                },
+                select: function (event, ui) {
+                    $("#cd_cidade_ibge").val( ui.item.cd_ibge );
+                },
+                delay: 500,
+                minLength: 2
+            });
+        });
 	});
 
 	function openModal(profissional_id) {
