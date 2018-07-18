@@ -42,6 +42,7 @@ Route::get('get-active-clinicas-by-procedimento','CheckupsController@getClinicas
 Route::get('get-atendimento-values-by-procedimento','CheckupsController@getAtendimentoValuesByProcedimento')->name('get-atendimento-values-by-procedimento')->middleware('auth');
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
+Route::get('consulta-cidade', 'ClinicaController@consultaCidade')->name('consulta-cidade');
 Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');
 Route::get('procedimentos/consulta/{consulta}', 'ClinicaController@getProcedimentos')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/list-profissional', 'ClinicaController@getProfissionals')->middleware('auth');

@@ -369,11 +369,11 @@
 						<div class="col-md-1">
 							<label for="filial_nr_longitute" class="control-label"><strong>Longitude</strong><span class="text-danger">*</span></label>
 						</div>
+                        <div class="col-md-1">
+                            <label for="filial_sg_estado" class="control-label"><strong>UF</strong><span class="text-danger">*</span></label>
+                        </div>
 						<div class="col-md-2">
 							<label for="filial_nm_cidade" class="control-label"><strong>Cidade</strong><span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-1">
-							<label for="filial_sg_estado" class="control-label"><strong>UF</strong><span class="text-danger">*</span></label>
 						</div>
 					</div>
 				</th>
@@ -420,10 +420,6 @@
 						<div class="col-md-1">
 							<input type="text" class="form-control filial_nr_longitute" value="{{ $list_filials[$i]->endereco->nr_longitute_gps }}">
 						</div>
-						<div class="col-md-2">
-							<input type="text" class="form-control filial_nm_cidade" value="{{ $list_filials[$i]->endereco->cidade->nm_cidade }}" maxlength="80">
-							<input type="hidden" class="filial_cd_cidade_ibge" value="{{ $list_filials[$i]->endereco->cidade->cd_ibge }}">
-						</div>
 						<div class="col-md-1">
 							<select class="form-control filial_sg_estado">
 								<option></option>
@@ -455,7 +451,12 @@
 								<option value="SE" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'SE' ) selected="selected" @endif >SE</option>
 								<option value="TO" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'TO' ) selected="selected" @endif >TO</option>
 							</select>
-						</div>     			
+						</div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control filial_nm_cidade" value="{{ $list_filials[$i]->endereco->cidade->nm_cidade }}" maxlength="80">
+                            <input type="hidden" class="filial_cd_cidade_ibge" value="{{ $list_filials[$i]->endereco->cidade->cd_ibge }}">
+                        </div>
+                            			
 					</div>
 				</td>
 				<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td>
@@ -566,6 +567,36 @@ $(document).ready(function () {
         $(".filial_eh_matriz").prop('checked', false);
         $(this).prop('checked', true);
     });
+
+    $('#list-all-filiais').on('change', '.filial_sg_estado', function() {
+        var uf = $(this).val();
+        if ( !uf ) return false;
+
+        var cvx_cep_filial = $(this).parent().parent();
+
+        cvx_cep_filial.find(".filial_nm_cidade").val('');
+        cvx_cep_filial.find(".filial_cd_cidade_ibge").val('');
+
+        var instance = cvx_cep_filial.find( ".filial_nm_cidade" ).autocomplete( "instance" );
+        if( instance ) {
+            cvx_cep_filial.find( ".filial_nm_cidade" ).autocomplete('destroy');
+        }
+        
+        cvx_cep_filial.find( ".filial_nm_cidade" ).autocomplete({
+            source: function(request, response) {
+            $.getJSON(
+                    "/consulta-cidade",
+                    { term: request.term, uf: uf }, 
+                    response
+                );
+            },
+            select: function (event, ui) {
+                $(this).parent().parent().find(".filial_cd_cidade_ibge").val( ui.item.cd_ibge );
+            },
+            delay: 500,
+            minLength: 2
+        });
+    });
     
 });
 
@@ -609,13 +640,13 @@ function addFilial(input) {
     				<div class="col-md-1"> \
     					<input type="text" class="form-control filial_nr_longitute" > \
     				</div> \
-    				<div class="col-md-2"> \
-    					<input type="text" class="form-control filial_nm_cidade" maxlength="80" > \
-    					<input type="hidden" class="filial_cd_cidade_ibge" > \
-    				</div> \
     				<div class="col-md-1"> \
     					<select class="form-control filial_sg_estado">'+filial_sg_estado+'</select> \
     				</div> \
+                    <div class="col-md-2"> \
+                        <input type="text" class="form-control filial_nm_cidade" maxlength="80" > \
+                        <input type="hidden" class="filial_cd_cidade_ibge" > \
+                    </div> \
     			</div> \
     		</td> \
     		<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td> \
@@ -636,7 +667,6 @@ function addFilial(input) {
     		type: 'GET',
     	  	url: '/consulta-cep/cep/'+nr_cep,
     	  	data: {
-				'nr_cep': nr_cep,
 				'_token': laravel_token
 			},
 			timeout: 15000,
@@ -657,7 +687,6 @@ function addFilial(input) {
 					cvx_cep_filial.find('.filial_nr_longitute').val(json.longitude);
 					
 				} else {
-
 					cvx_cep_filial.find('.filial_endereco').val('');
 					cvx_cep_filial.find('.filial_te_bairro').val('');
 					cvx_cep_filial.find('.filial_nm_cidade').val('');
@@ -682,6 +711,8 @@ function addFilial(input) {
         $(".filial_eh_matriz").prop('checked', false);
         $(this).prop('checked', true);
     });
+
+
 
 	//$(content).find(".consultaCepFilial" ).trigger('input');
 
