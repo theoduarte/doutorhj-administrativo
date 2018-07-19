@@ -307,9 +307,13 @@ class ClinicaController extends Controller
         //--atualizar usuário-----------------
         $usuario_id         = CVXRequest::post('responsavel_user_id');
         $usuario            = User::findorfail($usuario_id);
+
         $ct_user_obj        = $usuario->toJson();
         $usuario->name      = $request->input('name_responsavel');
-        $usuario->password  = bcrypt($request->input('password'));
+        
+        if ( (String)$request->input('change-password') === "1" ) {
+            $usuario->password  = bcrypt($request->input('password'));
+        }
         $usuario->save();
 
         //--salvar CNPJ------------------------
