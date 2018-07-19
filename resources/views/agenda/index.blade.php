@@ -204,6 +204,7 @@
                                                    id-profissional = "{{$obAgenda->profissional->id}}"
                                                    id-clinica      = "{{$obAgenda->clinica->id}}"
                                                    id-paciente     = "{{$obAgenda->paciente->id}}"
+                                                   id-agendamento  = "{{$obAgenda->id}}"
                                                    ticket          = "{{$obAgenda->te_ticket}}"
                                                    class           = "btn btn-icon waves-effect btn-agenda-faturar btn-sm m-b-5 faturamento"
                                                    title           = "Faturar Consulta" id="faturamento">
@@ -222,10 +223,11 @@
                                                    id-profissional = "{{$obAgenda->profissional->id}}"
                                                    id-clinica      = "{{$obAgenda->clinica->id}}"
                                                    id-paciente     = "{{$obAgenda->paciente->id}}"
+                                                   id-agendamento  = "{{$obAgenda->id}}"
                                                    ticket          = "{{$obAgenda->te_ticket}}"
                                                    class           = "btn btn-icon waves-effect btn-agenda-pagar btn-sm m-b-5 pagamento"
                                                    title           = "Pagar" id="pagamento">
-                                                   <i class="ti ti-money"></i>
+                                                   <i class="fa fa-dollar"></i>
                                                 </a>
                                             @endif
                                             

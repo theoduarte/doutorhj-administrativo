@@ -73,6 +73,7 @@ Route::get('agenda/agendar/{a}/{b}/{c}/{d}/{e?}/{f?}/{g?}/{h?}/{i?}', 'Agendamen
 Route::get('agenda/cancelar/{ticket}/{dtAtendimento}/{obs?}', 'AgendamentoController@addCancelamento')->middleware('auth');
 Route::get('horarios/{clinica_id}/{profissional_id}/{data}', 'AgendamentoController@getHorariosLivres')->middleware('auth');
 Route::get('agenda/confirmar/{ticket}/{cdStatus}', 'AgendamentoController@setStatus')->middleware('auth');
+Route::get('agenda/set-status-by-id/{id}/{cdStatus}', 'AgendamentoController@setStatusById')->middleware('auth');
 
 Route::get('notificacoes','MensagemController@getListaNotificacoes')->middleware('auth');
 Route::get('notificacoes/visualizado/{id}','MensagemController@setStatusVisualizado')->middleware('auth');
