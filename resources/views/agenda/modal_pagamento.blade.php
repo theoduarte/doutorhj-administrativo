@@ -6,7 +6,7 @@
     $(function(){
         function acaoPagar(){
             $.ajax({
-                url : 'agenda/confirmar/'+$('#dialog-pagar #confTicket').val()+'/' + "{{ Agendamento::PAGO }}",
+                url : 'agenda/set-status-by-id/'+$('#dialog-pagar #confIdAgendamento').val()+'/' + "{{ Agendamento::PAGO }}",
                 beforeSend : function(){
 
                 },
@@ -49,6 +49,7 @@
             $('#dialog-pagar #confEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
             $('#dialog-pagar #confDtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
             $('#dialog-pagar #confTicket').val($(this).attr('ticket'));
+            $('#dialog-pagar #confIdAgendamento').val($(this).attr('id-agendamento'));
 
             dialogPagamento.dialog( "open"  );
         });
@@ -61,6 +62,7 @@
                 Clínica:
                 <div id="confClinica"></div>
                 <input type="hidden" id="confTicket" name="confTicket" value="">
+                <input type="hidden" id="confIdAgendamento" name="confIdAgendamento" value="">
             </label>
         </div>
     </div>

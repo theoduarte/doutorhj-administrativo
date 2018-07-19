@@ -248,6 +248,18 @@ class AgendamentoController extends Controller
     }
     
     /**
+     * Muda Status de um agendamento pelo ID
+     * 
+     * @param unknown $teTicket
+     */
+    public function setStatusById($id, $cdStatus){
+        $agendamento = \App\Agendamento::find($id);
+        
+        $arDados = array('cs_status' => $cdStatus);
+        $agendamento->update($arDados);
+    }
+    
+    /**
      * enviarEmailPreAgendamento a newly external user created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

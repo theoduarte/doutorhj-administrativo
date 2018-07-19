@@ -5,7 +5,7 @@
     $(function(){
         function acaoFaturar(){
             $.ajax({
-                url : 'agenda/confirmar/'+$('#dialog-faturar #confTicket').val()+'/' + "{{ Agendamento::FATURADO }}",
+                url : 'agenda/set-status-by-id/'+$('#dialog-pagar #confIdAgendamento').val()+'/' + "{{ Agendamento::FATURADO }}",
                 beforeSend : function(){
 
                 },
@@ -48,6 +48,7 @@
             $('#dialog-faturar #confEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
             $('#dialog-faturar #confDtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
             $('#dialog-faturar #confTicket').val($(this).attr('ticket'));
+            $('#dialog-pagar #confIdAgendamento').val($(this).attr('id-agendamento'));
 
             dialogFaturamento.dialog( "open"  );
         });
@@ -60,6 +61,7 @@
                 Clínica:
                 <div id="confClinica"></div>
                 <input type="hidden" id="confTicket" name="confTicket" value="">
+                <input type="hidden" id="confIdAgendamento" name="confIdAgendamento" value="">
             </label>
         </div>
     </div>
