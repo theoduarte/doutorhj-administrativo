@@ -469,17 +469,6 @@
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <hr>
-        <br>
-    </div>
-</div>
-
-<div class="col-10">
-	<h4>Lista de Filiais</h4>
-</div>
-
-<div class="row">
 	<div class="col-md-12">
     	<hr>
     </div>
@@ -502,7 +491,7 @@
             @endif
         </div>
 	</div>
-	<div class="col-md-2">
+    <div class="col-md-2">
 		<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
     		<label for="password" class="col-3 control-label">Senha<span class="text-danger">*</span></label>
     		<input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{ $user->password }}" required  maxlength="50">
@@ -524,6 +513,12 @@
             @endif
 		</div>
 	</div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label><input type="checkbox" name="change-password" value="1"> Alterar a senha ?</label>
+        </div>
+    </div>
+    
 </div>
 
 <div class="form-group">
