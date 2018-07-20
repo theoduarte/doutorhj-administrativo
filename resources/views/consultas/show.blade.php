@@ -139,12 +139,11 @@ function loadTagConsulta(element, atendimento_id, nome_consulta) {
 	$('#tag_consulta_atendimento_id').val(atendimento_id);
 
 	jQuery.ajax({
-		type: 'POST',
+		type: 'GET',
 		url: '/load-tag-popular',
 		data: {
 			'tag_atendimento_id': atendimento_id,
-			'tipo_tag': 'consulta',
-			'_token': laravel_token
+			'tipo_tag': 'consulta'
 		},
         success: function (result) {
             

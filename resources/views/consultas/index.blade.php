@@ -89,7 +89,7 @@
        </div>
 	</div>
 </div>
-<div id="tags-populares-consulta-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tagsConsultaModalLabel" aria-hidden="true" style="display: none;">
+<div id="tags-populares-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tagsConsultaModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered" style="margin-top: -10%;">
         <div class="modal-content">
             <div class="modal-header">
@@ -146,7 +146,7 @@
             										<th style="width: 40px;">(+)</th>
             										<th style="width: 40px;">(-)</th>
             									</tr>
-            									<tbody id="list-all-tags-populares-consulta"></tbody>
+            									<tbody id="list-all-tags-populares"></tbody>
             								</table>
             							</div>
             						</div>
@@ -169,14 +169,17 @@ function loadTagConsulta(element, atendimento_id, nome_consulta) {
 	$('#tag_consulta_atendimento_id').val(atendimento_id);
 
 	jQuery.ajax({
-		type: 'POST',
+		type: 'GET',
+        dataType: "json",
 		url: '/load-tag-popular',
 		data: {
 			'tag_atendimento_id': atendimento_id,
-			'tipo_tag': 'consulta',
-			'_token': laravel_token
+			'tipo_tag': 'consulta'
 		},
         success: function (result) {
+            
+
+            console.log(result.status);
             
             if(result.status) {
 
@@ -184,7 +187,7 @@ function loadTagConsulta(element, atendimento_id, nome_consulta) {
 
 	            var num_tags = list_tag_popular.length;
 
-	            $('#list-all-tags-populares-consulta').empty();
+	            $('#list-all-tags-populares').empty();
 	            
 	            for(var i = 0; i < num_tags; i++) {
 
@@ -199,12 +202,14 @@ function loadTagConsulta(element, atendimento_id, nome_consulta) {
 		        		<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Tag Popular" onclick="removerConsultaTagPopular(this, '+"'"+cs_tag+"'"+', '+tag_id+')" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
 		        	</tr>';
 
-	            	 $('#list-all-tags-populares-consulta').append(content_item);
+	            	 $('#list-all-tags-populares').append(content_item);
 	            	    
 	            }
 
+                console.log(content_item);
+
 	            $('#cs_tag_consulta').val('');
-	            $("#tags-populares-consulta-modal").modal();
+	            $("#tags-populares-modal").modal();
                  
             }
         },
@@ -250,7 +255,7 @@ function addConsultaTagPopular(input) {
 
             	var tag_popular = JSON.parse(result.tag_popular);
 
-            	var num_elements = $('#list-all-tags-populares-consulta tr').length;
+            	var num_elements = $('#list-all-tags-populares tr').length;
 	          	num_elements++;
 
 	          	var content = '<tr> \
@@ -260,7 +265,7 @@ function addConsultaTagPopular(input) {
 	        		<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Tag Popular" onclick="removerTagPopular(this, '+"'"+tag_popular.cs_tag+"'"+', '+tag_popular.id+')" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
 	        	</tr>';
 
-	            $('#list-all-tags-populares-consulta').append(content);
+	            $('#list-all-tags-populares').append(content);
 	            $('#cs_tag_consulta').val('');
 
 	            //$.Notification.notify('success','top right', 'DrHoje', result.mensagem);

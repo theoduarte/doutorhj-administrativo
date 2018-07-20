@@ -173,8 +173,7 @@ function loadTags(element, procedimento_id, nome_procedimento) {
         url: '/load-tag-popular',
         data: {
 			'tag_atendimento_id': procedimento_id,
-			'tipo_tag': 'proced',
-			// '_token': laravel_token
+			'tipo_tag': 'proced'
 		},
         success: function (result) {
             
