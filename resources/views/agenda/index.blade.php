@@ -233,7 +233,6 @@
                                             
                                             <!-- botao cancelar -->
 											@if( $obAgenda->cs_status!='Cancelado' &&
-                                                 $obAgenda->cs_status!='Finalizado' &&
                                                  $obAgenda->cs_status!='Faturado' &&
                                                  $obAgenda->cs_status!='Pago' &&
                                                  $obAgenda->cs_status!='Retorno')
