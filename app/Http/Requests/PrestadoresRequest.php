@@ -42,23 +42,45 @@ class PrestadoresRequest extends FormRequest
         
         switch ($this->method()) {
             case 'PUT':
-                $rules = [
-                    'nm_razao_social'       => 'required|max:150',
-                    'nm_fantasia'           => 'required|max:150',
-                    'cd_cidade_ibge'        => 'required',
-                    'tp_documento'          => 'required|max:5',
-                    'te_documento'          => 'required|max:30|unique:documentos,te_documento,'.$this->cnpj_id,
-                    'nr_cep'                => 'max:10|min:8',
-                    'te_bairro'             => 'max:250',
-                    'te_complemento'        => 'max:1000',
-                    'email'                 => 'required|max:50|min:3|email|unique:users,email,'.$this->responsavel_user_id,
-                    'password'              => 'required|string|min:6|confirmed',
-                    'name_responsavel'      => 'required|max:50',
-                    'cpf_responsavel'       => 'required|max:14|min:11|unique:responsavels,cpf,'.$this->responsavel_id,
-                    'telefone_responsavel'  => 'required|max:20|unique:responsavels,telefone,'.$this->responsavel_id,
-                    'nr_latitude_gps'       => 'required',
-                    'nr_longitute_gps'      => 'required'
-                ];
+
+                if ( (String)$this->input('change-password') === "1" ) {
+                    $rules = [
+                        'nm_razao_social'       => 'required|max:150',
+                        'nm_fantasia'           => 'required|max:150',
+                        'cd_cidade_ibge'        => 'required',
+                        'tp_documento'          => 'required|max:5',
+                        'te_documento'          => 'required|max:30|unique:documentos,te_documento,'.$this->cnpj_id,
+                        'nr_cep'                => 'max:10|min:8',
+                        'te_bairro'             => 'max:250',
+                        'te_complemento'        => 'max:1000',
+                        'email'                 => 'required|max:50|min:3|email|unique:users,email,'.$this->responsavel_user_id,
+                        'name_responsavel'      => 'required|max:50',
+                        'cpf_responsavel'       => 'required|max:14|min:11|unique:responsavels,cpf,'.$this->responsavel_id,
+                        'telefone_responsavel'  => 'required|max:20|unique:responsavels,telefone,'.$this->responsavel_id,
+                        'nr_latitude_gps'       => 'required',
+                        'nr_longitute_gps'      => 'required',
+                        'password' => 'required|string|min:6|confirmed'
+                    ];
+                }
+                else {
+                    $rules = [
+                        'nm_razao_social'       => 'required|max:150',
+                        'nm_fantasia'           => 'required|max:150',
+                        'cd_cidade_ibge'        => 'required',
+                        'tp_documento'          => 'required|max:5',
+                        'te_documento'          => 'required|max:30|unique:documentos,te_documento,'.$this->cnpj_id,
+                        'nr_cep'                => 'max:10|min:8',
+                        'te_bairro'             => 'max:250',
+                        'te_complemento'        => 'max:1000',
+                        'email'                 => 'required|max:50|min:3|email|unique:users,email,'.$this->responsavel_user_id,
+                        'name_responsavel'      => 'required|max:50',
+                        'cpf_responsavel'       => 'required|max:14|min:11|unique:responsavels,cpf,'.$this->responsavel_id,
+                        'telefone_responsavel'  => 'required|max:20|unique:responsavels,telefone,'.$this->responsavel_id,
+                        'nr_latitude_gps'       => 'required',
+                        'nr_longitute_gps'      => 'required',
+                    ];
+                }
+
                 break;
                 
             default:

@@ -139,6 +139,8 @@ class AgendamentoController extends Controller
                              'te_ticket'      => $teTicket,
                              'profissional_id'=> $idProfissional,
                              'cs_status'      => Agendamento::AGENDADO);
+
+            $agendamento->update($arDados);
         } else {
             $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
                              'bo_remarcacao'  => $boRemarcacao, 
@@ -146,6 +148,8 @@ class AgendamentoController extends Controller
                              'te_ticket'      => $teTicket,
                              'profissional_id'=> $idProfissional,
                              'cs_status'      => Agendamento::AGENDADO);
+
+            $agendamento->update($arDados);
             
             //--carrega os dados do paciente para configurar a mensagem-----
             $paciente = Paciente::findorfail($idPaciente);
@@ -181,8 +185,6 @@ class AgendamentoController extends Controller
                 $this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento);
             } catch (Exception $e) {}
         }
-        
-        $agendamento->update($arDados);
     }
     
     /**
@@ -242,6 +244,18 @@ class AgendamentoController extends Controller
      */
     public function setStatus($teTicket, $cdStatus){
         $agendamento = \App\Agendamento::where('te_ticket', '=', $teTicket);
+        
+        $arDados = array('cs_status' => $cdStatus);
+        $agendamento->update($arDados);
+    }
+    
+    /**
+     * Muda Status de um agendamento pelo ID
+     * 
+     * @param unknown $teTicket
+     */
+    public function setStatusById($id, $cdStatus){
+        $agendamento = \App\Agendamento::find($id);
         
         $arDados = array('cs_status' => $cdStatus);
         $agendamento->update($arDados);
