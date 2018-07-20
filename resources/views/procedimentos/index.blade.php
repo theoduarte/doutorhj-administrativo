@@ -168,12 +168,13 @@ function loadTags(element, procedimento_id, nome_procedimento) {
 	$('#tag_atendimento_id').val(procedimento_id);
 
 	jQuery.ajax({
-		type: 'POST',
-		url: '/load-tag-popular',
-		data: {
+		type: 'GET',
+		dataType: "json",
+        url: '/load-tag-popular',
+        data: {
 			'tag_atendimento_id': procedimento_id,
 			'tipo_tag': 'proced',
-			'_token': laravel_token
+			// '_token': laravel_token
 		},
         success: function (result) {
             
