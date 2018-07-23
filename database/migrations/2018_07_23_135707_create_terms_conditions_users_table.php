@@ -13,7 +13,7 @@ class CreateTermsConditionsUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('terms_conditions_users', function (Blueprint $table) {
+        Schema::create('termos_condicoes_usuarios', function (Blueprint $table) {
             $table->increments('id');
 
             $table->integer('termo_condicao_id')->unsigned();
@@ -33,6 +33,6 @@ class CreateTermsConditionsUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('terms_conditions_users');
+        Schema::dropIfExists('termos_condicoes_usuarios');
     }
 }
