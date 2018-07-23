@@ -37,7 +37,7 @@
 		<!-- Datapicker -->
 		<link href="/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 		<link href="/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="/css/google.loader.css">
+		<link rel="stylesheet" href="/css/google.loader.css">		
 		
 		<script src="/libs/comvex-template/js/jquery.min.js"></script>
 		<script src="/libs/comvex-template/js/popper.min.js"></script>
@@ -48,6 +48,10 @@
 		<script src="/libs/sweet-alert/sweetalert2.min.js"></script>
 		<script src="/libs/comvex-template/pages/jquery.sweet-alert.init.js"></script>
 		<script src="/js/doutorhj.script.js"></script>
+
+		<!-- TinyMCE css -->
+		<script src="/libs/tinymce/tinymce.min.js"></script>
+		<script src="/libs/tinymce/jquery.tinymce.min.js"></script>
 	@endpush
 	@stack('style')
 </head>

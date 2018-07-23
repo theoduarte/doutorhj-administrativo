@@ -24,6 +24,7 @@ Route::resource('agenda','AgendamentoController')->only(['index'])->middleware('
 Route::resource('registro_logs','RegistroLogController')->middleware('auth');
 Route::resource('cupom_descontos','CupomDescontoController')->middleware('auth');
 Route::resource('checkups','CheckupsController')->middleware('auth');
+Route::resource('termos-condicoes','TermosCondicoesController')->middleware('auth');
 
 Route::get('checkups-configure/{checkup}','CheckupsController@configure')->name('checkups.configure')->middleware('auth');
 Route::get('get-active-clinicas-by-especialidade','CheckupsController@getClinicasByEspecidalide')->name('get-active-clinicas-by-especialidade')->middleware('auth');
