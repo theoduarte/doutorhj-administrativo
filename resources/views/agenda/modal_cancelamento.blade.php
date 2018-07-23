@@ -42,14 +42,14 @@
         $( ".cancelamento" ).button().on( "click", function() {
             console.log( 'title: ' + $(this).attr('title'));
 
-            $('#clinica').html("<b>" + $(this).attr('prestador')   + "</b>");
-            $('#paciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
-            $('#cancProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");
-            $('#cancEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
+            $('#dialog-cancelar #clinica').html("<b>" + $(this).attr('prestador')   + "</b>");
+            $('#dialog-cancelar #paciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
+            $('#dialog-cancelar #cancProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");
+            $('#dialog-cancelar #cancEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
 
-            $('#dtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
-            $('#ticketCancelamento').val($(this).attr('ticket'));
-            $('#cancDivConsulta').html("<b>" + $(this).attr('atendimento')   + "</b>");
+            $('#dialog-cancelar #dtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
+            $('#dialog-cancelar #ticketCancelamento').val($(this).attr('ticket'));
+            $('#dialog-cancelar #cancDivConsulta').html("<b>" + $(this).attr('atendimento')   + "</b>");
             $('#ui-id-3').text($(this).attr('title'));
 
             var arDtAtnd = $(this).attr('data-hora').replace('/', ' ').replace('/', ' ').split(' ');
