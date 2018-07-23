@@ -47,7 +47,10 @@
             $('#dialog-pagar #confPaciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
             $('#dialog-pagar #confProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");
             $('#dialog-pagar #confEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
-            $('#dialog-pagar #confDtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
+            $('#dialog-pagar #confAtendimento').html("<b>" + $(this).attr('atendimento') + "</b>");
+            $('#dialog-pagar #confValorAtendimento').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
+
+            $('#dialog-pagar #confDtHora').html("<b>" + $(this).attr('data-hora')   + "</b>");
             $('#dialog-pagar #confTicket').val($(this).attr('ticket'));
             $('#dialog-pagar #confIdAgendamento').val($(this).attr('id-agendamento'));
 
@@ -67,32 +70,47 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-5">
+        <div class="col-6">
             <label for="paciente">
                 Profissional:
                 <div id="confProfissional"></div>
             </label>
         </div>
-        <div class="col-5">
-            <label for="paciente">
-                Especialidade:
-                <div id="confEspecialidade"></div>
-            </label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-10">
+        <div class="col-6">
             <label for="paciente">
                 Paciente:
                 <div id="confPaciente"></div>
             </label>
         </div>
     </div>
+
+    <div style="height:10px;"></div>
     <div class="row">
-        <div class="col-10">
-            <label for="paciente">
-                Consulta:
-                <div id="confDtconsulta"></div>
+        <div class="col-6">
+            <label for="confDtHora">
+                Especialidade:
+                <div id="confEspecialidade"></div>
+            </label>
+        </div>
+
+        <div class="col-6">
+            <label for="confAtendimento">
+                <span class="spanConsulta">Consulta/Exame:</span>
+                <div id="confAtendimento"></div>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <label for="confDtHora">
+                Data/Hora:
+                <div id="confDtHora"></div>
+            </label>
+        </div>
+        <div class="col-4">
+            <label for="confValorAtendimento">
+                Valor Pago (R$):
+                <div id="confValorAtendimento"></div>
             </label>
         </div>
     </div>
