@@ -1,4 +1,5 @@
 <script>
+    var type = '';
     $(function(){
         $("#profissional").autocomplete({
             source: function( request, response ) {
@@ -19,14 +20,10 @@
             }
         });
 
-
-        
         $('#profissional_id').change(function(){
         	$('#datepicker-agenda').val(null);
         	$('#time').html(null);
         });
-
-
         
       	$('.clinica_id').change(function(){
         	$('#profissional_id').html(null);
@@ -71,22 +68,20 @@
             data 		    = ($('#datepicker-agenda').val().length == 0) ? null : $('#datepicker-agenda').val();
             hora 			= ($('select[name="time"]').val() == null) ? null : $('select[name="time"]').val();
             ticket 			= $('.ticket').val(); 
-	            
-            if ( clinica_id != null && profissional_id != null && ticket != null && paciente_id != '' ){
+            
+            if ( clinica_id != null && profissional_id != null && ticket != null && paciente_id != '' ) {
 
-	            if( $('#ui-id-2').text() == 'Agendar Consulta' ){
-                    
+	            if( type == 'Consulta' ){
                     link = "/agenda/agendar/" + ticket + '/' + clinica_id + '/' + profissional_id + '/' + paciente_id + '/' + data + '/' + hora;
-                    
-                } else if( $('#ui-id-2').text() == 'Remarcar Consulta' ){
-					
+                } 
+                else {
                 	if( hora == null || data == null ){
                         swal({
-                                    title: 'Preencha uma data e hora para remarcar a consulta!',
-                                    text: '',
-                                    type: 'error',
-                                    confirmButtonClass: 'btn btn-confirm mt-2'
-                             });
+                            title: 'Preencha uma data e hora para remarcar a consulta!',
+                            text: '',
+                            type: 'error',
+                            confirmButtonClass: 'btn btn-confirm mt-2'
+                         });
 
                         return false;
                 	}
@@ -113,6 +108,7 @@
                         cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
                         confirmButtonText: 'OK',
                     }).then(function () {
+                        dialogAgendamento.dialog( "close" );
                     	location.reload();
                     });
                     
@@ -126,8 +122,6 @@
                         }
                     );
                 });
-
-                dialogAgendamento.dialog( "close" );
             }
 
             return true;
@@ -154,17 +148,20 @@
         	$('#datepicker-agenda').val(null);
         	$('#time').html(null);
 
-        	
             $('.ticket').val($(this).attr('ticket'));
-            $('#divPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
-            $('#divDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
-            $('#divPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
-            $('#divEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
-            $('#divValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
+            $('#confPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
+            $('#confDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
+            $('#confPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
+            $('#confEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
+            $('#confValorAtendimento').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
             $('.paciente').val($(this).attr('id-paciente'));
             $('#ui-id-1, #ui-id-2').text($(this).attr('title'));
             $('.profissional').val($(this).attr('id-profissional'));
+            $('#confAtendimento').html("<b>" + $(this).attr('atendimento')   + "</b>");
             
+            type = $(this).attr('type');
+            $('.spanConsulta').text(type + ':');
+
             dialogAgendamento.dialog( "open" );
 			
             $('.clinica_id').val($(this).attr('id-clinica'));
@@ -181,7 +178,7 @@
 			var clinica_id      = $('select[name=clinica_id]').val();
 			var profissional_id = $('select[name=profissional_id]').val();
             var data 		    = $(this).val().split('/');
-            var ct_data_hora    = ($('#divDtHora b').html()).split(' ');
+            var ct_data_hora    = ($('#confDtHora b').html()).split(' ');
             var ct_hora         = ct_data_hora[1];
 			
             
@@ -204,10 +201,10 @@
 <div id="dialog-agendar" title="">
 	<form id="formConsulta" name="formConsulta">
 		<div class="row">
-			<div class="col-7">
-				<label for="divPaciente">
+			<div class="col-12">
+				<label for="confPaciente">
 					Paciente:
-					<div id="divPaciente"></div>
+					<div id="confPaciente"></div>
 				</label>
 				<input type="hidden" name="paciente" class="paciente" value="">
 				<input type="hidden" name="profissional" class="profissional" value="">
@@ -235,29 +232,36 @@
 		</div>
 		<div style="height:10px;"></div>
 		<div class="row">
-			<div class="col-12">
-				<label for="divDtHora">
+			<div class="col-6">
+				<label for="confDtHora">
 					Especialidade:
-					<div id="divEspecialidade"></div>
+					<div id="confEspecialidade"></div>
 				</label>
 			</div>
+
+            <div class="col-6">
+                <label for="confAtendimento">
+                    <span class="spanConsulta">Consulta/Exame:</span>
+                    <div id="confAtendimento"></div>
+                </label>
+            </div>
 		</div>
 		<div class="row">
-			<div class="col-3">
-				<label for="divDtHora">
-					Consulta:
-					<div id="divDtHora"></div>
+			<div class="col-4">
+				<label for="confDtHora">
+					Data/Hora:
+					<div id="confDtHora"></div>
 				</label>
 			</div>
-			<div class="col-3">
-				<label for="divValorConsulta">
+			<div class="col-4">
+				<label for="confValorAtendimento">
 					Valor Pago (R$):
-					<div id="divValorConsulta"></div>
+					<div id="confValorAtendimento"></div>
 				</label>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-3">
+			<div class="col-4">
 				<label>Agendar para:</label>
 				<input type="text" class="form-control mascaraData" placeholder="dd/mm/yyyy" id="datepicker-agenda">
 			</div>
