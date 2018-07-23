@@ -44,9 +44,6 @@ class Agendamento extends Model
         self::PAGO           => 'Pago'
     );
     
-    
- 
-    
     /*
      * Relationship
      */
@@ -57,7 +54,7 @@ class Agendamento extends Model
     
     public function paciente()
     {
-        return $this->belongsTo('App\Paciente');
+        return $this->belongsTo('App\Paciente')->withDefault();
     }
     
     public function clinica()
@@ -67,7 +64,7 @@ class Agendamento extends Model
     
     public function profissional()
     {
-        return $this->belongsTo('App\Profissional');
+        return $this->belongsTo('App\Profissional')->withDefault();
     }
     
     public function cupom_desconto()

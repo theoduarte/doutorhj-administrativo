@@ -138,8 +138,8 @@
 									<tr>
 										<td>{{$obAgenda->te_ticket}}</td>
 										<td>{{$obAgenda->clinica->nm_razao_social}}</td>
-										<td style="text-align: left !important;">{{ !empty($obAgenda->profissional) ? $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario : null}}</td>
-										<td style="text-align: left !important;">{{ !empty($obAgenda->paciente) ? $obAgenda->paciente->nm_primario . ' ' . $obAgenda->paciente->nm_secundario : null}}</td>
+										<td style="text-align: left !important;">{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario }}</td>
+										<td style="text-align: left !important;">{{ $obAgenda->paciente->nm_primario . ' ' . $obAgenda->paciente->nm_secundario }}</td>
 										<td>{{$obAgenda->itempedidos->first()->pedido->dt_pagamento}}</td>
 										<td>{{$obAgenda->dt_atendimento}}</td>
 										<td >{{$obAgenda->cs_status}}</td>
@@ -158,7 +158,7 @@
                                                    nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
 												   data-hora	  = "{{$obAgenda->dt_atendimento}}"
 												   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}"
-												   nm-profissional= "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+												   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
 												   valor-consulta = "{{$obAgenda->valor_total}}"
 												   id-profissional = "{{$obAgenda->profissional->id}}"
 												   id-clinica     = "{{$obAgenda->clinica->id}}"
@@ -184,7 +184,7 @@
                                                    nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
                                                    data-hora       = "{{$obAgenda->dt_atendimento}}"
                                                    prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
-                                                   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+                                                   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
                                                    valor-consulta  = "{{$obAgenda->valor_total}}"
                                                    id-profissional = "{{$obAgenda->profissional->id}}"
                                                    id-clinica      = "{{$obAgenda->clinica->id}}"
@@ -206,7 +206,7 @@
                                                    nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
                                                    data-hora       = "{{$obAgenda->dt_atendimento}}"
                                                    prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
-                                                   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+                                                   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
                                                    valor-consulta  = "{{$obAgenda->valor_total}}"
                                                    id-profissional = "{{$obAgenda->profissional->id}}"
                                                    id-clinica      = "{{$obAgenda->clinica->id}}"
@@ -229,7 +229,7 @@
                                                    nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
                                                    data-hora       = "{{$obAgenda->dt_atendimento}}"
                                                    prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
-                                                   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+                                                   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
                                                    valor-consulta  = "{{$obAgenda->valor_total}}"
                                                    id-profissional = "{{$obAgenda->profissional->id}}"
                                                    id-clinica      = "{{$obAgenda->clinica->id}}"
@@ -255,7 +255,7 @@
                                                    nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
 												   data-hora	   = "{{$obAgenda->dt_atendimento}}"
 												   prestador	   = "{{$obAgenda->clinica->nm_razao_social}}"
-												   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+												   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
 												   valor-consulta  = "{{$obAgenda->valor_total}}"
 												   id-profissional = "{{$obAgenda->profissional->id}}"
 												   id-clinica      = "{{$obAgenda->clinica->id}}"
