@@ -138,8 +138,8 @@
 									<tr>
 										<td>{{$obAgenda->te_ticket}}</td>
 										<td>{{$obAgenda->clinica->nm_razao_social}}</td>
-										<td style="text-align: left !important;">{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}</td>
-										<td style="text-align: left !important;">{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}</td>
+										<td style="text-align: left !important;">{{ !empty($obAgenda->profissional) ? $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario : null}}</td>
+										<td style="text-align: left !important;">{{ !empty($obAgenda->paciente) ? $obAgenda->paciente->nm_primario . ' ' . $obAgenda->paciente->nm_secundario : null}}</td>
 										<td>{{$obAgenda->itempedidos->first()->pedido->dt_pagamento}}</td>
 										<td>{{$obAgenda->dt_atendimento}}</td>
 										<td >{{$obAgenda->cs_status}}</td>

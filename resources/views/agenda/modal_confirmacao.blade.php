@@ -67,13 +67,13 @@
             console.log( 'title: ' + $(this).attr('title'));
 
             $('.ticket').val($(this).attr('ticket'));
-            $('#confClinica').html("<b>" + $(this).attr('prestador')   + "</b>");
-            $('#confPaciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
-            $('#confProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");
-            $('#confEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
-            $('#confAtendimento').html("<b>" + $(this).attr('atendimento') + "</b>");
-            $('#confDtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
-            $('#confValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
+            $('#dialog-confirmar #confClinica').html("<b>" + $(this).attr('prestador')   + "</b>");
+            $('#dialog-confirmar #confPaciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
+            $('#dialog-confirmar #confProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");
+            $('#dialog-confirmar #confEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
+            $('#dialog-confirmar #confAtendimento').html("<b>" + $(this).attr('atendimento') + "</b>");
+            $('#dialog-confirmar #confDtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
+            $('#dialog-confirmar #confValorConsulta').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
             $('#ui-id-4').text($(this).attr('title'));
 
             type = $(this).attr('type');
