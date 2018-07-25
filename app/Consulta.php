@@ -15,7 +15,7 @@ class Consulta extends Model
 	
     public function especialidade()
     {
-        return $this->belongsTo('App\Especialidade');
+        return $this->belongsTo('App\Especialidade')->withDefault();
     }
     
     public function tipoatendimento()

@@ -5,7 +5,7 @@
     $(function(){
         function acaoFaturar(){
             $.ajax({
-                url : 'agenda/set-status-by-id/'+$('#dialog-pagar #confIdAgendamento').val()+'/' + "{{ Agendamento::FATURADO }}",
+                url : 'agenda/set-status-by-id/'+$('#dialog-faturar #confIdAgendamento').val()+'/' + "{{ Agendamento::FATURADO }}",
                 beforeSend : function(){
 
                 },
@@ -46,9 +46,12 @@
             $('#dialog-faturar #confPaciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
             $('#dialog-faturar #confProfissional').html("<b>" + $(this).attr('nm-profissional') + "</b>");
             $('#dialog-faturar #confEspecialidade').html("<b>" + $(this).attr('especialidade') + "</b>");
-            $('#dialog-faturar #confDtconsulta').html("<b>" + $(this).attr('data-hora')   + "</b>");
+            $('#dialog-faturar #confAtendimento').html("<b>" + $(this).attr('atendimento') + "</b>");
+            $('#dialog-faturar #confValorAtendimento').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
+
+            $('#dialog-faturar #confDtHora').html("<b>" + $(this).attr('data-hora')   + "</b>");
             $('#dialog-faturar #confTicket').val($(this).attr('ticket'));
-            $('#dialog-pagar #confIdAgendamento').val($(this).attr('id-agendamento'));
+            $('#dialog-faturar #confIdAgendamento').val($(this).attr('id-agendamento'));
 
             dialogFaturamento.dialog( "open"  );
         });
@@ -66,32 +69,47 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-5">
+        <div class="col-6">
             <label for="paciente">
                 Profissional:
                 <div id="confProfissional"></div>
             </label>
         </div>
-        <div class="col-5">
-            <label for="paciente">
-                Especialidade:
-                <div id="confEspecialidade"></div>
-            </label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-10">
+        <div class="col-6">
             <label for="paciente">
                 Paciente:
                 <div id="confPaciente"></div>
             </label>
         </div>
     </div>
+
+    <div style="height:10px;"></div>
     <div class="row">
-        <div class="col-10">
-            <label for="paciente">
-                Consulta:
-                <div id="confDtconsulta"></div>
+        <div class="col-6">
+            <label for="confDtHora">
+                Especialidade:
+                <div id="confEspecialidade"></div>
+            </label>
+        </div>
+
+        <div class="col-6">
+            <label for="confAtendimento">
+                <span class="spanConsulta">Consulta/Exame:</span>
+                <div id="confAtendimento"></div>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <label for="confDtHora">
+                Data/Hora:
+                <div id="confDtHora"></div>
+            </label>
+        </div>
+        <div class="col-4">
+            <label for="confValorAtendimento">
+                Valor Pago (R$):
+                <div id="confValorAtendimento"></div>
             </label>
         </div>
     </div>
