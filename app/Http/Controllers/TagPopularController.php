@@ -160,8 +160,8 @@ class TagPopularController extends Controller
     	} elseif ($tipo_tag == 'consulta') {
     		$list_tag_popular = TagPopular::where('consulta_id', $tag_atendimento_id)->orderBy('cs_tag','asc')->get();
     	}
-    	
-    	return response()->json(['status' => true, 'list_tag_popular' => $list_tag_popular->toJson()]);
+
+        echo json_encode( ['status' => true, 'list_tag_popular' => json_encode($list_tag_popular) ] );
     }
     
     /**

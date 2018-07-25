@@ -3,6 +3,7 @@
 namespace App;
 
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Consulta extends Model
@@ -30,5 +31,13 @@ class Consulta extends Model
     public function tag_populars()
     {
     	return $this->hasMany('App\TagPopular');
+    }
+
+    public function getActiveByEspecialidade($especialidade){
+        return DB::select(" SELECT DISTINCT c.*
+                              FROM consultas c
+                              JOIN atendimentos at ON (at.consulta_id = c.id)
+                             WHERE at.cs_status = 'A'
+                               AND c.especialidade_id = ?", [$especialidade]);
     }
 }

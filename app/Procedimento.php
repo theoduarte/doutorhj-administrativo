@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Kyslik\ColumnSortable\Sortable;
 
 class Procedimento extends Model
@@ -41,5 +42,15 @@ class Procedimento extends Model
     {
         return $this->belongsToMany('App\CupomDesconto');
     }
-    
+
+    public function getActiveByGrupoProcedimento($grupoProcedimento){
+        return DB::select(" SELECT DISTINCT p.*
+                              FROM procedimentos p
+                              JOIN atendimentos at ON (p.id = at.procedimento_id)
+                              JOIN clinicas c ON (at.clinica_id = c.id)
+                             WHERE p.grupoprocedimento_id = ?
+                               AND at.cs_status = 'A'
+                               AND EXISTS (SELECT 1 FROM filials f WHERE f.clinica_id = c.id AND cs_status = 'A')
+                             ORDER BY cd_procedimento, ds_procedimento;", [$grupoProcedimento]);
+    }    
 }

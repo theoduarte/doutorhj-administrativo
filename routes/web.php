@@ -23,8 +23,26 @@ Route::resource('users','UserController')->middleware('auth');
 Route::resource('agenda','AgendamentoController')->only(['index'])->middleware('auth');
 Route::resource('registro_logs','RegistroLogController')->middleware('auth');
 Route::resource('cupom_descontos','CupomDescontoController')->middleware('auth');
+Route::resource('checkups','CheckupsController')->middleware('auth');
+
+Route::get('checkups-configure/{checkup}','CheckupsController@configure')->name('checkups.configure')->middleware('auth');
+Route::get('get-active-clinicas-by-especialidade','CheckupsController@getClinicasByEspecidalide')->name('get-active-clinicas-by-especialidade')->middleware('auth');
+Route::get('get-active-consultas-by-especialidade','CheckupsController@getConsultasByEspecidalide')->name('get-active-consultas-by-especialidade')->middleware('auth');
+Route::get('get-active-profissionals-by-clinica','CheckupsController@getProfissionalsByClinica')->name('get-active-profissionals-by-clinica')->middleware('auth');
+Route::get('get-atendimento-values-by-consulta','CheckupsController@getAtendimentoValuesByConsulta')->name('get-atendimento-values-by-consulta')->middleware('auth');
+
+Route::post('item-checkups-consulta.store/{checkup}','ItemCheckupsController@store')->name('item-checkups-consulta.store')->middleware('auth');
+Route::delete('item-checkups-consulta.destroy/{checkupId}/checkupId/{consultaId}/consultaId/{clinicas}/clinicas/{profissionals}/profissionals','ItemCheckupsController@destroy')->name('item-checkups-consulta.destroy')->middleware('auth');
+
+Route::post('item-checkups-exame.store/{checkup}','ItemCheckupsController@storeExame')->name('item-checkups-exame.store')->middleware('auth');
+Route::delete('item-checkups-exame.destroy/{checkupId}/checkupId/{procedimentoId}/procedimentoId/{clinicas}/clinicas','ItemCheckupsController@destroyExame')->name('item-checkups-exame.destroy')->middleware('auth');
+
+Route::get('get-active-procedimentos-by-grupo-procedimento','CheckupsController@getProcedimentosByGrupoProcedimento')->name('get-active-procedimentos-by-grupo-procedimento')->middleware('auth');
+Route::get('get-active-clinicas-by-procedimento','CheckupsController@getClinicasByProcedimento')->name('get-active-clinicas-by-procedimento')->middleware('auth');
+Route::get('get-atendimento-values-by-procedimento','CheckupsController@getAtendimentoValuesByProcedimento')->name('get-atendimento-values-by-procedimento')->middleware('auth');
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
+Route::get('consulta-cidade', 'ClinicaController@consultaCidade')->name('consulta-cidade');
 Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas')->middleware('auth');
 Route::get('procedimentos/consulta/{consulta}', 'ClinicaController@getProcedimentos')->middleware('auth');
 Route::post('clinicas/{clinica}/edit/list-profissional', 'ClinicaController@getProfissionals')->middleware('auth');
@@ -38,7 +56,7 @@ Route::post('add-filial', 'FilialController@addFilialStore')->middleware('auth')
 Route::post('delete-filial', 'FilialController@deleteFilialDestroy')->middleware('auth');
 
 Route::post('add-tag-popular', 'TagPopularController@addTagPopularStore')->middleware('auth');
-Route::post('load-tag-popular', 'TagPopularController@loadTagPopularList')->middleware('auth');
+Route::get('load-tag-popular', 'TagPopularController@loadTagPopularList')->middleware('auth');
 Route::post('delete-tag-popular', 'TagPopularController@deleteTagPopularDestroy')->middleware('auth');
 
 Route::post('clinicas/{clinica}/edit/add-precificacao-procedimento', 'ClinicaController@addProcedimentoPrecoStore')->middleware('auth');
@@ -55,6 +73,7 @@ Route::get('agenda/agendar/{a}/{b}/{c}/{d}/{e?}/{f?}/{g?}/{h?}/{i?}', 'Agendamen
 Route::get('agenda/cancelar/{ticket}/{dtAtendimento}/{obs?}', 'AgendamentoController@addCancelamento')->middleware('auth');
 Route::get('horarios/{clinica_id}/{profissional_id}/{data}', 'AgendamentoController@getHorariosLivres')->middleware('auth');
 Route::get('agenda/confirmar/{ticket}/{cdStatus}', 'AgendamentoController@setStatus')->middleware('auth');
+Route::get('agenda/set-status-by-id/{id}/{cdStatus}', 'AgendamentoController@setStatusById')->middleware('auth');
 
 Route::get('notificacoes','MensagemController@getListaNotificacoes')->middleware('auth');
 Route::get('notificacoes/visualizado/{id}','MensagemController@setStatusVisualizado')->middleware('auth');
