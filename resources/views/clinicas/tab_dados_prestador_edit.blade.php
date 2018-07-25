@@ -294,18 +294,10 @@
     		<input id="te_bairro" type="text" class="form-control" name="te_bairro" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->te_bairro }} @endif" required  maxlength="250">
 		</div>
 	</div>
-	<div class="col-md-4">
-		<div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
-			<label for="nm_cidade" class="col-3 control-label">Cidade<span class="text-danger">*</span></label>
-
-            <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->nm_cidade }} @endif" required  maxlength="50" readonly>
-    		<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->cd_ibge }} @endif">
-    	</div>
-    </div>
 	<div class="col-md-2">
 		<div class="form-group{{ $errors->has('sg_estado') ? ' has-error' : '' }}">
             <label for="sg_estado" class="col-3 control-label">Estado<span class="text-danger">*</span></label>
-            <select id="sg_estado" name="sg_estado" class="form-control" disabled>
+            <select id="sg_estado" name="sg_estado" class="form-control">
     			<option></option>
                 @foreach ($estados as $uf)
     				<option value="{{ $uf->sg_estado }}" {{ (!$prestador->enderecos->isEmpty() && $prestador->enderecos->first()->cidade->sg_estado == $uf->sg_estado ? 'selected' : '')}}>{{ $uf->ds_estado }}</option>
@@ -313,7 +305,15 @@
     		</select>
         </div>
 	</div>
-	<div class="col-md-1">
+	<div class="col-md-4">
+        <div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
+            <label for="nm_cidade" class="col-3 control-label">Cidade<span class="text-danger">*</span></label>
+
+            <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->nm_cidade }} @endif" required  maxlength="50">
+            <input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->cd_ibge }} @endif">
+        </div>
+    </div>
+    <div class="col-md-1">
 		<div class="form-group{{ $errors->has('nr_longitute_gps') ? ' has-error' : '' }}">
     		<label for="nr_longitute_gps" class="col-3 control-label">Longitude<span class="text-danger">*</span></label>
     		<input id="nr_longitute_gps" type="text" class="form-control" name="nr_longitute_gps" value="@if(!$prestador->enderecos->isEmpty()) {{$prestador->enderecos->first()->nr_longitute_gps}} @endif" required  maxlength="50">
@@ -369,11 +369,11 @@
 						<div class="col-md-1">
 							<label for="filial_nr_longitute" class="control-label"><strong>Longitude</strong><span class="text-danger">*</span></label>
 						</div>
+                        <div class="col-md-1">
+                            <label for="filial_sg_estado" class="control-label"><strong>UF</strong><span class="text-danger">*</span></label>
+                        </div>
 						<div class="col-md-2">
 							<label for="filial_nm_cidade" class="control-label"><strong>Cidade</strong><span class="text-danger">*</span></label>
-						</div>
-						<div class="col-md-1">
-							<label for="filial_sg_estado" class="control-label"><strong>UF</strong><span class="text-danger">*</span></label>
 						</div>
 					</div>
 				</th>
@@ -420,10 +420,6 @@
 						<div class="col-md-1">
 							<input type="text" class="form-control filial_nr_longitute" value="{{ $list_filials[$i]->endereco->nr_longitute_gps }}">
 						</div>
-						<div class="col-md-2">
-							<input type="text" class="form-control filial_nm_cidade" value="{{ $list_filials[$i]->endereco->cidade->nm_cidade }}" maxlength="80">
-							<input type="hidden" class="filial_cd_cidade_ibge" value="{{ $list_filials[$i]->endereco->cidade->cd_ibge }}">
-						</div>
 						<div class="col-md-1">
 							<select class="form-control filial_sg_estado">
 								<option></option>
@@ -455,7 +451,12 @@
 								<option value="SE" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'SE' ) selected="selected" @endif >SE</option>
 								<option value="TO" @if( $list_filials[$i]->endereco->cidade->sg_estado == 'TO' ) selected="selected" @endif >TO</option>
 							</select>
-						</div>     			
+						</div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control filial_nm_cidade" value="{{ $list_filials[$i]->endereco->cidade->nm_cidade }}" maxlength="80">
+                            <input type="hidden" class="filial_cd_cidade_ibge" value="{{ $list_filials[$i]->endereco->cidade->cd_ibge }}">
+                        </div>
+                            			
 					</div>
 				</td>
 				<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td>
@@ -465,17 +466,6 @@
 			</tbody>
 		</table>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <hr>
-        <br>
-    </div>
-</div>
-
-<div class="col-10">
-	<h4>Lista de Filiais</h4>
 </div>
 
 <div class="row">
@@ -501,7 +491,7 @@
             @endif
         </div>
 	</div>
-	<div class="col-md-2">
+    <div class="col-md-2">
 		<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
     		<label for="password" class="col-3 control-label">Senha<span class="text-danger">*</span></label>
     		<input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{ $user->password }}" required  maxlength="50">
@@ -523,6 +513,12 @@
             @endif
 		</div>
 	</div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label><input type="checkbox" name="change-password" value="1"> Alterar a senha ?</label>
+        </div>
+    </div>
+    
 </div>
 
 <div class="form-group">
@@ -565,6 +561,36 @@ $(document).ready(function () {
     $(".filial_eh_matriz").change(function() {
         $(".filial_eh_matriz").prop('checked', false);
         $(this).prop('checked', true);
+    });
+
+    $('#list-all-filiais').on('change', '.filial_sg_estado', function() {
+        var uf = $(this).val();
+        if ( !uf ) return false;
+
+        var cvx_cep_filial = $(this).parent().parent();
+
+        cvx_cep_filial.find(".filial_nm_cidade").val('');
+        cvx_cep_filial.find(".filial_cd_cidade_ibge").val('');
+
+        var instance = cvx_cep_filial.find( ".filial_nm_cidade" ).autocomplete( "instance" );
+        if( instance ) {
+            cvx_cep_filial.find( ".filial_nm_cidade" ).autocomplete('destroy');
+        }
+        
+        cvx_cep_filial.find( ".filial_nm_cidade" ).autocomplete({
+            source: function(request, response) {
+            $.getJSON(
+                    "/consulta-cidade",
+                    { term: request.term, uf: uf }, 
+                    response
+                );
+            },
+            select: function (event, ui) {
+                $(this).parent().parent().find(".filial_cd_cidade_ibge").val( ui.item.cd_ibge );
+            },
+            delay: 500,
+            minLength: 2
+        });
     });
     
 });
@@ -609,13 +635,13 @@ function addFilial(input) {
     				<div class="col-md-1"> \
     					<input type="text" class="form-control filial_nr_longitute" > \
     				</div> \
-    				<div class="col-md-2"> \
-    					<input type="text" class="form-control filial_nm_cidade" maxlength="80" > \
-    					<input type="hidden" class="filial_cd_cidade_ibge" > \
-    				</div> \
     				<div class="col-md-1"> \
     					<select class="form-control filial_sg_estado">'+filial_sg_estado+'</select> \
     				</div> \
+                    <div class="col-md-2"> \
+                        <input type="text" class="form-control filial_nm_cidade" maxlength="80" > \
+                        <input type="hidden" class="filial_cd_cidade_ibge" > \
+                    </div> \
     			</div> \
     		</td> \
     		<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td> \
@@ -636,7 +662,6 @@ function addFilial(input) {
     		type: 'GET',
     	  	url: '/consulta-cep/cep/'+nr_cep,
     	  	data: {
-				'nr_cep': nr_cep,
 				'_token': laravel_token
 			},
 			timeout: 15000,
@@ -657,7 +682,6 @@ function addFilial(input) {
 					cvx_cep_filial.find('.filial_nr_longitute').val(json.longitude);
 					
 				} else {
-
 					cvx_cep_filial.find('.filial_endereco').val('');
 					cvx_cep_filial.find('.filial_te_bairro').val('');
 					cvx_cep_filial.find('.filial_nm_cidade').val('');
@@ -682,6 +706,8 @@ function addFilial(input) {
         $(".filial_eh_matriz").prop('checked', false);
         $(this).prop('checked', true);
     });
+
+
 
 	//$(content).find(".consultaCepFilial" ).trigger('input');
 

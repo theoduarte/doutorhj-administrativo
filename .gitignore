@@ -4,7 +4,8 @@
 /storage/*.key
 /public/users
 /vendor
-/database
+/database/seeds
+/database/factories
 /.idea/*
 .idea
 /.vagrant
@@ -16,6 +17,7 @@ npm-debug.log
 yarn-error.log
 .buildpath
 .env
+resources/views/.DS_Store
 
 /.buildpath/*
 /.project/*
@@ -44,3 +46,4 @@ yarn-error.log
 .buildpath
 ..gitignore.swp
 readme\.md
+resources/views/procedimentos/.DS_Store

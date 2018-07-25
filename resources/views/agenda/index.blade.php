@@ -173,29 +173,68 @@
 											@endif
 										    
 										    <!-- botao confirmar -->
-											@if( $obAgenda->cs_status!='Cancelado' and $obAgenda->cs_status=='Agendado')
-												<a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade )
-                    												 	{{$especialidade->ds_especialidade}}
-                    												 @endforeach
-														"
-												   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
-												   data-hora	   = "{{$obAgenda->dt_atendimento}}"
-												   prestador	   = "{{$obAgenda->clinica->nm_razao_social}}"
-												   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
-												   valor-consulta  = "{{$obAgenda->valor}}"
-												   id-profissional = "{{$obAgenda->profissional->id}}"
-												   id-clinica      = "{{$obAgenda->clinica->id}}"
-												   id-paciente     = "{{$obAgenda->paciente->id}}"
-												   ticket          = "{{$obAgenda->te_ticket}}"
-												   class		   = "btn btn-icon waves-effect btn-agenda-confirmar btn-sm m-b-5 confirmacao"
-												   title 		   = "Confirmar Consulta" id="confirmacao">
-												   <i class="mdi mdi-check"></i>
-												</a>
-											@endif
-											
-										    <!-- botao cancelar -->
-											@if( $obAgenda->cs_status!='Cancelado' and
-                                                 $obAgenda->cs_status!='Finalizado' and
+                                            @if( $obAgenda->cs_status!='Cancelado' and $obAgenda->cs_status=='Agendado')
+                                                <a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade )
+                                                                        {{$especialidade->ds_especialidade}}
+                                                                     @endforeach
+                                                        "
+                                                   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
+                                                   data-hora       = "{{$obAgenda->dt_atendimento}}"
+                                                   prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
+                                                   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+                                                   valor-consulta  = "{{$obAgenda->valor}}"
+                                                   id-profissional = "{{$obAgenda->profissional->id}}"
+                                                   id-clinica      = "{{$obAgenda->clinica->id}}"
+                                                   id-paciente     = "{{$obAgenda->paciente->id}}"
+                                                   ticket          = "{{$obAgenda->te_ticket}}"
+                                                   class           = "btn btn-icon waves-effect btn-agenda-confirmar btn-sm m-b-5 confirmacao"
+                                                   title           = "Confirmar Consulta" id="confirmacao">
+                                                   <i class="mdi mdi-check"></i>
+                                                </a>
+                                            @endif
+                                            
+                                            <!-- botao faturar -->
+                                            @if( $obAgenda->cs_status == 'Finalizado' )
+                                                <a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade ){{$especialidade->ds_especialidade}}@endforeach"
+                                                   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
+                                                   data-hora       = "{{$obAgenda->dt_atendimento}}"
+                                                   prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
+                                                   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+                                                   valor-consulta  = "{{$obAgenda->valor}}"
+                                                   id-profissional = "{{$obAgenda->profissional->id}}"
+                                                   id-clinica      = "{{$obAgenda->clinica->id}}"
+                                                   id-paciente     = "{{$obAgenda->paciente->id}}"
+                                                   id-agendamento  = "{{$obAgenda->id}}"
+                                                   ticket          = "{{$obAgenda->te_ticket}}"
+                                                   class           = "btn btn-icon waves-effect btn-agenda-faturar btn-sm m-b-5 faturamento"
+                                                   title           = "Faturar Consulta" id="faturamento">
+                                                   <i class="mdi mdi-file-chart"></i>
+                                                </a>
+                                            @endif
+                                            
+                                            <!-- botao pagar -->
+                                            @if( $obAgenda->cs_status == 'Faturado' )
+                                                <a especialidade  = "@foreach( $obAgenda->profissional->especialidades as $especialidade ){{$especialidade->ds_especialidade}}@endforeach"
+                                                   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
+                                                   data-hora       = "{{$obAgenda->dt_atendimento}}"
+                                                   prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
+                                                   nm-profissional = "{{$obAgenda->profissional->nm_primario}} {{$obAgenda->profissional->nm_secundario}}"
+                                                   valor-consulta  = "{{$obAgenda->valor}}"
+                                                   id-profissional = "{{$obAgenda->profissional->id}}"
+                                                   id-clinica      = "{{$obAgenda->clinica->id}}"
+                                                   id-paciente     = "{{$obAgenda->paciente->id}}"
+                                                   id-agendamento  = "{{$obAgenda->id}}"
+                                                   ticket          = "{{$obAgenda->te_ticket}}"
+                                                   class           = "btn btn-icon waves-effect btn-agenda-pagar btn-sm m-b-5 pagamento"
+                                                   title           = "Pagar" id="pagamento">
+                                                   <i class="fa fa-dollar"></i>
+                                                </a>
+                                            @endif
+                                            
+                                            <!-- botao cancelar -->
+											@if( $obAgenda->cs_status!='Cancelado' &&
+                                                 $obAgenda->cs_status!='Faturado' &&
+                                                 $obAgenda->cs_status!='Pago' &&
                                                  $obAgenda->cs_status!='Retorno')
 												<a especialidade  = "
 																	 @foreach( $obAgenda->profissional->especialidades as $especialidade )
@@ -241,5 +280,9 @@
 	@include('agenda/modal_cancelamento')
 	
 	@include('agenda/modal_confirmacao')
+
+    @include('agenda/modal_faturamento')
+
+    @include('agenda/modal_pagamento')
 	
 @endsection
