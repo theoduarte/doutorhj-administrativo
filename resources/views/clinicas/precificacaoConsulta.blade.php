@@ -273,10 +273,11 @@
             
         	jQuery.ajax({
     			type: 'POST',
-    			url: '{{ Request::url() }}/delete-consulta',
+    			url: '{{ route("delete-precificacao-consulta") }}',
     			data: {
-    				'atendimento_id': atendimento_id,
-    				'_token': laravel_token
+    				'_method': 'delete',
+                    'atendimento_id': atendimento_id,
+                    '_token': laravel_token
     			},
                 success: function (result) {
                     

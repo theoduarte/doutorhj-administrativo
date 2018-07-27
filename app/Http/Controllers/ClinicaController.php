@@ -899,27 +899,19 @@ class ClinicaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param App\Http\Requests\PrestadoresRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function deleteConsultaDestroy()
+    public function deleteConsultaDestroy(PrecificacaoConsultaRequest $request)
     {
-        $atendimento_id = CVXRequest::post('atendimento_id');
-        $atendimento = Atendimento::findorfail($atendimento_id);
+        $atendimento = Atendimento::findorfail( $request->atendimento_id );
         $atendimento->cs_status = 'I';
+        $atendimento->save();
 
-        if ($atendimento->save()) {
-
-            # registra log
-            $atendimento_obj           = $atendimento->toJson();
-
-            $log = "[$atendimento_obj]";
-
-            $this->registrarLog('Excluir Consulta', $log, 4);
-
-        } else {
-            return response()->json(['status' => false, 'mensagem' => 'A Consulta não foi removida. Por favor, tente novamente.']);
-        }
+        # registra log
+        $atendimento_obj = $atendimento->toJson();
+        $log = "[$atendimento_obj]";
+        $this->registrarLog('Excluir Consulta', $log, 4);
 
         return response()->json(['status' => true, 'mensagem' => 'A Consulta foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }

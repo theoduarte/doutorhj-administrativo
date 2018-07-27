@@ -35,6 +35,13 @@ class PrecificacaoConsultaRequest extends FormRequest
                 
                 break;
         
+            case 'DELETE':
+                $rules = [
+                    'atendimento_id' => 'required',
+                ];
+                
+                break;
+        
             default:
                 $rules = [
                     'consulta_id' => 'required',
