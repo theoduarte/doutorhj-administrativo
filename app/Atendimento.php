@@ -39,23 +39,25 @@ class Atendimento extends Model
 	{
 		return $this->belongsToMany('App\Filial');
 	}
+
+    public function setVlNetAtendimentoAttribute($value)
+    {
+        if (empty($value)) return;
+        $this->attributes['vl_net_atendimento'] = str_replace(',', '.', str_replace('.', '', $value));
+    }
+    
+    public function setVlComAtendimentoAttribute($value)
+    {
+        if (empty($value)) return;
+        $this->attributes['vl_com_atendimento'] = str_replace(',', '.', str_replace('.', '', $value));
+    }
 	
-	public function getVlNetAtendimentoAttribute($valor){
-	    return number_format( $valor,  2, ',', '.');
+	public function getVlNetAtendimentoAttribute(){
+	    return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
 	}
 	
-	public function getVlComAtendimentoAttribute($valor){
-	    return number_format( $valor,  2, ',', '.');
-	}
-	
-	public function getVlComercialAtendimento()
-	{
-		return number_format( $this->attributes['vl_com_atendimento'],  2, ',', '.');
-	}
-	
-	public function getVlNetAtendimento()
-	{
-		return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
+	public function getVlComAtendimentoAttribute($val){
+	    return number_format( $this->attributes['vl_com_atendimento'],  2, ',', '.');
 	}
 
 	public function getFirst($data) {
@@ -100,7 +102,7 @@ class Atendimento extends Model
 		$atendimentos =  $this::where(function ($query) use ($data) {
             $query->where('cs_status','A')->get();
             if ( !empty($data['clinica_id']) ) {
-                $query->where('clinica_id', $data['clinica_id'])->get();
+                $query->whereIn('clinica_id', explode(',',$data['clinica_id']))->get();
             }
 
             if ( !empty($data['consulta_id']) ) {
