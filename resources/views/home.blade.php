@@ -307,7 +307,7 @@
 												<td>{{$pagamento->agendamento->dt_atendimento}}</td>
 												<td>{{$pagamento->pedido->dt_pagamento}}</td>
 												<td>@if($pagamento->status_payment == 0) <span class="badge badge-warning">Não Autorizado</span> @elseif($pagamento->status_payment == 1) <span class="badge badge-purple">Autorizado</span> @elseif($pagamento->status_payment == 2) <span class="badge badge-success">Finalizado</span> @else <span class="badge badge-danger">Negado</span> @endif</td>
-												<td>{{$pagamento->clinica->nm_fantasia}}</td>
+												<td>{{ !empty($pagamento->clinica) ? $pagamento->clinica->nm_fantasia : null}}</td>
 											</tr>
 											@endforeach
 										</table>

@@ -79,8 +79,7 @@ class ItemCheckups extends Model
                              WHERE checkup_id = ?
                              GROUP BY ic.checkup_id, ds_item, a.vl_com_atendimento, a.vl_net_atendimento, ic.vl_com_checkup, ic.vl_net_checkup, 
                                     c.id, c.cd_consulta, c.ds_consulta) valores
-                             JOIN ( SELECT  TOTALS.checkup_id, SUM(TOTALS.vl_com_atendimento) total_vl_com_atendimento, SUM(TOTALS.vl_net_atendimento) total_vl_net_atendimento, 
-                                            SUM(TOTALS.vl_com_checkup) total_vl_com_checkup, SUM(TOTALS.vl_net_checkup) total_vl_net_checkup
+                             JOIN ( SELECT  TOTALS.checkup_id, SUM(DISTINCT TOTALS.vl_com_atendimento) total_vl_com_atendimento, SUM(DISTINCT TOTALS.vl_net_atendimento) total_vl_net_atendimento, SUM(DISTINCT TOTALS.vl_com_checkup) total_vl_com_checkup, SUM(DISTINCT TOTALS.vl_net_checkup) total_vl_net_checkup
                                       FROM (
                                     SELECT  ic.checkup_id, c.id consulta_id, c.cd_consulta, cn.id,
                                             SUM(DISTINCT a.vl_com_atendimento) vl_com_atendimento, SUM(DISTINCT a.vl_net_atendimento) vl_net_atendimento, 
@@ -107,8 +106,8 @@ class ItemCheckups extends Model
                               WHERE checkup_id = ?
                               GROUP BY ic.checkup_id, ds_item, a.vl_com_atendimento, a.vl_net_atendimento, ic.vl_com_checkup, ic.vl_net_checkup, 
                                    p.id, p.cd_procedimento, p.ds_procedimento) valores
-                              JOIN (SELECT  TOTALS.checkup_id, SUM(TOTALS.vl_com_atendimento) total_vl_com_atendimento, SUM(TOTALS.vl_net_atendimento) total_vl_net_atendimento, 
-                                    SUM(TOTALS.vl_com_checkup) total_vl_com_checkup, SUM(TOTALS.vl_net_checkup) total_vl_net_checkup
+                              JOIN (SELECT  TOTALS.checkup_id, SUM(DISTINCT TOTALS.vl_com_atendimento) total_vl_com_atendimento, SUM(DISTINCT TOTALS.vl_net_atendimento) total_vl_net_atendimento, 
+                                    SUM(DISTINCT TOTALS.vl_com_checkup) total_vl_com_checkup, SUM(DISTINCT TOTALS.vl_net_checkup) total_vl_net_checkup
                                   FROM (
                                   SELECT  ic.checkup_id, p.id procedimento_id, p.cd_procedimento, cn.id,
                                       SUM(DISTINCT a.vl_com_atendimento) vl_com_atendimento, SUM(DISTINCT a.vl_net_atendimento) vl_net_atendimento, 

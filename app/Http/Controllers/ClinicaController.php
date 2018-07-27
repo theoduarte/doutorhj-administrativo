@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PrestadoresRequest;
 use App\Http\Requests\EditarPrestadoresRequest;
+use App\Http\Requests\PrecificacaoConsultaRequest;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use LaravelLegends\PtBrValidator\Validator as CVXValidador;
 use App\Clinica;
@@ -741,12 +742,81 @@ class ClinicaController extends Controller
     }
 
     /**
-     * editAtendimentoPrecoUpdate a newly created resource in storage.
+     * addConsultaPrecoStore a newly created resource in storage.
+     *
+     * @param  App\Clinica  $clinica
+     * @param  App\Http\Requests\PrecificacaoConsultaRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addConsultaPrecoStore(Clinica $clinica, PrecificacaoConsultaRequest $request)
+    {
+        foreach ($request->list_profissional_consulta as $profissionalId) {
+            $atendimento = new Atendimento();
+            $atendimento->clinica_id = $clinica->id;
+            $atendimento->profissional_id = $profissionalId;
+            $atendimento->vl_com_atendimento = $request->vl_com_consulta;
+            $atendimento->vl_net_atendimento = $request->vl_net_consulta;
+            $atendimento->consulta_id = $request->consulta_id;
+            $atendimento->ds_preco =  $request->descricao_consulta;
+            $atendimento->cs_status = 'A';
+
+            $atendimento->save();
+
+            # registra log
+            $atendimento_obj    = "[]";
+            $titulo_log         = 'Adicionar Consulta';
+            $tipo_log           = 1;
+            $ct_log = "reg_anterior:[]";
+            $new_log = "reg_novo:[$atendimento_obj]";
+
+            $log = "{".$ct_log.",".$new_log."}";
+
+            $this->registrarLog($titulo_log, $log, $tipo_log);
+        }
+
+        return redirect()->back()->with('success', 'A precificação da consulta foi salva com sucesso!');
+    }
+
+    /**
+     * editConsultaPrecoUpdate a newly created resource in storage.
+     *
+     * @param  App\Clinica  $clinica
+     * @param  App\Http\Requests\PrecificacaoConsultaRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function editConsultaPrecoUpdate(Clinica $clinica, PrecificacaoConsultaRequest $request)
+    {
+        $atendimento = Atendimento::findOrFail($request->atendimento_id);
+        $atendimento->profissional_id = $request->profissional_id;
+        $atendimento->vl_com_atendimento = $request->vl_com_consulta;
+        $atendimento->vl_net_atendimento = $request->vl_net_consulta;
+        $atendimento->ds_preco =  $request->ds_consulta;
+
+        $atendimento->save();
+
+         # registra log
+        $atendimentoOld    = json_encode( $atendimento->getOriginal() );
+        $atendimentoNew    = json_encode( $atendimento->getAttributes() );
+
+        $titulo_log         = 'Editar Atendimento';
+        $tipo_log           = 3;
+
+        $ct_log = "reg_anterior:[$atendimentoOld]";
+        $new_log = "reg_novo:[$atendimentoNew]";
+
+        $log = "{".$ct_log.",".$new_log."}";
+
+        $this->registrarLog($titulo_log, $log, $tipo_log);
+        return redirect()->back()->with('success', 'A precificação da consulta foi salva com sucesso!');
+    }
+
+    /**
+     * editProcedimentoPrecoUpdate a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function editAtendimentoPrecoUpdate(Request $request)
+    public function editProcedimentoPrecoUpdate(Request $request)
     {
         $atendimento_id = CVXRequest::post('atendimento_id');
         $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
@@ -787,12 +857,14 @@ class ClinicaController extends Controller
             }
         }
 
-        //$atendimento->load('procedimento');
-        //$atendimento->load('profissional');
-        //$atendimento->profissional->load('documentos');
-
         return response()->json(['status' => true, 'mensagem' => 'O Atendimento foi salvo com sucesso!']);
     }
+
+
+
+
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -822,69 +894,7 @@ class ClinicaController extends Controller
         return response()->json(['status' => true, 'mensagem' => 'O Atendimento foi removido com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
 
-    /**
-     * addConsultaPrecoStore a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function addConsultaPrecoStore(Request $request)
-    {
-        $atendimento_id = CVXRequest::post('atendimento_id');
-        $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
-
-        $clinica_id = CVXRequest::post('clinica_id');
-        $consulta_id = CVXRequest::post('consulta_id');
-        $ds_consulta = CVXRequest::post('ds_consulta');
-        //$profissional_id = CVXRequest::post('consulta_profissional_id');
-        $vl_com_consulta = CVXRequest::post('vl_com_consulta');
-        $vl_net_consulta = CVXRequest::post('vl_net_consulta');
-
-        $profissional_ids = CVXRequest::post('list_profissional_consulta');
-
-        $result = true;
-        foreach ($profissional_ids as $index => $profissional_id) {
-
-            $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]";
-
-            $atendimento = new Atendimento();
-            $atendimento->ds_preco =  $ds_consulta;
-            $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_consulta);
-            $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_consulta);
-            $atendimento->clinica_id = $clinica_id;
-            $atendimento->consulta_id = $consulta_id;
-            $atendimento->profissional_id = $profissional_id;
-            $atendimento->cs_status = 'A';
-
-            if ($atendimento->save()) {
-
-                # registra log
-                $atendimento_obj        = $atendimento->toJson();
-                $titulo_log             = $atendimento_id != '' ? 'Editar Consulta' : 'Adicionar Consulta';
-                $tipo_log = $atendimento_id != '' ? 3 : 1;
-
-                $ct_log = "reg_anterior:[$ct_atendimento_obj]";
-                $new_log = "reg_novo:[$atendimento_obj]";
-
-                $log = "{".$ct_log.",".$new_log."}";
-
-                $this->registrarLog($titulo_log, $log, $tipo_log);
-
-            } else {
-                $result = false;
-            }
-        }
-
-        if (!$result) {
-            return response()->json(['status' => false, 'mensagem' => 'A Consulta não foi salva. Por favor, tente novamente.']);
-        }
-
-        /* $atendimento->load('consulta');
-        $atendimento->load('profissional');
-        $atendimento->profissional->load('documentos'); */
-
-        return response()->json(['status' => true, 'mensagem' => 'A(s) Consulta(s) foi(ram) salva(s) com sucesso!']);
-    }
+    
 
     /**
      * Remove the specified resource from storage.
