@@ -4,27 +4,27 @@
     </div>
 @endif
 <div class="form-group">
-    <form method="post" action="{{ route('add-precificacao-consulta',$prestador) }}" id="form-add">
+    <form method="post" action="{{ route('add-precificacao-procedimento',$prestador) }}" id="form-add-consulta">
+        {!! csrf_field() !!}
     	<div class="row">
             <div class="col-6">
                 <label for="ds_procedimento" class="control-label">Descrição Procedimento<span class="text-danger">*</span></label>
-                <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" placeholder="Informe a Descrição do Procedimento para buscar" autofocus maxlength="100">
-                <input type="hidden" id="cd_procedimento" name="cd_procedimento" value="">
+                <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" placeholder="Informe a Descrição do Procedimento para buscar" autofocus maxlength="100" required>
+                <input type="hidden" id="cd_procedimento" name="cd_procedimento" value="" required>
                 <input type="hidden" id="descricao_procedimento" name="descricao_procedimento" value="">
-                <input type="hidden" id="atendimento_id" name="atendimento_id" value="">
                 <input type="hidden" id="procedimento_id" name="procedimento_id" value="">
             </div>
             <div class="col-2">
                 <label for="vl_com_procedimento" class="control-label">Valor Comercial (R$)<span class="text-danger">*</span></label>
-                <input id="vl_com_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_com_procedimento" value="{{ old('vl_com_procedimento') }}"  maxlength="15">
+                <input id="vl_com_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_com_procedimento" value="{{ old('vl_com_procedimento') }}"  maxlength="15" required>
             </div>
             <div class="col-2">
                 <label for="vl_net_procedimento" class="control-label">Valor NET (R$)<span class="text-danger">*</span></label>
-                <input id="vl_net_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_net_procedimento" value="{{ old('vl_net_procedimento') }}"  maxlength="15">
+                <input id="vl_net_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_net_procedimento" value="{{ old('vl_net_procedimento') }}"  maxlength="15" required>
             </div>
     		<div class="col-2" style="padding-top: 30px;">
-    		    <button type="button" class="btn btn-primary" onclick="addLinhaProcedimento();"><i class="mdi mdi-content-save"></i> Salvar</button>
-    		    <a onclick="limparProcedimento()" class="btn btn-icon btn-danger" title="Limpar Procedimento"><i class="mdi mdi-close"></i> Limpar</a>
+    		    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Salvar</button>
+    		    <a onclick="limparProcedimento()" class="btn btn-icon btn-danger" title="Limpar Procedimento" style="margin-top: 10px;"><i class="mdi mdi-close"></i> Limpar</a>
     		</div>
     	</div>
     	<br>
@@ -69,52 +69,56 @@
                 <h4 class="modal-title" id="edit-atendimento-title-modal">DrHoje: Editar Procedimento</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="cd_procedimento_edit" class="control-label">Código do Procedimento</label>
-                            <input type="text" id="cd_procedimento_edit" class="form-control" name="cd_procedimento_edit" placeholder="Código do Procedimento" readonly="readonly">
-                            <input type="hidden" id="atendimento_id_edit" name="atendimento_id_edit" >
+                <form method="post" action="{{ route('edit-precificacao-procedimento', $prestador ) }}"  id="form-edit-procedimento">
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="atendimento_id" id="atendimento_id_edit" value="" required>
+                    {!! csrf_field() !!}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="cd_procedimento_edit" class="control-label">Código do Procedimento</label>
+                                <input type="text" id="cd_procedimento_edit" class="form-control" name="cd_procedimento_edit" placeholder="Código do Procedimento" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ds_procedimento_edit" class="control-label">Descrição</label>
+                                <input type="text" id="ds_procedimento_edit" class="form-control" name="ds_procedimento" placeholder="Descrição do Procedimento" required>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="ds_procedimento_edit" class="control-label">Descrição</label>
-                            <input type="text" id="ds_procedimento_edit" class="form-control" name="ds_procedimento_edit" placeholder="Descrição do Procedimento">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group no-margin">
+                                <label for="atendimento_filial" class="control-label">Locais de Atendimento</label>
+                                <select id="atendimento_filial" class="select2 select2-multiple" name="atendimento_filial[]" multiple="multiple" multiple data-placeholder="Selecione ..." required>
+                                	@foreach($list_filials as $filial)
+    								<option value="{{ $filial->id }}">@if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</option>
+    								@endforeach  
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                        	<label for="vl_com_procedimento_edit" class="control-label">Valor Comercial (R$)</label>
+                        	<input type="text" id="vl_com_procedimento_edit" class="form-control mascaraMonetaria" name="vl_com_procedimento" placeholder="Valor Comercial" required>
+                        </div>
+                        <div class="col-md-6">
+                        	<label for="vl_net_procedimento_edit" class="control-label">Valor Net (R$)</label>
+                        	<input type="text" id="vl_net_procedimento_edit" class="form-control mascaraMonetaria" name="vl_net_procedimento" placeholder="Valor Net" required>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group no-margin">
-                            <label for="atendimento_filial" class="control-label">Locais de Atendimento</label>
-                            <select id="atendimento_filial" class="select2 select2-multiple" name="atendimento_filial" multiple="multiple" multiple data-placeholder="Selecione ...">
-                            	@foreach($list_filials as $filial)
-								<option value="{{ $filial->id }}">@if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</option>
-								@endforeach  
-                            </select>
-                        </div>
-                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
+                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                    	<label for="vl_com_atendimento_edit" class="control-label">Valor Comercial (R$)</label>
-                    	<input type="text" id="vl_com_atendimento_edit" class="form-control mascaraMonetaria" name="vl_com_atendimento_edit" placeholder="Valor Comercial">
-                    </div>
-                    <div class="col-md-6">
-                    	<label for="vl_net_atendimento_edit" class="control-label">Valor Net (R$)</label>
-                    	<input type="text" id="vl_net_atendimento_edit" class="form-control mascaraMonetaria" name="vl_net_atendimento_edit" placeholder="Valor Net">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btn-save-profissional-procedimento" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
-                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -122,165 +126,29 @@
 	$(function(){
 		
         $( "#ds_procedimento" ).autocomplete({
-        	  source: function( request, response ) {
-        	      $.ajax( {
-        	          url      : "/procedimentos/consulta/" + $('#ds_procedimento').val(),
-        	          dataType : "json",
-        	          success  : function( data ) {
-        	            response( data );
-        	          }
-        	      });
-        	  },
-        	  minLength : 2,
-        	  select: function(event, ui) {
-        		  	arProcedimento = ui.item.id.split(' | ');
-        		  
-        		  	$('#procedimento_id').val(arProcedimento[0]);
-     	      		$('#cd_procedimento').val(arProcedimento[1]);
-     	      		$('#descricao_procedimento').val(arProcedimento[2]);
-        	  }
+              source: function( request, response ) {
+                  $.ajax( {
+                      url      : "/procedimentos/consulta/" + $('#ds_procedimento').val(),
+                      dataType : "json",
+                      success  : function( data ) {
+                        response( data );
+                      }
+                  });
+              },
+              minLength : 2,
+              select: function(event, ui) {
+                    arProcedimento = ui.item.id.split(' | ');
+                  
+                    $('#procedimento_id').val(arProcedimento[0]);
+                    $('#cd_procedimento').val(arProcedimento[1]);
+                    $('#descricao_procedimento').val(arProcedimento[2]);
+              }
         });
 
         $('#con-close-modal').find("#filial_profissional").trigger('change.select2');
-
-        $('#btn-save-profissional-procedimento').click(function(){
-
-			var atendimento_id = $('#atendimento_id_edit').val();
-			var ds_atendimento = $('#ds_procedimento_edit').val();
-			var vl_com_atendimento = $('#vl_com_atendimento_edit').val();
-			var vl_net_atendimento = $('#vl_net_atendimento_edit').val();
-
-			var atendimento_filial = new Array();
-			$('#atendimento_filial :selected').each(function(i, selected) {
-				atendimento_filial[i] = $(selected).val();
-			});
-			
-			if( ds_atendimento.length == 0 ) { $('#ds_procedimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; } 
-			if( vl_com_atendimento.length == 0 ) { $('#vl_com_atendimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
-			if( vl_net_atendimento.length == 0 ) { $('#vl_net_atendimento_edit').parent().addClass('has-error').append('<span class="help-block text-danger"><strong>Campo Obrigatório!</strong></span>'); return false; }
-			
-			jQuery.ajax({
-				type: 'POST',
-				url: '{{ Request::url() }}/edit-precificacao-atendimento',
-				data: {
-					'atendimento_id': atendimento_id,
-					'ds_atendimento': ds_atendimento,
-					'vl_com_atendimento': vl_com_atendimento,
-					'vl_net_atendimento': vl_net_atendimento,
-					'atendimento_filial': atendimento_filial,
-					'_token': laravel_token
-				},
-	            success: function (result) {
-		            if(result.status) {
-			            		            	
-		            	 swal({
-		                     title: 'DrHoje',
-		                     text: result.mensagem,
-		                     type: 'success',
-		                     confirmButtonClass: 'btn btn-confirm mt-2',
-		                     confirmButtonText: 'OK'
-		                 }).then(function () {
-		                	 $('.modal').removeClass('in').attr("aria-hidden","true").off('click.dismiss.modal').removeClass('show');
-		                     $('.modal').css("display", "none");
-		                     $('.modal-backdrop').remove();
-		                     $('body').removeClass('modal-open');
-		                     window.location.reload(false); 
-		                 });
-		                 
-		            } else {
-		            	swal(({
-	        	            title: "Oops",
-	        	            text: result.mensagem,
-	        	            type: 'error',
-	        	            confirmButtonClass: 'btn btn-confirm mt-2'
-	        			}));
-		            }
-	            },
-	            error: function (result) {
-	                swal(({
-        	            title: "Oops",
-        	            text: "Falha na operação!",
-        	            type: 'error',
-        	            confirmButtonClass: 'btn btn-confirm mt-2'
-        			}));
-	            }
-			});
-		});
     });
-	
-    function addLinhaProcedimento() {
-        
-		if( $('#procedimento_id').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Falha ao Selecionar Procedimento. Por favor, tente novamente.'); return false; }
-		if( $('#ds_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Falha ao Selecionar Procedimento. Por favor, tente novamente.'); return false; }
-		if( $('#vl_com_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Valor Comercial informado não é válido. Por favor, tente novamente.'); return false; }
-		if( $('#vl_net_procedimento').val().length == 0 ) { $.Notification.notify('error','top right', 'Solicitação Falhou!', 'Valor NET informado não é válido. Por favor, tente novamente.'); return false; }
-		
-		var list_profissional_procedimento = new Array();
-		$('#list_profissional_procedimento :selected').each(function(i, selected) {
-			list_profissional_procedimento[i] = $(selected).val();
-		});
 
-		if( $('#clinica_id').val().length == 0 ) return false;
-        
-		var table = document.getElementById("tblPrecosProcedimentos");
-
-		var atendimento_id = $('#atendimento_id').val();
-		var procedimento_id = $('#procedimento_id').val();
-		
-		var ds_procedimento = $('#descricao_procedimento').val();
-		var vl_com_procedimento = $('#vl_com_procedimento').val();
-		var vl_net_procedimento = $('#vl_net_procedimento').val();
-		var clinica_id = $('#clinica_id').val();
-
-		jQuery.ajax({
-			type: 'POST',
-			url: '{{ Request::url() }}/add-precificacao-procedimento',
-			data: {
-				'atendimento_id': atendimento_id,
-				'procedimento_id': procedimento_id,
-				'ds_procedimento': ds_procedimento,
-				'vl_com_procedimento': vl_com_procedimento,
-				'vl_net_procedimento': vl_net_procedimento,
-				'clinica_id': clinica_id,
-				'_token': laravel_token
-			},
-            success: function (result) {
-	            if(result.status) {
-
-	            	swal({
-	                     title: 'DrHoje',
-	                     text: result.mensagem,
-	                     type: 'success',
-	                     confirmButtonClass: 'btn btn-confirm mt-2',
-	                     confirmButtonText: 'OK'
-	                 }).then(function () {
-	                	 $('.modal').removeClass('in').attr("aria-hidden","true").off('click.dismiss.modal').removeClass('show');
-	                     $('.modal').css("display", "none");
-	                     $('.modal-backdrop').remove();
-	                     $('body').removeClass('modal-open');
-	                     window.location.reload(false); 
-	                 });	                 
-	            } else {
-	            	swal(({
-        	            title: "Oops",
-        	            text: result.mensagem,
-        	            type: 'error',
-        	            confirmButtonClass: 'btn btn-confirm mt-2'
-        			}));
-	            }
-            },
-            error: function (result) {
-                swal(({
-    	            title: "Oops",
-    	            text: "Falha na operação!",
-    	            type: 'error',
-    	            confirmButtonClass: 'btn btn-confirm mt-2'
-    			}));
-            }
-		});
-    }
-
-    function loadDataProcedimento(element, atendimento_id) {
+    function loadDataProcedimento(element, atendimentoId) {
 
     	var cd_procedimento = $(element).parent().parent().find('td:nth-child(2)').html();
 
@@ -288,26 +156,14 @@
 			type: 'POST',
 			url: '/load-data-atendimento',
 			data: {
-				'atendimento_id': atendimento_id,
+				'atendimento_id': atendimentoId,
 				'_token': laravel_token
 			},
             success: function (result) {
                 
 	            if(result.status) {
-
 		            var atendimento = JSON.parse(result.atendimento);
 		            var nao_tem_atendimento = true;
-
-		            $('#proced_profissional_id option').each(function(index){
-			            if($(this).val() == atendimento.profissional_id) {
-			            	$('#proced_profissional_id').prop("selectedIndex", index);
-			            	nao_tem_atendimento = false;
-			            }
-			        });
-
-			        if(nao_tem_atendimento) {
-			        	$('#proced_profissional_id').prop("selectedIndex", 0);
-			        }
 
 			        cd_procedimento = atendimento.procedimento.cd_procedimento;
 			        $('#cd_procedimento_edit').val(cd_procedimento);
@@ -340,28 +196,22 @@
 		
     	var ds_procedimento = $(element).parent().parent().find('td:nth-child(3)').html();
     	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
-    	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
-    	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(7)').html();
+    	var vl_com_procedimento = $(element).parent().parent().find('td:nth-child(6)').html();
+    	var vl_net_procedimento = $(element).parent().parent().find('td:nth-child(7)').html();
 
-    	$('#profissional-procedimento-modal').find('input.form-control').val('');
-    	$('#profissional-procedimento-modal').find('select.form-control').prop('selectedIndex',0);
+    	$('#form-edit-procedimento #profissional-procedimento-modal').find('input.form-control').val('');
+    	$('#form-edit-procedimento #profissional-procedimento-modal').find('select.form-control').prop('selectedIndex',0);
 
-		$('#atendimento_id_edit').val(atendimento_id);
-		$('#ds_procedimento_edit').val(ds_procedimento);
-		$('#nm_profissional_edit').val(nm_profissional);
-		$('#vl_com_atendimento_edit').val(vl_com_atendimento);
-    	$('#vl_net_atendimento_edit').val(vl_net_atendimento);
+		$('#form-edit-procedimento #atendimento_id_edit').val(atendimentoId);
+		$('#form-edit-procedimento #ds_procedimento_edit').val(ds_procedimento);
+		$('#form-edit-procedimento #vl_com_procedimento_edit').val(vl_com_procedimento);
+    	$('#form-edit-procedimento #vl_net_procedimento_edit').val(vl_net_procedimento);
 		 
 		$("#profissional-procedimento-modal").modal();
     }
 
     function limparProcedimento() {
-    	$('#atendimento_id').val('');
-		$('#procedimento_id').val('');
-		$('#ds_procedimento').val('');
-		$('#nm_profissional').val('');
-		$('#vl_com_procedimento').val('');
-		$('#vl_net_procedimento').val('');
+    	$('#form-add-consulta :input').val('');
     }
 	
     function delLinhaProcedimento(element, atendimento_nome, atendimento_id) {
@@ -379,12 +229,13 @@
         }).then(function () {
             
         	jQuery.ajax({
-    			type: 'POST',
-    			url: '{{ Request::url() }}/delete-procedimento',
-    			data: {
-    				'atendimento_id': atendimento_id,
-    				'_token': laravel_token
-    			},
+                type: 'POST',
+                url: '{{ route("delete-precificacao-procedimento") }}',
+                data: {
+                    '_method': 'delete',
+                    'atendimento_id': atendimento_id,
+                    '_token': laravel_token
+                },
                 success: function (result) {
                     
                     var atendimento = JSON.parse(result.atendimento);

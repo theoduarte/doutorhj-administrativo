@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PrestadoresRequest;
 use App\Http\Requests\EditarPrestadoresRequest;
 use App\Http\Requests\PrecificacaoConsultaRequest;
+use App\Http\Requests\PrecificacaoProcedimentoRequest;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use LaravelLegends\PtBrValidator\Validator as CVXValidador;
 use App\Clinica;
@@ -694,61 +695,13 @@ class ClinicaController extends Controller
     }
 
     /**
-     * addProcedimentoPrecoStore a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function addProcedimentoPrecoStore(Request $request)
-    {
-        $atendimento_id = CVXRequest::post('atendimento_id');
-        $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
-
-        $clinica_id = CVXRequest::post('clinica_id');
-        $procedimento_id = CVXRequest::post('procedimento_id');
-        $ds_procedimento = CVXRequest::post('ds_procedimento');
-        $vl_com_procedimento = CVXRequest::post('vl_com_procedimento');
-        $vl_net_procedimento = CVXRequest::post('vl_net_procedimento');
-
-        $result = true;
-        $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]"; //--current atendimento objeto, usado na auditoria
-        $atendimento = new Atendimento();
-        $atendimento->ds_preco =  $ds_procedimento;
-        $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_procedimento);
-        $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_procedimento);
-        $atendimento->clinica_id = $clinica_id;
-        $atendimento->procedimento_id = $procedimento_id;
-        $atendimento->cs_status = 'A';
-
-        if ($atendimento->save()) {
-
-            # registra log
-            $atendimento_obj        = $atendimento->toJson();
-            $titulo_log             = $atendimento_id != '' ? 'Editar Atendimento' : 'Adicionar Atendimento';
-            $tipo_log = $atendimento_id != '' ? 3 : 1;
-
-            $ct_log = "reg_anterior:[$ct_atendimento_obj]";
-            $new_log = "reg_novo:[$atendimento_obj]";
-
-            $log = "{".$ct_log.",".$new_log."}";
-
-            $this->registrarLog($titulo_log, $log, $tipo_log);
-        } 
-        else {
-            return response()->json(['status' => false, 'mensagem' => 'O Procedimento não foi salvo. Por favor, tente novamente.']);
-        }
-
-        return response()->json(['status' => true, 'mensagem' => 'O(s) Procedimento(s) foi(ram) salvo(s) com sucesso!']);
-    }
-
-    /**
-     * addConsultaPrecoStore a newly created resource in storage.
+     * precificacaoConsultaStore a newly created resource in storage.
      *
      * @param  App\Clinica  $clinica
      * @param  App\Http\Requests\PrecificacaoConsultaRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function addConsultaPrecoStore(Clinica $clinica, PrecificacaoConsultaRequest $request)
+    public function precificacaoConsultaStore(Clinica $clinica, PrecificacaoConsultaRequest $request)
     {
         foreach ($request->list_profissional_consulta as $profissionalId) {
             $atendimento = new Atendimento();
@@ -778,13 +731,13 @@ class ClinicaController extends Controller
     }
 
     /**
-     * editConsultaPrecoUpdate a newly created resource in storage.
+     * precificacaoConsultaUpdate a newly created resource in storage.
      *
      * @param  App\Clinica  $clinica
      * @param  App\Http\Requests\PrecificacaoConsultaRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function editConsultaPrecoUpdate(Clinica $clinica, PrecificacaoConsultaRequest $request)
+    public function precificacaoConsultaUpdate(Clinica $clinica, PrecificacaoConsultaRequest $request)
     {
         $atendimento = Atendimento::findOrFail($request->atendimento_id);
         $atendimento->profissional_id = $request->profissional_id;
@@ -811,54 +764,160 @@ class ClinicaController extends Controller
     }
 
     /**
-     * editProcedimentoPrecoUpdate a newly created resource in storage.
+     * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param App\Http\Requests\PrecificacaoConsultaRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function editProcedimentoPrecoUpdate(Request $request)
+    public function precificacaoConsultaDestroy(PrecificacaoConsultaRequest $request)
     {
-        $atendimento_id = CVXRequest::post('atendimento_id');
-        $atendimento = $atendimento_id != '' ? Atendimento::findorfail($atendimento_id) : [];
+        $atendimento = Atendimento::findorfail( $request->atendimento_id );
+        $atendimento->cs_status = 'I';
+        $atendimento->save();
 
-        $ds_atendimento = CVXRequest::post('ds_atendimento');
-        $vl_com_atendimento = CVXRequest::post('vl_com_atendimento');
-        $vl_net_atendimento = CVXRequest::post('vl_net_atendimento');
-        //$profissional_id = CVXRequest::post('profissional_id');
-        $filial_ids = CVXRequest::post('atendimento_filial');
+        # registra log
+        $atendimento_obj = $atendimento->toJson();
+        $log = "[$atendimento_obj]";
+        $this->registrarLog('Excluir Consulta', $log, 4);
 
-        if (isset($atendimento)) {
-
-            $ct_atendimento_obj = $atendimento_id != '' ? $atendimento->toJson() : "[]"; //--current atendimento objeto, usado na auditoria
-
-            $atendimento->ds_preco =  $ds_atendimento;
-            $atendimento->vl_com_atendimento = UtilController::moedaBanco($vl_com_atendimento);
-            $atendimento->vl_net_atendimento = UtilController::moedaBanco($vl_net_atendimento);
-            //$atendimento->profissional_id = $profissional_id;
-            
-            $atendimento = $this->setAtendimentoRelations($atendimento, $filial_ids);
-
-            if ($atendimento->save()) {
-
-                # registra log
-                $atendimento_obj        = $atendimento->toJson();
-                $titulo_log             = $atendimento_id != '' ? 'Editar Atendimento' : 'Adicionar Atendimento';
-                $tipo_log = $atendimento_id != '' ? 3 : 1;
-
-                $ct_log = "reg_anterior:[$ct_atendimento_obj]";
-                $new_log = "reg_novo:[$atendimento_obj]";
-
-                $log = "{".$ct_log.",".$new_log."}";
-
-                $this->registrarLog($titulo_log, $log, $tipo_log);
-
-            } else {
-                return response()->json(['status' => false, 'mensagem' => 'O Atendimento não foi salvo. Por favor, tente novamente.']);
-            }
-        }
-
-        return response()->json(['status' => true, 'mensagem' => 'O Atendimento foi salvo com sucesso!']);
+        return response()->json(['status' => true, 'mensagem' => 'A Consulta foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * precificacaoProcedimentoStore a newly created resource in storage.
+     *
+     * @param  App\Clinica  $clinica
+     * @param  App\Http\Requests\PrecificacaoProcedimentoRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function precificacaoProcedimentoStore(Clinica $clinica, PrecificacaoProcedimentoRequest $request)
+    {
+        
+        $atendimento = new Atendimento();
+        $atendimento->clinica_id = $clinica->id;
+        $atendimento->vl_com_atendimento = $request->vl_com_procedimento;
+        $atendimento->vl_net_atendimento = $request->vl_net_procedimento;
+        $atendimento->procedimento_id = $request->procedimento_id;
+        $atendimento->ds_preco =  $request->descricao_procedimento;
+        $atendimento->cs_status = 'A';
+
+        $atendimento->save();
+
+        # registra log
+        $atendimento_obj    = "[]";
+        $titulo_log         = 'Adicionar Procedimento';
+        $tipo_log           = 1;
+        $ct_log = "reg_anterior:[]";
+        $new_log = "reg_novo:[$atendimento_obj]";
+
+        $log = "{".$ct_log.",".$new_log."}";
+
+        $this->registrarLog($titulo_log, $log, $tipo_log);
+
+        return redirect()->back()->with('success', 'A precificação da procedimento foi salva com sucesso!');
+    }
+
+    /**
+     * precificacaoProcedimentoUpdate a newly created resource in storage.
+     *
+     * @param  App\Clinica  $clinica
+     * @param  App\Http\Requests\PrecificacaoProcedimentoRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function precificacaoProcedimentoUpdate(Clinica $clinica, PrecificacaoProcedimentoRequest $request)
+    {
+        $atendimento = Atendimento::findOrFail($request->atendimento_id);
+        $atendimento->vl_com_atendimento = $request->vl_com_procedimento;
+        $atendimento->vl_net_atendimento = $request->vl_net_procedimento;
+        $atendimento->ds_preco =  $request->ds_procedimento;
+        $atendimento = $this->setAtendimentoRelations($atendimento, $request->atendimento_filial);
+
+        $atendimento->save();
+
+         # registra log
+        $atendimentoOld    = json_encode( $atendimento->getOriginal() );
+        $atendimentoNew    = json_encode( $atendimento->getAttributes() );
+
+        $titulo_log = 'Editar Atendimento';
+        $tipo_log   = 3;
+        $ct_log     = "reg_anterior:[$atendimentoOld]";
+        $new_log    = "reg_novo:[$atendimentoNew]";
+
+        $log = "{".$ct_log.",".$new_log."}";
+
+        $this->registrarLog($titulo_log, $log, $tipo_log);
+
+        return redirect()->back()->with('success', 'A precificação da procedimento foi salva com sucesso!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param App\Http\Requests\PrecificacaoProcedimentoRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function precificacaoProcedimentoDestroy(PrecificacaoProcedimentoRequest $request)
+    {
+        $atendimento = Atendimento::findorfail( $request->atendimento_id );
+        $atendimento->cs_status = 'I';
+        $atendimento->save();
+
+        # registra log
+        $atendimento_obj = $atendimento->toJson();
+        $log = "[$atendimento_obj]";
+        $this->registrarLog('Excluir Procedimento', $log, 4);
+
+        return response()->json(['status' => true, 'mensagem' => 'A Procedimento foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
+    }
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -894,27 +953,6 @@ class ClinicaController extends Controller
         return response()->json(['status' => true, 'mensagem' => 'O Atendimento foi removido com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
 
-    
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param App\Http\Requests\PrestadoresRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function deleteConsultaDestroy(PrecificacaoConsultaRequest $request)
-    {
-        $atendimento = Atendimento::findorfail( $request->atendimento_id );
-        $atendimento->cs_status = 'I';
-        $atendimento->save();
-
-        # registra log
-        $atendimento_obj = $atendimento->toJson();
-        $log = "[$atendimento_obj]";
-        $this->registrarLog('Excluir Consulta', $log, 4);
-
-        return response()->json(['status' => true, 'mensagem' => 'A Consulta foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
-    }
 
     /**
      * Consulta Cidade através da UF

@@ -59,18 +59,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('load-tag-popular', 'TagPopularController@loadTagPopularList');
     Route::post('delete-tag-popular', 'TagPopularController@deleteTagPopularDestroy');
 
-    // Route::post('add-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@addProcedimentoPrecoStore')->name('add-precificacao-procedimento');
-    // Route::post('edit-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@editProcedimentoPrecoUpdate' )->name('edit-precificacao-procedimento');
-
     Route::post('load-data-atendimento', 'AtendimentoController@loadAtendimentoShow');
     
-    Route::post('add-precificacao-consulta/{clinica}/clinica', 'ClinicaController@addConsultaPrecoStore')->name('add-precificacao-consulta');
-    Route::put('edit-precificacao-consulta/{clinica}/clinica', 'ClinicaController@editConsultaPrecoUpdate')->name('edit-precificacao-consulta');
-    Route::delete('delete-precificacao-consulta', 'ClinicaController@deleteConsultaDestroy')->name('delete-precificacao-consulta');
+    Route::post('add-precificacao-consulta/{clinica}/clinica', 'ClinicaController@precificacaoConsultaStore')->name('add-precificacao-consulta');
+    Route::put('edit-precificacao-consulta/{clinica}/clinica', 'ClinicaController@precificacaoConsultaUpdate')->name('edit-precificacao-consulta');
+    Route::delete('delete-precificacao-consulta', 'ClinicaController@precificacaoConsultaDestroy')->name('delete-precificacao-consulta');
     
-    Route::post('add-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@addProcedimentoPrecoStore')->name('add-precificacao-procedimento');
-    Route::put('edit-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@editProcedimentoPrecoUpdate')->name('edit-precificacao-procedimento');
-    Route::delete('delete-precificacao-procedimento', 'ClinicaController@deleteProcedimentoDestroy')->name('delete-precificacao-procedimento');
+    Route::post('add-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@precificacaoProcedimentoStore')->name('add-precificacao-procedimento');
+    Route::put('edit-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@precificacaoProcedimentoUpdate')->name('edit-precificacao-procedimento');
+    Route::delete('delete-precificacao-procedimento', 'ClinicaController@precificacaoProcedimentoDestroy')->name('delete-precificacao-procedimento');
 
 
     // Route::post('clinicas/{clinica}/edit/delete-procedimento', 'ClinicaController@deleteProcedimentoDestroy');

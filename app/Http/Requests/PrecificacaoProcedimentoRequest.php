@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PrecificacaoConsultaRequest extends FormRequest
+class PrecificacaoProcedimentoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,10 +27,10 @@ class PrecificacaoConsultaRequest extends FormRequest
             case 'PUT':
                 $rules = [
                     'atendimento_id' => 'required',
-                    'ds_consulta' => 'required',
-                    'vl_com_consulta' => 'required',
-                    'vl_net_consulta' => 'required',
-                    'profissional_id' => 'required',
+                    'ds_procedimento' => 'required',
+                    'vl_com_procedimento' => 'required',
+                    'vl_net_procedimento' => 'required',
+                    'atendimento_filial' => 'required',
                 ];
                 
                 break;
@@ -44,11 +44,10 @@ class PrecificacaoConsultaRequest extends FormRequest
         
             default:
                 $rules = [
-                    'consulta_id' => 'required',
-                    'ds_consulta' => 'required',
-                    'vl_com_consulta' => 'required',
-                    'vl_net_consulta' => 'required',
-                    'list_profissional_consulta' => 'required',
+                    'procedimento_id' => 'required',
+                    'ds_procedimento' => 'required',
+                    'vl_com_procedimento' => 'required',
+                    'vl_net_procedimento' => 'required',
                 ];
                 
                 break;
@@ -65,12 +64,10 @@ class PrecificacaoConsultaRequest extends FormRequest
     public function messages()
     {
         return [
-            'consulta_id.required' => 'O campo "Consulta" é obrigatório!',
-            'ds_consulta.required' => 'O campo "Consulta" é obrigatório!',
-            'vl_com_consulta.date_format' => 'O campo "Valor Comercial (R$)" está com um formato inválido!',
-            'vl_net_consulta.date_format' => 'O campo "Valor NET (R$)" está com um formato inválido!',
-            'list_profissional_consulta.required' => 'O campo "Profissional" é obrigatório!',
-            'profissional_id.required' => 'O campo "Profissional" é obrigatório!',
+            'atendimento_filial.required' => 'O campo "Filial" é obrigatório!',
+            'ds_procedimento.required' => 'O campo "Procedimento" é obrigatório!',
+            'vl_com_procedimento.date_format' => 'O campo "Valor Comercial (R$)" está com um formato inválido!',
+            'vl_net_procedimento.date_format' => 'O campo "Valor NET (R$)" está com um formato inválido!',
         ];
     }
 }
