@@ -56,6 +56,8 @@
 						<th>@sortablelink('id')</th>
 						<th>@sortablelink('cd_atendimento', 'Código')</th>
 						<th>@sortablelink('ds_atendimento', 'Título')</th>
+						<th>TAG (value)</th>
+						<th>Status</th>
 						<th>Ações</th>
 					</tr>
 					@foreach($tipo_atendimentos as $tipo_atend)
@@ -64,10 +66,12 @@
 						<td>{{ sprintf("%04d", $tipo_atend->id) }}</td>
 						<td>{{$tipo_atend->cd_atendimento}}</td>
 						<td>{{$tipo_atend->ds_atendimento}}</td>
+						<td>{{$tipo_atend->tag_value}}</td>
+						<td>{{$tipo_atend->getStatusString()}}</td>
 						<td>
 							<a href="{{ route('tipo_atendimentos.show', $tipo_atend->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
 							<a href="{{ route('tipo_atendimentos.edit', $tipo_atend->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-							<a href="{{ route('tipo_atendimentos.destroy', $tipo_atend->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o Grupo de Procedimento: {{ $tipo_atend->ds_grupo }}"><i class="ti-trash"></i></a>
+							<!-- <a href="{{ route('tipo_atendimentos.destroy', $tipo_atend->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o Grupo de Procedimento: {{ $tipo_atend->ds_grupo }}"><i class="ti-trash"></i></a> -->
 						</td>
 					</tr>
 					@endforeach
