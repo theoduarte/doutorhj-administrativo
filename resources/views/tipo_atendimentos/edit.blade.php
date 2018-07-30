@@ -37,6 +37,25 @@
 						<input type="text" id="ds_atendimento" class="form-control" name="ds_atendimento" value="{{ $tipo_atendimento->ds_atendimento }}" placeholder="Título do Tipo de Atendimento" maxlength="150" required  >
 					</div>
 					
+					<div class="form-group">
+						<label for="tag_value">TAG (value)<span class="text-danger">*</span></label>
+						<input type="text" id="tag_value" class="form-control" name="tag_value" value="{{ $tipo_atendimento->tag_value }}" placeholder="Valor da tag nos campos de busca" maxlength="150" required >
+					</div>
+					
+					<div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                    	<div class="row">
+                            <div class="col-5">
+                             	<label for="cs_status-a" class="control-label">Status<span class="text-danger">*</span></label>
+                                <br>
+                                <input type="radio" value="A" id="cs_status-a" name="cs_status" @if( $tipo_atendimento->cs_status == 'A' ) checked @endif autofocus style="cursor: pointer;">
+                                <label for="cs_status-a" style="cursor: pointer;">Ativo</label>
+             					<br>
+                                <input type="radio" value="I" id="cs_status-i" name="cs_status" @if( $tipo_atendimento->cs_status == 'I' ) checked @endif autofocus style="cursor: pointer;">
+                                <label for="cs_status-i" style="cursor: pointer;">Inativo</label>
+                            </div>
+                        </div>
+                    </div>
+					
 					<div class="form-group text-right m-b-0">
 						<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>
 						<a href="{{ route('tipo_atendimentos.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>

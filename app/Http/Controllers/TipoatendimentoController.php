@@ -19,7 +19,7 @@ class TipoatendimentoController extends Controller
     	$get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	 
-    	$tipo_atendimentos = Tipoatendimento::where(DB::raw('to_str(cd_atendimento)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(ds_atendimento)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    	$tipo_atendimentos = Tipoatendimento::where(DB::raw('to_str(cd_atendimento)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(ds_atendimento)'), 'LIKE', '%'.$search_term.'%')->orderBy('id')->sortable()->paginate(10);
     	 
     	return view('tipo_atendimentos.index', compact('tipo_atendimentos'));
     }
