@@ -38,8 +38,8 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="tag_value">TAG (value)<span class="text-danger">*</span></label>
-						<input type="text" id="tag_value" class="form-control" name="tag_value" value="{{ $tipo_atendimento->tag_value }}" placeholder="Valor da tag nos campos de busca" maxlength="150" required >
+						<label for="tag_value">TAG (value)<span class="text-danger"></span></label>
+						<input type="text" id="tag_value" class="form-control" name="tag_value" value="{{ $tipo_atendimento->tag_value }}" placeholder="Valor da tag nos campos de busca" maxlength="150">
 					</div>
 					
 					<div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
@@ -54,6 +54,7 @@
                                 <label for="cs_status-i" style="cursor: pointer;">Inativo</label>
                             </div>
                         </div>
+                        <small>* A inativação apenas retira a opção dos campos de busca da landing page (Parte pública).</small>
                     </div>
 					
 					<div class="form-group text-right m-b-0">

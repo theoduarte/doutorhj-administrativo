@@ -38,8 +38,8 @@
 					</div>
 
 					<div class="form-group">
-						<label for="tag_value">TAG (value)<span class="text-danger">*</span></label>
-						<input type="text" id="tag_value" class="form-control" name="tag_value" value="{{ !empty(old('tag_value')) ? old('tag_value') : null}}" placeholder="Valor da tag nos campos de busca" maxlength="150" required >
+						<label for="tag_value">TAG (value)<span class="text-danger"></span></label>
+						<input type="text" id="tag_value" class="form-control" name="tag_value" value="{{ !empty(old('tag_value')) ? old('tag_value') : null}}" placeholder="Valor da tag nos campos de busca" maxlength="150">
 					</div>
 					
 					<div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
@@ -53,6 +53,7 @@
                                 <input type="radio" value="I" id="cs_status-i" name="cs_status" @if( old('cs_status') == 'I' ) checked @endif autofocus style="cursor: pointer;">
                                 <label for="cs_status-i" style="cursor: pointer;">Inativo</label>
                             </div>
+                            <small>* A inativação apenas retira a opção dos campos de busca da landing page (Parte pública).</small>
                         </div>
                     </div>
 					
