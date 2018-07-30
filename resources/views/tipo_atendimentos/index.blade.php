@@ -30,7 +30,7 @@
 				<div class="row justify-content-between">
 					<div class="col-8">
 						<div class="form-group">
-							<a href="{{ route('tipo_atendimentos.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar Tipo</a>
+							<a href="{{ route('tipo_atendimentos.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar Tipo de Atendimento</a>
 						</div>
 					</div>				
 					<div class="col-1">
@@ -57,7 +57,7 @@
 						<th>@sortablelink('cd_atendimento', 'Código')</th>
 						<th>@sortablelink('ds_atendimento', 'Título')</th>
 						<th>TAG (value)</th>
-						<th>Status</th>
+						<th>Público?</th>
 						<th>Ações</th>
 					</tr>
 					@foreach($tipo_atendimentos as $tipo_atend)
