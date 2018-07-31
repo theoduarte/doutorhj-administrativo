@@ -41,15 +41,22 @@
                             <label for="vl_net_atendimento">Vl. NET</label>
                             <input type="text" id="vl_net_atendimento" class="form-control" name="vl_net_atendimento" readonly>
                         </div>
-                        
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-md-3">
                             <label for="vl_com_checkup">Vl. com. checkup<span class="text-danger">*</span></label>
-                            <input type="text" id="vl_com_checkup" class="form-control" name="vl_com_checkup" required>
+                            <input type="text" id="vl_com_checkup" class="form-control mascaraMonetaria" name="vl_com_checkup" required>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label for="vl_net_checkup">Vl. NET checkup<span class="text-danger">*</span></label>
-                            <input type="text" id="vl_net_checkup" class="form-control" name="vl_net_checkup" required>
+                            <input type="text" id="vl_net_checkup" class="form-control mascaraMonetaria" name="vl_net_checkup" required>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="vl_mercado">Vl. mercado<span class="text-danger">*</span></label>
+                            <input type="text" id="vl_mercado" class="form-control mascaraMonetaria" name="vl_mercado" required>
                         </div>
                     </div>
 
