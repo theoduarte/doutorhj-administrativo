@@ -163,11 +163,20 @@ class CheckupsController extends Controller
      */
     public function getConsultasByEspecidalide(Request $request)
     {
-        $consulta = new Consulta();
-        $especialidades = $consulta->getActiveByEspecialidade( $request->get('especialidade_id') );
+        $term = $request->get('term');
+        $especialidadeId = $request->get('especialidadeId');
 
-        echo json_encode($especialidades);
-        exit;
+        $consulta = new Consulta();
+        $especialidades = $consulta->getActiveByEspecialidade( $especialidadeId, $term );
+
+        $arResultado = array();
+        $consultas = Consulta::where('especialidade_id',$especialidadeId)->orderBy('ds_consulta')->get();
+
+        foreach ($consultas as $query) {
+            $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta, 'value' => '('.$query->cd_consulta.') '.$query->ds_consulta ];
+        }
+
+        return Response()->json($arResultado);
     }
 
     /**
@@ -244,6 +253,5 @@ class CheckupsController extends Controller
         echo json_encode($atendimentoResult);
         exit;
     }
-
     
 }

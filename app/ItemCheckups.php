@@ -89,13 +89,13 @@ class ItemCheckups extends Model
                              WHERE checkup_id = ?
                              GROUP BY ic.checkup_id, ds_item, a.vl_com_atendimento, a.vl_net_atendimento, ic.vl_com_checkup, ic.vl_net_checkup, ic.vl_mercado,
                                 c.id, c.cd_consulta, c.ds_consulta) valores
-                             JOIN ( SELECT  TOTALS.checkup_id, SUM(DISTINCT TOTALS.vl_com_atendimento) total_vl_com_atendimento, 
-                                       SUM(DISTINCT TOTALS.vl_net_atendimento) total_vl_net_atendimento, SUM(DISTINCT TOTALS.vl_com_checkup) total_vl_com_checkup, 
-                                       SUM(DISTINCT TOTALS.vl_net_checkup) total_vl_net_checkup, SUM(DISTINCT TOTALS.vl_mercado) total_vl_mercado
+                             JOIN ( SELECT  TOTALS.checkup_id, SUM(TOTALS.vl_com_atendimento) total_vl_com_atendimento, 
+                                       SUM(TOTALS.vl_net_atendimento) total_vl_net_atendimento, SUM(TOTALS.vl_com_checkup) total_vl_com_checkup, 
+                                       SUM(TOTALS.vl_net_checkup) total_vl_net_checkup, SUM(TOTALS.vl_mercado) total_vl_mercado
                                   FROM (
                                 SELECT  ic.checkup_id, c.id consulta_id, c.cd_consulta, cn.id,
-                                    SUM(DISTINCT a.vl_com_atendimento) vl_com_atendimento, SUM(DISTINCT a.vl_net_atendimento) vl_net_atendimento, 
-                                    SUM(DISTINCT ic.vl_com_checkup) vl_com_checkup, SUM(DISTINCT ic.vl_net_checkup) vl_net_checkup, SUM(DISTINCT ic.vl_mercado) vl_mercado
+                                    SUM(a.vl_com_atendimento) vl_com_atendimento, SUM(a.vl_net_atendimento) vl_net_atendimento, 
+                                    SUM(ic.vl_com_checkup) vl_com_checkup, SUM(ic.vl_net_checkup) vl_net_checkup, SUM(ic.vl_mercado) vl_mercado
                                   FROM item_checkups ic
                                   JOIN atendimentos a ON (ic.atendimento_id = a.id)
                                   JOIN consultas c ON (a.consulta_id = c.id)
@@ -118,12 +118,12 @@ class ItemCheckups extends Model
                               WHERE checkup_id = ?
                               GROUP BY ic.checkup_id, ds_item, a.vl_com_atendimento, a.vl_net_atendimento, ic.vl_com_checkup, ic.vl_net_checkup, ic.vl_mercado,
                                  p.id, p.cd_procedimento, p.ds_procedimento) valores
-                              JOIN (SELECT  TOTALS.checkup_id, SUM(DISTINCT TOTALS.vl_com_atendimento) total_vl_com_atendimento, SUM(DISTINCT TOTALS.vl_net_atendimento) total_vl_net_atendimento, 
-                                SUM(DISTINCT TOTALS.vl_com_checkup) total_vl_com_checkup, SUM(DISTINCT TOTALS.vl_net_checkup) total_vl_net_checkup, SUM(DISTINCT TOTALS.vl_mercado) total_vl_mercado
+                              JOIN (SELECT  TOTALS.checkup_id, SUM(TOTALS.vl_com_atendimento) total_vl_com_atendimento, SUM(TOTALS.vl_net_atendimento) total_vl_net_atendimento, 
+                                SUM(TOTALS.vl_com_checkup) total_vl_com_checkup, SUM(TOTALS.vl_net_checkup) total_vl_net_checkup, SUM(TOTALS.vl_mercado) total_vl_mercado
                                 FROM (
                                 SELECT  ic.checkup_id, p.id procedimento_id, p.cd_procedimento, cn.id,
-                                  SUM(DISTINCT a.vl_com_atendimento) vl_com_atendimento, SUM(DISTINCT a.vl_net_atendimento) vl_net_atendimento, 
-                                  SUM(DISTINCT ic.vl_com_checkup) vl_com_checkup, SUM(DISTINCT ic.vl_net_checkup) vl_net_checkup, SUM(DISTINCT ic.vl_mercado) vl_mercado
+                                  SUM(a.vl_com_atendimento) vl_com_atendimento, SUM(a.vl_net_atendimento) vl_net_atendimento, 
+                                  SUM(ic.vl_com_checkup) vl_com_checkup, SUM(ic.vl_net_checkup) vl_net_checkup, SUM(ic.vl_mercado) vl_mercado
                                 FROM item_checkups ic
                                 JOIN atendimentos a ON (ic.atendimento_id = a.id)
                                 JOIN procedimentos p ON (a.procedimento_id = p.id)

@@ -33,11 +33,13 @@ class Consulta extends Model
     	return $this->hasMany('App\TagPopular');
     }
 
-    public function getActiveByEspecialidade($especialidade){
+    public function getActiveByEspecialidade($especialidadeId, $term){
         return DB::select(" SELECT DISTINCT c.*
                               FROM consultas c
                               JOIN atendimentos at ON (at.consulta_id = c.id)
-                             WHERE at.cs_status = 'A'
-                               AND c.especialidade_id = ?", [$especialidade]);
+                             WHERE at.cs_status = ?
+                               AND c.especialidade_id = ?
+                               AND (cd_consulta like ?
+                                    OR ds_consulta like ?)", ['A', $especialidadeId, DB::raw("'%". $term. "%'"), DB::raw("'%". $term. "%'")]);
     }
 }
