@@ -170,9 +170,7 @@ class CheckupsController extends Controller
         $especialidades = $consulta->getActiveByEspecialidade( $especialidadeId, $term );
 
         $arResultado = array();
-        $consultas = Consulta::where('especialidade_id',$especialidadeId)->orderBy('ds_consulta')->get();
-
-        foreach ($consultas as $query) {
+        foreach ($especialidades as $query) {
             $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta, 'value' => '('.$query->cd_consulta.') '.$query->ds_consulta ];
         }
 
@@ -218,10 +216,14 @@ class CheckupsController extends Controller
     public function getProcedimentosByGrupoProcedimento(Request $request)
     {
         $procedimento = new Procedimento();
-        $procedimentos = $procedimento->getActiveByGrupoProcedimento( $request->get('grupo_procedimento_id') );
+        $procedimentos = $procedimento->getActiveByGrupoProcedimento( $request->get('grupoProcedimentoId'), $request->get('term') );
 
-        echo json_encode($procedimentos);
-        exit;
+        $arResultado = array();
+        foreach ($procedimentos as $query) {
+            $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_procedimento.' | '.$query->ds_procedimento, 'value' => '('.$query->cd_procedimento.') '.$query->ds_procedimento ];
+        }
+
+        return Response()->json($arResultado);
     }
 
     /**

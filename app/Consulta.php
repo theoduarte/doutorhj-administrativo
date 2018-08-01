@@ -34,12 +34,16 @@ class Consulta extends Model
     }
 
     public function getActiveByEspecialidade($especialidadeId, $term){
-        return DB::select(" SELECT DISTINCT c.*
-                              FROM consultas c
-                              JOIN atendimentos at ON (at.consulta_id = c.id)
-                             WHERE at.cs_status = ?
-                               AND c.especialidade_id = ?
-                               AND (cd_consulta like ?
-                                    OR ds_consulta like ?)", ['A', $especialidadeId, DB::raw("'%". $term. "%'"), DB::raw("'%". $term. "%'")]);
+        return DB::table('consultas')
+            ->select('consultas.*')
+            ->distinct()
+            ->join('atendimentos', 'consultas.id', '=', 'atendimentos.consulta_id')
+            ->where('atendimentos.cs_status', 'A')
+            ->where('consultas.especialidade_id', $especialidadeId)
+            ->where(function ($query) use($term) {
+                $query->where('cd_consulta', 'like', $term . '%' )
+                    ->orWhere( DB::raw('upper(ds_consulta)'), 'like', DB::raw("upper('%" . $term . "%')") );
+            })
+            ->get();
     }
 }

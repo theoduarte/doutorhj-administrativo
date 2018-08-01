@@ -21,17 +21,8 @@
                     <div class="form-group">
                         <label for="ds_consulta" class="control-label">Consulta<span class="text-danger">*</span></label>
                         <input id="ds_consulta" type="text" class="form-control" name="ds_consulta" value="{{ old('ds_consulta') }}" placeholder="Informe a Descrição da Consulta para buscar" autofocus maxlength="100" required disabled>
-                        <!-- <input type="hidden" id="cd_consulta" name="cd_consulta" value=""> -->
-                        <!-- <input type="hidden" id="descricao_consulta" name="descricao_consulta" value=""> -->
                         <input type="hidden" id="consulta_id" name="consulta_id" value="">
                     </div>
-
-                    <!-- <div class="form-group">
-                        <label for="consulta_id">Consulta<span class="text-danger">*</span></label>
-                        <select id="consulta_id" class="form-control" name="consulta_id" required>
-                            <option value="">Selecione</option>
-                        </select>
-                    </div> -->
 
                     <div class="form-group">
                         <label for="clinica_id">Clinica<span class="text-danger">*</span></label>
