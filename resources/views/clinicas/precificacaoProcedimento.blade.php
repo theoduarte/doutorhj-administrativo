@@ -96,8 +96,9 @@
                             <div class="form-group no-margin">
                                 <label for="atendimento_filial" class="control-label">Locais de Atendimento</label>
                                 <select id="atendimento_filial" class="select2 select2-multiple" name="atendimento_filial[]" multiple="multiple" multiple data-placeholder="Selecione ..." required>
+                                    <option value="all"><strong>-- Todos os Locais --</strong></option>
                                 	@foreach($list_filials as $filial)
-    								<option value="{{ $filial->id }}">@if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</option>
+    								    <option value="{{ $filial->id }}">@if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</option>
     								@endforeach  
                                 </select>
                             </div>
