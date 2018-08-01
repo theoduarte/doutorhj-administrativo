@@ -545,12 +545,22 @@ class ClinicaController extends Controller
      * @param  \App\Profissional  $profissional
      * @return \Illuminate\Http\Response
      */
-    private function setProfissionalRelations(Profissional $profissional, array $documento_ids, array $contatos_ids, array $especialidade_ids, array $filial_ids)
+    private function setProfissionalRelations(Profissional $profissional, array $documento_ids, array $contatos_ids, array $especialidade_ids, array $filial_ids, Clinica $clinica)
     {
         $profissional->documentos()->sync($documento_ids);
         $profissional->especialidades()->sync($especialidade_ids);
-        $profissional->filials()->sync($filial_ids);
-        //$profissional->contatos()->sync($contatos_ids);
+
+        if( in_array('all', $filial_ids) ) {
+            $obj = [];
+            foreach ($clinica->filials()->where('cs_status','A')->get() as $filial) {
+                $obj[] = $filial->id;
+            }
+
+            $profissional->filials()->sync($obj);
+        }
+        else {
+            $profissional->filials()->sync($filial_ids);
+        }
 
         return $profissional;
     }
@@ -563,7 +573,18 @@ class ClinicaController extends Controller
      */
     private function setAtendimentoRelations(Atendimento $atendimento, array $filial_ids)
     {
-    	$atendimento->filials()->sync($filial_ids);
+    	if( in_array('all', $filial_ids) ) {
+            $obj = [];
+            foreach ($atendimento->clinica->filials()->where('cs_status','A')->get() as $filial) {
+                $obj[] = $filial->id;
+            }
+
+            $atendimento->filials()->sync($obj);
+        }
+        else {
+            $atendimento->filials()->sync($filial_ids);    
+        }
+        
     
     	return $atendimento;
     }
@@ -641,7 +662,7 @@ class ClinicaController extends Controller
             return response()->json(['status' => false, 'mensagem' => 'O Profissional não foi salvo. Por favor, tente novamente.']);
         }
 
-        $profissional = $this->setProfissionalRelations($profissional, $documento_ids, $contatos_ids, $especialidade_ids, $filial_ids);
+        $profissional = $this->setProfissionalRelations($profissional, $documento_ids, $contatos_ids, $especialidade_ids, $filial_ids, $clinica);
         $profissional->save();
 
         $profissional->load('especialidades');
