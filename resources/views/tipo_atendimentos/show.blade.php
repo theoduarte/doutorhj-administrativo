@@ -37,6 +37,14 @@
 							<td>Título:</td>
 							<td>{{ $tipo_atendimento->ds_atendimento }}</td>
 						</tr>
+						<tr>
+							<td>TAG Value:</td>
+							<td>{{ $tipo_atendimento->tag_value }}</td>
+						</tr>
+						<tr>
+							<td>Ativo na busca da área pública (landing page)?:</td>
+							<td>{{ $tipo_atendimento->getStatusString() }}</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

@@ -18,11 +18,19 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="ds_procedimento" class="control-label">Exame/Procedimento<span class="text-danger">*</span></label>
+                        <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" placeholder="Informe a Descrição do Procedimento para buscar" autofocus maxlength="100" required disabled>
+                        <!-- <input type="hidden" id="cd_procedimento" name="cd_procedimento" value="" required> -->
+                        <!-- <input type="hidden" id="descricao_procedimento" name="descricao_procedimento" value=""> -->
+                        <input type="hidden" id="procedimento_id" name="procedimento_id" value="">
+                    </div>
+
+                    <!-- <div class="form-group">
                         <label for="procedimento_id">Exame/Procedimento<span class="text-danger">*</span></label>
                         <select id="procedimento_id" class="form-control" name="procedimento_id" required>
                             <option value="">Selecione</option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="clinica_id">Clinica<span class="text-danger">*</span></label>
@@ -41,15 +49,22 @@
                             <label for="vl_net_atendimento">Vl. NET</label>
                             <input type="text" id="vl_net_atendimento" class="form-control" name="vl_net_atendimento" readonly>
                         </div>
-                        
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-md-3">
                             <label for="vl_com_checkup">Vl. com. checkup<span class="text-danger">*</span></label>
-                            <input type="text" id="vl_com_checkup" class="form-control" name="vl_com_checkup" required>
+                            <input type="text" id="vl_com_checkup" class="form-control mascaraMonetaria" name="vl_com_checkup" required>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label for="vl_net_checkup">Vl. NET checkup<span class="text-danger">*</span></label>
-                            <input type="text" id="vl_net_checkup" class="form-control" name="vl_net_checkup" required>
+                            <input type="text" id="vl_net_checkup" class="form-control mascaraMonetaria" name="vl_net_checkup" required>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="vl_mercado">Vl. mercado<span class="text-danger">*</span></label>
+                            <input type="text" id="vl_mercado" class="form-control mascaraMonetaria" name="vl_mercado" required>
                         </div>
                     </div>
 
@@ -72,6 +87,47 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function($) {
+
+            $( "#ds_procedimento" ).autocomplete({
+                  source: function( request, response ) {
+                      $.ajax( {
+                          url      : "{{ route('get-active-procedimentos-by-grupo-procedimento') }}",
+                          dataType : "json",
+                          data: {term: $('#ds_procedimento').val(), grupoProcedimentoId: $('.new-item-exame #grupo_procedimento_id').val() },
+                          success  : function( data ) {
+                            response( data );
+                          }
+                      });
+                  },
+                  minLength : 2,
+                  select: function(event, ui) {
+                        arProcedimento = ui.item.id.split(' | ');
+                      
+                        $('#procedimento_id').val(arProcedimento[0]);
+
+                        $.ajax({
+                            type     : 'get',
+                            url      : "/get-active-clinicas-by-procedimento",
+                            dataType : 'json',
+                            data     : {procedimento_id: $('#procedimento_id').val()},
+                            success  : function(data) {
+                                $('.new-item-exame #vl_com_atendimento').val('');
+                                $('.new-item-exame #vl_net_atendimento').val('');
+
+                                $('.new-item-exame #clinica_id').html('');
+                                $('.new-item-exame #clinica_id').append('<option value="">Selecione</option>');
+                                console.log(data);
+
+                                for( var i = 0; i < data.length; i++ ){
+                                    $('.new-item-exame #clinica_id').append('<option value="' + data[i].id + '">' + data[i].nm_fantasia + '</option>');
+                                }
+                            }
+                        });
+                        // $('#cd_procedimento').val(arProcedimento[1]);
+                        // $('#descricao_procedimento').val(arProcedimento[2]);
+                  }
+            });
+
             $('.cancel-new-exame').click(function(){
                 $('.new-item-exame form').find(':text').val('');
                 $('.new-item-exame form').find('select').val('');
@@ -79,7 +135,17 @@
             });
 
             $('.new-item-exame #grupo_procedimento_id').change(function(){
-                $.ajax({
+
+                if( !$(this).val() ) {
+                    $( "#procedimento_id" ).val('');
+                    $( "#ds_procedimento" ).val('').attr('disabled','disabled');
+                    return false;
+                }
+
+                $( "#ds_procedimento" ).val('').removeAttr('disabled');
+                $( "#procedimento_id" ).val('');
+
+                /*$.ajax({
                     type     : 'get',
                     url      : "/get-active-procedimentos-by-grupo-procedimento",
                     dataType : 'json',
@@ -91,14 +157,17 @@
                         $('.new-item-exame #procedimento_id').html('');
                         $('.new-item-exame #procedimento_id').append('<option value="">Selecione</option>');
 
+                        $( "#ds_consulta" ).val('').removeAttr('disabled');
+                        $( "#consulta_id" ).val('');
+
                         for( var i = 0; i < data.length; i++ ){
                             $('.new-item-exame #procedimento_id').append('<option value="' + data[i].id + '">' + data[i].cd_procedimento + ' - ' + data[i].ds_procedimento + '</option>');
                         }
                     }
-                });
+                });*/
             });
 
-            $('.new-item-exame #procedimento_id').change(function(){
+            /*$('.new-item-exame #procedimento_id').change(function(){
                 $.ajax({
                     type     : 'get',
                     url      : "/get-active-clinicas-by-procedimento",
@@ -117,7 +186,7 @@
                         }
                     }
                 });
-            });
+            });*/
 
             $('.new-item-exame #clinica_id').change(function(){
                 $.ajax({

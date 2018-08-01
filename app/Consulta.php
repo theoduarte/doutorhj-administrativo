@@ -33,11 +33,17 @@ class Consulta extends Model
     	return $this->hasMany('App\TagPopular');
     }
 
-    public function getActiveByEspecialidade($especialidade){
-        return DB::select(" SELECT DISTINCT c.*
-                              FROM consultas c
-                              JOIN atendimentos at ON (at.consulta_id = c.id)
-                             WHERE at.cs_status = 'A'
-                               AND c.especialidade_id = ?", [$especialidade]);
+    public function getActiveByEspecialidade($especialidadeId, $term){
+        return DB::table('consultas')
+            ->select('consultas.*')
+            ->distinct()
+            ->join('atendimentos', 'consultas.id', '=', 'atendimentos.consulta_id')
+            ->where('atendimentos.cs_status', 'A')
+            ->where('consultas.especialidade_id', $especialidadeId)
+            ->where(function ($query) use($term) {
+                $query->where('cd_consulta', 'like', $term . '%' )
+                    ->orWhere( DB::raw('upper(ds_consulta)'), 'like', DB::raw("upper('%" . $term . "%')") );
+            })
+            ->get();
     }
 }

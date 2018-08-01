@@ -9,7 +9,7 @@ class Tipoatendimento extends Model
 {
     use Sortable;
     
-    protected $fillable = ['cd_atendimento', 'ds_atendimento'];
+    protected $fillable = ['cd_atendimento', 'ds_atendimento', 'cs_status', 'tag_value'];
     
     public $sortable = ['id', 'cd_atendimento', 'ds_atendimento'];
     
@@ -21,5 +21,9 @@ class Tipoatendimento extends Model
     public function procedimentos()
     {
         return $this->hasMany('App\Procedimento');
+    }
+
+    public function getStatusString() {
+        return $this->attributes['cs_status'] == 'A' ? 'Ativo': 'Inativo';
     }
 }
