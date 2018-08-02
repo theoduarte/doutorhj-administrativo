@@ -19,7 +19,7 @@ class GrupoProcedimentoController extends Controller
     	$get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	
-    	$grupo_procedimentos = GrupoProcedimento::where(DB::raw('to_str(ds_grupo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    	$grupo_procedimentos = GrupoProcedimento::where(DB::raw('to_str(ds_grupo)'), 'LIKE', '%'.$search_term.'%')->orderBy('id')->sortable()->paginate(10);
     	
     	return view('grupo_procedimentos.index', compact('grupo_procedimentos'));
     }
@@ -84,8 +84,7 @@ class GrupoProcedimentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-    	$grupo = Menu::findOrFail($id);
-    	
+    	$grupo = GrupoProcedimento::findOrFail($id);    	
     	$grupo->update($request->all());
     	
     	return redirect()->route('grupo_procedimentos.index')->with('success', 'O Grupo de Procedimento foi editado com sucesso!');
