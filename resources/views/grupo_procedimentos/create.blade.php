@@ -21,7 +21,7 @@
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
 			<div class="card-box">
-				<h4 class="header-title m-t-0">Adicionar Grupo</h4>
+				<h4 class="header-title m-t-0">Adicionar Grupo de Procedimento</h4>
 				
 				<form action="{{ route('grupo_procedimentos.store') }}" method="post">
 				

@@ -11,7 +11,7 @@
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('grupo_procedimentos.index') }}">Lista de Grupos</a></li>
-					<li class="breadcrumb-item active">Editar Grupo</li>
+					<li class="breadcrumb-item active">Editar Grupo de Procedimento</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
