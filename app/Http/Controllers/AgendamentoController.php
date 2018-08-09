@@ -21,6 +21,7 @@ class AgendamentoController extends Controller
      */
     public function index()
     {
+        // dd( Request::get('sort') );
         $clinicas = Clinica::all();
         
         $clinica_id = Request::get('clinica_id');
@@ -31,7 +32,7 @@ class AgendamentoController extends Controller
         
         $agenda = [];
 
-       	//DB::enableQueryLog();
+       	// DB::enableQueryLog();
         $agenda = Agendamento::with('paciente')->with('clinica')->with('atendimento')->with('profissional')->with('itempedidos')->whereHas('itempedidos.pedido')
             ->join('pacientes', function($join1) { $join1->on('pacientes.id', '=', 'agendamentos.paciente_id');})
                 
@@ -39,14 +40,15 @@ class AgendamentoController extends Controller
             ->where(function($query3) use ($clinica_id) { if(!empty($clinica_id))       $query3->where(DB::raw('clinica_id'), '=', $clinica_id);})
             ->where(function($query4) use ($nm_paciente) { if( $nm_paciente != '')      $query4->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%'.$nm_paciente.'%')->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%'.$nm_paciente.'%')->orWhere(DB::raw("concat(to_str(pacientes.nm_primario), ' ',to_str(pacientes.nm_secundario))"), 'like', '%'.$nm_paciente.'%');})
             
-            ->select(['agendamentos.*'])
+            ->select('agendamentos.*', 'pacientes.nm_primario')
             ->distinct()
+            ->orderBy( Request::get('sort','pacientes.nm_primario'), Request::get('order','asc'))
 //             ->sortable(['dt_atendimento'=>'asc'])
             ->paginate(10);
 
             
-        //$query_temp = DB::getQueryLog();
-        //dd($query_temp);
+        // $query_temp = DB::getQueryLog();
+        // dd($query_temp);
 		//dd($agenda);
         for ($i = 0; $i < sizeof($agenda); $i++) {
             $agenda[$i]->clinica->load('enderecos');

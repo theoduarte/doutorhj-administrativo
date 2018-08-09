@@ -260,21 +260,18 @@ class ClinicaController extends Controller
         $prestador->load('contatos');
         $prestador->load('documentos');
         $prestador->load('filials');
-        //$prestador->filials->load('endereco');
-                
-        //$prestador->filials->endereco->load('cidade');
         
         $list_filials = Filial::with('endereco')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('eh_matriz','desc')->get();
 
         $documentosclinica = $prestador->documentos;
 
         $user   = User::findorfail($prestador->responsavel->user_id);
-        $precoprocedimentos = Atendimento::where('clinica_id', $idClinica)->where('procedimento_id', '<>', null)->where('cs_status', '=', 'A')->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
-        $precoconsultas =     Atendimento::where('clinica_id', $idClinica)->where('consulta_id', '<>', null)->where('cs_status', '=', 'A')->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
+        $precoprocedimentos = Atendimento::where('clinica_id', $idClinica)->where('procedimento_id', '<>', null)->where('cs_status', '=', 'A')->select( DB::raw("id, procedimento_id, vl_com_atendimento, vl_net_atendimento, replace(ds_preco,'''','`') as ds_preco, cs_status, clinica_id") )->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
+
+        $precoconsultas =     Atendimento::where('clinica_id', $idClinica)->where('consulta_id', '<>', null)->where('cs_status', '=', 'A')->select( DB::raw("id, consulta_id, vl_com_atendimento, vl_net_atendimento, replace(ds_preco,'''','`') as ds_preco, cs_status, clinica_id, profissional_id") )->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
 
         $documentoprofissional = [];
 
-        //$prestador->load('profissionals')->orderBy('updated_at', 'desc');
 
         if($search_term != '') {
             $list_profissionals = Profissional::where(DB::raw('to_str(nm_primario)'), 'LIKE', '%'.$search_term.'%')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('nm_primario', 'asc')->get();
