@@ -62,36 +62,46 @@
 				
 				<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
 					<tr>
-						<th>ID</th>
-						<th>@sortablelink('name', 'Nome')</th>
-						<th>@sortablelink('email', 'E-mail')</th>
-						<th>CPF</th>
-						<th>Situação</th>
+						<th>Usuário ID</th>
+                        <th>Paciente ID</th>
+                        <th>@sortablelink('nm_primario', 'Nome')</th>
+						<th>@sortablelink('user.email', 'E-mail')</th>
+						<th>Tipo Documento</th>
+                        <th>Documento</th>
+                        <th>Dt. Nasc.</th>
+                        <th>Situação</th>
 						<th>Ações</th>
 					</tr>
-					@foreach ($paciente as $usuario)
+					@foreach ($pacientes as $paciente)
 						<tr>
-    						<td>{{$usuario->id}}</td>
-    						<td>{{$usuario->user->name}}</td>
-    						<td>{{$usuario->user->email}}</td>
-                	 		<td>
-								@foreach( $usuario->documentos as $documento )
-									@if( $documento->tp_documento == 'CPF' )
-										{{$documento->te_documento}}
-									@endif
-								@endforeach
-                	 		</td>
-               	 			<td>
-               	 				@if( $usuario->user->cs_status == 'A' ) 
-               	 					Ativo
-               	 				@elseif( $usuario->user->cs_status == 'I' )
-               	 					Inativo
-               	 				@endif
+    						<td>{{ !empty($paciente->user) ? $paciente->user->id : null }}</td>
+                            <td>{{ $paciente->id }}</td>
+                            <td>{{ $paciente->nm_primario }} {{ $paciente->nm_secundario }} @if( !empty($paciente->responsavel_id) ) <small>({{ $paciente->responsavel->nm_primario . ' ' . $paciente->responsavel->nm_secundario }} - {{ $paciente->responsavel->id }})</small> @endif </td>
+    						<td>{{ !empty($paciente->user) ? $paciente->user->email : null}}</td>
+                            <td>{{ !empty($paciente->documentos[0]) ? $paciente->documentos[0]->tp_documento : null }}</td>
+                	 		<td>{{ !empty($paciente->documentos[0]) ? $paciente->documentos[0]->te_documento : null }}</td>
+                            <td>{{ $paciente->dt_nascimento }}</td>
+                            <td>
+                                @if( !empty($paciente->user) )
+                   	 				@if( $paciente->user->cs_status == 'A' ) 
+                   	 					Ativo
+                   	 				@elseif( $paciente->user->cs_status == 'I' )
+                   	 					Inativo
+                   	 				@endif
+                                @else
+                                    @if( $paciente->cs_status == 'A' ) 
+                                        Ativo
+                                    @elseif( $paciente->cs_status == 'I' )
+                                        Inativo
+                                    @endif
+                                @endif
                 	 		</td>
     						<td>
-    							<a href="{{ route('clientes.show', $usuario->user->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-    							<a href="{{ route('clientes.edit', $usuario->user->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('clientes.destroy', $usuario->user->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar o cliente? {{$usuario->user->name}}"><i class="ti-trash"></i></a>
+                                @if( !empty($paciente->user) )
+    							<a href="{{ route('clientes.show', $paciente->user->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+    							<a href="{{ route('clientes.edit', $paciente->user->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+    							<a href="{{ route('clientes.destroy', $paciente->user->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja inativar o cliente? {{$paciente->name}}"><i class="ti-trash"></i></a>
+                                @endif
     						</td>
     					</tr>
 					@endforeach
@@ -99,9 +109,9 @@
                 <tfoot>
                 	<div class="cvx-pagination">
                 		<span class="text-primary">
-                			{{ sprintf("%02d", $paciente->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $paciente->count()) }} Registro(s) exibido(s)
+                			{{ sprintf("%02d", $pacientes->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $pacientes->count()) }} Registro(s) exibido(s)
                 		</span>
-                		{!! $paciente->links() !!}
+                		{!! $pacientes->links() !!}
                 	</div>
                 </tfoot>
            </div>
