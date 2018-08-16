@@ -52,6 +52,10 @@ class Paciente extends Model
 	public function user(){
 	    return $this->belongsTo('App\User');
 	}
+
+	public function responsavel(){
+	    return $this->belongsTo(self::class, 'responsavel_id');
+	}
     
 	
 	
