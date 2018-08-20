@@ -131,155 +131,162 @@
 									<th>@sortablelink('cs_status', 'Situação')</th>
 									<th>Ações</th>
 								</tr>
-								@foreach($agenda as $obAgenda)
-                                    @php
-                                        $type = !empty( $obAgenda->atendimento->procedimento ) ? 'Exame' : 'Consulta';
-                                    @endphp
-									<tr>
-										<td>{{$obAgenda->te_ticket}}</td>
-										<td>{{$obAgenda->clinica->nm_razao_social}}</td>
-										<td style="text-align: left !important;">{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario }}</td>
-										<td style="text-align: left !important;">{{ $obAgenda->paciente->nm_primario . ' ' . $obAgenda->paciente->nm_secundario }}</td>
-										<td>{{$obAgenda->itempedidos->first()->pedido->dt_pagamento}}</td>
-										<td>{{$obAgenda->dt_atendimento}}</td>
-										<td >{{$obAgenda->cs_status}}</td>
-										<td style="width:100px;">
-											<!-- botao agendar/remarcar -->
-											@if( $obAgenda->cs_status == 'Pré-Agendado'
-                                                or $obAgenda->cs_status == 'Agendado'
-                                                and $obAgenda->cs_status!='Cancelado'
-                                                and $obAgenda->cs_status!='Finalizado'
-                                                and $obAgenda->cs_status!='Confirmado'
-                                                and $obAgenda->bo_remarcacao=='N')
-											
-												<a especialidade  = "{{ !empty( $obAgenda->atendimento->procedimento ) ?
-                                                                         $obAgenda->atendimento->procedimento->grupoprocedimento->ds_grupo :
-                                                                         $obAgenda->atendimento->consulta->especialidade->ds_especialidade }}"
-                                                   nm-paciente    = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
-												   data-hora	  = "{{$obAgenda->dt_atendimento}}"
-												   prestador	  = "{{$obAgenda->clinica->nm_razao_social}}"
-												   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
-												   valor-consulta = "{{$obAgenda->valor_total}}"
-												   id-profissional = "{{$obAgenda->profissional->id}}"
-												   id-clinica     = "{{$obAgenda->clinica->id}}"
-												   id-paciente    = "{{$obAgenda->paciente->id}}"
-												   ticket         = "{{$obAgenda->te_ticket}}"
-                                                   type           = "{{ $type }}"
-                                                   atendimento    = "{{ !empty( $obAgenda->atendimento->procedimento ) ? ($obAgenda->atendimento->procedimento->cd_procedimento . ' - ' . $obAgenda->atendimento->procedimento->ds_procedimento) : ($obAgenda->atendimento->consulta->cd_consulta . ' - ' . $obAgenda->atendimento->consulta->ds_consulta) }}"
-                                                   class		  = "btn btn-icon waves-effect btn-agenda-remarcar btn-sm m-b-5 agendamento"
-												   id			  = "agendamento"
-												   @if( $obAgenda->cs_status == 'Pré-Agendado' )
-												   		title = "Agendar {{ $type }}"
-												   @elseif( $obAgenda->cs_status == 'Agendado' )
-												   		title = "Remarcar {{ $type }}"
-												   @endif
-												><i class="mdi mdi-calendar-plus"></i></a>
-											@endif
-										    
-										    <!-- botao confirmar -->
-                                            @if( $obAgenda->cs_status!='Cancelado' and $obAgenda->cs_status=='Agendado')
-                                                <a especialidade  = "{{ !empty( $obAgenda->atendimento->procedimento ) ?
-                                                                         $obAgenda->atendimento->procedimento->grupoprocedimento->ds_grupo :
-                                                                         $obAgenda->atendimento->consulta->especialidade->ds_especialidade }}"
-                                                   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
-                                                   data-hora       = "{{$obAgenda->dt_atendimento}}"
-                                                   prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
-                                                   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
-                                                   valor-consulta  = "{{$obAgenda->valor_total}}"
-                                                   id-profissional = "{{$obAgenda->profissional->id}}"
-                                                   id-clinica      = "{{$obAgenda->clinica->id}}"
-                                                   id-paciente     = "{{$obAgenda->paciente->id}}"
-                                                   ticket          = "{{$obAgenda->te_ticket}}"
-                                                   type           = "{{ $type }}"
-                                                   atendimento    = "{{ !empty( $obAgenda->atendimento->procedimento ) ? ($obAgenda->atendimento->procedimento->cd_procedimento . ' - ' . $obAgenda->atendimento->procedimento->ds_procedimento) : ($obAgenda->atendimento->consulta->cd_consulta . ' - ' . $obAgenda->atendimento->consulta->ds_consulta) }}"
-                                                   class           = "btn btn-icon waves-effect btn-agenda-confirmar btn-sm m-b-5 confirmacao"
-                                                   title           = "Confirmar {{ $type }}" id="confirmacao">
-                                                   <i class="mdi mdi-check"></i>
-                                                </a>
+								@foreach($agendamentos as $agendamento)
+                                    @foreach( $agendamento->atendimentos as $atendimento )
+                                        @php
+                                            $type = !empty( $agenda->atendimento->procedimento ) ? 'Exame' : 'Consulta';
+                                        @endphp
+    									<tr>
+    										<td>{{$agendamento->te_ticket}}</td>
+    										<td>{{$atendimento->clinica->nm_razao_social}}</td>
+                                            @if( !empty($atendimento->consulta_id) )
+    										  <td style="text-align: left !important;">{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}</td>
+                                            @else
+                                                <td style="text-align: left !important;"></td>
                                             @endif
-                                            
-                                            <!-- botao faturar -->
-                                            @if( $obAgenda->cs_status == 'Finalizado' )
-                                                <a especialidade  = "{{ !empty( $obAgenda->atendimento->procedimento ) ?
-                                                                         $obAgenda->atendimento->procedimento->grupoprocedimento->ds_grupo :
-                                                                         $obAgenda->atendimento->consulta->especialidade->ds_especialidade }}"
-                                                   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
-                                                   data-hora       = "{{$obAgenda->dt_atendimento}}"
-                                                   prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
-                                                   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
-                                                   valor-consulta  = "{{$obAgenda->valor_total}}"
-                                                   id-profissional = "{{$obAgenda->profissional->id}}"
-                                                   id-clinica      = "{{$obAgenda->clinica->id}}"
-                                                   id-paciente     = "{{$obAgenda->paciente->id}}"
-                                                   id-agendamento  = "{{$obAgenda->id}}"
-                                                   ticket          = "{{$obAgenda->te_ticket}}"
-                                                   type           = "{{ $type }}"
-                                                   atendimento    = "{{ !empty( $obAgenda->atendimento->procedimento ) ? ($obAgenda->atendimento->procedimento->cd_procedimento . ' - ' . $obAgenda->atendimento->procedimento->ds_procedimento) : ($obAgenda->atendimento->consulta->cd_consulta . ' - ' . $obAgenda->atendimento->consulta->ds_consulta) }}"
-                                                   class           = "btn btn-icon waves-effect btn-agenda-faturar btn-sm m-b-5 faturamento"
-                                                   title           = "Faturar {{ $type }}" id="faturamento">
-                                                   <i class="mdi mdi-file-chart"></i>
-                                                </a>
-                                            @endif
-                                            
-                                            <!-- botao pagar -->
-                                            @if( $obAgenda->cs_status == 'Faturado' )
-                                                <a especialidade  = "{{ !empty( $obAgenda->atendimento->procedimento ) ?
-                                                                         $obAgenda->atendimento->procedimento->grupoprocedimento->ds_grupo :
-                                                                         $obAgenda->atendimento->consulta->especialidade->ds_especialidade }}"
-                                                   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
-                                                   data-hora       = "{{$obAgenda->dt_atendimento}}"
-                                                   prestador       = "{{$obAgenda->clinica->nm_razao_social}}"
-                                                   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
-                                                   valor-consulta  = "{{$obAgenda->valor_total}}"
-                                                   id-profissional = "{{$obAgenda->profissional->id}}"
-                                                   id-clinica      = "{{$obAgenda->clinica->id}}"
-                                                   id-paciente     = "{{$obAgenda->paciente->id}}"
-                                                   id-agendamento  = "{{$obAgenda->id}}"
-                                                   ticket          = "{{$obAgenda->te_ticket}}"
-                                                   type           = "{{ $type }}"
-                                                   atendimento    = "{{ !empty( $obAgenda->atendimento->procedimento ) ? ($obAgenda->atendimento->procedimento->cd_procedimento . ' - ' . $obAgenda->atendimento->procedimento->ds_procedimento) : ($obAgenda->atendimento->consulta->cd_consulta . ' - ' . $obAgenda->atendimento->consulta->ds_consulta) }}"
-                                                   class           = "btn btn-icon waves-effect btn-agenda-pagar btn-sm m-b-5 pagamento"
-                                                   title           = "Pagar {{ $type }}" id="pagamento">
-                                                   <i class="fa fa-dollar"></i>
-                                                </a>
-                                            @endif
-                                            
-                                            <!-- botao cancelar -->
-											@if( $obAgenda->cs_status!='Cancelado' &&
-                                                 $obAgenda->cs_status!='Faturado' &&
-                                                 $obAgenda->cs_status!='Pago' &&
-                                                 $obAgenda->cs_status!='Retorno')
-												<a especialidade  = "{{ !empty( $obAgenda->atendimento->procedimento ) ?
-                                                                         $obAgenda->atendimento->procedimento->grupoprocedimento->ds_grupo :
-                                                                         $obAgenda->atendimento->consulta->especialidade->ds_especialidade }}"
-                                                   nm-paciente     = "{{$obAgenda->paciente->nm_primario}} {{$obAgenda->paciente->nm_secundario}}"
-												   data-hora	   = "{{$obAgenda->dt_atendimento}}"
-												   prestador	   = "{{$obAgenda->clinica->nm_razao_social}}"
-												   nm-profissional = "{{ $obAgenda->profissional->nm_primario . ' ' . $obAgenda->profissional->nm_secundario}}"
-												   valor-consulta  = "{{$obAgenda->valor_total}}"
-												   id-profissional = "{{$obAgenda->profissional->id}}"
-												   id-clinica      = "{{$obAgenda->clinica->id}}"
-												   id-paciente     = "{{$obAgenda->paciente->id}}"
-												   ticket          = "{{$obAgenda->te_ticket}}"
-												   atendimento     = "{{ !empty( $obAgenda->atendimento->procedimento ) ? ($obAgenda->atendimento->procedimento->cd_procedimento . ' - ' . $obAgenda->atendimento->procedimento->ds_procedimento) : ($obAgenda->atendimento->consulta->cd_consulta . ' - ' . $obAgenda->atendimento->consulta->ds_consulta) }}"
-                                                   class		   = "btn btn-icon waves-effect btn-agenda-cancelar btn-sm m-b-5 cancelamento"
-												   title           = "Cancelar {{ $type }}" id="cancelamento">
-												   <i class="mdi mdi-close"></i>
-												</a>
-											@endif
-										</td>
-									</tr>
+    										<td style="text-align: left !important;">{{ $agendamento->paciente->nm_primario . ' ' . $agendamento->paciente->nm_secundario }}</td>
+    										<td>{{$agendamento->itempedidos->first()->pedido->dt_pagamento}}</td>
+    										<td>{{$agendamento->dt_atendimento}}</td>
+    										<td >{{$agendamento->cs_status}}</td>
+    										<td style="width:100px;">
+    											<!-- botao agendar/remarcar -->
+    											@if( $agendamento->cs_status == 'Pré-Agendado'
+                                                    or $agendamento->cs_status == 'Agendado'
+                                                    and $agendamento->cs_status!='Cancelado'
+                                                    and $agendamento->cs_status!='Finalizado'
+                                                    and $agendamento->cs_status!='Confirmado'
+                                                    and $agendamento->bo_remarcacao=='N')
+    											
+    												<a especialidade    = "{{ !empty( $atendimento->procedimento ) ?
+                                                                             $atendimento->procedimento->grupoprocedimento->ds_grupo :
+                                                                             $atendimento->consulta->especialidade->ds_especialidade }}"
+                                                       nm-paciente      = "{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
+    												   data-hora        = "{{ $agendamento->dt_atendimento }}"
+    												   prestador	    = "{{ $atendimento->clinica->nm_razao_social }}"
+    												   nm-profissional  = "{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+    												   valor-consulta   = "{{ $agendamento->valor_total }}"
+    												   id-profissional  = "{{ $agendamento->profissional->id }}"
+    												   id-clinica       = "{{ $atendimento->clinica->id }}"
+    												   id-paciente      = "{{ $agendamento->paciente->id }}"
+    												   ticket           = "{{ $agendamento->te_ticket }}"
+                                                       type             = "{{ $type }}"
+                                                       atendimento      = "{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+                                                       class		  = "btn btn-icon waves-effect btn-agenda-remarcar btn-sm m-b-5 agendamento"
+    												   id			  = "agendamento"
+    												   @if( $agendamento->cs_status == 'Pré-Agendado' )
+    												   		title = "Agendar {{ $type }}"
+    												   @elseif( $agendamento->cs_status == 'Agendado' )
+    												   		title = "Remarcar {{ $type }}"
+    												   @endif
+    												><i class="mdi mdi-calendar-plus"></i></a>
+    											@endif
+    										    
+    										    <!-- botao confirmar -->
+                                                @if( $agendamento->cs_status!='Cancelado' and $agendamento->cs_status=='Agendado')
+                                                    <a especialidade    = "{{ !empty( $atendimento->procedimento ) ?
+                                                                             $atendimento->procedimento->grupoprocedimento->ds_grupo :
+                                                                             $atendimento->consulta->especialidade->ds_especialidade }}"
+                                                       nm-paciente      = "{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
+                                                       data-hora        = "{{ $agendamento->dt_atendimento }}"
+                                                       prestador        = "{{ $atendimento->clinica->nm_razao_social }}"
+                                                       nm-profissional  = "{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+                                                       valor-consulta   = "{{ $agendamento->valor_total }}"
+                                                       id-profissional  = "{{ $agendamento->profissional->id }}"
+                                                       id-clinica       = "{{ $atendimento->clinica->id }}"
+                                                       id-paciente      = "{{ $agendamento->paciente->id }}"
+                                                       ticket           = "{{ $agendamento->te_ticket }}"
+                                                       type             = "{{ $type }}"
+                                                       atendimento      = "{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+                                                       class           = "btn btn-icon waves-effect btn-agenda-confirmar btn-sm m-b-5 confirmacao"
+                                                       title           = "Confirmar {{ $type }}" id="confirmacao">
+                                                       <i class="mdi mdi-check"></i>
+                                                    </a>
+                                                @endif
+                                                
+                                                <!-- botao faturar -->
+                                                @if( $agendamento->cs_status == 'Finalizado' )
+                                                    <a especialidade    = "{{ !empty( $atendimento->procedimento ) ?
+                                                                             $atendimento->procedimento->grupoprocedimento->ds_grupo :
+                                                                             $atendimento->consulta->especialidade->ds_especialidade }}"
+                                                       nm-paciente      = "{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
+                                                       data-hora        = "{{ $agendamento->dt_atendimento }}"
+                                                       prestador        = "{{ $atendimento->clinica->nm_razao_social }}"
+                                                       nm-profissional  = "{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+                                                       valor-consulta   = "{{ $agendamento->valor_total }}"
+                                                       id-profissional  = "{{ $agendamento->profissional->id }}"
+                                                       id-clinica       = "{{ $atendimento->clinica->id }}"
+                                                       id-paciente      = "{{ $agendamento->paciente->id }}"
+                                                       ticket           = "{{ $agendamento->te_ticket }}"
+                                                       type             = "{{ $type }}"
+                                                       atendimento      = "{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+                                                       class           = "btn btn-icon waves-effect btn-agenda-faturar btn-sm m-b-5 faturamento"
+                                                       title           = "Faturar {{ $type }}" id="faturamento">
+                                                       <i class="mdi mdi-file-chart"></i>
+                                                    </a>
+                                                @endif
+                                                
+                                                <!-- botao pagar -->
+                                                @if( $agendamento->cs_status == 'Faturado' )
+                                                    <a especialidade    = "{{ !empty( $atendimento->procedimento ) ?
+                                                                             $atendimento->procedimento->grupoprocedimento->ds_grupo :
+                                                                             $atendimento->consulta->especialidade->ds_especialidade }}"
+                                                       nm-paciente      = "{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
+                                                       data-hora        = "{{ $agendamento->dt_atendimento }}"
+                                                       prestador        = "{{ $atendimento->clinica->nm_razao_social }}"
+                                                       nm-profissional  = "{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+                                                       valor-consulta   = "{{ $agendamento->valor_total }}"
+                                                       id-profissional  = "{{ $agendamento->profissional->id }}"
+                                                       id-clinica       = "{{ $atendimento->clinica->id }}"
+                                                       id-paciente      = "{{ $agendamento->paciente->id }}"
+                                                       ticket           = "{{ $agendamento->te_ticket }}"
+                                                       type             = "{{ $type }}"
+                                                       atendimento      = "{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+                                                       class           = "btn btn-icon waves-effect btn-agenda-pagar btn-sm m-b-5 pagamento"
+                                                       title           = "Pagar {{ $type }}" id="pagamento">
+                                                       <i class="fa fa-dollar"></i>
+                                                    </a>
+                                                @endif
+                                                
+                                                <!-- botao cancelar -->
+    											@if( $agendamento->cs_status!='Cancelado' &&
+                                                     $agendamento->cs_status!='Faturado' &&
+                                                     $agendamento->cs_status!='Pago' &&
+                                                     $agendamento->cs_status!='Retorno')
+    												<a especialidade    = "{{ !empty( $atendimento->procedimento ) ?
+                                                                             $atendimento->procedimento->grupoprocedimento->ds_grupo :
+                                                                             $atendimento->consulta->especialidade->ds_especialidade }}"
+                                                       nm-paciente      = "{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
+                                                       data-hora        = "{{ $agendamento->dt_atendimento }}"
+                                                       prestador        = "{{ $atendimento->clinica->nm_razao_social }}"
+                                                       nm-profissional  = "{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+                                                       valor-consulta   = "{{ $agendamento->valor_total }}"
+                                                       id-profissional  = "{{ $agendamento->profissional->id }}"
+                                                       id-clinica       = "{{ $atendimento->clinica->id }}"
+                                                       id-paciente      = "{{ $agendamento->paciente->id }}"
+                                                       ticket           = "{{ $agendamento->te_ticket }}"
+                                                       type             = "{{ $type }}"
+                                                       atendimento      = "{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+                                                       class		   = "btn btn-icon waves-effect btn-agenda-cancelar btn-sm m-b-5 cancelamento"
+    												   title           = "Cancelar {{ $type }}" id="cancelamento">
+    												   <i class="mdi mdi-close"></i>
+    												</a>
+    											@endif
+    										</td>
+    									</tr>
+                                    @endforeach
 								@endforeach
+
 							</table>
 							
-							<tfoot>
-    							<div class="cvx-pagination">
+                            <tfoot>
+                                <div class="cvx-pagination">
                                     <span class="text-primary">
-                                    	{{ sprintf("%02d", $agenda->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $agenda->count()) }} Registro(s) exibido(s)
+                                        {{ sprintf("%02d", $agendamentos->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $agendamentos->count()) }} Registro(s) exibido(s)
                                     </span>
-    								{!! $agenda->appends(request()->input())->links() !!}
-    							</div>
-							</tfoot>
+                                    {!! $agendamentos->appends(request()->input())->links() !!}
+                                </div>
+                            </tfoot>
+							
 						</div>
 					</div>
 				</div>

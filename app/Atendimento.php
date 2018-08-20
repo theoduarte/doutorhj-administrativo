@@ -32,7 +32,7 @@ class Atendimento extends Model
 	}
     
 	public function profissional(){
-	    return $this->belongsTo('App\Profissional');
+	    return $this->belongsTo('App\Profissional')->withDefault();
 	}
 	
 	public function filials()

@@ -14,8 +14,6 @@ class Agendamento extends Model
     public $sortable  = ['id', 'te_ticket', 'dt_atendimento', 'cs_status'];
     public $dates 	  = ['dt_atendimento'];
     
-
-    
     /*
      * Constants
      */
@@ -51,7 +49,12 @@ class Agendamento extends Model
     {
         return $this->belongsTo('App\Atendimento');
     }
-    
+
+    public function atendimentos()
+    {
+        return $this->belongsToMany('App\Atendimento');
+    }
+        
     public function paciente()
     {
         return $this->belongsTo('App\Paciente')->withDefault();

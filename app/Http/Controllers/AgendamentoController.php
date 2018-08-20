@@ -19,54 +19,72 @@ class AgendamentoController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // dd( Request::get('sort') );
         $clinicas = Clinica::all();
         
         $clinica_id = Request::get('clinica_id');
-        
         $nm_paciente = UtilController::toStr(Request::get('nm_paciente'));
-               
         $data = Request::get('data') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data')) :'';
+
+        DB::enableQueryLog();
+        $agendamentos = Agendamento::
         
-        $agenda = [];
+        where( function ($query) use ($request) {
+            if( !empty($request::get('data')) ) {
+                $date = UtilController::getDataRangeTimePickerToCarbon($request::get('data'));
 
-       	// DB::enableQueryLog();
-        $agenda = Agendamento::with('paciente')->with('clinica')->with('atendimento')->with('profissional')->with('itempedidos')->whereHas('itempedidos.pedido')
-            ->join('pacientes', function($join1) { $join1->on('pacientes.id', '=', 'agendamentos.paciente_id');})
-                
-            ->where(function($query1) use ($data) {       if( $data != '') {            $data_inicio = $data['de']; $data_fim = $data['ate']; $query1->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($data_inicio)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($data_fim)));}})
-            ->where(function($query3) use ($clinica_id) { if(!empty($clinica_id))       $query3->where(DB::raw('clinica_id'), '=', $clinica_id);})
-            ->where(function($query4) use ($nm_paciente) { if( $nm_paciente != '')      $query4->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%'.$nm_paciente.'%')->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%'.$nm_paciente.'%')->orWhere(DB::raw("concat(to_str(pacientes.nm_primario), ' ',to_str(pacientes.nm_secundario))"), 'like', '%'.$nm_paciente.'%');})
-            
-            ->select('agendamentos.*', 'pacientes.nm_primario')
-            ->distinct()
-            ->orderBy( Request::get('sort','pacientes.nm_primario'), Request::get('order','asc'))
-//             ->sortable(['dt_atendimento'=>'asc'])
-            ->paginate(10);
+                $dateBegin  = $date['de']; 
+                $dateEnd    = $date['ate']; 
 
-            
-        // $query_temp = DB::getQueryLog();
-        // dd($query_temp);
-		//dd($agenda);
-        for ($i = 0; $i < sizeof($agenda); $i++) {
-            $agenda[$i]->clinica->load('enderecos');
-            $agenda[$i]->clinica->enderecos->first()->load('cidade');
-            $agenda[$i]->endereco_completo = $agenda[$i]->clinica->enderecos->first()->te_endereco.' - '.$agenda[$i]->clinica->enderecos->first()->te_bairro.' - '.$agenda[$i]->clinica->enderecos->first()->cidade->nm_cidade.'/'.$agenda[$i]->clinica->enderecos->first()->cidade->estado->sg_estado;
-            
-            if ( sizeof($agenda[$i]->itempedidos) > 0) {
-            	$agenda[$i]->itempedidos->first()->load('pedido');
-            	$agenda[$i]->itempedidos->first()->pedido->load('pagamentos');
-            	$agenda[$i]->valor_total = sizeof($agenda[$i]->itempedidos->first()->pedido->pagamentos) > 0 ? number_format( ($agenda[$i]->itempedidos->first()->pedido->pagamentos->first()->amount)/100,  2, ',', '.') : number_format( 0,  2, ',', '.');
-            } else {
-            	$agenda[$i]->valor_total = number_format( 0,  2, ',', '.');
+                $query->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)));
             }
-        }
+
+            if( !empty( $request::get('clinica_id') ) ) {                
+                $query->whereExists(function ($query) use ($request) {
+                    $query->select(DB::raw(1))
+                      ->from('agendamento_atendimento')
+                      ->join('atendimentos', function ($query) use ($request) {
+                          $query->on('agendamento_atendimento.atendimento_id', '=', 'atendimentos.id')
+                          ->where( 'atendimentos.clinica_id', $request::get('clinica_id') );
+                      })
+                      ->whereRaw('agendamento_atendimento.agendamento_id = agendamentos.id');
+                });
+            }
+
+            if( !empty( $request::get('nm_paciente') ) ) {
+
+                $query->whereExists(function ($query) use ($request) {
+                    $nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
+
+                    $query->select(DB::raw(1) )
+                      ->from('pacientes')
+                      ->whereRaw('agendamentos.paciente_id = pacientes.id')
+                      ->where(function ($query) use ($nmPaciente) {
+                          $query->where( DB::raw('to_str(pacientes.nm_primario)'), 'like', '%'.$nmPaciente.'%' )
+                          ->orWhere( DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%'.$nmPaciente.'%' )
+                          ->orWhere( DB::raw("concat(to_str(pacientes.nm_primario), ' ',to_str(pacientes.nm_secundario))"), 'like', '%'.$nmPaciente.'%' );
+                      });
+                });
+            }
+        })
+        ->orderBy( DB::raw('  CASE  WHEN agendamentos.cs_status::int = 10  THEN 1 
+                                    WHEN agendamentos.cs_status::int = 20  THEN 2
+                                    WHEN agendamentos.cs_status::int = 80  THEN 3
+                                    WHEN agendamentos.cs_status::int = 70  THEN 4
+                                    WHEN agendamentos.cs_status::int = 30  THEN 5
+                                    WHEN agendamentos.cs_status::int = 40  THEN 6
+                                    WHEN agendamentos.cs_status::int = 50  THEN 7
+                                    WHEN agendamentos.cs_status::int = 60  THEN 8
+                                    WHEN agendamentos.cs_status::int = 90  THEN 9
+                                    WHEN agendamentos.cs_status::int = 100 THEN 10 END') ,'asc')
+        ->orderBy( 'agendamentos.dt_atendimento')
+        ->paginate(10);
         
         Request::flash();
         
-        return view('agenda.index', compact('agenda', 'clinicas'));
+        return view('agenda.index', compact('agendamentos', 'clinicas'));
     }
     
     /**
