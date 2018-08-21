@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('get-active-procedimentos-by-grupo-procedimento','CheckupsController@getProcedimentosByGrupoProcedimento')->name('get-active-procedimentos-by-grupo-procedimento');
     Route::get('get-active-clinicas-by-procedimento','CheckupsController@getClinicasByProcedimento')->name('get-active-clinicas-by-procedimento');
+    Route::get('get-active-clinicas-by-consulta','CheckupsController@getClinicasByConsulta')->name('get-active-clinicas-by-consulta');
     Route::get('get-atendimento-values-by-procedimento','CheckupsController@getAtendimentoValuesByProcedimento')->name('get-atendimento-values-by-procedimento');
 
     Route::get('consultas/consulta/{consulta}', 'ClinicaController@getConsultas');
@@ -84,6 +85,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('notificacoes','MensagemController@getListaNotificacoes');
     Route::get('notificacoes/visualizado/{id}','MensagemController@setStatusVisualizado');
 
+    Route::post('consulta-especialidades', 'AgendamentoController@consultaEspecialidades');
+    Route::get('get-active-profissionals-by-clinica-consulta','AgendamentoController@getProfissionalsByClinicaConsulta')->name('get-active-profissionals-by-clinica-consulta');
+    Route::get('get-active-profissionals-by-clinica-procedimento','AgendamentoController@getProfissionalsByClinicaProcedimento')->name('get-active-profissionals-by-clinica-procedimento');
+
+    Route::get('get-active-filials-by-clinica-profissional-consulta','AgendamentoController@getFilialsByClinicaProfissionalConsulta')->name('get-active-filials-by-clinica-profissional-consulta');
+    Route::get('get-active-filials-by-clinica-profissional-procedimento','AgendamentoController@getFilialsByClinicaProfissionalProcedimento')->name('get-active-filials-by-clinica-profissional-procedimento');
+    Route::post('create-new-agendamento-atendimento','AgendamentoController@createNewAgendamentoAtendimento')->name('create-new-agendamento-atendimento');
+    
+    
 });
 
 

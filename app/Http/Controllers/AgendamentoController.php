@@ -11,6 +11,13 @@ use App\Mensagem;
 use App\MensagemDestinatario;
 use App\Paciente;
 use App\Pedido;
+use App\Consulta;
+use App\Procedimento;
+use App\Tipoatendimento;
+use App\Checkup;
+use App\Profissional;
+use App\Filial;
+use App\Atendimento;
 
 class AgendamentoController extends Controller
 {
@@ -81,10 +88,14 @@ class AgendamentoController extends Controller
                                     WHEN agendamentos.cs_status::int = 100 THEN 10 END') ,'asc')
         ->orderBy( 'agendamentos.dt_atendimento')
         ->paginate(10);
+
+        $tipoAtendimentos = Tipoatendimento::where('cs_status','A')->whereNotNull('tag_value')->orderBy('id')->get();
+        $checkup = Checkup::where('cs_status','A')->count();
+        $hasActiveCheckup = $checkup > 0 ? true : false;
         
         Request::flash();
         
-        return view('agenda.index', compact('agendamentos', 'clinicas'));
+        return view('agenda.index', compact('agendamentos', 'clinicas', 'tipoAtendimentos', 'hasActiveCheckup'));
     }
     
     /**
@@ -734,5 +745,124 @@ HEREDOC;
         //     	return redirect()->route('provisorio')->with('success', 'A Sua mensagem foi enviada com sucesso!');
         
         return $send_message;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function consultaEspecialidades(Request $request)
+    {
+        $tipo_atendimento = $request::get('tipo_atendimento');
+        $result = [];
+        
+        if ($tipo_atendimento == 'saude') { //--realiza a busca pelos itens do tipo CONSULTA-------- 
+            $consulta = new Consulta();
+            $result = $consulta->getActive();
+            $result = $result->toArray();
+        } elseif ($tipo_atendimento == 'exame' | $tipo_atendimento == 'odonto') { //--realiza a busca pelos itens do tipo CONSULTA--------
+            $procedimento = new Procedimento();
+            $result = ( $tipo_atendimento == 'exame' ) ? $procedimento->getActiveExameProcedimento() : $procedimento->getActiveOdonto();
+            $result = $result->toArray();
+        } elseif ($tipo_atendimento == 'checkup') {
+            $checkup = new Checkup;
+            $checkups = $checkup->getActive();
+            foreach($checkups as $checkup){
+                $item = [
+                    'id'        => $checkup->id,
+                    'tipo'      => 'checkup',
+                    'descricao' => strtoupper($checkup->titulo)
+                ];         
+                array_push($result, $item);
+            }
+        }
+
+        return response()->json(['status' => true, 'atendimento' => json_encode($result)]);
+    }
+
+    /**
+     * Get clinicas by clinica/consulta
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getProfissionalsByClinicaConsulta(Request $request)
+    {
+        $profissional = new Profissional();
+        $profissionals = $profissional->getActiveProfissionalsByClinicaConsulta( $request::get('clinica_id'), $request::get('especialidade_id') );
+
+        echo json_encode($profissionals);
+        exit;
+    }
+
+    /**
+     * Get clinicas by clinica/procedimento
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getProfissionalsByClinicaProcedimento(Request $request)
+    {
+        $profissional = new Profissional();
+        $profissionals = $profissional->getActiveProfissionalsByClinicaProcedimento( $request::get('clinica_id'), $request::get('especialidade_id') );
+
+        echo json_encode($profissionals);
+        exit;
+    }
+
+    /**
+     * Get filials by clinica/profissional/consulta
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getFilialsByClinicaProfissionalConsulta(Request $request)
+    {
+        $filial = new Filial();
+        $filials = $filial->getActiveByClinicaProfissionalConsulta( $request::get('clinica_id'), $request::get('profissional_id'), $request::get('especialidade_id') );
+
+        echo json_encode($filials);
+        exit;
+    }
+
+    /**
+     * Get filials by clinica/profissional/procedimento
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getFilialsByClinicaProfissionalProcedimento(Request $request)
+    {
+        $filial = new Filial();
+        $filials = $filial->getActiveByClinicaProfissionalProcedimento( $request::get('clinica_id'), $request::get('profissional_id'), $request::get('especialidade_id') );
+
+        echo json_encode($filials);
+        exit;
+    }
+
+    /**
+     * Create a new agendamento x atendimento
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function createNewAgendamentoAtendimento(Request $request)
+    {
+        $atendimento = Atendimento::where( 'clinica_id', $request::get('clinica_id') )
+            ->when($request::get('tipo_atendimento') == 'saude', function ($query) use ($request) {
+                return $query->where( 'profissional_id', $request::get('profissional_id') );
+            })
+            ->where( ( $request::get('tipo_atendimento') == 'saude' ) ? 'consulta_id' : 'procedimento_id', $request::get('especialidade') )
+            ->where( 'cs_status', 'A' )->first();
+
+        $agendamento = Agendamento::find( $request::get('agendamento_id') );
+        $agendamento->filial_id = $request::get('filial_id');
+        $agendamento->save();
+
+        $oldAtendimento = $agendamento->atendimentos()->whereNull('deleted_at')->first();
+
+        $agendamento->atendimentos()->updateExistingPivot( $oldAtendimento->id, ['deleted_at' => date('Y-m-d H:i:s') ] );
+        $agendamento->atendimentos()->attach( $atendimento->id, ['created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ] );
     }
 }

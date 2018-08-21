@@ -135,6 +135,10 @@
             width	 : 698,
             modal	 : true,
             buttons	 : {
+                "Alterar" : function() { 
+                    dialogAgendamento.dialog( "close" );
+                    $( "#dialog-update" ).dialog( "open" ); 
+                },
                 "Agendar" : acaoAgendar,
                 Fechar	  : function() { dialogAgendamento.dialog( "close" ); }
             },
@@ -152,6 +156,7 @@
             $('#confPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
             $('#confDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
             $('#confPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
+            $('#agendamento_id').val( $(this).attr('id-agendamento') );
             $('#confEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
             $('#confValorAtendimento').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
             $('.paciente').val($(this).attr('id-paciente'));
@@ -209,6 +214,7 @@
 				<input type="hidden" name="paciente" class="paciente" value="">
 				<input type="hidden" name="profissional" class="profissional" value="">
 				<input type="hidden" name="ticket" class="ticket" value="">
+                <input type="hidden" name="agendamento_id" id="agendamento_id" value="">
 			</div>
 		</div>
 		<div class="row">
