@@ -193,7 +193,7 @@ class CheckupsController extends Controller
     }
 
     /**
-     * Get clinicas by especialidade
+     * Get profissionals by clinica
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

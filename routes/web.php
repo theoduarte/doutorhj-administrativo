@@ -87,10 +87,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('consulta-especialidades', 'AgendamentoController@consultaEspecialidades');
     Route::get('get-active-profissionals-by-clinica-consulta','AgendamentoController@getProfissionalsByClinicaConsulta')->name('get-active-profissionals-by-clinica-consulta');
-    Route::get('get-active-profissionals-by-clinica-procedimento','AgendamentoController@getProfissionalsByClinicaProcedimento')->name('get-active-profissionals-by-clinica-procedimento');
 
     Route::get('get-active-filials-by-clinica-profissional-consulta','AgendamentoController@getFilialsByClinicaProfissionalConsulta')->name('get-active-filials-by-clinica-profissional-consulta');
-    Route::get('get-active-filials-by-clinica-profissional-procedimento','AgendamentoController@getFilialsByClinicaProfissionalProcedimento')->name('get-active-filials-by-clinica-profissional-procedimento');
+    Route::get('get-active-filials-by-clinica-procedimento','AgendamentoController@getFilialsByClinicaProcedimento')->name('get-active-filials-by-clinica-procedimento');
     Route::post('create-new-agendamento-atendimento','AgendamentoController@createNewAgendamentoAtendimento')->name('create-new-agendamento-atendimento');
     
     

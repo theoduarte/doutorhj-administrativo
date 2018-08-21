@@ -52,16 +52,13 @@ class Filial extends Model
                                AND AT.CLINICA_ID = :clinica", ['clinica' => $clinica, 'profissional' => $profissional, 'consulta' => $consulta]);
     }
 
-    public function getActiveByClinicaProfissionalProcedimento($clinica,$profissional,$procedimento){
+    public function getActiveByClinicaProcedimento($clinica,$procedimento){
         return DB::select(" SELECT DISTINCT FL.*
                               FROM FILIALS FL
-                              JOIN FILIAL_PROFISSIONAL FLPF ON (FL.ID = FLPF.FILIAL_ID)
-                              JOIN PROFISSIONALS PF ON (FLPF.PROFISSIONAL_ID = PF.ID)
-                              JOIN ATENDIMENTOS AT ON (PF.ID = AT.PROFISSIONAL_ID AND FL.CLINICA_ID = AT.CLINICA_ID)
-                             WHERE PF.CS_STATUS = 'A'
-                               AND AT.CS_STATUS = 'A'
-                               AND AT.PROFISSIONAL_ID = :profissional
-                               AND AT.PROCEDIMENTO_ID = :procedimento
-                               AND AT.CLINICA_ID = :clinica", ['clinica' => $clinica, 'profissional' => $profissional, 'procedimento' => $procedimento]);
+                              JOIN ATENDIMENTO_FILIAL ATFL ON (FL.ID = ATFL.FILIAL_ID)
+                              JOIN ATENDIMENTOS AT ON (ATFL.ATENDIMENTO_ID = AT.ID)
+                             WHERE AT.PROCEDIMENTO_ID = :procedimento
+                               AND AT.CLINICA_ID = :clinica
+                               AND AT.CS_STATUS = 'A'", ['clinica' => $clinica, 'procedimento' => $procedimento]);
     }
 }

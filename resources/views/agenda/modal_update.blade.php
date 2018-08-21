@@ -4,15 +4,17 @@
             language: 'pt-BR',
             dropdownParent: $('#dialog-update')
         });
-    });
-
-    var type = '';
-    $(function(){
+    
         $('#tipo_atendimento').change(function(){
-            var tipo_atendimento = $(this).val();
-            if(tipo_atendimento == '') { return false; }
+            var tipoAtendimento = $(this).val();
+
+            $('#dialog-update #especialidade').empty();
+            $('#dialog-update #clinica_id').empty();
+            $('#dialog-update #profissional_id').empty();
+            $('#dialog-update #filial_id').empty();
             
-            
+            if( !tipoAtendimento ) return false;
+
             if( $(this).val() == 'saude' || $(this).val() == 'odonto' || $(this).val() == 'exame' ){
                 $('label[for="especialidade"]').text("Especialidade ou exame");
             }else if( $(this).val() == 'checkup' ){
@@ -24,7 +26,7 @@
                 type: 'POST',
                 url: '/consulta-especialidades',
                 data: {
-                    'tipo_atendimento': tipo_atendimento,
+                    'tipo_atendimento': tipoAtendimento,
                     '_token'          : laravel_token
                 },
                 success: function (result) {
@@ -53,7 +55,7 @@
                                 type: 'POST',
                                 url: '/consulta-tipos-checkup',
                                 data: {
-                                    'tipo_atendimento': $('select[name="especialidade"]').val(),
+                                    'tipo_atendimento': tipoAtendimento,
                                     '_token': laravel_token
                                 },
                                 success: function (result) {
@@ -92,6 +94,11 @@
             var especialidade = $(this).val();
             var action = '/get-active-clinicas-by-consulta';
             var ajaxData = {'especialidade_id': especialidade, '_token' : laravel_token};
+
+            
+            $('#dialog-update #clinica_id').empty();
+            $('#dialog-update #profissional_id').empty();
+            $('#dialog-update #filial_id').empty();
 
             if( !tipoAtendimento ) return false;
             if( !especialidade ) return false;
@@ -138,54 +145,74 @@
             var especialidade = $('#dialog-update #especialidade').val();
             var clinica = $(this).val();
 
-            if ( tipoAtendimento != 'saude' ) {
-                $('#dialog-update #profissional_id').val();
-                $('#dialog-update #profissional_id').empty();
-
-                return false;
-            }
-
-            var action = '/get-active-profissionals-by-clinica-consulta';
-            var ajaxData = {'clinica_id': clinica, 'especialidade_id': especialidade, '_token' : laravel_token};
+            $('#dialog-update #profissional_id').empty();
+            $('#dialog-update #filial_id').empty();
 
             if( !tipoAtendimento ) return false;
             if( !especialidade ) return false;
-            
+            if( !clinica ) return false;
+
             if( tipoAtendimento == 'saude' ) {
-                action = '/get-active-profissionals-by-clinica-consulta';
+                var action = '/get-active-profissionals-by-clinica-consulta';
+                var ajaxData = {'clinica_id': clinica, 'especialidade_id': especialidade, '_token' : laravel_token};
+
+                jQuery.ajax({
+                    type: 'GET',
+                    url: action,
+                    data: ajaxData,
+                    dataType: 'json',
+                    success: function (result) {
+                        if( result != null) {
+                            $('#dialog-update #profissional_id').empty();
+
+                            if( tipoAtendimento != 'checkup' ){
+
+                                var option = '<option value="">Selecione</option>';
+                                $('#dialog-update #profissional_id').append( option );
+                                for(var i=0; i < result.length; i++) {
+                                    option = '<option value="'+result[i].id+'">'+result[i].nm_primario+' '+result[i].nm_secundario+'</option>';
+                                    $('#dialog-update #profissional_id').append( option );
+                                }
+
+                                if( !$('#dialog-update #profissional_id').val()  ) { return false; }
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+                    }
+                });
             }
             else if( tipoAtendimento == 'exame' || tipoAtendimento == 'odonto') {
-                action = '/get-active-profissionals-by-clinica-procedimento';
-            }
+                var ajaxData = {'clinica_id': clinica, 'especialidade_id': especialidade, '_token' : laravel_token};
+                var action = '/get-active-filials-by-clinica-procedimento';
 
-            jQuery.ajax({
-                type: 'GET',
-                url: action,
-                data: ajaxData,
-                dataType: 'json',
-                success: function (result) {
-                    if( result != null) {
-                        $('#dialog-update #profissional_id').empty();
+                jQuery.ajax({
+                    type: 'GET',
+                    url: action,
+                    data: ajaxData,
+                    dataType: 'json',
+                    success: function (result) {
+                        if( result != null) {
+                            $('#dialog-update #filial_id').empty();
 
-                        console.log(result);
+                            if( $('#tipo_atendimento').val() != 'checkup' ){
+                                var option = '<option value="">Selecione</option>';
+                                $('#dialog-update #filial_id').append( option );
+                                for(var i=0; i < result.length; i++) {
+                                    option = '<option value="'+result[i].id+'">'+ ( result[i].eh_matriz == 'S' ? 'Matriz - ' : 'Filial - ' ) + result[i].nm_nome_fantasia +  '</option>';
+                                    $('#dialog-update #filial_id').append( option );
+                                }
 
-                        if( tipoAtendimento != 'checkup' ){
-
-                            var option = '<option value="">Selecione</option>';
-                            $('#dialog-update #profissional_id').append( option );
-                            for(var i=0; i < result.length; i++) {
-                                option = '<option value="'+result[i].id+'">'+result[i].nm_primario+' '+result[i].nm_secundario+'</option>';
-                                $('#dialog-update #profissional_id').append( option );
+                                if( !$('#dialog-update #filial_id').val()  ) { return false; }
                             }
-
-                            if( !$('#dialog-update #profissional_id').val()  ) { return false; }
                         }
+                    },
+                    error: function (result) {
+                        $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
                     }
-                },
-                error: function (result) {
-                    $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
-                }
-            });
+                });
+            }
         });
 
         $('#dialog-update #profissional_id').change(function(){
@@ -193,18 +220,23 @@
             var especialidade = $('#dialog-update #especialidade').val();
             var clinica = $('#dialog-update #clinica_id').val();
             var profissional = $(this).val();
+            
+            if( !tipoAtendimento ) return false;
+            if( !especialidade ) return false;
+
+            $('#dialog-update #filial_id').empty();
 
             var action = '/get-active-filials-by-clinica-profissional-consulta';
             var ajaxData = {'clinica_id': clinica, 'profissional_id': profissional, 'especialidade_id': especialidade, '_token' : laravel_token};
 
-            if( !tipoAtendimento ) return false;
-            if( !especialidade ) return false;
             
             if( tipoAtendimento == 'saude' ) {
                 action = '/get-active-filials-by-clinica-profissional-consulta';
+                ajaxData = {'clinica_id': clinica, 'profissional_id': profissional, 'especialidade_id': especialidade, '_token' : laravel_token};
             }
             else if( tipoAtendimento == 'exame' || tipoAtendimento == 'odonto') {
-                action = '/get-active-filials-by-clinica-profissional-procedimento';
+                action = '/get-active-filials-by-clinica-procedimento';
+                ajaxData = {'clinica_id': clinica, 'especialidade_id': especialidade, '_token' : laravel_token};
             }
 
             jQuery.ajax({
@@ -215,8 +247,6 @@
                 success: function (result) {
                     if( result != null) {
                         $('#dialog-update #filial_id').empty();
-
-                        console.log(result);
 
                         if( $('#tipo_atendimento').val() != 'checkup' ){
                             var option = '<option value="">Selecione</option>';
@@ -245,7 +275,7 @@
             if( !tipoAtendimento ) return false;
             if( !especialidade ) return false;
             if( !clinica ) return false;
-            if ( tipoAtendimento != 'saude' && !profissional ) return false;
+            if ( tipoAtendimento == 'saude' && !profissional ) return false;
 
             $.ajax({
                 type: 'POST',
@@ -266,7 +296,6 @@
                 });
                 
             }).fail(function(jqXHR, textStatus, msg){
-                console.log(msg);
                 swal(
                     {
                         title: 'Um erro inesperado ocorreu!',
@@ -291,7 +320,6 @@
             },
             close: function() { dialogUpdate.dialog( "close" ); },
             open: function() { 
-                console.log('asdfsdfsdf');
                 $('#dialog-update #te_ticket').val( $('#dialog-agendar .ticket').val() );
                 $('#dialog-update #paciente_id').val( $('#dialog-agendar #confPaciente').text() );
                 $('#dialog-update #valor').val( $('#dialog-agendar #confValorAtendimento').text() );

@@ -797,21 +797,6 @@ HEREDOC;
     }
 
     /**
-     * Get clinicas by clinica/procedimento
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function getProfissionalsByClinicaProcedimento(Request $request)
-    {
-        $profissional = new Profissional();
-        $profissionals = $profissional->getActiveProfissionalsByClinicaProcedimento( $request::get('clinica_id'), $request::get('especialidade_id') );
-
-        echo json_encode($profissionals);
-        exit;
-    }
-
-    /**
      * Get filials by clinica/profissional/consulta
      *
      * @param  \Illuminate\Http\Request  $request
@@ -832,10 +817,10 @@ HEREDOC;
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function getFilialsByClinicaProfissionalProcedimento(Request $request)
+    public function getFilialsByClinicaProcedimento(Request $request)
     {
         $filial = new Filial();
-        $filials = $filial->getActiveByClinicaProfissionalProcedimento( $request::get('clinica_id'), $request::get('profissional_id'), $request::get('especialidade_id') );
+        $filials = $filial->getActiveByClinicaProcedimento( $request::get('clinica_id'), $request::get('especialidade_id') );
 
         echo json_encode($filials);
         exit;
