@@ -843,8 +843,10 @@ HEREDOC;
         $agendamento->save();
 
         $oldAtendimento = $agendamento->atendimentos()->whereNull('deleted_at')->first();
-
-        $agendamento->atendimentos()->updateExistingPivot( $oldAtendimento->id, ['deleted_at' => date('Y-m-d H:i:s') ] );
+        if ( !empty($oldAtendimento) ) {
+          $agendamento->atendimentos()->updateExistingPivot( $oldAtendimento->id, ['deleted_at' => date('Y-m-d H:i:s') ] );  
+        }
+        
         $agendamento->atendimentos()->attach( $atendimento->id, ['created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ] );
     }
 }

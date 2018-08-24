@@ -20,6 +20,10 @@
 			color       : #ffffff;
 			font-weight : bold;
 		}
+
+    .is-invalid {
+      color: #dc3545;
+    }
 	</style>
 	
 	<script>
@@ -47,7 +51,7 @@
         });
 		
         $(window).on("load", function() {
-            $(".select2").select2({
+            $("#cs_status").select2({
                 multiple: true,
             });
         });

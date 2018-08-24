@@ -212,6 +212,35 @@
                         $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
                     }
                 });
+
+                var actionAtendimento = '/get-atendimento-values-by-procedimento';
+                jQuery.ajax({
+                    type: 'GET',
+                    url: actionAtendimento,
+                    data: $('#formUpdate').serialize()+'&_token='+laravel_token,
+                    dataType: 'json',
+                    success: function (result) {
+                        if( result != null) {
+                            $('#dialog-update #novo_valor').val( result.vl_com_atendimento );
+
+                            if( $('#dialog-update #novo_valor').val() != $('#dialog-update #valor').val() ) {
+                                $('#dialog-update #novo_valor').addClass('is-invalid');
+                                swal({
+                                    title : 'Valores diferentes!',
+                                    text  : 'O valor da nova seleção é incompatível com o antigo valor da consulta/exame! Verifique os campos "Valor Original" e "Novo Valor".',
+                                    type  : 'error',
+                                    showCancelButton: false
+                                });
+                            }
+                            else {
+                                $('#dialog-update #novo_valor').removeClass('is-invalid');
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+                    }
+                });
             }
         });
 
@@ -228,7 +257,6 @@
 
             var action = '/get-active-filials-by-clinica-profissional-consulta';
             var ajaxData = {'clinica_id': clinica, 'profissional_id': profissional, 'especialidade_id': especialidade, '_token' : laravel_token};
-
             
             if( tipoAtendimento == 'saude' ) {
                 action = '/get-active-filials-by-clinica-profissional-consulta';
@@ -264,6 +292,43 @@
                     $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
                 }
             });
+
+            var actionAtendimento = '/get-atendimento-values-by-consulta';
+            
+            if( tipoAtendimento == 'saude' ) {
+                 actionAtendimento = '/get-atendimento-values-by-consulta';
+            }
+            else if( tipoAtendimento == 'exame' || tipoAtendimento == 'odonto') {
+                 actionAtendimento = '/get-atendimento-values-by-procedimento';
+            }
+
+            jQuery.ajax({
+                type: 'GET',
+                url: actionAtendimento,
+                data: $('#formUpdate').serialize()+'&_token='+laravel_token,
+                dataType: 'json',
+                success: function (result) {
+                    if( result != null) {
+                        $('#dialog-update #novo_valor').val( result.vl_com_atendimento );
+
+                        if( $('#dialog-update #novo_valor').val() != $('#dialog-update #valor').val() ) {
+                            $('#dialog-update #novo_valor').addClass('is-invalid');
+                            swal({
+                                title : 'Valores diferentes!',
+                                text  : 'O valor da nova seleção é incompatível com o antigo valor da consulta/exame! Verifique os campos "Valor Original" e "Novo Valor".',
+                                type  : 'error',
+                                showCancelButton: false
+                            });
+                        }
+                        else {
+                            $('#dialog-update #novo_valor').removeClass('is-invalid');
+                        }
+                    }
+                },
+                error: function (result) {
+                    $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+                }
+            });
         });
 
         $( "#dialog-update .btn-primary" ).button().on( "click", function() {
@@ -271,10 +336,12 @@
             var especialidade = $('#dialog-update #especialidade').val();
             var clinica = $('#dialog-update #clinica_id').val();
             var profissional = $('#dialog-update #profissional_id').val();
+            var filial = $('#dialog-update #filial_id').val();
 
             if( !tipoAtendimento ) return false;
             if( !especialidade ) return false;
             if( !clinica ) return false;
+            if( !filial ) return false;
             if ( tipoAtendimento == 'saude' && !profissional ) return false;
 
             $.ajax({
@@ -334,7 +401,7 @@
         <form id="formUpdate" name="formUpdate">
         <input type="hidden" name="agendamento_id" id="agendamento_id" val="">
         <div class="row">
-            <div class="form-group col-6">
+            <div class="form-group col-9">
                 <label for="paciente">Paciente</label>
                 <input type="text" class="form-control" id="paciente" readonly />
             </div>
@@ -342,11 +409,6 @@
             <div class="form-group col-3">
                 <label for="te_ticket">Ticket</label>
                 <input type="text" class="form-control" id="te_ticket" readonly />
-            </div>
-
-            <div class="form-group col-3">
-                <label for="valor">Valor Original</label>
-                <input type="text" class="form-control" id="valor" readonly />
             </div>
 
             <div class="form-group col-12">
@@ -361,7 +423,7 @@
                     @endif
                 </select>
             </div>
-            
+
             <div class="form-group col-12">
                 <label for="especialidade">Especialidade ou exame</label>
                 <select id="especialidade" class="form-control select2" name="especialidade"></select>
@@ -380,6 +442,16 @@
             <div class="form-group col-12">
                 <label for="filial_id">Filial</label>
                 <select id="filial_id" class="form-control select2" name="filial_id"></select>
+            </div>
+
+            <div class="form-group col-3">
+                <label for="valor">Valor Original</label>
+                <input type="text" class="form-control" id="valor" readonly />
+            </div>
+
+            <div class="form-group col-3">
+                <label for="valor">Novo valor</label>
+                <input type="text" class="form-control" id="novo_valor" readonly />
             </div>
         </div>
     </form>
