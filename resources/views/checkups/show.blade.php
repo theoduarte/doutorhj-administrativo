@@ -1,10 +1,10 @@
-@extends('layouts.master')@section('title', 'Doctor HJ: Resumo Checkup')
+@extends('layouts.master')@section('title', 'Doutor HJ: Resumo Checkup')
 @section('container')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="page-title-box">
-				<h4 class="page-title">Doctor HJ</h4>
+				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
@@ -55,7 +55,7 @@
                                                               <span>R$ {{$checkup['total_vl_mercado']}}</span>
                                                           </div>
                                                           <div class="drhj">
-                                                              <p>Procedimentos individuais no Doctor Hoje</p>
+                                                              <p>Procedimentos individuais no Doutor Hoje</p>
                                                               <span>R$ {{$checkup['total_vl_individual']}}</span>
                                                           </div>
                                                           <div class="checkup">

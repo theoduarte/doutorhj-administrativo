@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'DoctorHoje: Painel Administrativo')
+@section('title', 'DoutorHoje: Painel Administrativo')
 
 @push('scripts')
 
@@ -229,7 +229,7 @@
                                 <div class="card-box">
                                     <h4 class="text-dark  header-title m-t-0">Lista de Pagamentos</h4>
                                     <p class="text-muted m-b-25 font-13">
-                                        Remuneração dos parceiros DoctorHoje
+                                        Remuneração dos parceiros DoutorHoje
                                     </p>
 
                                     <div class="table-responsive">

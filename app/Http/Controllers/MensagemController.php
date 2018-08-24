@@ -47,12 +47,8 @@ class MensagemController extends Controller
      */
     public function participe(Request $request)
     {
-    	
-    	 
     	# dados da mensagem
     	$mensagem            		= new Mensagem();
-//     	$mensagem->remetente     	= $request->input('nome');
-//     	$mensagem->destinatario     = 'doctorhoje';
     	$mensagem->assunto     		= 'Campanha de Lançamento';
     	
     	$nome 		= $request->input('nome');
@@ -78,7 +74,7 @@ class MensagemController extends Controller
     	$destinatario->save();
     	
     	
-    	$from = 'contato@doctorhoje.com.br';
+    	$from = 'contato@doutorhoje.com.br';
     	$to = 'theo@comvex.com.br';
     	$subject = 'Contato de Interessado';
     	 
@@ -87,7 +83,7 @@ class MensagemController extends Controller
 <html>
     <head>
         <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
-        <title>DoctorHoje</title>
+        <title>DoutorHoje</title>
     </head>
     <body style='margin: 0;'>
         <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
@@ -98,14 +94,14 @@ class MensagemController extends Controller
         </table>
         <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
             <tr style='background-color:#fff;'>
-                <td width='480' style='text-align:left'><span style='font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#434342;'>DoctorHoje - Contato de Interessado</span></td>
+                <td width='480' style='text-align:left'><span style='font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#434342;'>DoutorHoje - Contato de Interessado</span></td>
                 <td width='120' style='text-align:right'><a href='#' target='_blank' style='font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#434342;'>Abrir no navegador</a></td>
             </tr>
         </table>
         <br>
         <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
             <tr>
-                <td><img src='https://doctorhoje.com.br/libs/home-template/img/email/h1.png' width='600' height='113' alt=''/></td>
+                <td><img src='https://doutorhoje.com.br/libs/home-template/img/email/h1.png' width='600' height='113' alt=''/></td>
             </tr>
         </table>
         <table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
@@ -135,7 +131,7 @@ class MensagemController extends Controller
             <tr>
                 <td width='220' style='background-color: #fff;'>&nbsp;</td>
                 <td width='159' style='text-align: center;'>
-                    <img src='https://doctorhoje.com.br/libs/home-template/img/email/devices.png' width='155' height='74' alt=''/>
+                    <img src='https://doutorhoje.com.br/libs/home-template/img/email/devices.png' width='155' height='74' alt=''/>
                 </td>
                 <td width='221' style='background-color: #fff;'>&nbsp;</td>
             </tr>
@@ -147,7 +143,7 @@ class MensagemController extends Controller
                 <td width='30' style='background-color: #fff;'>&nbsp;</td>
                 <td width='540' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;'>
                     Abraços,<br>
-                    Equipe Doctor Hoje
+                    Equipe Doutor Hoje
                 </td>
                 <td width='30' style='background-color: #fff;'>&nbsp;</td>
             </tr>
@@ -165,9 +161,9 @@ class MensagemController extends Controller
         <table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
             <tr style='background-color: #f9f9f9;'>
                 <td width='209'></td>
-                <td width='27'><a href='#'><img src='https://doctorhoje.com.br/libs/home-template/img/email/facebook.png' width='27' height='24' alt=''/></a></td>
-                <td width='27'><a href='#'><img src='https://doctorhoje.com.br/libs/home-template/img/email/youtube.png' width='27' height='24' alt=''/></a></td>
-                <td width='27'><a href='#'><img src='https://doctorhoje.com.br/libs/home-template/img/email/instagram.png' width='27' height='24' alt=''/></a></td>
+                <td width='27'><a href='#'><img src='https://doutorhoje.com.br/libs/home-template/img/email/facebook.png' width='27' height='24' alt=''/></a></td>
+                <td width='27'><a href='#'><img src='https://doutorhoje.com.br/libs/home-template/img/email/youtube.png' width='27' height='24' alt=''/></a></td>
+                <td width='27'><a href='#'><img src='https://doutorhoje.com.br/libs/home-template/img/email/instagram.png' width='27' height='24' alt=''/></a></td>
                 <td width='210'></td>
             </tr>
         </table>
@@ -182,7 +178,7 @@ class MensagemController extends Controller
             <tr style='background-color: #f9f9f9;'>
                 <td width='30'></td>
                 <td width='540' style='line-height:16px; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#434342; text-align: center;'>
-                    <strong>Doctor Hoje</strong> 2018
+                    <strong>Doutor Hoje</strong> 2018
                 </td>
                 <td width='30'></td>
             </tr>
