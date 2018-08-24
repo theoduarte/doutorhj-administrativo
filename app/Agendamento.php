@@ -132,5 +132,12 @@ class Agendamento extends Model
         $query = DB::select($queryStr, $bind);
 
         return $query;       
-    }   
+    }
+
+
+    public static function getStatusAgendamento() {
+        return static::$cs_status;
+    }
+    
+    
 }

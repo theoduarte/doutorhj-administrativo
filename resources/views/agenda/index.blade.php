@@ -24,15 +24,7 @@
 	
 	<script>
         $(function(){
-        	jQuery('#datepicker-agenda').datepicker({
-        	    autoclose: true,
-        	    todayHighlight: true,
-        	    format:'dd/mm/yyyy',
-        		language: 'pt-BR'
-        	});
-
-        	
-            $("#localAtendimento").autocomplete({
+          	$("#localAtendimento").autocomplete({
                 source: function( request, response ) {
                     $.ajax({
                         url : "/consultas/localatendimento/"+$('#localAtendimento').val(),
@@ -54,10 +46,10 @@
             });
         });
 		
-        $( window ).on( "load", function() {
-            window.setTimeout(function(){
-            	$('.calendar-time').hide();
-            }, 1000);
+        $(window).on("load", function() {
+            $(".select2").select2({
+                multiple: true,
+            });
         });
 	</script>
 	
@@ -81,46 +73,61 @@
 					<h4 class="m-t-0 header-title">Agenda</h4>
 					<p class="text-muted m-b-30 font-13"></p>
 					<div class="row">
-						<div class="col-12">
-							<form class="form-edit-add" action="{{ route('agenda.index') }}" method="get">
-								<div class="row">
-									<div class="col-4">
-										<label for="localAtendimento">Razão Social do Prestador:</label>
-										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}">
-										<input type="hidden" id="clinica_id" name="clinica_id" value="{{old('clinica_id')}}">
-									</div>
-									<div class="col-3">
-										<label for="localAtendimento">Nome do Paciente:</label>
-										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
-									</div>
-									<div style="width:13em !important;">
-										<label for="data">Data de Atendimento:<span class="text-danger">*</span></label>
-										<input type="text" class="form-control input-daterange-timepicker" id="data" name="data" value="{old('data')}}" required>
-									</div>
-									<div class="col-1 col-lg-3">
-										<div style="height: 30px;"></div>
-										<button type="submit" class="btn btn-primary" id="submit" style="margin-right: 10px;"><i class="fa fa-search"></i> Pesquisar</button>
-										<a href="{{ route('agenda.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca" style="margin-bottom: 0px; "><i class="ion-close"></i> Limpar Busca</a>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div style="height: 100px !important;">
-						</div>
-					</div>
+  						<div class="col-12">
+    							<form class="form-edit-add" action="{{ route('agenda.index') }}" method="get">
+                      <div class="row">
+        									<div class="col-6">
+        										<label for="localAtendimento">Razão Social do Prestador:</label>
+        										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}">
+        										<input type="hidden" id="clinica_id" name="clinica_id" value="{{old('clinica_id')}}">
+        									</div>
+
+                          <div class="col-6">
+                            <label for="localAtendimento">Nome do Paciente:</label>
+                            <input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
+                          </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-3">
+        										<label for="data">Data de Atendimento:<span class="text-danger"></span></label>
+        										<input type="text" class="form-control input-daterange" id="data" name="data" value="{{ old('data') }}" autocomplete="off">
+        									</div>
+                      
+                          <div class="col-6">
+                            <label for="localAtendimento">Status:</label>
+                            <select name="cs_status[]" id="cs_status" class="form-control select2" placeholder="selecione o status do agendamento" multiple="multiple">
+                                @foreach( $status as $key => $value )
+                                  <option value="{{ $key }}" {{ !empty(old('cs_status')) && in_array($key, old('cs_status')) ? 'selected' : null }}>{{ $value }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+
+                          <div class="col-3 col-lg-margin-9">
+                            <div style="height: 30px;"></div>
+                            <button type="submit" class="btn btn-primary" id="submit" style="margin-right: 10px;"><i class="fa fa-search"></i> Pesquisar</button>
+                            <a href="{{ route('agenda.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca" style="margin-bottom: 0px; "><i class="ion-close"></i> Limpar Busca</a>
+                          </div>
+                      </div>
+    							</form>
+  						</div>
+          </div>
+
+          <div style="height: 20px !important;"></div>
+
 					<div class="row">
 						<div class="col-12">
 							<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
 							    <colgroup>
-									<col width="100">
-									<col width="250">
-									<col width="250">
-									<col width="250">
-									<col width="100">
-									<col width="100">
-									<col width="5">
-									<col width="5">
-                                </colgroup>
+    									<col width="100">
+    									<col width="250">
+    									<col width="250">
+    									<col width="250">
+    									<col width="100">
+    									<col width="100">
+    									<col width="5">
+    									<col width="5">
+                  </colgroup>
 								<tr>
 									<th>@sortablelink('te_ticket', 'Ticket')</th>
 									<th>@sortablelink('clinica.nm_razao_social', 'Prestador')</th>

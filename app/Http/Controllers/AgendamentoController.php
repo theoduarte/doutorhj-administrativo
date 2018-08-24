@@ -29,6 +29,8 @@ class AgendamentoController extends Controller
     public function index(Request $request)
     {
         $clinicas = Clinica::all();
+
+        $status = Agendamento::getStatusAgendamento();
         
         $clinicaID = Request::get('clinica_id');
         $nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
@@ -37,6 +39,10 @@ class AgendamentoController extends Controller
         // DB::enableQueryLog();
         $agendamentos = Agendamento::
         where( function ($query) use ($request) {
+            if( !empty($request::get('cs_status')) ) {
+                $query->whereIn( 'cs_status', $request::get('cs_status') );
+            }
+
             if( !empty($request::get('data')) ) {
                 $date = UtilController::getDataRangeTimePickerToCarbon($request::get('data'));
 
@@ -73,6 +79,9 @@ class AgendamentoController extends Controller
                 });
             }
         })
+        ->whereHas('atendimentos', function ($query) {
+            $query->whereNull('deleted_at');
+        })
         ->orderBy( DB::raw('  CASE  WHEN agendamentos.cs_status::int = 10  THEN 1 
                                     WHEN agendamentos.cs_status::int = 20  THEN 2
                                     WHEN agendamentos.cs_status::int = 80  THEN 3
@@ -94,7 +103,7 @@ class AgendamentoController extends Controller
         
         Request::flash();
         
-        return view('agenda.index', compact('agendamentos', 'clinicas', 'tipoAtendimentos', 'hasActiveCheckup'));
+        return view('agenda.index', compact('agendamentos', 'clinicas', 'tipoAtendimentos', 'hasActiveCheckup','status'));
     }
     
     /**
