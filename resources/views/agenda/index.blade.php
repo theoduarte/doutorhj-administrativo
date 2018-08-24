@@ -134,7 +134,7 @@
 								@foreach($agendamentos as $agendamento)
                   @foreach( $agendamento->atendimentos()->whereNull('deleted_at')->get() as $atendimento )
                       @php
-                          $type = !empty( $agenda->atendimento->procedimento ) ? 'Exame' : 'Consulta';
+                          $type = !empty( $atendimento->procedimento ) ? 'Exame' : 'Consulta';
                       @endphp
     									<tr>
     										<td>{{$agendamento->te_ticket}}</td>
@@ -160,20 +160,29 @@
       												<a especialidade    = "{{ !empty( $atendimento->procedimento ) ?
                                                        $atendimento->procedimento->grupoprocedimento->ds_grupo :
                                                        $atendimento->consulta->especialidade->ds_especialidade }}"
-                                 nm-paciente      = "{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
-      												   data-hora        = "{{ $agendamento->dt_atendimento }}"
+                                 id-especialidade = "{{ !empty( $atendimento->procedimento ) ?
+                                                       $atendimento->procedimento->id :
+                                                       $atendimento->consulta->id }}"
+                                 tp-prestador     = "{{ $atendimento->clinica->tp_prestador }}"
+                                 data-hora        = "{{ $agendamento->dt_atendimento }}"
       												   prestador	      = "{{ $atendimento->clinica->nm_razao_social }}"
       												   nm-profissional  = "{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
       												   valor-consulta   = "{{ number_format( $agendamento->itempedidos->sum('valor'),  2, ',', '.') }}"
       												   id-agendamento   = "{{ $agendamento->id }}"
-                                 id-profissional  = "{{ $agendamento->profissional->id }}"
-      												   id-clinica       = "{{ $atendimento->clinica->id }}"
-      												   id-paciente      = "{{ $agendamento->paciente->id }}"
-      												   ticket           = "{{ $agendamento->te_ticket }}"
+                                 id-profissional  = "{{ $atendimento->profissional->id }}"
+                                 nm-profissional  = "{{ $atendimento->profissional->nm_primario }} {{ $atendimento->profissional->nm_secundario }}"
+                                 id-clinica       = "{{ $atendimento->clinica->id }}"
+                                 nm-clinica       = "{{ $atendimento->clinica->nm_fantasia }}"
+                                 id-paciente      = "{{ $agendamento->paciente->id }}"
+      												   nm-paciente      = "{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
+                                 nm-filial        = "{{ $agendamento->filial->eh_matriz ? 'Matriz - ' : 'Filial - ' }} {{ $agendamento->filial->nm_nome_fantasia }}"
+                                 ticket           = "{{ $agendamento->te_ticket }}"
                                  type             = "{{ $type }}"
                                  atendimento      = "{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+                                 data-toggle      = "modal"
+                                 data-target      = "#dialog-agendar"
                                  class		        = "btn btn-icon waves-effect btn-agenda-remarcar btn-sm m-b-5 agendamento"
-      												   id       = "agendamento"
+      												   id               = "agendamento"
                                  @if( $agendamento->cs_status == 'Pré-Agendado' )
       												   		title = "Agendar {{ $type }}"
       												   @elseif( $agendamento->cs_status == 'Agendado' )
@@ -183,7 +192,7 @@
     											@endif
     										    
   										    <!-- botao confirmar -->
-                          @if( $agendamento->cs_status!='Cancelado' and $agendamento->cs_status=='Agendado')
+                          @if( $agendamento->cs_status != 'Cancelado' && $agendamento->cs_status == 'Agendado' )
                               <a especialidade    = "{{ !empty( $atendimento->procedimento ) ?
                                                        $atendimento->procedimento->grupoprocedimento->ds_grupo :
                                                        $atendimento->consulta->especialidade->ds_especialidade }}"
@@ -252,10 +261,10 @@
                           @endif
                                                 
                           <!-- botao cancelar -->
-    											@if( $agendamento->cs_status!='Cancelado' &&
-                               $agendamento->cs_status!='Faturado' &&
-                               $agendamento->cs_status!='Pago' &&
-                               $agendamento->cs_status!='Retorno')
+    											@if( $agendamento->cs_status !='Cancelado' &&
+                               $agendamento->cs_status !='Faturado' &&
+                               $agendamento->cs_status !='Pago' &&
+                               $agendamento->cs_status !='Retorno')
       												<a especialidade    = "{{ !empty( $atendimento->procedimento ) ?
                                                        $atendimento->procedimento->grupoprocedimento->ds_grupo :
                                                        $atendimento->consulta->especialidade->ds_especialidade }}"

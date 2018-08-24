@@ -77,8 +77,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('profissionais/{idClinica}', 'ProfissionalController@getProfissionaisPorClinica');
 
     Route::get('agenda/agendar/{a}/{b}/{c}/{d}/{e?}/{f?}/{g?}/{h?}/{i?}', 'AgendamentoController@addAgendamento');
+    Route::post('add-agendamento', 'AgendamentoController@addAgendamento');
     Route::get('agenda/cancelar/{ticket}/{dtAtendimento}/{obs?}', 'AgendamentoController@addCancelamento');
-    Route::get('horarios/{clinica_id}/{profissional_id}/{data}', 'AgendamentoController@getHorariosLivres');
+    Route::get('horarios', 'AgendamentoController@getHorariosLivres');
     Route::get('agenda/confirmar/{ticket}/{cdStatus}', 'AgendamentoController@setStatus');
     Route::get('agenda/set-status-by-id/{id}/{cdStatus}', 'AgendamentoController@setStatusById');
 

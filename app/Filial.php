@@ -39,7 +39,7 @@ class Filial extends Model
     	return $this->belongsToMany('App\Profissional');
     }
 
-    public function getActiveByClinicaProfissionalConsulta($clinica,$profissional,$consulta){
+    public function getActiveByClinicaProfissionalConsulta($clinica, $profissional, $consulta) {
         return DB::select(" SELECT DISTINCT FL.*
                               FROM FILIALS FL
                               JOIN FILIAL_PROFISSIONAL FLPF ON (FL.ID = FLPF.FILIAL_ID)
@@ -52,7 +52,7 @@ class Filial extends Model
                                AND AT.CLINICA_ID = :clinica", ['clinica' => $clinica, 'profissional' => $profissional, 'consulta' => $consulta]);
     }
 
-    public function getActiveByClinicaProcedimento($clinica,$procedimento){
+    public function getActiveByClinicaProcedimento($clinica, $procedimento) {
         return DB::select(" SELECT DISTINCT FL.*
                               FROM FILIALS FL
                               JOIN ATENDIMENTO_FILIAL ATFL ON (FL.ID = ATFL.FILIAL_ID)

@@ -1,194 +1,173 @@
 <script>
     var type = '';
     $(function(){
-        $("#profissional").autocomplete({
-            source: function( request, response ) {
-            	$('#time').html(null);
-            	$('#datepicker-agenda').val(null);
-            	
-                $.ajax({
-                    url : "/agenda/profissional/" + $('#profissional').val(),
-                    dataType: "json",
-                    success: function(data) {
-                        response(data);
-                    }
-                });
-            },
-            minLength: 5,
-            select: function(event, ui) {
-                $('input[name="profissional_id"]').val(parseInt(ui.item.id));
-            }
-        });
 
-        $('#profissional_id').change(function(){
-        	$('#datepicker-agenda').val(null);
-        	$('#time').html(null);
-        });
-        
-      	$('.clinica_id').change(function(){
-        	$('#profissional_id').html(null);
-        	$('#datepicker-agenda').val(null);
-        	$('#time').html(null);
-			
+        $('#dialog-agendar .btn-primary').on('click', function(){
+            var agendamento_id  = $('#dialog-agendar #agendamento_id').val();
+            var clinica_id      = $('#dialog-agendar #clinica_id').val();
+            var profissional_id = $('#dialog-agendar #profissional_id').val();
+            var filial_id       = $('#dialog-agendar #filial_id').val();
+            var tpPrestador     = $('#dialog-agendar #tp_prestador').val();
+            var data 		    = $('#dialog-agendar #datepicker-agenda').val().length == 0 ? null : $('#dialog-agendar #datepicker-agenda').val();
+            var hora 			= $('select[name="time"]').val() == null ? null : $('select[name="time"]').val();
             
+            if( !agendamento_id ) return false;
+            if( !clinica_id ) return false;
+
+            if( type == 'Consulta' ) {
+                if( !profissional_id ) return false;
+                if( !filial_id ) return false;
+                if( !data ) return false;
+                if( !hora ) return false;
+            }
+
+            if ( type == 'Exame' && tpPrestador == 'CLI' ) {
+                if( !filial_id ) return false;   
+                if( !data ) return false;
+                if( !hora ) return false;
+            }
+
             $.ajax({
-                url : "/profissionais/" + $(this).val(),
+                type : "post",
+                url : "/add-agendamento",
+                data : $('#formConsulta').serialize(),
                 beforeSend : function(){
 
                 },
                 success: function(response){
-                    $('.profissional_id').html(null);
 
-                    response.forEach(function(x){
-                        $('.profissional_id').append('<option value="'+x.id+'">' + x.nm_primario + ' ' + x.nm_secundario +'</option>');
-                    });
                 }
             }).done(function(msg){
-
-            	$('.profissional_id').val($('.profissional').val());
-
-            	
+                swal({
+                	title : 'Solicitação Concluída!',
+                    text  : '',
+                    type  : 'success',
+                    showCancelButton: false,
+                    confirmButtonClass: 'btn btn-confirm mt-2',
+                    cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
+                    confirmButtonText: 'OK',
+                }).then(function () {
+                    $("#dialog-agendar .btn-secondary").trigger('click');
+                	location.reload();
+                });
+                
             }).fail(function(jqXHR, textStatus, msg){
                 swal(
-                        {
-                            title: 'Um erro inesperado ocorreu!',
-                            text: '',
-                            type: 'error',
-                            confirmButtonClass: 'btn btn-confirm mt-2'
-                        }
-                    );
-            });
-        });
-
-
-        function acaoAgendar(){
-            clinica_id      = $('.clinica_id').val();
-            profissional_id = $('.profissional_id').val();
-            paciente_id     = $('.paciente').val();
-            data 		    = ($('#datepicker-agenda').val().length == 0) ? null : $('#datepicker-agenda').val();
-            hora 			= ($('select[name="time"]').val() == null) ? null : $('select[name="time"]').val();
-            ticket 			= $('.ticket').val(); 
-            
-            if ( clinica_id != null && profissional_id != null && ticket != null && paciente_id != '' ) {
-
-	            if( type == 'Consulta' ){
-                    link = "/agenda/agendar/" + ticket + '/' + clinica_id + '/' + profissional_id + '/' + paciente_id + '/' + data + '/' + hora;
-                } 
-                else {
-                	if( hora == null || data == null ){
-                        swal({
-                            title: 'Preencha uma data e hora para remarcar a consulta!',
-                            text: '',
-                            type: 'error',
-                            confirmButtonClass: 'btn btn-confirm mt-2'
-                         });
-
-                        return false;
-                	}
-                    
-                    link = "/agenda/agendar/" + ticket + '/' + clinica_id + '/' + profissional_id + '/' + paciente_id + '/' + data + '/' + hora + '/S';
-                }
-
-                $.ajax({
-                    url : link,
-                    beforeSend : function(){
-
-                    },
-                    success: function(response){
-
+                    {
+                        title: 'Um erro inesperado ocorreu!',
+                        text: '',
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-confirm mt-2'
                     }
-                }).done(function(msg){
-                    
-                     swal({
-                    	title : 'Solicitação Concluída!',
-                        text  : '',
-                        type  : 'success',
-                        showCancelButton: false,
-                        confirmButtonClass: 'btn btn-confirm mt-2',
-                        cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
-                        confirmButtonText: 'OK',
-                    }).then(function () {
-                        dialogAgendamento.dialog( "close" );
-                    	location.reload();
-                    });
-                    
-                }).fail(function(jqXHR, textStatus, msg){
-                    swal(
-                        {
-                            title: 'Um erro inesperado ocorreu!',
-                            text: '',
-                            type: 'error',
-                            confirmButtonClass: 'btn btn-confirm mt-2'
-                        }
-                    );
-                });
-            }
+                );
+            });
 
             return true;
-        }
-
-
-        
-        dialogAgendamento = $( "#dialog-agendar" ).dialog({
-            autoOpen : false,
-            height	 : 530,
-            width	 : 698,
-            modal	 : true,
-            buttons	 : {
-                "Alterar" : function() { 
-                    dialogAgendamento.dialog( "close" );
-                    $( "#dialog-update" ).dialog( "open" ); 
-                },
-                "Agendar" : acaoAgendar,
-                Fechar	  : function() { dialogAgendamento.dialog( "close" ); }
-            },
-            close: function() { dialogAgendamento.dialog( "close" ); }
         });
-
-
         
         $( ".agendamento" ).button().on( "click", function() {
-        	$('#profissional_id').html(null);
-        	$('#datepicker-agenda').val(null);
+            type = $(this).attr('type');
+
+        	$('.modal-title').text($(this).attr('title'));
+            $('.spanConsulta').text(type + ':');
+            
+            $('#datepicker-agenda').val(null);
         	$('#time').html(null);
 
-            $('.ticket').val($(this).attr('ticket'));
+            $('#dialog-agendar #ticket').val($(this).attr('ticket'));
+            $('#dialog-agendar #paciente').val($(this).attr('id-paciente'));
+            $('#dialog-agendar #clinica_id').val($(this).attr('id-clinica'));
+            $('#dialog-agendar #profissional_id').val($(this).attr('id-profissional'));
+            $('#dialog-agendar #agendamento_id').val( $(this).attr('id-agendamento') );
+            $('#dialog-agendar #especialidade_id').val( $(this).attr('id-especialidade') );
+            $('#dialog-agendar #tp_prestador').val( $(this).attr('tp-prestador') );
+            
             $('#confPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
+            $('#confClinica') .html("<b>" + $(this).attr('nm-clinica') + "</b>");
             $('#confDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
             $('#confPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
-            $('#agendamento_id').val( $(this).attr('id-agendamento') );
             $('#confEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
             $('#confValorAtendimento').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
-            $('.paciente').val($(this).attr('id-paciente'));
-            $('#ui-id-1, #ui-id-2').text($(this).attr('title'));
-            $('.profissional').val($(this).attr('id-profissional'));
+            $('#confProfissional') .html("<b>" + $(this).attr('nm-profissional') + "</b>");
             $('#confAtendimento').html("<b>" + $(this).attr('atendimento')   + "</b>");
-            
-            type = $(this).attr('type');
-            $('.spanConsulta').text(type + ':');
+            $('#confFilial').html("<b>" + $(this).attr('nm-filial')   + "</b>");
+            $('#confTicket').html("<b>" + $(this).attr('ticket')   + "</b>");
 
-            dialogAgendamento.dialog( "open" );
-			
-            $('.clinica_id').val($(this).attr('id-clinica'));
-            $('.clinica_id').change();
+            var agendamento_id      = $('#dialog-agendar #agendamento_id').val();
+            var clinica_id          = $('#dialog-agendar #clinica_id').val();
+            var profissional_id     = $('#dialog-agendar #profissional_id').val();
+            var especialidade_id    = $('#dialog-agendar #especialidade_id').val();
+            var tpPrestador         = $('#dialog-agendar #tp_prestador').val();
+
+            var action = '/get-active-filials-by-clinica-profissional-consulta';
+            var ajaxData = {'clinica_id': clinica_id, 'profissional_id': profissional_id, 'especialidade_id': especialidade_id, '_token' : laravel_token};
+
+            console.log($('#dialog-agendar #tp_prestador').val());
+            if( type == "Consulta" ) {
+                action = '/get-active-filials-by-clinica-profissional-consulta';
+                ajaxData = {'clinica_id': clinica_id, 'profissional_id': profissional_id, 'especialidade_id': especialidade_id, '_token' : laravel_token};
+            }
+            else if( type == "Exame") {
+                action = '/get-active-filials-by-clinica-procedimento';
+                ajaxData = {'clinica_id': clinica_id, 'especialidade_id': especialidade_id, '_token' : laravel_token};
+
+                if( tpPrestador == 'LAB' ) {
+                    $('#dialog-agendar .row.fill').find(':input').val('');
+                    $('#dialog-agendar #filial_id').empty();
+                    $('#dialog-agendar .row.fill').hide();
+
+                    return;
+                }
+            }
+
+            jQuery.ajax({
+                type: 'GET',
+                url: action,
+                data: ajaxData,
+                dataType: 'json',
+                success: function (result) {
+                    if( result != null) {
+                        $('#dialog-agendar #filial_id').empty();
+
+                        var option = '<option value="">Selecione</option>';
+                        $('#dialog-agendar #filial_id').append( option );
+                        for(var i=0; i < result.length; i++) {
+                            option = '<option value="'+result[i].id+'">'+ ( result[i].eh_matriz == 'S' ? 'Matriz - ' : 'Filial - ' ) + result[i].nm_nome_fantasia +  '</option>';
+                            $('#dialog-agendar #filial_id').append( option );
+                        }
+
+                        if( !$('#dialog-agendar #filial_id').val()  ) { return false; }
+                    }
+                },
+                error: function (result) {
+                    $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+                },
+                complete: function(){
+                    $( ".select2" ).select2({
+                        width: null
+                    });
+                }
+            });
         });
-
-
 
 		/**
 		* Verifica disponibilidade de atendimento em função de clinica, 
 		* profissional, data e hora.
 		*/
-        $('#datepicker-agenda').change(function(){
-			var clinica_id      = $('select[name=clinica_id]').val();
-			var profissional_id = $('select[name=profissional_id]').val();
+        $('#dialog-agendar #datepicker-agenda').change(function(){
+            $('#dialog-agendar #data').val( $(this).val() ) ;
+
+            var agendamento_id  = $('#dialog-agendar #agendamento_id').val();
+            var clinica_id      = $('#dialog-agendar #clinica_id').val();
+            var profissional_id = $('#dialog-agendar #profissional_id').val();
             var data 		    = $(this).val().split('/');
             var ct_data_hora    = ($('#confDtHora b').html()).split(' ');
             var ct_hora         = ct_data_hora[1];
-			
-            
+
             $.ajax({
-                url 	 : '/horarios/' + clinica_id + '/' + profissional_id + '/' + data[2] + '-' + data[1] + '-' + data[0],
+                type     : 'get',
+                url 	 : '/horarios',
+                data     : {agendamento_id: agendamento_id, clinica_id: clinica_id, profissional_id: profissional_id, data: data[2] + '-' + data[1] + '-' + data[0]},
                 dataType : 'json',
                 success  : function(horarios) {
                     $('#time').html(null);
@@ -203,80 +182,114 @@
         });
     });
 </script>
-<div id="dialog-agendar" title="">
-	<form id="formConsulta" name="formConsulta">
-		<div class="row">
-			<div class="col-12">
-				<label for="confPaciente">
-					Paciente:
-					<div id="confPaciente"></div>
-				</label>
-				<input type="hidden" name="paciente" class="paciente" value="">
-				<input type="hidden" name="profissional" class="profissional" value="">
-				<input type="hidden" name="ticket" class="ticket" value="">
-                <input type="hidden" name="agendamento_id" id="agendamento_id" value="">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12">
-				<label for="profissional_id">Clínica:</label>
-				<select class="form-control clinica_id" id="clinica_id" name="clinica_id" readonly>
-					@foreach($clinicas as $clinica)
-						<option value="{{$clinica->id}}">{{$clinica->nm_razao_social}}</option>
-					@endforeach
-				</select>
-			</div>
-		</div>
-		<div style="height:10px;"></div>
-		<div class="row">
-			<div class="col-12">
-				<label for="profissional_id">Profissional:</label>
-				<select class="form-control profissional_id" id="profissional_id" name="profissional_id">
-					<option value=""></option>
-				</select>
-			</div>
-		</div>
-		<div style="height:10px;"></div>
-		<div class="row">
-			<div class="col-6">
-				<label for="confDtHora">
-					Especialidade:
-					<div id="confEspecialidade"></div>
-				</label>
-			</div>
 
-            <div class="col-6">
-                <label for="confAtendimento">
-                    <span class="spanConsulta">Consulta/Exame:</span>
-                    <div id="confAtendimento"></div>
-                </label>
+
+<div class="modal" id="dialog-agendar">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formConsulta" name="formConsulta">
+            {{ csrf_field() }}
+            <input type="hidden" name="ticket" id="ticket" value="">
+            <input type="hidden" name="agendamento_id" id="agendamento_id" value="">
+            <input type="hidden" name="clinica_id" id="clinica_id" value="">
+            <input type="hidden" name="profissional_id" id="profissional_id" value="">
+            <input type="hidden" name="especialidade_id" id="especialidade_id" value="">
+            <input type="hidden" name="tp_prestador" id="tp_prestador" value="">
+            <input type="hidden" name="data" id="data" value="">
+
+            <div class="row">
+                <div class="col-6">
+                    <label for="confPaciente">
+                        Paciente:
+                        <div id="confPaciente"></div>
+                    </label>
+                </div>
+                <div class="col-6">
+                    <label for="confClinica">Clínica:
+                        <div id="confClinica"></div>
+                    </label>
+                </div>
+            
+                <div class="col-6">
+                    <label for="confProfissional">Profissional:
+                        <div id="confProfissional"></div>
+                    </label>
+                </div>
+                <div class="col-6">
+                    <label for="confTicket">Ticket:
+                        <div id="confTicket"></div>
+                    </label>
+                </div>
+                
+                <div class="col-12">
+                    <label for="confDtHora">
+                        Especialidade:
+                        <div id="confEspecialidade"></div>
+                    </label>
+                </div>
+
+                <div class="col-12">
+                    <label for="confAtendimento">
+                        <span class="spanConsulta">Consulta/Exame:</span>
+                        <div id="confAtendimento"></div>
+                    </label>
+                </div>
+            
+                <div class="col-4">
+                    <label for="confDtHora">
+                        Data/Hora:
+                        <div id="confDtHora"></div>
+                    </label>
+                </div>
+
+                <div class="col-4">
+                    <label for="confValorAtendimento">
+                        Valor Pago (R$):
+                        <div id="confValorAtendimento"></div>
+                    </label>
+                </div>
+
+                <div class="col-4">
+                    <label for="confFilial">
+                        Filial:
+                        <div id="confFilial"></div>
+                    </label>
+                </div>
             </div>
-		</div>
-		<div class="row">
-			<div class="col-4">
-				<label for="confDtHora">
-					Data/Hora:
-					<div id="confDtHora"></div>
-				</label>
-			</div>
-			<div class="col-4">
-				<label for="confValorAtendimento">
-					Valor Pago (R$):
-					<div id="confValorAtendimento"></div>
-				</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-4">
-				<label>Agendar para:</label>
-				<input type="text" class="form-control mascaraData" placeholder="dd/mm/yyyy" id="datepicker-agenda">
-			</div>
-			<div class="col-4">
-				<label>Hora:</label>
-				<select class="form-control" id="time" name="time">
-					<option value=""></option>
-				</select>
-			</div>
-		</div>
-	</form>
+            
+            <div style="height:10px;"></div>
+
+            <div class="row fill">
+                <div class="col-4">
+                    <label>Agendar para:</label>
+                    <input type="text" class="form-control mascaraData" placeholder="dd/mm/yyyy" id="datepicker-agenda">
+                </div>
+                <div class="col-4">
+                    <label>Hora:</label>
+                    <select class="form-control" id="time" name="time">
+                        <option value=""></option>
+                    </select>
+                </div>
+
+                <div class="col-4">
+                    <label for="filial_id">Filial</label>
+                    <select id="filial_id" class="form-control select2" name="filial_id"></select>
+                </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#dialog-update">Alterar os dados do agendamento</button>
+        <button type="button" class="btn btn-primary">Agendar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
 </div>

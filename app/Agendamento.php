@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Support\Carbon;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Agendamento extends Model
 {
@@ -86,7 +87,6 @@ class Agendamento extends Model
     }
     
     
-    
     /*
      * Getters and Setters
      */
@@ -106,5 +106,31 @@ class Agendamento extends Model
     public function getRawCsStatusAttribute() {
         return $this->attributes['cs_status'];
     }
-    
+
+    public function getBusySchedule( $agendamento, $clinica, $profissional = null, $date ) {
+        $bind = [];
+        $queryStr = "   SELECT AG.ID, AG.DT_ATENDIMENTO, TO_CHAR(DT_ATENDIMENTO, 'HH24:MI') HORARIO
+                          FROM AGENDAMENTOS AG
+                          JOIN AGENDAMENTO_ATENDIMENTO AGAT ON (AG.ID = AGAT.AGENDAMENTO_ID AND AGAT.DELETED_AT IS NULL)
+                          JOIN ATENDIMENTOS AT ON (AGAT.ATENDIMENTO_ID = AT.ID)
+                         WHERE CAST(AG.DT_ATENDIMENTO AS DATE) = :date
+                           AND AT.CLINICA_ID = :clinica
+                           AND AG.ID <> :agendamento";
+
+        if ( !empty($profissional) ) {
+            $bind['profissional'] = $profissional;
+            $queryStr .= " AND AT.PROFISSIONAL_ID = :profissional";
+        }
+        
+        $queryStr .= " ORDER BY AG.DT_ATENDIMENTO";
+
+        $bind['date'] = $date;
+        $bind['clinica'] = $clinica;
+        $bind['agendamento'] = $agendamento;
+
+
+        $query = DB::select($queryStr, $bind);
+
+        return $query;       
+    }   
 }

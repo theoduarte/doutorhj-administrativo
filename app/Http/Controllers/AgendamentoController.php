@@ -28,16 +28,14 @@ class AgendamentoController extends Controller
      */
     public function index(Request $request)
     {
-        // dd( Request::get('sort') );
         $clinicas = Clinica::all();
         
-        $clinica_id = Request::get('clinica_id');
-        $nm_paciente = UtilController::toStr(Request::get('nm_paciente'));
+        $clinicaID = Request::get('clinica_id');
+        $nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
         $data = Request::get('data') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data')) :'';
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         $agendamentos = Agendamento::
-        
         where( function ($query) use ($request) {
             if( !empty($request::get('data')) ) {
                 $date = UtilController::getDataRangeTimePickerToCarbon($request::get('data'));
@@ -61,7 +59,6 @@ class AgendamentoController extends Controller
             }
 
             if( !empty( $request::get('nm_paciente') ) ) {
-
                 $query->whereExists(function ($query) use ($request) {
                     $nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
 
@@ -88,6 +85,8 @@ class AgendamentoController extends Controller
                                     WHEN agendamentos.cs_status::int = 100 THEN 10 END') ,'asc')
         ->orderBy( 'agendamentos.dt_atendimento')
         ->paginate(10);
+
+        // dd( DB::getQueryLog() );
 
         $tipoAtendimentos = Tipoatendimento::where('cs_status','A')->whereNotNull('tag_value')->orderBy('id')->get();
         $checkup = Checkup::where('cs_status','A')->count();
@@ -126,9 +125,7 @@ class AgendamentoController extends Controller
      */
     public function getProfissional($profissional){
         $arJson = array();
-        $profissional = \App\Profissional::where(function($query){
-
-                                                })->get();
+        $profissional = \App\Profissional::where( function($query){} )->get();
         $profissional->load('documentos');
         
         foreach ($profissional as $query)
@@ -151,71 +148,69 @@ class AgendamentoController extends Controller
     /**
      * Realiza o agendamento/remarcacao de consultas
      *
-     * @param integer $idClinica
-     * @param integer $idProfissional
-     * @param integer $idPaciente
-     * @param integer $dia
-     * @param integer $mes
-     * @param integer $ano
-     * @param string  $hora
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function addAgendamento($teTicket, $idClinica, $idProfissional, $idPaciente, 
-                                   $dia=null, $mes=null, $ano=null, $hora=null, $boRemarcacao='N'){
-        
-        $agendamento = Agendamento::where('paciente_id', '=', $idPaciente)->where('te_ticket', '=', $teTicket);
-        
-        if(is_null($ano) and is_null($hora)){
-            $arDados = array('bo_remarcacao'  => $boRemarcacao,
-                             'clinica_id'     => $idClinica,
-                             'te_ticket'      => $teTicket,
-                             'profissional_id'=> $idProfissional,
-                             'cs_status'      => Agendamento::AGENDADO);
+    public function addAgendamento(Request $request) {
 
-            $agendamento->update($arDados);
-        } else {
-            $arDados = array('dt_atendimento' => new Carbon($ano.'-'.$mes.'-'.$dia.' '.$hora),
-                             'bo_remarcacao'  => $boRemarcacao, 
-                             'clinica_id'     => $idClinica,
-                             'te_ticket'      => $teTicket,
-                             'profissional_id'=> $idProfissional,
-                             'cs_status'      => Agendamento::AGENDADO);
+        $agendamento = Agendamento::find( $request::get('agendamento_id') );
 
-            $agendamento->update($arDados);
-            
-            //--carrega os dados do paciente para configurar a mensagem-----
-            $paciente = Paciente::findorfail($idPaciente);
-            $paciente->load('user');
-            $paciente->load('documentos');
-            $paciente->load('contatos');
-            
-            //--carrega os dados do agendamento para configurar a mensagem-----
-            $ct_agendamento = $agendamento->first();
-            $ct_agendamento->load('itempedidos');
-            $ct_agendamento->load('atendimento');
-            $ct_agendamento->load('clinica');
-            $ct_agendamento->load('profissional');
-            
-            $ct_agendamento->profissional->load('especialidades');
-            $nome_especialidade = "";
-            
-            foreach ($ct_agendamento->profissional->especialidades as $especialidade) {
-                $nome_especialidade = $nome_especialidade.' | '.$especialidade->ds_especialidade;
-            }
-            
-            $ct_agendamento->nome_especialidade = $nome_especialidade;
-            
-            //--carrega os dados do pedido para configurar a mensagem-----
-            $pedido_id = $ct_agendamento->itempedidos->first()->pedido_id;
- 
-            $pedido = Pedido::findorfail($pedido_id);
-            
-            $token_atendimento = $teTicket;
-            
-            //--enviar mensagem informando o pre agendamento da solicitacao----------------
-            try {
-                $this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento);
-            } catch (Exception $e) {}
+        if ( $agendamento->cs_status == Agendamento::AGENDADO ) {
+          $agendamento->bo_remarcacao = 'A';
         }
+
+        $agendamento->cs_status = Agendamento::AGENDADO;
+        if ( !empty($agendamento->atendimentos()->whereNull('deleted_at')->first()->consulta_id) ) {
+          $agendamento->dt_atendimento = Carbon::createFromFormat( "d/m/Y H:i", $request::get('data') . " " . $request::get('time') )->toDateTimeString();
+          $agendamento->filial_id = $request::get('filial_id');
+        }
+        else {
+            if( $agendamento->atendimentos()->whereNull('deleted_at')->first()->clinica->tp_prestador == 'CLI') {
+                $agendamento->dt_atendimento = Carbon::createFromFormat( "d/m/Y H:i", $request::get('data') . " " . $request::get('time') )->toDateTimeString();
+            }
+            else {
+                $agendamento->dt_atendimento = Carbon::createFromFormat( "d/m/Y H:i", $agendamento->dt_atendimento);
+            }
+        }
+
+        $agendamento->save();
+
+        //--carrega os dados do paciente para configurar a mensagem-----
+        $filial = Filial::findorfail($agendamento->filial_id);
+        
+        //--carrega os dados do paciente para configurar a mensagem-----
+        $paciente = Paciente::findorfail($agendamento->paciente_id);
+        $paciente->load('user');
+        $paciente->load('documentos');
+        $paciente->load('contatos');
+        
+        //--carrega os dados do agendamento para configurar a mensagem-----
+        $ct_agendamento = $agendamento->first();
+        $ct_agendamento->load('itempedidos');
+        $ct_agendamento->load('atendimento');
+        $ct_agendamento->load('clinica');
+        $ct_agendamento->load('profissional');
+        
+        $ct_agendamento->profissional->load('especialidades');
+        $nome_especialidade = "";
+        
+        foreach ($ct_agendamento->profissional->especialidades as $especialidade) {
+            $nome_especialidade = $nome_especialidade.' | '.$especialidade->ds_especialidade;
+        }
+        
+        $ct_agendamento->nome_especialidade = $nome_especialidade;
+        
+        //--carrega os dados do pedido para configurar a mensagem-----
+        $pedido_id = $ct_agendamento->itempedidos->first()->pedido_id;
+
+        $pedido = Pedido::findorfail($pedido_id);
+        
+        $token_atendimento = $agendamento->te_ticket;
+        
+        //--enviar mensagem informando o pre agendamento da solicitacao----------------
+        try {
+            $this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento, $filial);
+        } catch (Exception $e) {}
     }
     
     /**
@@ -223,8 +218,7 @@ class AgendamentoController extends Controller
      * 
      * @param string $teTicket
      */
-    public function addCancelamento($teTicket, $dtAtendimento, $obsCancelamento=null){
-   
+    public function addCancelamento($teTicket, $dtAtendimento, $obsCancelamento=null) {
         $agendamento = Agendamento::where('te_ticket', '=', $teTicket)
                        ->where('dt_atendimento', Carbon::createFromFormat("Y-m-d H:i:s", $dtAtendimento));
         
@@ -238,34 +232,38 @@ class AgendamentoController extends Controller
      * @param date $data
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHorariosLivres($idClinica, $idProfissional, $data){
+    public function getHorariosLivres(Request $request){
         $arJson = array();
         
-        for( $hora = 8; $hora <=18; $hora++ ){
-            $this->_verificaDisponibilidadeHorario($idClinica, $idProfissional, $data, str_pad($hora, 2, 0, STR_PAD_LEFT).':00:00');
-            $this->_verificaDisponibilidadeHorario($idClinica, $idProfissional, $data, str_pad($hora, 2, 0, STR_PAD_LEFT).':30:00');
+        $agendamento = new Agendamento();
+        $busySchedule = $agendamento->getBusySchedule( $request::get('agendamento_id'), $request::get('clinica_id'), $request::get('profissional_id'), $request::get('data') );
+
+        for( $hora = 5; $hora <=23; $hora++ ) {
+
+            //For entire hour 
+            $isBusy = false;
+            foreach( $busySchedule as $schedule ) {
+                if ( $schedule->horario == str_pad($hora, 2, 0, STR_PAD_LEFT) . ":00" ) {
+                    $isBusy = true;
+                }
+            }
+            if ( !$isBusy ) {
+                $this->arHorariosLivres[] = ['hora' => str_pad($hora, 2, 0, STR_PAD_LEFT) . ":00"];
+            }
+
+            //For half hour
+            $isBusy = false;
+            foreach( $busySchedule as $schedule ) {
+                if ( $schedule->horario == str_pad($hora, 2, 0, STR_PAD_LEFT) . ":30" ) {
+                    $isBusy = true;
+                }
+            }
+            if ( !$isBusy ) {
+                $this->arHorariosLivres[] = ['hora' => str_pad($hora, 2, 0, STR_PAD_LEFT) . ":30"];
+            }
         }
         
         return Response()->json($this->arHorariosLivres);
-    }
-    
-    /**
-     * Consulta disponibilidade de horário
-     *
-     * @param integer $hora
-     * @return boolean
-     */
-    private function _verificaDisponibilidadeHorario($idClinica, $idProfissional, $data, $hora){
-        $agenda = \App\Agendamento::where('dt_atendimento', new Carbon($data.' '.$hora))
-                    ->where('clinica_id', $idClinica)
-                    ->where('profissional_id', $idProfissional);
-        
-        if( $agenda->count() == 0 ){
-            $this->arHorariosLivres[] = ['hora'=>substr($hora, 0, 5)];
-            return true;
-        }else{
-            return false;
-        }
     }
     
     /**
@@ -298,7 +296,7 @@ class AgendamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function enviarEmailAgendamento($paciente, $pedido, $agendamento, $token_atendimento)
+    public function enviarEmailAgendamento($paciente, $pedido, $agendamento, $token_atendimento, $filial)
     {
         setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
         date_default_timezone_set('America/Sao_Paulo');
@@ -322,23 +320,13 @@ class AgendamentoController extends Controller
         $nm_primario 			= $paciente->nm_primario;
         $nr_pedido 				= sprintf("%010d", $pedido->id);
         $nome_especialidade 	= $agendamento->nome_especialidade;
-        $nome_profissional		= $agendamento->profissional->nm_primario.' '.$agendamento->profissional->nm_secundario;
+        $nome_profissional		= $agendamento->atendimentos()->first()->profissional->nm_primario.' '.$agendamento->atendimentos()->first()->profissional->nm_secundario;
         $data_agendamento		= date('d', strtotime($agendamento->getRawDtAtendimentoAttribute())).' de '.strftime('%B', strtotime($agendamento->getRawDtAtendimentoAttribute())).' / '.strftime('%A', strtotime($agendamento->getRawDtAtendimentoAttribute())) ;
         $hora_agendamento		= date('H:i', strtotime($agendamento->getRawDtAtendimentoAttribute())).' (por ordem de chegada)';
         $endereco_agendamento = '--------------------';
         
-        $agendamento->clinica->load('enderecos');
-        $enderecos_clinica = $agendamento->clinica->enderecos->first();
-        
-        if ($agendamento->clinica->enderecos != null) {
-            $enderecos_clinica->load('cidade');
-            $cidade_clinica = $enderecos_clinica->cidade;
-            
-            if ($cidade_clinica != null) {
-                $endereco_agendamento = $enderecos_clinica->te_endereco.', '.$enderecos_clinica->nr_logradouro.', '.$enderecos_clinica->te_bairro.', '.$cidade_clinica->nm_cidade.'/ '.$cidade_clinica->sg_estado;
-            }
-        }
-        
+        $endereco_agendamento = $filial->endereco->te_endereco.', '.$filial->endereco->nr_logradouro.', '.$filial->endereco->te_bairro.', '.$filial->endereco->cidade->nm_cidade.'-'.$filial->endereco->cidade->sg_estado;
+
         $agendamento_status = 'Agendado';
         
         #dados da mensagem para o cliente

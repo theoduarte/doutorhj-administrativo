@@ -266,7 +266,7 @@
             });
         });
 
-        function acaoUpdate(){
+        $( "#dialog-update .btn-primary" ).button().on( "click", function() {
             var tipoAtendimento = $('#dialog-update #tipo_atendimento').val();
             var especialidade = $('#dialog-update #especialidade').val();
             var clinica = $('#dialog-update #clinica_id').val();
@@ -291,7 +291,7 @@
                     cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
                     confirmButtonText: 'OK',
                 }).then(function () {
-                    dialogUpdate.dialog( "close" );
+                    $("#dialog-update .btn-secondary").trigger('click');
                 	location.reload();
                 });
                 
@@ -307,41 +307,36 @@
             });
 
             return true;
-        }
-   
-        dialogUpdate = $( "#dialog-update" ).dialog({
-            autoOpen : false,
-            height	 : 530,
-            width	 : 698,
-            modal	 : true,
-            buttons	 : {
-                "Atualizar" : acaoUpdate,
-                Fechar      : function() { dialogUpdate.dialog( "close" ); }
-            },
-            close: function() { dialogUpdate.dialog( "close" ); },
-            open: function() { 
-                $('#dialog-update #te_ticket').val( $('#dialog-agendar .ticket').val() );
-                $('#dialog-update #paciente_id').val( $('#dialog-agendar #confPaciente').text() );
-                $('#dialog-update #valor').val( $('#dialog-agendar #confValorAtendimento').text() );
-                $('#dialog-update #agendamento_id').val( $('#dialog-agendar #agendamento_id').val() );
-            }
         });
    
-        $( ".update" ).button().on( "click", function() {
-            dialogUpdate.dialog( "open" );
+        $( "#dialog-agendar .btn-danger" ).button().on( "click", function() {
+            $('#dialog-update #agendamento_id').val( $('#dialog-agendar #agendamento_id').val() );
+            $('#dialog-update #paciente').val( $('#dialog-agendar #confPaciente').text() );
+            $('#dialog-update #te_ticket').val( $('#dialog-agendar #ticket').val() );
+            $('#dialog-update #valor').val( $('#confValorAtendimento').text() );
 
-            $('#dialog-update #te_ticket').val( $('#dialog-agendar .ticket').val() );
-            $('#dialog-update #paciente_id').val( $('#dialog-agendar #confPaciente').text() );
+            $("#dialog-agendar .btn-secondary").trigger('click');
         });
     });
 </script>
-<div id="dialog-update" title="Alterar dados do agendamento">
-	<form id="formUpdate" name="formUpdate">
+
+
+<div class="modal" role="modal" id="dialog-update">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formUpdate" name="formUpdate">
         <input type="hidden" name="agendamento_id" id="agendamento_id" val="">
         <div class="row">
             <div class="form-group col-6">
-                <label for="paciente_id">Paciente</label>
-                <input type="text" class="form-control" id="paciente_id" readonly />
+                <label for="paciente">Paciente</label>
+                <input type="text" class="form-control" id="paciente" readonly />
             </div>
 
             <div class="form-group col-3">
@@ -387,5 +382,12 @@
                 <select id="filial_id" class="form-control select2" name="filial_id"></select>
             </div>
         </div>
-	</form>
+    </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Salvar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
 </div>
