@@ -269,7 +269,7 @@
             <div class="row fill">
                 <div class="col-4">
                     <label>Agendar para:</label>
-                    <input type="text" class="form-control mascaraData" placeholder="dd/mm/yyyy" id="datepicker-agenda">
+                    <input type="text" class="form-control mascaraData input-datepicker" placeholder="dd/mm/yyyy" id="datepicker-agenda">
                 </div>
                 <div class="col-4">
                     <label>Hora:</label>
