@@ -107,7 +107,7 @@
                             </select>
                           </div>
 
-                          <div class="col-3 col-lg-margin-9">
+                          <div class="col-3">
                             <div style="height: 30px;"></div>
                             <button type="submit" class="btn btn-primary" id="submit" style="margin-right: 10px;"><i class="fa fa-search"></i> Pesquisar</button>
                             <a href="{{ route('agenda.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca" style="margin-bottom: 0px; "><i class="ion-close"></i> Limpar Busca</a>

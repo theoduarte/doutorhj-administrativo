@@ -31,16 +31,16 @@ class Agendamento extends Model
     
     
     protected static $cs_status = array(
-        self::PRE_AGENDADO   => 'Pré-Agendado',
-        self::CONFIRMADO     => 'Confirmado',
-        self::NAO_CONFIRMADO => 'Não Confirmado',
-        self::FINALIZADO     => 'Finalizado',
+        self::AGENDADO       => 'Agendado',
         self::AUSENTE        => 'Ausente',
         self::CANCELADO      => 'Cancelado',
-        self::AGENDADO       => 'Agendado',
-        self::RETORNO        => 'Retorno',
+        self::CONFIRMADO     => 'Confirmado',
         self::FATURADO       => 'Faturado',
-        self::PAGO           => 'Pago'
+        self::FINALIZADO     => 'Finalizado',
+        self::NAO_CONFIRMADO => 'Não Confirmado',
+        self::PAGO           => 'Pago',
+        self::PRE_AGENDADO   => 'Pré-Agendado',
+        self::RETORNO        => 'Retorno',
     );
     
     /*
