@@ -8,6 +8,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+
     Route::resource('clinicas','ClinicaController');
     Route::resource('profissionals','ProfissionalController');
     Route::resource('clientes', 'ClienteController');
@@ -70,10 +72,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('edit-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@precificacaoProcedimentoUpdate')->name('edit-precificacao-procedimento');
     Route::delete('delete-precificacao-procedimento', 'ClinicaController@precificacaoProcedimentoDestroy')->name('delete-precificacao-procedimento');
 
-
-    // Route::post('clinicas/{clinica}/edit/delete-procedimento', 'ClinicaController@deleteProcedimentoDestroy');
-    // Route::post('clinicas/{clinica}/edit/edit-precificacao-atendimento', 'ClinicaController@editAtendimentoPrecoUpdate');
-
     Route::get('profissionais/{idClinica}', 'ProfissionalController@getProfissionaisPorClinica');
 
     Route::get('agenda/agendar/{a}/{b}/{c}/{d}/{e?}/{f?}/{g?}/{h?}/{i?}', 'AgendamentoController@addAgendamento');
@@ -96,11 +94,9 @@ Route::middleware(['auth'])->group(function () {
     
 });
 
-
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
 Route::get('consulta-cidade', 'ClinicaController@consultaCidade')->name('consulta-cidade');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

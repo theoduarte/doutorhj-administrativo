@@ -9,16 +9,6 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Http\Response
@@ -33,23 +23,7 @@ class HomeController extends Controller
         
         $pagamentos = Payment::whereDate('payments.created_at', '>=', date('Y-m-d H:i:s', strtotime($data_inicio)))->whereDate('payments.created_at', '<=', date('Y-m-d H:i:s', strtotime($data_fim)))->orderBy('id', 'desc')->sortable()->paginate(10);
         
-        foreach($pagamentos as $pagamento) {
-        	$pagamento->load('pedido');
-        	
-        	if (!empty($pagamento->pedido)) {
-        		$pagamento->pedido->load('paciente');
-        		$pagamento->pedido->load('itens_pedido');
-        	}
-        	
-        	if (!empty($pagamento->pedido->itens_pedido)) {
-        		$itempedido = $pagamento->pedido->itens_pedido->first();
-        		$itempedido->load('agendamento');
-        		$pagamento->agendamento = $itempedido->agendamento;
-        		$pagamento->agendamento->load('clinica');
-        		
-        		$pagamento->clinica = $pagamento->agendamento->clinica;
-        	}
-        	
+        foreach($pagamentos as $pagamento) {        	
         	$obj_cielo = json_decode($pagamento->cielo_result);
         	$pagamento->status_payment = $obj_cielo->Payment->Status;
         }
