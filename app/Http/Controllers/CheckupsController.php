@@ -156,6 +156,21 @@ class CheckupsController extends Controller
     }
 
     /**
+     * Get clinicas by consulta
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getClinicasByConsulta(Request $request)
+    {
+        $clinica = new Clinica();
+        $consultas = $clinica->getActiveByConsulta( $request->get('consulta_id') );
+
+        echo json_encode($consultas);
+        exit;
+    }
+
+    /**
      * Get clinicas by especialidade
      *
      * @param  \Illuminate\Http\Request  $request
@@ -178,7 +193,7 @@ class CheckupsController extends Controller
     }
 
     /**
-     * Get clinicas by especialidade
+     * Get profissionals by clinica
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

@@ -27,7 +27,7 @@ class Itempedido extends Model
         return number_format( $this->attributes['valor'],  2, ',', '.');
     }
     
-    public function getValorAttribute($valor){
-        return number_format( $valor,  2, ',', '.');
-    }
+    // public function getValorAttribute($valor){
+    //     return number_format( $valor,  2, ',', '.');
+    // }
 }

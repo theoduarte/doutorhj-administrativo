@@ -66,7 +66,7 @@
                             <td>
                             	
                             	@switch($msg->tipo_destinatario)
-                            		@case('DH') Administrativo DoctorHoje @break;
+                            		@case('DH') Administrativo DoutorHoje @break;
                             		@case('PC') Paciente @break;
                             		@case('CN') Responsável Clinica (Prestador) @break;
                             		@case('PF') Profissional @break;

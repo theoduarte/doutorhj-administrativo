@@ -32,7 +32,7 @@ class Atendimento extends Model
 	}
     
 	public function profissional(){
-	    return $this->belongsTo('App\Profissional');
+	    return $this->belongsTo('App\Profissional')->withDefault();
 	}
 	
 	public function filials()
@@ -73,8 +73,18 @@ class Atendimento extends Model
                 $query->where('consulta_id', $data['consulta_id'])->get();
             }
 
+            if ( !empty($data['especialidade']) ) {
+                $query->where('consulta_id', $data['especialidade'])->get();
+            }
+
             if ( !empty($data['profissional_id']) ) {
-                $query->whereIn('profissional_id', $data['profissional_id'])->get();
+
+                if (is_array($data['profissional_id']) ) {
+                    $query->whereIn('profissional_id', $data['profissional_id'])->get();
+                }
+                else {
+                    $query->where('profissional_id', $data['profissional_id'])->get();
+                }
             }
         })->first();
 
@@ -93,6 +103,12 @@ class Atendimento extends Model
             if ( !empty($data['procedimento_id']) ) {
                 $query->where('procedimento_id', $data['procedimento_id'])->get();
             }
+
+            if ( !empty($data['especialidade']) ) {
+                $query->where('procedimento_id', $data['especialidade'])->get();
+            }
+
+            
         })->first();
 
         return !empty($atendimentos) ? $atendimentos->toArray() : [];

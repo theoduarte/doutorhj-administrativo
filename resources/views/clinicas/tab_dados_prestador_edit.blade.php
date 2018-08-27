@@ -743,7 +743,7 @@ function salvarFilial(input) {
     if(nm_nome_fantasia.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "O Nome de fantasia da Filial é campo obrigatório!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -755,7 +755,7 @@ function salvarFilial(input) {
     if(filial_cep.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "O CEP da Filial é campo obrigatório!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -767,7 +767,7 @@ function salvarFilial(input) {
     if(filial_endereco.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "O Endereço da Filial é campo obrigatório!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -779,7 +779,7 @@ function salvarFilial(input) {
     if(filial_nr_logradouro.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "O Número do logradouro da Filial é campo obrigatório!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -791,7 +791,7 @@ function salvarFilial(input) {
     if(filial_te_bairro.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "O nome do Bairro da Filial é campo obrigatório!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -803,7 +803,7 @@ function salvarFilial(input) {
     if(filial_nr_latitude.length == 0 | filial_nr_longitute.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "A Latitude e a Longitude da Filial são campos obrigatórios!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -815,7 +815,7 @@ function salvarFilial(input) {
     if(filial_nm_cidade.length == 0 | filial_cd_cidade_ibge.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "O nome do cidade e o Código do IBGE são campos obrigatórios!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -827,7 +827,7 @@ function salvarFilial(input) {
     if(filial_sg_estado.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "A UF da Filial é campo obrigatório!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -884,7 +884,7 @@ function salvarFilial(input) {
 				ct_element.find('.filial_endereco_id').val(endereco_id)
 				
 				swal({
-                    title: 'DoctorHoje',
+                    title: 'DoutorHoje',
                     text: result.mensagem,
                     type: 'success',
                     confirmButtonClass: 'btn btn-confirm mt-2',
@@ -894,7 +894,7 @@ function salvarFilial(input) {
                 });
 				
 			} else {
-				$.Notification.notify('error','top right', 'DoctorHoje', result.mensagem);
+				$.Notification.notify('error','top right', 'DoutorHoje', result.mensagem);
 			}
 
 			$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('mdi mdi-content-save');
@@ -915,7 +915,7 @@ function removerFilial(input) {
 	if(filial_id.length == 0) {
 
     	swal({
-	            title: 'DoctorHoje: Alerta!',
+	            title: 'DoutorHoje: Alerta!',
 	            text: "Nenhuma Filial foi selecionada!",
 	            type: 'warning',
 	            confirmButtonClass: 'btn btn-confirm mt-2'
@@ -952,7 +952,7 @@ function removerFilial(input) {
     			if( result.status) {
     				
     				swal({
-                        title: 'DoctorHoje',
+                        title: 'DoutorHoje',
                         text: result.mensagem,
                         type: 'success',
                         confirmButtonClass: 'btn btn-confirm mt-2',
@@ -962,7 +962,7 @@ function removerFilial(input) {
                     });
     				
     			} else {
-    				$.Notification.notify('error','top right', 'DoctorHoje', result.mensagem);
+    				$.Notification.notify('error','top right', 'DoutorHoje', result.mensagem);
     			}
 
     			$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('ion-trash-a');
