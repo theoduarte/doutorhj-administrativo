@@ -18,6 +18,7 @@ use App\Checkup;
 use App\Profissional;
 use App\Filial;
 use App\Atendimento;
+use App\ItemPedido;
 
 class AgendamentoController extends Controller
 {
@@ -831,22 +832,34 @@ HEREDOC;
      */
     public function createNewAgendamentoAtendimento(Request $request)
     {
-        $atendimento = Atendimento::where( 'clinica_id', $request::get('clinica_id') )
-            ->when($request::get('tipo_atendimento') == 'saude', function ($query) use ($request) {
-                return $query->where( 'profissional_id', $request::get('profissional_id') );
-            })
-            ->where( ( $request::get('tipo_atendimento') == 'saude' ) ? 'consulta_id' : 'procedimento_id', $request::get('especialidade') )
-            ->where( 'cs_status', 'A' )->first();
+        DB::beginTransaction();
 
-        $agendamento = Agendamento::find( $request::get('agendamento_id') );
-        $agendamento->filial_id = $request::get('filial_id');
-        $agendamento->save();
+        try {
+            $atendimento = Atendimento::where( 'clinica_id', $request::get('clinica_id') )
+                ->when($request::get('tipo_atendimento') == 'saude', function ($query) use ($request) {
+                    return $query->where( 'profissional_id', $request::get('profissional_id') );
+                })
+                ->where( ( $request::get('tipo_atendimento') == 'saude' ) ? 'consulta_id' : 'procedimento_id', $request::get('especialidade') )
+                ->where( 'cs_status', 'A' )->first();
 
-        $oldAtendimento = $agendamento->atendimentos()->whereNull('deleted_at')->first();
-        if ( !empty($oldAtendimento) ) {
-          $agendamento->atendimentos()->updateExistingPivot( $oldAtendimento->id, ['deleted_at' => date('Y-m-d H:i:s') ] );  
+            $agendamento = Agendamento::find( $request::get('agendamento_id') );
+            $agendamento->filial_id = $request::get('filial_id');
+            $agendamento->save();
+
+            $itemPedido = Itempedido::where('agendamento_id', $agendamento->id)->first();
+            $itemPedido->valor = $atendimento->vl_com_atendimento;
+            $itemPedido->save();
+
+            $oldAtendimento = $agendamento->atendimentos()->whereNull('deleted_at')->first();
+            if ( !empty($oldAtendimento) ) {
+              $agendamento->atendimentos()->updateExistingPivot( $oldAtendimento->id, ['deleted_at' => date('Y-m-d H:i:s') ] );  
+            }
+            
+            $agendamento->atendimentos()->attach( $atendimento->id, ['created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ] );  
+        } catch (Exception $e) {
+            DB::rollback();
         }
-        
-        $agendamento->atendimentos()->attach( $atendimento->id, ['created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ] );
+
+        DB::commit();
     }
 }
