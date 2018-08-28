@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Doctor HJ: Consultas')
+@section('title', 'Doutor HJ: Consultas')
 
 @section('container')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="page-title-box">
-				<h4 class="page-title">Doctor HJ</h4>
+				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('consultas.index') }}">Lista de Consultas</a></li>

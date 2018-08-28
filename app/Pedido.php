@@ -32,10 +32,7 @@ class Pedido extends Model
 	{
 		return $this->hasMany('App\Payment');
 	}
-	
-
-	
-	
+		
 	public function getDtPagamentoAttribute($data) {
 	    $obData = new Carbon($data);
 	    return $obData->format('d/m/Y H:i');

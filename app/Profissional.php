@@ -82,4 +82,14 @@ class Profissional extends Model
 							   AND at.clinica_id = ?
 							   AND c.especialidade_id = ?", [$clinica,$especialidade]);
     }
+
+    public function getActiveProfissionalsByClinicaConsulta($clinica,$consulta){
+        return DB::select(" SELECT DISTINCT p.*
+							  FROM profissionals p
+							  JOIN atendimentos at ON (at.profissional_id = p.id)
+							 WHERE at.cs_status = 'A'
+							   AND p.cs_status = 'A'
+							   AND at.clinica_id = :clinica
+							   AND at.consulta_id = :consulta", ['clinica' => $clinica, 'consulta' => $consulta]);
+    }
 }

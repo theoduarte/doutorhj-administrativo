@@ -181,7 +181,7 @@ function addTagPopular(input) {
                 $('#cs_tag').val('');
 
                 swal({
-                    title: 'DoctorHoje',
+                    title: 'DoutorHoje',
                     text: result.mensagem,
                     type: 'success',
                     confirmButtonClass: 'btn btn-confirm mt-2',
@@ -231,7 +231,7 @@ function editTagPopular(element) {
 function removeTagPopular(input, cs_tag, tag_id) {
     if(tag_id.length == 0) {
         swal({
-                title: 'DoctorHoje: Alerta!',
+                title: 'DoutorHoje: Alerta!',
                 text: "Nenhum Nome popular foi selecionado!",
                 type: 'warning',
                 confirmButtonClass: 'btn btn-confirm mt-2'
@@ -266,7 +266,7 @@ function removeTagPopular(input, cs_tag, tag_id) {
                 if( result.status) {
                     
                     swal({
-                        title: 'DoctorHoje',
+                        title: 'DoutorHoje',
                         text: result.mensagem,
                         type: 'success',
                         confirmButtonClass: 'btn btn-confirm mt-2',
@@ -281,7 +281,7 @@ function removeTagPopular(input, cs_tag, tag_id) {
                     });
                     
                 } else {
-                    $.Notification.notify('error','top right', 'DoctorHoje', result.mensagem);
+                    $.Notification.notify('error','top right', 'DoutorHoje', result.mensagem);
                 }
 
                 $(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('ion-trash-a');

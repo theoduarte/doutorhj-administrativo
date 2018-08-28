@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Support\Carbon;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Agendamento extends Model
 {
@@ -13,8 +14,6 @@ class Agendamento extends Model
     public $fillable  = ['id', 'te_ticket', 'profissional_id', 'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
     public $sortable  = ['id', 'te_ticket', 'dt_atendimento', 'cs_status'];
     public $dates 	  = ['dt_atendimento'];
-    
-
     
     /*
      * Constants
@@ -32,16 +31,16 @@ class Agendamento extends Model
     
     
     protected static $cs_status = array(
-        self::PRE_AGENDADO   => 'Pré-Agendado',
-        self::CONFIRMADO     => 'Confirmado',
-        self::NAO_CONFIRMADO => 'Não Confirmado',
-        self::FINALIZADO     => 'Finalizado',
+        self::AGENDADO       => 'Agendado',
         self::AUSENTE        => 'Ausente',
         self::CANCELADO      => 'Cancelado',
-        self::AGENDADO       => 'Agendado',
-        self::RETORNO        => 'Retorno',
+        self::CONFIRMADO     => 'Confirmado',
         self::FATURADO       => 'Faturado',
-        self::PAGO           => 'Pago'
+        self::FINALIZADO     => 'Finalizado',
+        self::NAO_CONFIRMADO => 'Não Confirmado',
+        self::PAGO           => 'Pago',
+        self::PRE_AGENDADO   => 'Pré-Agendado',
+        self::RETORNO        => 'Retorno',
     );
     
     /*
@@ -51,7 +50,12 @@ class Agendamento extends Model
     {
         return $this->belongsTo('App\Atendimento');
     }
-    
+
+    public function atendimentos()
+    {
+        return $this->belongsToMany('App\Atendimento');
+    }
+        
     public function paciente()
     {
         return $this->belongsTo('App\Paciente')->withDefault();
@@ -83,7 +87,6 @@ class Agendamento extends Model
     }
     
     
-    
     /*
      * Getters and Setters
      */
@@ -103,5 +106,38 @@ class Agendamento extends Model
     public function getRawCsStatusAttribute() {
         return $this->attributes['cs_status'];
     }
+
+    public function getBusySchedule( $agendamento, $clinica, $profissional = null, $date ) {
+        $bind = [];
+        $queryStr = "   SELECT AG.ID, AG.DT_ATENDIMENTO, TO_CHAR(DT_ATENDIMENTO, 'HH24:MI') HORARIO
+                          FROM AGENDAMENTOS AG
+                          JOIN AGENDAMENTO_ATENDIMENTO AGAT ON (AG.ID = AGAT.AGENDAMENTO_ID AND AGAT.DELETED_AT IS NULL)
+                          JOIN ATENDIMENTOS AT ON (AGAT.ATENDIMENTO_ID = AT.ID)
+                         WHERE CAST(AG.DT_ATENDIMENTO AS DATE) = :date
+                           AND AT.CLINICA_ID = :clinica
+                           AND AG.ID <> :agendamento";
+
+        if ( !empty($profissional) ) {
+            $bind['profissional'] = $profissional;
+            $queryStr .= " AND AT.PROFISSIONAL_ID = :profissional";
+        }
+        
+        $queryStr .= " ORDER BY AG.DT_ATENDIMENTO";
+
+        $bind['date'] = $date;
+        $bind['clinica'] = $clinica;
+        $bind['agendamento'] = $agendamento;
+
+
+        $query = DB::select($queryStr, $bind);
+
+        return $query;       
+    }
+
+
+    public static function getStatusAgendamento() {
+        return static::$cs_status;
+    }
+    
     
 }

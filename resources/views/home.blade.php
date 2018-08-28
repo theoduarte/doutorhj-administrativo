@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'DoctorHoje: Painel Administrativo')
+@section('title', 'DoutorHoje: Painel Administrativo')
 
 @push('scripts')
 
@@ -229,7 +229,7 @@
                                 <div class="card-box">
                                     <h4 class="text-dark  header-title m-t-0">Lista de Pagamentos</h4>
                                     <p class="text-muted m-b-25 font-13">
-                                        Remuneração dos parceiros DoctorHoje
+                                        Remuneração dos parceiros DoutorHoje
                                     </p>
 
                                     <div class="table-responsive">
@@ -304,10 +304,10 @@
 											<tr>
 												<td>{{$pagamento->id}}</td>
 												<td>{{$pagamento->pedido->paciente->nm_primario.' '.$pagamento->pedido->paciente->nm_secundario}}</td>
-												<td>{{$pagamento->agendamento->dt_atendimento}}</td>
+												<td>{{$pagamento->pedido->itens_pedido()->first()->agendamento->dt_atendimento}}</td>
 												<td>{{$pagamento->pedido->dt_pagamento}}</td>
 												<td>@if($pagamento->status_payment == 0) <span class="badge badge-warning">Não Autorizado</span> @elseif($pagamento->status_payment == 1) <span class="badge badge-purple">Autorizado</span> @elseif($pagamento->status_payment == 2) <span class="badge badge-success">Finalizado</span> @else <span class="badge badge-danger">Negado</span> @endif</td>
-												<td>{{ !empty($pagamento->clinica) ? $pagamento->clinica->nm_fantasia : null}}</td>
+												<td>{{ !empty($pagamento->pedido->itens_pedido()->first()->agendamento->atendimentos()->whereNull('deleted_at')->first()->clinica) ? $pagamento->pedido->itens_pedido()->first()->agendamento->atendimentos()->whereNull('deleted_at')->first()->clinica->nm_fantasia : null}}</td>
 											</tr>
 											@endforeach
 										</table>
