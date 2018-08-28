@@ -88,6 +88,7 @@
             $('#confPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
             $('#confEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
             $('#confValorAtendimento').html("<b>" + $(this).attr('valor-consulta')   + "</b>");
+            $('#confValorPago').html("<b>" + $(this).attr('valor-pagamento')   + "</b>");
             $('#confProfissional') .html("<b>" + $(this).attr('nm-profissional') + "</b>");
             $('#confAtendimento').html("<b>" + $(this).attr('atendimento')   + "</b>");
             $('#confFilial').html("<b>" + $(this).attr('nm-filial')   + "</b>");
@@ -242,21 +243,28 @@
                     </label>
                 </div>
             
-                <div class="col-4">
+                <div class="col-3">
                     <label for="confDtHora">
                         Data/Hora:
                         <div id="confDtHora"></div>
                     </label>
                 </div>
 
-                <div class="col-4">
+                <div class="col-3">
                     <label for="confValorAtendimento">
-                        Valor Pago (R$):
+                        Valor Atend. (R$):
                         <div id="confValorAtendimento"></div>
                     </label>
                 </div>
 
-                <div class="col-4">
+                <div class="col-3">
+                    <label for="confValorPago">
+                        Valor Pago (R$):
+                        <div id="confValorPago"></div>
+                    </label>
+                </div>
+
+                <div class="col-3">
                     <label for="confFilial">
                         Filial:
                         <div id="confFilial"></div>
