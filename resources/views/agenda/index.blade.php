@@ -148,17 +148,17 @@
                           $type = !empty( $atendimento->procedimento ) ? 'Exame' : 'Consulta';
                       @endphp
     									<tr>
-    										<td>{{$agendamento->te_ticket}}</td>
-    										<td>{{$atendimento->clinica->nm_razao_social}}</td>
+    										<td>{{ $agendamento->te_ticket }}</td>
+    										<td>{{ $atendimento->clinica->nm_razao_social }}</td>
                                             @if( !empty($atendimento->consulta_id) )
-    										  <td style="text-align: left !important;">{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}</td>
+    										  <td style="text-align: left !important;">{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario  }}</td>
                                             @else
                                                 <td style="text-align: left !important;"></td>
                                             @endif
-    										<td style="text-align: left !important;">{{ $agendamento->paciente->nm_primario . ' ' . $agendamento->paciente->nm_secundario }}</td>
-    										<td>{{$agendamento->itempedidos->first()->pedido->dt_pagamento}}</td>
-    										<td>{{$agendamento->dt_atendimento}}</td>
-    										<td >{{$agendamento->cs_status}}</td>
+    										<td style="text-align: left !important;">{{ $agendamento->paciente->nm_primario . ' ' . $agendamento->paciente->nm_secundario  }}</td>
+    										<td>{{ !empty( $agendamento->itempedidos->first()->pedido ) ? $agendamento->itempedidos->first()->pedido->dt_pagamento : null}}</td>
+    										<td>{{ $agendamento->dt_atendimento }}</td>
+    										<td >{{ $agendamento->cs_status }}</td>
     										<td style="width:100px;">
     											<!-- botao agendar/remarcar -->
     											@if( $agendamento->cs_status == 'Pré-Agendado'
