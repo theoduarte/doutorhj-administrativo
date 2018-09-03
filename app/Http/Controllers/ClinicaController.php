@@ -50,7 +50,9 @@ class ClinicaController extends Controller
                         $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
                 }
             }
-        })->where(DB::raw('cs_status'), '=', 'A')->sortable()->paginate(10);
+        })
+        ->sortable()
+        ->paginate(10);
 
         $prestadores->load('contatos');
         $prestadores->load('responsavel');
@@ -265,7 +267,7 @@ class ClinicaController extends Controller
 
         $documentosclinica = $prestador->documentos;
 
-        $user   = User::findorfail($prestador->responsavel->user_id);
+        $user = User::findorfail($prestador->responsavel->first()->user_id);
         $precoprocedimentos = Atendimento::where('clinica_id', $idClinica)->where('procedimento_id', '<>', null)->where('cs_status', '=', 'A')->select( DB::raw("id, procedimento_id, vl_com_atendimento, vl_net_atendimento, replace(ds_preco,'''','`') as ds_preco, cs_status, clinica_id") )->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
 
         $precoconsultas =     Atendimento::where('clinica_id', $idClinica)->where('consulta_id', '<>', null)->where('cs_status', '=', 'A')->select( DB::raw("id, consulta_id, vl_com_atendimento, vl_net_atendimento, replace(ds_preco,'''','`') as ds_preco, cs_status, clinica_id, profissional_id") )->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();

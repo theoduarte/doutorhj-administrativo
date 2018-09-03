@@ -67,7 +67,7 @@
     						<td>{{ sprintf("%04d", $prestador->id) }}</td>
     						<td>{{$prestador->nm_razao_social}}</td>
     						<td>{{$prestador->nm_fantasia}}</td>
-    						<td>{{ $prestador->responsavel->user->name }}</td>
+    						<td>{{ $prestador->responsavel->first()->user->name }}</td>
                 	 		<td>
                 	 			@foreach($prestador->contatos as $contato)
                 	 				{{$contato->ds_contato}}

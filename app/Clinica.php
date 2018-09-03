@@ -5,6 +5,8 @@ namespace App;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class Clinica extends Model
 {
@@ -14,7 +16,7 @@ class Clinica extends Model
     public $sortable = ['id', 'nm_razao_social', 'nm_fantasia', 'tp_prestador', 'cs_status', 'obs_procedimento'];
 	
     public function responsavel(){
-        return $this->belongsTo('App\Responsavel');
+        return $this->hasMany( Responsavel::class )->withTrashed();
     }
     
     public function contatos(){

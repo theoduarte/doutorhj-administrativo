@@ -135,8 +135,8 @@
             	<div class="row">
                     <label for="name_responsavel" class="col-12 control-label">Nome<span class="text-danger">*</span></label>
                     <div class="col-8">
-                        <input type="text"  id="name_responsavel" class="form-control" name="name_responsavel" value="{{$prestador->responsavel->user->name}}" required  maxlength="50">
-                        <input type="hidden" id="responsavel_id" name="responsavel_id" value="{{$prestador->responsavel->id}}">
+                        <input type="text"  id="name_responsavel" class="form-control" name="name_responsavel" value="{{$prestador->responsavel->first()->user->name}}" required  maxlength="50">
+                        <input type="hidden" id="responsavel_id" name="responsavel_id" value="{{$prestador->responsavel->first()->id}}">
                     </div>
                 </div>
             </div>
@@ -145,8 +145,8 @@
                 <div class="row">
                     <label for="cpf_responsavel" class="col-12 control-label">CPF<span class="text-danger">*</span></label>
                     <div class="col-8">
-                        <input id="cpf_responsavel" type="text" class="form-control mascaraCPF" value="{{$prestador->responsavel->cpf}}" required readonly  maxlength="14">
-                        <input type="hidden" id="cpf_responsavel_no_mask" name="cpf_responsavel" value="{{ preg_replace('/[^0-9]/', '', $prestador->responsavel->cpf) }}" maxlength="14" >
+                        <input id="cpf_responsavel" type="text" class="form-control mascaraCPF" value="{{$prestador->responsavel->first()->cpf}}" required readonly  maxlength="14">
+                        <input type="hidden" id="cpf_responsavel_no_mask" name="cpf_responsavel" value="{{ preg_replace('/[^0-9]/', '', $prestador->responsavel->first()->cpf) }}" maxlength="14" >
                         @if ($errors->has('cpf_responsavel'))
                         <span class="help-block text-danger">
                         	<strong>{{ $errors->first('cpf_responsavel') }}</strong>
@@ -160,7 +160,7 @@
                 <div class="row">
                     <label for="telefone_responsavel" class="col-12 control-label">Telefone<span class="text-danger">*</span></label>
                     <div class="col-8">
-                        <input id="telefone_responsavel" type="text" class="form-control mascaraTelefone" name="telefone_responsavel" value="{{$prestador->responsavel->telefone}}" required  maxlength="20">
+                        <input id="telefone_responsavel" type="text" class="form-control mascaraTelefone" name="telefone_responsavel" value="{{$prestador->responsavel->first()->telefone}}" required  maxlength="20">
                         @if ($errors->has('telefone_responsavel'))
                         <span class="help-block text-danger">
                         	<strong>{{ $errors->first('telefone_responsavel') }}</strong>
@@ -303,7 +303,7 @@
                 <select id="sg_estado" name="sg_estado" class="form-control">
         			<option></option>
                     @foreach ($estados as $uf)
-        				<option value="{{ $uf->sg_estado }}" {{ (!$prestador->enderecos->isEmpty() && $prestador->enderecos->first()->cidade->sg_estado == $uf->sg_estado ? 'selected' : '')}}>{{ $uf->ds_estado }}</option>
+        				<option value="{{ $uf->sg_estado }}" {{ ( !empty($prestador->enderecos->first()->cidade) && $prestador->enderecos->first()->cidade->sg_estado == $uf->sg_estado ? 'selected' : '')}}>{{ $uf->ds_estado }}</option>
                     @endforeach
         		</select>
             </div>
@@ -312,8 +312,8 @@
             <div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
                 <label for="nm_cidade" class="col-3 control-label">Cidade<span class="text-danger">*</span></label>
 
-                <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->nm_cidade }} @endif" required  maxlength="50">
-                <input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->cd_ibge }} @endif">
+                <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="@if( !empty($prestador->enderecos->first()->cidade->nm_cidade) ) {{ $prestador->enderecos->first()->cidade->nm_cidade }} @endif" required  maxlength="50">
+                <input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="@if( !empty($prestador->enderecos->first()->cidade->cd_ibge) ) {{ $prestador->enderecos->first()->cidade->cd_ibge }} @endif">
             </div>
         </div>
         <div class="col-md-1">
