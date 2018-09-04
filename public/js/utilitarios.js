@@ -45,6 +45,29 @@ $(document).ready(function() {
 	    applyClass: 'btn-secondary',
 	    cancelClass: 'btn-primary'
 	});
+
+	$('.input-daterange').daterangepicker({
+	    format: 'DD/MM/YYYY',
+	    timePickerIncrement: 30,
+	    buttonClasses: ['btn', 'btn-sm'],
+	    applyClass: 'btn-secondary',
+	    cancelClass: 'btn-primary',
+	    autoUpdateInput: false,
+	    locale: {
+			cancelLabel: 'Limpar',
+			applyLabel: 'Aplicar'
+	    }
+	});
+
+	$('.input-daterange').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+	});
+
+	$('.input-daterange').on('cancel.daterangepicker', function(ev, picker) {
+	    $(this).val('');
+	});
+	
+	
 	
 	$('.input-limit-datepicker').daterangepicker({
 	    format		  : 'DD/MM/YYYY',

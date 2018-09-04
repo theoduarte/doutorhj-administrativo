@@ -19,10 +19,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="consulta_id">Consulta<span class="text-danger">*</span></label>
-                        <select id="consulta_id" class="form-control" name="consulta_id" required>
-                            <option value="">Selecione</option>
-                        </select>
+                        <label for="ds_consulta" class="control-label">Consulta<span class="text-danger">*</span></label>
+                        <input id="ds_consulta" type="text" class="form-control" name="ds_consulta" value="{{ old('ds_consulta') }}" placeholder="Informe a Descrição da Consulta para buscar" autofocus maxlength="100" required disabled>
+                        <input type="hidden" id="consulta_id" name="consulta_id" value="">
                     </div>
 
                     <div class="form-group">
@@ -48,15 +47,22 @@
                             <label for="vl_net_atendimento">Vl. NET</label>
                             <input type="text" id="vl_net_atendimento" class="form-control" name="vl_net_atendimento" readonly>
                         </div>
-                        
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-md-3">
                             <label for="vl_com_checkup">Vl. com. checkup<span class="text-danger">*</span></label>
-                            <input type="text" id="vl_com_checkup" class="form-control" name="vl_com_checkup" required>
+                            <input type="text" id="vl_com_checkup" class="form-control mascaraMonetaria" name="vl_com_checkup" required>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label for="vl_net_checkup">Vl. NET checkup<span class="text-danger">*</span></label>
-                            <input type="text" id="vl_net_checkup" class="form-control" name="vl_net_checkup" required>
+                            <input type="text" id="vl_net_checkup" class="form-control mascaraMonetaria" name="vl_net_checkup" required>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="vl_mercado">Vl. mercado<span class="text-danger">*</span></label>
+                            <input type="text" id="vl_mercado" class="form-control mascaraMonetaria" name="vl_mercado" required>
                         </div>
                     </div>
 
@@ -79,6 +85,25 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function($) {
+
+            $( "#ds_consulta" ).autocomplete({
+                  source: function( request, response ) {
+                      $.ajax( {
+                          url: "{{ route('get-active-consultas-by-especialidade') }}",
+                          dataType : "json",
+                          data: {term: $('#ds_consulta').val(), especialidadeId: $('#especialidade_id').val() },
+                          success  : function( data ) {
+                            response( data );
+                          }
+                      });
+                  },
+                  select: function(event, ui) {
+                      arConsulta = ui.item.id.split(' | ')
+                      
+                      $('#consulta_id').val(arConsulta[0]);
+                  }
+            });
+
             $('.cancel-new').click(function(){
                 $('.new-item-consulta form').find('text').val('');
                 $('.new-item-consulta form').find(':radio').prop('checked', false); 
@@ -86,6 +111,13 @@
             });
 
             $('#especialidade_id').change(function(){
+
+                if( !$( "#especialidade_id" ).val() ) {
+                    $( "#consulta_id" ).val('');
+                    $( "#ds_consulta" ).val('').attr('disabled','disabled');
+                    return false;
+                }
+
                 $.ajax({
                     type     : 'get',
                     url      : "/get-active-clinicas-by-especialidade",
@@ -98,25 +130,12 @@
 
                         $('#clinica_id').html('');
                         $('#clinica_id').append('<option value="">Selecione</option>');
-                        console.log(data);
+                        
+                        $( "#ds_consulta" ).val('').removeAttr('disabled');
+                        $( "#consulta_id" ).val('');
 
                         for( var i = 0; i < data.length; i++ ){
                             $('#clinica_id').append('<option value="' + data[i].id + '">' + data[i].nm_fantasia + '</option>');
-                        }
-                    }
-                });
-
-                $.ajax({
-                    type     : 'get',
-                    url      : "/get-active-consultas-by-especialidade",
-                    dataType : 'json',
-                    data     : {especialidade_id: $(this).val()},
-                    success  : function(data) {
-                        $('#consulta_id').html('');
-                        $('#consulta_id').append('<option value="">Selecione</option>');
-
-                        for( var i = 0; i < data.length; i++ ){
-                            $('#consulta_id').append('<option value="' + data[i].id + '">' + data[i].cd_consulta + ' - ' + data[i].ds_consulta + '</option>');
                         }
                     }
                 });

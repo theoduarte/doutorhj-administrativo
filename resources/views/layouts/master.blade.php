@@ -8,7 +8,7 @@
 	<meta name="description" content="Comvex">
 	<meta name="keywords" content="doutorhj saúde consulta médico sus plano de saúde">
 	<meta name="author" content="Theogenes Ferreira Duarte">
-	<title>@yield('title', 'Doctor HJ')</title>
+	<title>@yield('title', 'Doutor HJ')</title>
 	@push('style')
 	    <!-- Sweet Alert css -->
 		<link href="/libs/sweet-alert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
@@ -183,7 +183,7 @@
 		</div>
 		<!-- end content -->
 		<footer class="footer">
-			2018 © <span class="text-primary"><strong>Comvex</strong></span> <span class="hide-phone text-pink">- DoctorHJ</span>
+			2018 © <span class="text-primary"><strong>Comvex</strong></span> <span class="hide-phone text-pink">- DoutorHJ</span>
 		</footer>
 	</div>
 	<!-- ============================================================== -->

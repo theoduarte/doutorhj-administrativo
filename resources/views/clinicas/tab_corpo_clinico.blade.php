@@ -48,7 +48,7 @@
 					<td>@if( isset($profissional->filials) && sizeof($profissional->filials) > 0 ) <ul class="list-profissional-especialidade">@foreach($profissional->filials as $filial) <li><i class="mdi mdi-check"></i> @if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA FILIAL SELECIONADA</span>  @endif</td>
 					<td>{{date('d-m-Y H:i', strtotime($profissional->updated_at))}}</td>
 					<td>
-						<a href="#" onclick="openModal({{ $profissional->id }})" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+						<a href="#" onclick="openModal({{ $profissional->id }})" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-pencil"></i></a>
 						<a onclick="deleteProfissional(this, '{{$profissional->nm_primario}} {{$profissional->nm_secundario}}', {{$profissional->id}})" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i></a>
 					</td>
 				</tr>
@@ -164,6 +164,7 @@
                         <div class="form-group no-margin">
                             <label for="filial_profissional" class="control-label">Locais de Atendimento</label>
                             <select id="filial_profissional" class="select2 select2-multiple" name="filial_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
+                                <option value="all"><strong>-- Todos os Locais --</strong></option>
                             	@foreach($list_filials as $filial)
 								<option value="{{ $filial->id }}">@if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</option>
 								@endforeach  

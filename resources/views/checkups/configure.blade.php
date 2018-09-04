@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
-                <h4 class="page-title">Doctor HJ</h4>
+                <h4 class="page-title">Doutor HJ</h4>
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('checkups.index') }}">Lista de Checkups</a></li>
@@ -56,10 +56,11 @@
                 <table class="table table-striped table-bordered" data-page-size="4">
                     <tr>
                         <th width="20%">Consulta</th>
-                        <th>Com. Atend.</th>
-                        <th>Com.  CHeckup</th>
-                        <th>NET Atend.</th>
-                        <th>NET CHeckup</th>
+                        <th>VL NET Atend.</th>
+                        <th>Vl. Com. Atend.</th>
+                        <th>Vl. NET CHeckup</th>
+                        <th>Cl. Com.  CHeckup</th>
+                        <th>Vl. Mercado</th>
                         <th width="20%">Clinicas</th>
                         <th width="25%">Profissinais</th>
                         <th>Ações</th>
@@ -68,20 +69,23 @@
                     <tfoot>
                         <tr>
                             <td>Totais</td>
-                            <td>R$ {{ number_format($itemCheckupsConsulta[0]->total_vl_com_atendimento, 2, ',', '.') }}</td>
-                            <td>R$ {{ number_format($itemCheckupsConsulta[0]->total_vl_com_checkup, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckupsConsulta[0]->total_vl_net_atendimento, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckupsConsulta[0]->total_vl_com_atendimento, 2, ',', '.') }}</td>
+                            
                             <td>R$ {{ number_format($itemCheckupsConsulta[0]->total_vl_net_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckupsConsulta[0]->total_vl_com_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckupsConsulta[0]->total_vl_mercado, 2, ',', '.') }}</td>
                         </tr>
                     </tfoot>
                     @endif
                     @foreach ($itemCheckupsConsulta as $itemCheckup)
                         <tr>
                             <td>{{ $itemCheckup->cd_consulta }} - {{ $itemCheckup->ds_consulta }}</td>
-                            <td>R$ {{ number_format($itemCheckup->vl_com_atendimento, 2, ',', '.') }}</td>
-                            <td>R$ {{ number_format($itemCheckup->vl_com_checkup, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckup->vl_net_atendimento, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_com_atendimento, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckup->vl_net_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_com_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_mercado, 2, ',', '.') }}</td>
 
                             @php 
                                 $clinicas = json_decode( str_replace('\\','', $itemCheckup->clinicas) );
@@ -139,10 +143,11 @@
                 <table class="table table-striped table-bordered" data-page-size="4">
                     <tr>
                         <th width="35%">Exame/Procedimento</th>
-                        <th>Com. Atend.</th>
-                        <th>Com.  CHeckup</th>
-                        <th>NET Atend.</th>
-                        <th>NET CHeckup</th>
+                        <th>VL NET Atend.</th>
+                        <th>Vl. Com. Atend.</th>
+                        <th>Vl. NET CHeckup</th>
+                        <th>Cl. Com.  CHeckup</th>
+                        <th>Vl. Mercado</th>
                         <th width="30%">Clinicas</th>
                         <th>Ações</th>
                     </tr>
@@ -150,20 +155,22 @@
                     <tfoot>
                         <tr>
                             <td>Totais</td>
-                            <td>R$ {{ number_format($itemCheckupsExame[0]->total_vl_com_atendimento, 2, ',', '.') }}</td>
-                            <td>R$ {{ number_format($itemCheckupsExame[0]->total_vl_com_checkup, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckupsExame[0]->total_vl_net_atendimento, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckupsExame[0]->total_vl_com_atendimento, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckupsExame[0]->total_vl_net_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckupsExame[0]->total_vl_com_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckupsExame[0]->total_vl_mercado, 2, ',', '.') }}</td>
                         </tr>
                     </tfoot>
                     @endif
                     @foreach ($itemCheckupsExame as $itemCheckup)
                         <tr>
                             <td>{{ $itemCheckup->cd_procedimento }} - {{ $itemCheckup->ds_procedimento }}</td>
-                            <td>R$ {{ number_format($itemCheckup->vl_com_atendimento, 2, ',', '.') }}</td>
-                            <td>R$ {{ number_format($itemCheckup->vl_com_checkup, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckup->vl_net_atendimento, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_com_atendimento, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($itemCheckup->vl_net_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_com_checkup, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($itemCheckup->vl_mercado, 2, ',', '.') }}</td>
 
                             @php 
                                 $clinicas = json_decode( str_replace('\\','', $itemCheckup->clinicas) );

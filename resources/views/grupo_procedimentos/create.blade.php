@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Doctor HJ: Grupos de Procedimentos')
+@section('title', 'Doutor HJ: Grupos de Procedimentos')
 
 @section('container')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="page-title-box">
-				<h4 class="page-title">Doctor HJ</h4>
+				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('grupo_procedimentos.index') }}">Lista de Grupos</a></li>
@@ -21,7 +21,7 @@
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
 			<div class="card-box">
-				<h4 class="header-title m-t-0">Adicionar Grupo</h4>
+				<h4 class="header-title m-t-0">Adicionar Grupo de Procedimento</h4>
 				
 				<form action="{{ route('grupo_procedimentos.store') }}" method="post">
 				

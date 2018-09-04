@@ -32,30 +32,32 @@ class Atendimento extends Model
 	}
     
 	public function profissional(){
-	    return $this->belongsTo('App\Profissional');
+	    return $this->belongsTo('App\Profissional')->withDefault();
 	}
 	
 	public function filials()
 	{
 		return $this->belongsToMany('App\Filial');
 	}
+
+    public function setVlNetAtendimentoAttribute($value)
+    {
+        if (empty($value)) return;
+        $this->attributes['vl_net_atendimento'] = str_replace(',', '.', str_replace('.', '', $value));
+    }
+    
+    public function setVlComAtendimentoAttribute($value)
+    {
+        if (empty($value)) return;
+        $this->attributes['vl_com_atendimento'] = str_replace(',', '.', str_replace('.', '', $value));
+    }
 	
-	public function getVlNetAtendimentoAttribute($valor){
-	    return number_format( $valor,  2, ',', '.');
+	public function getVlNetAtendimentoAttribute(){
+	    return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
 	}
 	
-	public function getVlComAtendimentoAttribute($valor){
-	    return number_format( $valor,  2, ',', '.');
-	}
-	
-	public function getVlComercialAtendimento()
-	{
-		return number_format( $this->attributes['vl_com_atendimento'],  2, ',', '.');
-	}
-	
-	public function getVlNetAtendimento()
-	{
-		return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
+	public function getVlComAtendimentoAttribute($val){
+	    return number_format( $this->attributes['vl_com_atendimento'],  2, ',', '.');
 	}
 
 	public function getFirst($data) {
@@ -71,8 +73,18 @@ class Atendimento extends Model
                 $query->where('consulta_id', $data['consulta_id'])->get();
             }
 
+            if ( !empty($data['especialidade']) ) {
+                $query->where('consulta_id', $data['especialidade'])->get();
+            }
+
             if ( !empty($data['profissional_id']) ) {
-                $query->whereIn('profissional_id', $data['profissional_id'])->get();
+
+                if (is_array($data['profissional_id']) ) {
+                    $query->whereIn('profissional_id', $data['profissional_id'])->get();
+                }
+                else {
+                    $query->where('profissional_id', $data['profissional_id'])->get();
+                }
             }
         })->first();
 
@@ -91,6 +103,12 @@ class Atendimento extends Model
             if ( !empty($data['procedimento_id']) ) {
                 $query->where('procedimento_id', $data['procedimento_id'])->get();
             }
+
+            if ( !empty($data['especialidade']) ) {
+                $query->where('procedimento_id', $data['especialidade'])->get();
+            }
+
+            
         })->first();
 
         return !empty($atendimentos) ? $atendimentos->toArray() : [];
@@ -100,7 +118,7 @@ class Atendimento extends Model
 		$atendimentos =  $this::where(function ($query) use ($data) {
             $query->where('cs_status','A')->get();
             if ( !empty($data['clinica_id']) ) {
-                $query->where('clinica_id', $data['clinica_id'])->get();
+                $query->whereIn('clinica_id', explode(',',$data['clinica_id']))->get();
             }
 
             if ( !empty($data['consulta_id']) ) {

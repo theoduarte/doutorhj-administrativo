@@ -156,6 +156,21 @@ class CheckupsController extends Controller
     }
 
     /**
+     * Get clinicas by consulta
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getClinicasByConsulta(Request $request)
+    {
+        $clinica = new Clinica();
+        $consultas = $clinica->getActiveByConsulta( $request->get('consulta_id') );
+
+        echo json_encode($consultas);
+        exit;
+    }
+
+    /**
      * Get clinicas by especialidade
      *
      * @param  \Illuminate\Http\Request  $request
@@ -163,15 +178,22 @@ class CheckupsController extends Controller
      */
     public function getConsultasByEspecidalide(Request $request)
     {
-        $consulta = new Consulta();
-        $especialidades = $consulta->getActiveByEspecialidade( $request->get('especialidade_id') );
+        $term = $request->get('term');
+        $especialidadeId = $request->get('especialidadeId');
 
-        echo json_encode($especialidades);
-        exit;
+        $consulta = new Consulta();
+        $especialidades = $consulta->getActiveByEspecialidade( $especialidadeId, $term );
+
+        $arResultado = array();
+        foreach ($especialidades as $query) {
+            $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_consulta.' | '.$query->ds_consulta, 'value' => '('.$query->cd_consulta.') '.$query->ds_consulta ];
+        }
+
+        return Response()->json($arResultado);
     }
 
     /**
-     * Get clinicas by especialidade
+     * Get profissionals by clinica
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -209,10 +231,14 @@ class CheckupsController extends Controller
     public function getProcedimentosByGrupoProcedimento(Request $request)
     {
         $procedimento = new Procedimento();
-        $procedimentos = $procedimento->getActiveByGrupoProcedimento( $request->get('grupo_procedimento_id') );
+        $procedimentos = $procedimento->getActiveByGrupoProcedimento( $request->get('grupoProcedimentoId'), $request->get('term') );
 
-        echo json_encode($procedimentos);
-        exit;
+        $arResultado = array();
+        foreach ($procedimentos as $query) {
+            $arResultado[] = [ 'id' => $query->id.' | '.$query->cd_procedimento.' | '.$query->ds_procedimento, 'value' => '('.$query->cd_procedimento.') '.$query->ds_procedimento ];
+        }
+
+        return Response()->json($arResultado);
     }
 
     /**
@@ -244,6 +270,5 @@ class CheckupsController extends Controller
         echo json_encode($atendimentoResult);
         exit;
     }
-
     
 }

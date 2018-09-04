@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Doctor HJ: Tipo de Atendimentos')
+@section('title', 'Doutor HJ: Tipo de Atendimentos')
 
 @section('container')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="page-title-box">
-				<h4 class="page-title">Doctor HJ</h4>
+				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('tipo_atendimentos.index') }}">Lista de Tipos</a></li>
@@ -36,6 +36,14 @@
 						<tr>
 							<td>Título:</td>
 							<td>{{ $tipo_atendimento->ds_atendimento }}</td>
+						</tr>
+						<tr>
+							<td>TAG Value:</td>
+							<td>{{ $tipo_atendimento->tag_value }}</td>
+						</tr>
+						<tr>
+							<td>Ativo na busca da área pública (landing page)?:</td>
+							<td>{{ $tipo_atendimento->getStatusString() }}</td>
 						</tr>
 					</tbody>
 				</table>

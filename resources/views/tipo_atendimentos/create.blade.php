@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Doctor HJ: Tipo de Atendimentos')
+@section('title', 'Doutor HJ: Tipo de Atendimentos')
 
 @section('container')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="page-title-box">
-				<h4 class="page-title">Doctor HJ</h4>
+				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('tipo_atendimentos.index') }}">Lista de Tipos</a></li>
@@ -29,13 +29,36 @@
 					
 					<div class="form-group">
 						<label for="cd_atendimento">Código<span class="text-danger">*</span></label>
-						<input type="text" id="cd_atendimento" class="form-control" name="cd_atendimento" placeholder="Código do Tipo de Atendimento" maxlength="3" required  >
+						<input type="text" id="cd_atendimento" class="form-control" name="cd_atendimento" value="{{ !empty(old('cd_atendimento')) ? old('cd_atendimento') : null}}"placeholder="Código do Tipo de Atendimento" maxlength="3" required  >
 					</div>
 					
 					<div class="form-group">
 						<label for="ds_atendimento">Título<span class="text-danger">*</span></label>
-						<input type="text" id="ds_atendimento" class="form-control" name="ds_atendimento" placeholder="Título do Grupo" maxlength="150" required  >
+						<input type="text" id="ds_atendimento" class="form-control" name="ds_atendimento" value="{{ !empty(old('ds_atendimento')) ? old('ds_atendimento') : null}}"placeholder="Título do Grupo" maxlength="150" required  >
 					</div>
+
+					<div class="form-group">
+						<label for="tag_value">TAG (value)<span class="text-danger"></span></label>
+						<input type="text" id="tag_value" class="form-control" name="tag_value" value="{{ !empty(old('tag_value')) ? old('tag_value') : null}}" placeholder="Valor da tag nos campos de busca" maxlength="150">
+                        <small>* Campo sensível a todo o sistema. A alteração desse valor só deve ser feito por analista/desenvolvedor responsável!</small>
+					</div>
+
+
+					
+					<div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                    	<div class="row">
+                            <div class="col-5">
+                             	<label for="cs_status-a" class="control-label">Ativo na busca da área pública (landing page)?<span class="text-danger">*</span></label>
+                                <br>
+                                <input type="radio" value="A" id="cs_status-a" name="cs_status" @if( old('cs_status') == 'A' ) checked @endif autofocus style="cursor: pointer;">
+                                <label for="cs_status-a" style="cursor: pointer;">Ativo</label>
+             					<br>
+                                <input type="radio" value="I" id="cs_status-i" name="cs_status" @if( old('cs_status') == 'I' ) checked @endif autofocus style="cursor: pointer;">
+                                <label for="cs_status-i" style="cursor: pointer;">Inativo</label>
+                            </div>
+                            <small>* A inativação apenas retira a opção dos campos de busca da landing page (Parte pública).</small>
+                        </div>
+                    </div>
 					
 					<div class="form-group text-right m-b-0">
 						<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>

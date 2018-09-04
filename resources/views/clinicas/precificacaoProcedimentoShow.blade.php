@@ -33,8 +33,8 @@
                 					<td>{{$procedimento->procedimento->id}}</td>
                 					<td>{{$procedimento->procedimento->cd_procedimento}}</td>
                 					<td>{{$procedimento->procedimento->ds_procedimento}}</td>
-                					<td>R$ {{$procedimento->getVlComercialAtendimento()}}</td>
-                					<td>R$ {{$procedimento->getVlNetAtendimento()}}</td>
+                					<td>R$ {{$procedimento->vl_com_atendimento}}</td>
+                					<td>R$ {{$procedimento->vl_net_atendimento}}</td>
                 					<td>{{ $procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }}</td>
                 				</tr>
             				@endforeach

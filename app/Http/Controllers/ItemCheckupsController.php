@@ -31,6 +31,7 @@ class ItemCheckupsController extends Controller
             $itemCheckup->ds_item = $request->get('ds_item');
             $itemCheckup->vl_net_checkup = $request->get('vl_net_checkup');
             $itemCheckup->vl_com_checkup = $request->get('vl_com_checkup');
+            $itemCheckup->vl_mercado = $request->get('vl_mercado');
             $itemCheckup->save();
         }
 
@@ -56,6 +57,7 @@ class ItemCheckupsController extends Controller
         $itemCheckup->ds_item = $request->get('ds_item');
         $itemCheckup->vl_net_checkup = $request->get('vl_net_checkup');
         $itemCheckup->vl_com_checkup = $request->get('vl_com_checkup');
+        $itemCheckup->vl_mercado = $request->get('vl_mercado');
         $itemCheckup->save();
 
         return redirect()->route('checkups.configure', $checkup)->with('success', 'Item(s) de checkup cadastrado(s) com sucesso!');

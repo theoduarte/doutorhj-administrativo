@@ -27,7 +27,7 @@ class Controller extends BaseController
             
             # busca na api doctorhoje---------------------------------------------
             $token = 'o2z554dpxadq0db137gw25ud5ahrlt1j'; // token doctorhoje api
-			$url = 'https://api.doctorhoje.com.br/api/v1/consultar-cep/'.$nrCep;
+			$url = 'https://api.doutorhoje.com.br/api/v1/consultar-cep/'.$nrCep;
             
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
