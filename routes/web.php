@@ -29,6 +29,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('checkups','CheckupsController');
     Route::resource('termos-condicoes','TermosCondicoesController');
 
+
+	Route::resource('planos', 'PlanoController');
+
+
+
     Route::get('checkups-configure/{checkup}','CheckupsController@configure')->name('checkups.configure');
     Route::get('get-active-clinicas-by-especialidade','CheckupsController@getClinicasByEspecidalide')->name('get-active-clinicas-by-especialidade');
     Route::get('get-active-consultas-by-especialidade','CheckupsController@getConsultasByEspecidalide')->name('get-active-consultas-by-especialidade');
