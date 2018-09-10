@@ -5,6 +5,8 @@ $(document).ready(function() {
     });
 		
 	$(".mascaraMonetaria").maskMoney({prefix:'', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
+
+	$(".maskAnuidade").maskMoney({prefix:'', allowNegative: false, thousands:'.', decimal:',', affixesStay: false, allowZero: true});
 	
 	$(".mascaraTelefone").inputmask({
         mask: ["(99) 9999-9999", "(99) 99999-9999"],

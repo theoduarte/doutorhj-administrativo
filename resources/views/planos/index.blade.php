@@ -21,7 +21,7 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				<h4 class="m-t-0 header-title">Clínicas</h4>
+				<h4 class="m-t-0 header-title">Planos</h4>
 				<p class="text-muted m-b-30 font-13"></p>
 				
 				<div class="row ">
@@ -33,12 +33,12 @@
         					</div>	
             				<div class="row">
             					<div  style="width: 529px !important;">
-        				            <label for="tp_filtro_razao_social">Filtrar por:</label><br>
-                                    <input type="radio" id="tp_filtro_razao_social" name="tp_filtro" value="nm_razao_social" @if(old('tp_filtro')=='nm_razao_social') checked @endif>
-                                    <label for="tp_filtro_razao_social" style="cursor: pointer;">Razão Social&nbsp;&nbsp;&nbsp;</label>
+        				            <label for="tp_filtro_cd_plano">Filtrar por:</label><br>
+                                    <input type="radio" id="tp_filtro_cd_plano" name="tp_filtro" value="cd_plano" @if(old('tp_filtro')=='cd_plano') checked @endif>
+                                    <label for="tp_filtro_cd_plano" style="cursor: pointer;">Código&nbsp;&nbsp;&nbsp;</label>
                             
-                                    <input type="radio" id="tp_filtro_nm_fantasia" name="tp_filtro" value="nm_fantasia" @if(old('tp_filtro')=='nm_fantasia') checked @endif>
-                                    <label for="tp_filtro_nm_fantasia" style="cursor: pointer;">Nome Fantasia&nbsp;&nbsp;</label>
+                                    <input type="radio" id="tp_filtro_ds_plano" name="tp_filtro" value="ds_plano" @if(old('tp_filtro')=='ds_plano') checked @endif>
+                                    <label for="tp_filtro_ds_plano" style="cursor: pointer;">Descricao&nbsp;&nbsp;</label>
                                 </div>
             				</div>
             				<div class="row">
@@ -56,10 +56,10 @@
 					<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
     					<tr>
     						<th>@sortablelink('id', 'Cód.')</th>
-    						<th>@sortablelink('nm_razao_social', 'Razão Social')</th>
-    						<th>@sortablelink('nm_fantasia', 'Nome Fantasia')</th>
-    						<th>@sortablelink('nm_primario', 'Responsável')</th>
-    						<th>Contato</th>
+    						<th>@sortablelink('cd_plano', 'Código')</th>
+    						<th>@sortablelink('ds_plano', 'Descricao')</th>
+    						<th>@sortablelink('anuidade', 'Anuidade')</th>
+    						<th>Tipo de Plano</th>
     						<th>Ações</th>
     					</tr>
     					@foreach($planos as $plano)
@@ -68,7 +68,11 @@
     						<td>{{$plano->cd_plano}}</td>
     						<td>{{$plano->ds_plano}}</td>
     						<td>{{$plano->anuidade}}</td>
-                	 		<td>{{$plano->tipoPlano->descricao}}</td>
+                	 		<td>
+								@foreach($plano->tipoPlanos as $tipoPlano)
+									{{$tipoPlano->descricao}}<br>
+								@endforeach
+							</td>
     						<td>
     							<a href="{{ route('planos.show', $plano->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
     							<a href="{{ route('planos.edit', $plano->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>

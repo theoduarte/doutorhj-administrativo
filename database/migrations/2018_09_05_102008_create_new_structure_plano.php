@@ -18,7 +18,7 @@ class CreateNewStructurePlano extends Migration
 			$table->integer('id', true);
 			$table->integer('cd_plano');
 			$table->string('ds_plano', 150)->nullable();
-			$table->integer('tp_plano_id');
+			$table->float('anuidade');
 
 			$table->timestamp('created_at', 0)->useCurrent()->nullable();
 			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
@@ -144,9 +144,11 @@ class CreateNewStructurePlano extends Migration
 			$table->primary(['campanha_id','paciente_id'], 'campanhas_clinicas_pkey');
 		});
 
-		Schema::table('planos', function(Blueprint $table)
+		Schema::create('plano_tipoplano', function(Blueprint $table)
 		{
-			$table->foreign('tp_plano_id', 'planos_tp_plano_id_foreign')->references('id')->on('tipo_planos');
+			$table->integer('tipo_plano_id');
+			$table->integer('plano_id');
+			$table->primary(['tipo_plano_id','plano_id'], 'planos_tipoplanos_pkey');
 		});
 
 		Schema::table('vigencia_pacientes', function(Blueprint $table)
@@ -182,6 +184,12 @@ class CreateNewStructurePlano extends Migration
 			$table->foreign('plano_id', 'entidade_plano_id_foreign')->references('id')->on('planos');
 		});
 
+		Schema::table('plano_tipoplano', function(Blueprint $table)
+		{
+			$table->foreign('tipo_plano_id', 'plano_tipoplano_tipo_plano_id_foreign')->references('id')->on('tipo_planos');
+			$table->foreign('plano_id', 'plano_tipoplano_plano_id_foreign')->references('id')->on('planos');
+		});
+
 		Schema::table('campanha_clinica', function(Blueprint $table)
 		{
 			$table->foreign('campanha_id', 'campanha_clinica_campanha_id_foreign')->references('id')->on('campanhas');
@@ -196,11 +204,6 @@ class CreateNewStructurePlano extends Migration
      */
     public function down()
     {
-		Schema::table('planos', function(Blueprint $table)
-		{
-			$table->dropForeign('planos_tp_plano_id_foreign');
-		});
-
 		Schema::table('vigencia_pacientes', function(Blueprint $table)
 		{
 			$table->dropForeign('vigencia_pacientes_plano_id_foreign');
@@ -234,6 +237,12 @@ class CreateNewStructurePlano extends Migration
 			$table->dropForeign('entidade_plano_id_foreign');
 		});
 
+		Schema::table('plano_tipoplano', function(Blueprint $table)
+		{
+			$table->dropForeign('plano_tipoplano_tipo_plano_id_foreign');
+			$table->dropForeign('plano_tipoplano_plano_id_foreign');
+		});
+
 		Schema::table('campanha_clinica', function(Blueprint $table)
 		{
 			$table->dropForeign('campanha_clinica_campanha_id_foreign');
@@ -252,5 +261,6 @@ class CreateNewStructurePlano extends Migration
 		Schema::drop('vigencia_pacientes');
 		Schema::drop('entidade_plano');
 		Schema::drop('campanha_clinica');
+		Schema::drop('plano_tipoplano');
     }
 }

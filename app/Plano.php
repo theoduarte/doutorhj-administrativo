@@ -2,41 +2,33 @@
 
 namespace App;
 
+use App\Http\Controllers\UtilController;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
 /**
  * @property int $id
- * @property int $tp_plano_id
  * @property int $cd_plano
  * @property string $ds_plano
+ * @property float $anuidade
  * @property string $created_at
  * @property string $updated_at
- * @property TipoPlano $tipoPlano
  * @property VigenciaPaciente[] $vigenciaPacientes
  * @property ServicoAdicional[] $servicoAdicionals
  * @property Voucher[] $vouchers
  * @property Preco[] $precos
  * @property Entidade[] $entidades
+ * @property TipoPlano[] $tipoPlanos
  */
 class Plano extends Model
 {
 	use Sortable;
 
-	public $sortable = ['id', 'tp_plano_id', 'cd_plano', 'ds_plano'];
-
     /**
      * @var array
      */
-    protected $fillable = ['tp_plano_id', 'cd_plano', 'ds_plano', 'created_at', 'updated_at'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function tipoPlano()
-    {
-        return $this->belongsTo('App\TipoPlano', 'tp_plano_id');
-    }
+    protected $fillable = ['cd_plano', 'ds_plano', 'anuidade', 'created_at', 'updated_at'];
+	public $sortable = ['id', 'cd_plano', 'ds_plano', 'anuidade', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -77,4 +69,32 @@ class Plano extends Model
     {
         return $this->belongsToMany('App\Entidade');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tipoPlanos()
+    {
+        return $this->belongsToMany('App\TipoPlano', 'plano_tipoplano');
+    }
+
+	/**
+	 * Set the anuidade without mask
+	 *
+	 * @param  string  $value
+	 * @return void
+	 */
+	public function setAnuidadeAttribute($value)
+	{
+		$this->attributes['anuidade'] = UtilController::removeMaskMoney($value);
+	}
+
+	/**
+	 * Get the anuidade with mask.
+	 * @return string
+	 */
+	public function getAnuidadeAttribute($value)
+	{
+		return number_format($value, 2, ',', '.');
+	}
 }

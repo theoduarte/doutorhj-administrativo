@@ -13,16 +13,20 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TipoPlano extends Model
 {
+	const INDIVIDUAL = 1;
+	const CORPORATIVO = 2;
+	const PARCERIA = 3;
+
     /**
      * @var array
      */
     protected $fillable = ['descricao', 'created_at', 'updated_at'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function planos()
     {
-        return $this->hasMany('App\Plano', 'tp_plano_id');
+        return $this->belongsToMany('App\Plano', 'plano_tipoplano');
     }
 }

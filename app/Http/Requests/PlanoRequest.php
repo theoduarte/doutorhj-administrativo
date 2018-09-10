@@ -13,8 +13,22 @@ class PlanoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
+
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
+	public function attributes()
+	{
+		return [
+			'cd_plano'					=> 'Código',
+			'ds_plano'					=> 'Descrição',
+			'tp_plano_id'				=> 'Tipo de Plano',
+		];
+	}
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,7 +38,11 @@ class PlanoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+			'cd_plano'					=> 'required|integer',
+			'ds_plano'					=> 'required|string|max:150',
+			'tipoPlanos'				=> 'required|array',
+			'tipoPlanos.*'				=> 'required|integer|exists:tipo_planos,id',
+			'anuidade'					=> 'required|money'
         ];
     }
 }
