@@ -19,10 +19,7 @@ class ServicoAdicional extends Model
 
   use Sortable;
 
-  public $sortable = ['id', 'titulo', 'plano_id', 'created_at', 'updated_at']
-  /**
-   * @var array
-   */
+  public $sortable = ['id', 'titulo', 'plano_id']
   protected $fillable = ['plano_id', 'titulo', 'ds_servico', 'cs_status', 'created_at', 'updated_at'];
 
   /**
