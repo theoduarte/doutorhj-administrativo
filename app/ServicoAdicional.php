@@ -16,16 +16,19 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ServicoAdicional extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['plano_id', 'titulo', 'ds_servico', 'cs_status', 'created_at', 'updated_at'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function plano()
-    {
-        return $this->belongsTo('App\Plano');
-    }
+  use Sortable;
+
+  public $sortable = ['id', 'titulo', 'plano_id']
+  protected $fillable = ['plano_id', 'titulo', 'ds_servico', 'cs_status', 'created_at', 'updated_at'];
+
+  /**
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function plano()
+  {
+      return $this->belongsTo('App\Plano');
+  }
+
+
 }

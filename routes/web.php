@@ -28,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('cupom_descontos','CupomDescontoController');
     Route::resource('checkups','CheckupsController');
     Route::resource('termos-condicoes','TermosCondicoesController');
+    Route::resource('servico_adicional', 'ServicoAdicionalController');
+
 
 
 	Route::resource('planos', 'PlanoController');
@@ -68,11 +70,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('delete-tag-popular', 'TagPopularController@deleteTagPopularDestroy');
 
     Route::post('load-data-atendimento', 'AtendimentoController@loadAtendimentoShow');
-    
+
     Route::post('add-precificacao-consulta/{clinica}/clinica', 'ClinicaController@precificacaoConsultaStore')->name('add-precificacao-consulta');
     Route::put('edit-precificacao-consulta/{clinica}/clinica', 'ClinicaController@precificacaoConsultaUpdate')->name('edit-precificacao-consulta');
     Route::delete('delete-precificacao-consulta', 'ClinicaController@precificacaoConsultaDestroy')->name('delete-precificacao-consulta');
-    
+
     Route::post('add-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@precificacaoProcedimentoStore')->name('add-precificacao-procedimento');
     Route::put('edit-precificacao-procedimento/{clinica}/clinica', 'ClinicaController@precificacaoProcedimentoUpdate')->name('edit-precificacao-procedimento');
     Route::delete('delete-precificacao-procedimento', 'ClinicaController@precificacaoProcedimentoDestroy')->name('delete-precificacao-procedimento');
@@ -95,8 +97,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get-active-filials-by-clinica-profissional-consulta','AgendamentoController@getFilialsByClinicaProfissionalConsulta')->name('get-active-filials-by-clinica-profissional-consulta');
     Route::get('get-active-filials-by-clinica-procedimento','AgendamentoController@getFilialsByClinicaProcedimento')->name('get-active-filials-by-clinica-procedimento');
     Route::post('create-new-agendamento-atendimento','AgendamentoController@createNewAgendamentoAtendimento')->name('create-new-agendamento-atendimento');
-    
-    
+
+
 });
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
