@@ -17,16 +17,16 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
 			<div class="card-box">
 				<h4 class="header-title m-t-0">Editar Cupom de Desconto</h4>
-				
+
 				<form action="{{ route('cupom_descontos.update', $cupom_desconto->id) }}" method="post">
 					<input type="hidden" name="_method" value="PUT">
 					{!! csrf_field() !!}
-					
+
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-9">
@@ -39,12 +39,12 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group">
 						<label for="descricao">Descrição<span class="text-danger">*</span></label>
 						<textarea id="descricao" class="form-control" name="descricao" placeholder="Descrição do Cupom de Desconto" >{{ $cupom_desconto->descricao }}</textarea>
 					</div>
-					
+
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-4">
@@ -61,7 +61,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-3">
@@ -85,7 +85,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group text-right m-b-0">
 						<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>
 						<a href="{{ route('cupom_descontos.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>

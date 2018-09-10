@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 /**
  * @property int $id
@@ -19,7 +20,7 @@ class ServicoAdicional extends Model
 
   use Sortable;
 
-  public $sortable = ['id', 'titulo', 'plano_id']
+  public $sortable = ['id', 'titulo', 'plano_id'];
   protected $fillable = ['plano_id', 'titulo', 'ds_servico', 'cs_status', 'created_at', 'updated_at'];
 
   /**

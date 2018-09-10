@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ServicoAdicionalRequest;
 use App\ServicoAdicional;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as CVXRequest;
+use Illuminate\Support\Facades\DB;
 
 class ServicoAdicionalController extends Controller
 {
 
   public function index()
   {
-    $servico = ServicoAdicional::sortable()->paginate(10);
-    return view('servico.index', compact('servico'))
+    $get_term = CVXRequest::get('search_term');
+    $search_term = UtilController::toStr($get_term);
+
+    $servico_adicionals = ServicoAdicional::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    return view('servico_adicionals.index', compact('servico'));
   }
 
   public function create()
@@ -25,7 +29,7 @@ class ServicoAdicionalController extends Controller
   {
     $model = ServicoAdicional::find($id);
 
-    return view('servico.edit', compact('model'))
+    return view('servico.edit', compact('model'));
   }
 
   public function destroy($id)

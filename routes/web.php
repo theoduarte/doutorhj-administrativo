@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('cupom_descontos','CupomDescontoController');
     Route::resource('checkups','CheckupsController');
     Route::resource('termos-condicoes','TermosCondicoesController');
-    Route::resource('servico_adicional', 'ServicoAdicionalController');
+    Route::resource('servico_adicionals', 'ServicoAdicionalController');
 
 
 
