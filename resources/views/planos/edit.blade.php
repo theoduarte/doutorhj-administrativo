@@ -18,51 +18,62 @@
 		</div>
 	</div>
 	
-	<form action="{{ route('clinicas.update', $prestador->id) }}" method="post">
+	<form action="{{ route('planos.update', $model->id) }}" method="post">
 		<input type="hidden" name="_method" value="PUT">
 		{!! csrf_field() !!}
     	
     	<div class="row">
 	        <div class="col-12">
                 <div class="card-box col-12">
-                    <h4 class="header-title m-t-0 m-b-30">Clínicas</h4>
-    
-                    <ul id="cvx-tab" class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a href="#prestador" data-toggle="tab" aria-expanded="true" class="nav-link active">
-                                Dados do Prestador
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#precificacaoProcedimento" data-toggle="tab" aria-expanded="false" class="nav-link">
-                                Precificação de Procedimentos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#precificacaoConsulta" data-toggle="tab" aria-expanded="false" class="nav-link">
-                                Precificação de Consultas
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#corpoClinico" data-toggle="tab" aria-expanded="false" class="nav-link">
-                                Corpo Clínico
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade active show" id="prestador">
-                        	@include('clinicas/tab_dados_prestador_edit')
-                        </div>
-                        <div class="tab-pane fade" id="precificacaoProcedimento">
-                         	@include('clinicas/precificacaoProcedimento')
-                        </div>
-                        <div class="tab-pane fade" id="precificacaoConsulta">
-                         	@include('clinicas/precificacaoConsulta')
-                        </div>
-                        <div class="tab-pane fade" id="corpoClinico">
-                         	@include('clinicas/tab_corpo_clinico')
-                        </div>
-                    </div>
+					<h4 class="header-title m-t-0 m-b-30">Planos</h4>
+
+					@if ($errors->any())
+						<div class="alert alert-danger fade show">
+							<span class="close" data-dismiss="alert">×</span>
+							<ul>
+								@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
+
+					<div class="form-row">
+						<div class="form-group col-md-3">
+							<label for="cd_plano">Código<span class="text-danger">*</span></label>
+							<input type="number" id="cd_plano" class="form-control" name="cd_plano" placeholder="Código" required value="{{$model->cd_plano}}">
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="tipoPlanos">Tipo de Plano<span class="text-danger">*</span></label>
+							<select id="tipoPlanos" name="tipoPlanos[]" class="form-control select2" multiple required>
+								@foreach($tipoPlanos as $id=>$plano)
+									<option value="{{$id}}" @if (in_array($id, $model->tipoPlanos->pluck('id')->toArray())) selected="selected"  @endif>{{$plano}}</option>
+								@endforeach
+							</select>
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="cd_plano">Anuidade<span class="text-danger">*</span></label>
+							<input type="text" id="anuidade" class="form-control maskAnuidade" name="anuidade" placeholder="Anuidade" required value="{{$model->anuidade}}">
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col-md-12">
+							<label for="ds_plano">Descrição<span class="text-danger">*</span></label>
+							<input type="text" id="ds_plano" class="form-control" name="ds_plano" placeholder="Descrição" maxlength="150" required value="{{$model->ds_plano}}">
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="col-md-12">
+							<div class="form-group text-right m-b-0">
+								<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Cadastrar</button>
+								<a href="{{ route('planos.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
+							</div>
+						</div>
+					</div>
                 </div>
        		</div>
     	</div>

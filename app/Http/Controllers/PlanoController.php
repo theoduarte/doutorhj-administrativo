@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PlanoRequest;
 use App\Plano;
+use App\TipoPlano;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class PlanoController extends Controller
 {
@@ -16,7 +18,23 @@ class PlanoController extends Controller
 	 */
 	public function index()
 	{
-		$planos = Plano::sortable()->paginate(10);;
+		$planos = Plano::where(function($query){
+			if(!empty(Request::input('nm_busca'))){
+				switch (Request::input('tp_filtro')){
+					case "cd_plano" :
+						$query->where('cd_plano', 'ilike', '%'.UtilController::toStr(Request::input('cd_plano')).'%');
+						break;
+					case "ds_plano" :
+						$query->where(DB::raw('to_str(ds_plano)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+						break;
+					default:
+						$query->where(DB::raw('to_str(ds_plano)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+				}
+			}
+		})->sortable()->paginate(10);
+
+		Request::flash();
+
 		return view('planos.index', compact('planos'));
 	}
 
@@ -29,7 +47,9 @@ class PlanoController extends Controller
 	{
 		$model = new Plano();
 
-		return view('planos.create', compact('model'));
+		$tipoPlanos = TipoPlano::pluck('descricao', 'id');
+
+		return view('planos.create', compact('model', 'tipoPlanos'));
 	}
 
 	/**
@@ -42,10 +62,10 @@ class PlanoController extends Controller
 	{
 		$dados = $request->all();
 
-		$dados['cs_status'] = isset($dados['cs_status']) && $dados['cs_status'] ? 'A' : 'I';
-
 		$model = new Plano($dados);
 		$model->save();
+
+		$model->tipoPlanos()->sync($dados['tipoPlanos']);
 
 		return redirect()->route('planos.show', $model)->with('success', 'Registro adicionado');;
 	}
@@ -72,7 +92,9 @@ class PlanoController extends Controller
 	{
 		$model = Plano::find($id);
 
-		return view('planos.edit', compact('model'));
+		$tipoPlanos = TipoPlano::pluck('descricao', 'id');
+
+		return view('planos.edit', compact('model', 'tipoPlanos'));
 	}
 
 	/**
@@ -87,9 +109,9 @@ class PlanoController extends Controller
 		$model = Plano::findOrFail($id);
 		$dados = $request->all();
 
-		$dados['cs_status'] = isset($dados['cs_status']) && $dados['cs_status'] ? 'A' : 'I';
-
 		$model->update($dados);
+
+		$model->tipoPlanos()->sync($dados['tipoPlanos']);
 
 		return redirect()->route('planos.show', $model)->with('success', 'Registro atualizado');
 	}
