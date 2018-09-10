@@ -16,7 +16,7 @@ class ServicoAdicionalController extends Controller
     $search_term = UtilController::toStr($get_term);
 
     $servico_adicionals = ServicoAdicional::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
-    return view('servico_adicionals.index', compact('servico'));
+    return view('servico_adicionals.index', compact('servico_adicionals'));
   }
 
   public function create()
