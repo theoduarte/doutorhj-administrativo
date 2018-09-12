@@ -58,7 +58,6 @@
     						<th>@sortablelink('id', 'Cód.')</th>
     						<th>@sortablelink('cd_plano', 'Código')</th>
     						<th>@sortablelink('ds_plano', 'Descricao')</th>
-    						<th>@sortablelink('anuidade', 'Anuidade')</th>
     						<th>Tipo de Plano</th>
     						<th>Ações</th>
     					</tr>
@@ -67,7 +66,6 @@
     						<td>{{ sprintf("%04d", $plano->id) }}</td>
     						<td>{{$plano->cd_plano}}</td>
     						<td>{{$plano->ds_plano}}</td>
-    						<td>{{$plano->anuidade}}</td>
                 	 		<td>
 								@foreach($plano->tipoPlanos as $tipoPlano)
 									{{$tipoPlano->descricao}}<br>

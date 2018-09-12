@@ -18,7 +18,6 @@ class CreateNewStructurePlano extends Migration
 			$table->integer('id', true);
 			$table->integer('cd_plano');
 			$table->string('ds_plano', 150)->nullable();
-			$table->float('anuidade');
 
 			$table->timestamp('created_at', 0)->useCurrent()->nullable();
 			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
@@ -49,7 +48,7 @@ class CreateNewStructurePlano extends Migration
 			$table->integer('id', true);
 			$table->string('titulo', 150);
 			$table->text('ds_servico')->nullable();
-			$table->boolean('cs_status');
+			$table->string('cs_status', 1);
 			$table->integer('plano_id');
 
 			$table->timestamp('created_at', 0)->useCurrent()->nullable();
@@ -89,12 +88,12 @@ class CreateNewStructurePlano extends Migration
 			$table->decimal('vl_comercial');
 			$table->decimal('vl_net');
 			$table->timestamp('data_inicio');
-			$table->timestamp('data_fim');
-			$table->integer('atendimento_id');
+			$table->timestamp('data_fim')->nullable();
+			$table->integer('atendimento_id')->nullable();
 			$table->integer('plano_id');
-			$table->integer('itemcheckup_id');
+			$table->integer('itemcheckup_id')->nullable();
 			$table->integer('tp_preco_id');
-			$table->boolean('cs_status');
+			$table->string('cs_status', 1);
 
 			$table->timestamp('created_at', 0)->useCurrent()->nullable();
 			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
@@ -123,11 +122,24 @@ class CreateNewStructurePlano extends Migration
 			$table->timestamp('data_inicio');
 			$table->timestamp('data_fim');
 			$table->boolean('cobertura');
+			$table->float('vl_max_consumo');
 			$table->integer('plano_id');
 			$table->integer('paciente_id');
 
 			$table->timestamp('created_at', 0)->useCurrent()->nullable();
 			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
+		});
+
+		Schema::create('empresas', function(Blueprint $table)
+		{
+			$table->integer('id', true);
+			$table->string('nome', 250);
+			$table->bigInteger('cnpj');
+			$table->string('cs_status', 1);
+			$table->decimal('vl_max_empresa');
+			$table->decimal('vl_max_funcionario');
+			$table->float('anuidade');
+			$table->integer('desconto');
 		});
 
 		Schema::create('entidade_plano', function(Blueprint $table)

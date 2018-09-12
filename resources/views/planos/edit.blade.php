@@ -44,18 +44,13 @@
 							<input type="number" id="cd_plano" class="form-control" name="cd_plano" placeholder="Código" required value="{{$model->cd_plano}}">
 						</div>
 
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-9">
 							<label for="tipoPlanos">Tipo de Plano<span class="text-danger">*</span></label>
 							<select id="tipoPlanos" name="tipoPlanos[]" class="form-control select2" multiple required>
 								@foreach($tipoPlanos as $id=>$plano)
 									<option value="{{$id}}" @if (in_array($id, $model->tipoPlanos->pluck('id')->toArray())) selected="selected"  @endif>{{$plano}}</option>
 								@endforeach
 							</select>
-						</div>
-
-						<div class="form-group col-md-3">
-							<label for="cd_plano">Anuidade<span class="text-danger">*</span></label>
-							<input type="text" id="anuidade" class="form-control maskAnuidade" name="anuidade" placeholder="Anuidade" required value="{{$model->anuidade}}">
 						</div>
 					</div>
 

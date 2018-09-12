@@ -42,7 +42,6 @@ class PlanoRequest extends FormRequest
 			'ds_plano'					=> 'required|string|max:150',
 			'tipoPlanos'				=> 'required|array',
 			'tipoPlanos.*'				=> 'required|integer|exists:tipo_planos,id',
-			'anuidade'					=> 'required|money'
         ];
     }
 }

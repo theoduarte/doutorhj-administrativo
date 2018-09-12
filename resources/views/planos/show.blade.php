@@ -38,10 +38,6 @@
 							<td>{{ $model->ds_plano }}</td>
 						</tr>
 						<tr>
-							<td>Anuidade:</td>
-							<td>{{ $model->anuidade }}</td>
-						</tr>
-						<tr>
 							<td>Tipo de Plano:</td>
 							<td>
 								@foreach($model->tipoPlanos as $tipoPlano)
