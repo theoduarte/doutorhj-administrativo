@@ -41,8 +41,16 @@
 					</div>
 
 					<div class="form-group">
-						<label for="descricao">Descrição<span class="text-danger">*</span></label>
+						<label for="descricao">Descrição</span></label>
 						<textarea id="ds_servico" class="form-control" name="ds_servico" placeholder="Descrição do Serviço" ></textarea>
+					</div>
+
+					<div class="col-md-3">
+						<label for="cs_status">Status<span class="text-danger">*</span></label>
+								<select id="cs_status" class="form-control" name="cs_status" required>
+								<option value="A">Ativo</option>
+								<option value="I">Inativo</option>
+								</select>
 					</div>
 
 					<div class="form-group text-right m-b-0">

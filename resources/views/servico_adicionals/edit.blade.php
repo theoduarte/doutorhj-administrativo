@@ -23,7 +23,7 @@
 			<div class="card-box">
 				<h4 class="header-title m-t-0">Editar Serviço Adicional</h4>
 
-				<form action="{{ route('servico_adicionals.update', $servico_adicional->id) }}" method="post">
+				<form action="{{ route('servico_adicionals.update', $servico_adicionals->id) }}" method="post">
 					<input type="hidden" name="_method" value="PUT">
 					{!! csrf_field() !!}
 
@@ -31,18 +31,26 @@
 						<div class="row">
 							<div class="col-md-9">
 								<label for="titulo">Título<span class="text-danger">*</span></label>
-								<input type="text" id="titulo" class="form-control" name="titulo" value="{{ $servico_adicional->titulo }}" required maxlength="150" placeholder="Título do Serviço Adicional"  >
+								<input type="text" id="titulo" class="form-control" name="titulo" value="{{ $servico_adicionals->titulo }}" required maxlength="150" placeholder="Título do Serviço Adicional"  >
 							</div>
 							<div class="col-md-3">
 								<label for="codigo">ID Plano<span class="text-danger">*</span></label>
-								<input type="text" id="plano_id" class="form-control" name="plano_id" value="{{ $servico_adicional->plano_id }}" required maxlength="100" placeholder="ID do Plano"  >
+								<input type="text" id="plano_id" class="form-control" name="plano_id" value="{{ $servico_adicionals->plano_id }}" required maxlength="100" placeholder="ID do Plano"  >
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="descricao">Descrição<span class="text-danger">*</span></label>
-						<textarea id="ds_servico" class="form-control" name="ds_servico" placeholder="Descrição do Serviço Adicional" >{{ $servico_adicional->ds_servico }}</textarea>
+						<textarea id="ds_servico" class="form-control" name="ds_servico" placeholder="Descrição do Serviço Adicional" >{{ $servico_adicionals->ds_servico }}</textarea>
+					</div>
+
+					<div class="col-md-3">
+						<label for="cs_status">Status<span class="text-danger">*</span></label>
+								<select id="cs_status" class="form-control" name="cs_status" required>
+								<option value="A">Ativo</option>
+								<option value="I">Inativo</option>
+								</select>
 					</div>
 
 					<div class="form-group text-right m-b-0">

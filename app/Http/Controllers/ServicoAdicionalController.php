@@ -19,24 +19,39 @@ class ServicoAdicionalController extends Controller
     return view('servico_adicionals.index', compact('servico_adicionals'));
   }
 
-  public function create()
-  {
-    $model = new ServicoAdicional();
-    return view('servico.create', compact('model'));
-  }
+	public function create()
+	{
+			return view('servico_adicionals.create');
+	}
+
+	public function store(Request $request)
+	{
+			$servico_adicionals = ServicoAdicional::create($request->all());
+			$servico_adicionals->save();
+
+			return redirect()->route('servico_adicionals.index')->with('success', 'O Serviço Adicional foi cadastrado com sucesso!');
+	}
 
   public function edit($id)
   {
-    $model = ServicoAdicional::find($id);
+    $servico_adicionals = ServicoAdicional::find($id);
 
-    return view('servico.edit', compact('model'));
+    return view('servico_adicionals.edit', compact('servico_adicionals'));
   }
+
+	public function update(Request $request, $id)
+{
+		$servico_adicionals = ServicoAdicional::findOrFail($id);
+		$servico_adicionals->update($request->all());
+
+		return redirect()->route('servico_adicionals.index')->with('success', 'O Serviço Adicional foi editado com sucesso!');
+}
 
   public function destroy($id)
   {
     try {
-      $model = ServicoAdicional::findOrFail($id);
-      $model->delete();
+      $servico_adicionals = ServicoAdicional::findOrFail($id);
+      $servico_adicionals->delete();
     } catch(QueryException $e) {
       report($e);
       return response()->json([

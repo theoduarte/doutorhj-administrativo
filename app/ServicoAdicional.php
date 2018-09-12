@@ -20,7 +20,7 @@ class ServicoAdicional extends Model
 
   use Sortable;
 
-  public $sortable = ['id', 'titulo', 'plano_id'];
+  public $sortable = ['id', 'titulo', 'plano_id', 'created_at', 'updated_at'];
   protected $fillable = ['plano_id', 'titulo', 'ds_servico', 'cs_status', 'created_at', 'updated_at'];
 
   /**
@@ -28,7 +28,7 @@ class ServicoAdicional extends Model
    */
   public function plano()
   {
-      return $this->belongsTo('App\Plano');
+    return $this->belongsTo('App\Plano');
   }
 
 

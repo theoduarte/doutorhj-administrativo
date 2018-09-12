@@ -49,20 +49,25 @@
 							</form>
 						</div>
 					</div>
-				</div>cupom
+				</div>
 
 				<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
 					<tr>
 						<th>@sortablelink('id')</th>
 						<th>@sortablelink('titulo', 'Título')</th>
+						<th>@sortablelink('ds_servico', 'Descrição do Serviço')</th>
 						<th>@sortablelink('plano_id', 'ID Plano')</th>
+						<th>@sortablelink('cs_status', 'Status')</th>
+						<th>Ações</th>
 					</tr>
 					@foreach($servico_adicionals as $servico)
-
+3
 					<tr>
 						<td>{{ sprintf("%04d", $servico->id) }}</td>
 						<td>{{$servico->titulo}}</td>
+						<td>{{$servico->ds_servico}}</td>
 						<td>{{$servico->plano_id}}</td>
+						<td>@if($servico->cs_status == 'A') <span class="text-success"><strong><i class="ion-checkmark-circled"></i> Ativo</strong></span> @else <span class="text-danger"><strong><i class="ion-close-circled"></i> Inativo</strong></span> @endif</td>
 						<td>
 							<a href="{{ route('servico_adicionals.show', $servico->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
 							<a href="{{ route('servico_adicionals.edit', $servico->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
