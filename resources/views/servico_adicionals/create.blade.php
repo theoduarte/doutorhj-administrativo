@@ -33,9 +33,14 @@
 								<label for="titulo">Título<span class="text-danger">*</span></label>
 								<input type="text" id="titulo" class="form-control" name="titulo" required maxlength="150" placeholder="Título do Serviço"  >
 							</div>
-							<div class="col-md-3">
-								<label for="codigo">ID Plano<span class="text-danger">*</span></label>
-								<input type="text" id="plano_id" class="form-control" name="plano_id" placeholder="ID do Plano"  >
+
+							<div class="form-group col-md-9">
+								<label for="servico_adicionals">ID do Plano<span class="text-danger">*</span></label>
+								<select id="servico_adicionals" name="servico_adicionals[]" class="form-control select2" required>
+									@foreach($planos as $id=>$ds_plano)
+										<option value="{{ $id }}">{{$ds_plano}}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 					</div>
@@ -63,3 +68,12 @@
 	</div>
 </div>
 @endsection
+
+@push('scripts')
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+
+
+	});
+</script>
+@endpush

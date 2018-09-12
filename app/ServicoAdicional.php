@@ -31,5 +31,10 @@ class ServicoAdicional extends Model
     return $this->belongsTo('App\Plano');
   }
 
+	public function servicoAdicionals()
+{
+		return $this->belongsToMany('App\ServicosAdicional', 'servico_servicoAdicionals');
+}
+
 
 }

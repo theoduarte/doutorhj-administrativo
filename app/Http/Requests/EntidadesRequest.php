@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ServicoAdicionalRequest extends FormRequest
+class EntidadesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,18 +21,12 @@ class ServicoAdicionalRequest extends FormRequest
      *
      * @return array
      */
-		 public function attributes()
-	 	{
-	 		return [
-	 			'serv_adicional'	=> 'Servico Adicional',
-	 		];
-	 	}
-
     public function rules()
     {
         return [
-          'titulo'    => 'required|max:150|min:3',
-          'plano_id'  => 'required|numeric',
+					'titulo'			=> 'required|max:150|min:3',
+					'abreviacao'	=> 'required|max:50|min3',
+					'img_path'		=> 'required',
         ];
     }
 }
