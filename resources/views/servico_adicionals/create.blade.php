@@ -23,6 +23,17 @@
 			<div class="card-box">
 				<h4 class="header-title m-t-0">Adicionar Serviço</h4>
 
+				@if ($errors->any())
+					<div class="alert alert-danger fade show">
+						<span class="close" data-dismiss="alert">×</span>
+						<ul>
+							@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
+
 				<form action="{{ route('servico_adicionals.store') }}" method="post">
 
 					{!! csrf_field() !!}
@@ -35,10 +46,10 @@
 							</div>
 
 							<div class="form-group col-md-9">
-								<label for="servico_adicionals">ID do Plano<span class="text-danger">*</span></label>
-								<select id="servico_adicionals" name="servico_adicionals[]" class="form-control select2" required>
+								<label for="plano_id">ID do Plano<span class="text-danger">*</span></label>
+								<select id="plano_id" name="plano_id" class="form-control select2" required>
 									@foreach($planos as $id=>$ds_plano)
-										<option value="{{ $id }}">{{$ds_plano}}</option>
+										<option value="{{$id}}" @if ( old('plano_id') == $id) selected="selected"  @endif>{{$ds_plano}}</option>
 									@endforeach
 								</select>
 							</div>

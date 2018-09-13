@@ -42,7 +42,7 @@
 							<td>@if($servico_adicionals->cs_status == 'A') <span class="text-success"><strong><i class="ion-checkmark-circled"></i> Ativo</strong></span> @else <span class="text-danger"><strong><i class="ion-close-circled"></i> Inativo</strong></span> @endif</td>
 						</tr>
 						<tr>
-							<td>Plano ID:</td>
+							<td>ID do Plano:</td>
 							<td>{{ $servico_adicionals->plano_id }}</td>
 						</tr>
 						<tr>

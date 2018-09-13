@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ServicoAdicional;
+use App\Http\Requests\ServicoAdicionalRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use Illuminate\Support\Facades\DB;
@@ -26,8 +27,9 @@ class ServicoAdicionalController extends Controller
 			return view('servico_adicionals.create', compact('planos'));
 	}
 
-	public function store(Request $request)
+	public function store(ServicoAdicionalRequest $request)
 	{
+			// dd($request->all()); //debug line
 			$servico_adicionals = ServicoAdicional::create($request->all());
 			$servico_adicionals->save();
 
@@ -44,6 +46,7 @@ class ServicoAdicionalController extends Controller
 	public function show($id)
 	{
 			$servico_adicionals = ServicoAdicional::findOrFail($id);
+			$planos = Plano::pluck('ds_plano', 'id');
 
 			return view('servico_adicionals.show', compact('servico_adicionals'));
 	}
