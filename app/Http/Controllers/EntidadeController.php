@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Entidade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request as CVXRequest;
+// use Illuminate\Support\Facades\Request as CVXRequest;
 
-class EntidadesController extends Controller
+class EntidadeController extends Controller
 {
 	public function index()
 	{
-		$get_term = CVXRequest::get('search_term');
-		$search_term = UtilController::toStr($get_term);
+		// $get_term = CVXRequest::get('search_term');
+		// $search_term = UtilController::toStr($get_term);
 
-		$entidades = Entidade::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
-		return view('entidades.index', compact('entidades'));
+		// $entidades = Entidade::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+		return view('entidades.index');
 	}
 
 	public function create()

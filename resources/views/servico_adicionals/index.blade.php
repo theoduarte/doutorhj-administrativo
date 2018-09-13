@@ -29,7 +29,7 @@
 
 				<div class="row justify-content-between">
 					<div class="col-8">
-						<div class="form-group">
+						<div class="float-le">
 							<a href="{{ route('servico_adicionals.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar Serviço</a>
 						</div>
 					</div>
