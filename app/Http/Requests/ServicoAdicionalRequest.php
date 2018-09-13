@@ -24,7 +24,7 @@ class ServicoAdicionalRequest extends FormRequest
 		 public function attributes()
 	 	{
 	 		return [
-	 			'serv_adicional'	=> 'Servico Adicional',
+	 			'serv_adicional'	=> 'Serviço Adicional',
 	 		];
 	 	}
 

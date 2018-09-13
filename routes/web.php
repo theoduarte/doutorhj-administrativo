@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('checkups','CheckupsController');
     Route::resource('termos-condicoes','TermosCondicoesController');
     Route::resource('servico_adicionals', 'ServicoAdicionalController');
+    Route::resource('entidades', 'EntidadeController');
 
 
 

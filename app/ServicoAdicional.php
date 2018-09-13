@@ -17,7 +17,7 @@ use Kyslik\ColumnSortable\Sortable;
  */
 class ServicoAdicional extends Model
 {
-
+	
   use Sortable;
 
   public $sortable = ['id', 'titulo', 'plano_id', 'created_at', 'updated_at'];

@@ -13,7 +13,7 @@ class EntidadesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,6 @@ class EntidadesRequest extends FormRequest
         return [
 					'titulo'			=> 'required|max:150|min:3',
 					'abreviacao'	=> 'required|max:50|min3',
-					'img_path'		=> 'required',
         ];
     }
 }

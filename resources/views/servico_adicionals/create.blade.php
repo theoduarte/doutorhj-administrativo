@@ -49,7 +49,7 @@
 								<label for="plano_id">ID do Plano<span class="text-danger">*</span></label>
 								<select id="plano_id" name="plano_id" class="form-control select2" required>
 									@foreach($planos as $id=>$ds_plano)
-										<option value="{{$id}}" @if ( old('plano_id') == $id) selected="selected"  @endif>{{$ds_plano}}</option>
+										<option value="{{$id}}" @if ( old('serv_adicional') == $id) selected="selected"  @endif>{{$ds_plano}}</option>
 									@endforeach
 								</select>
 							</div>

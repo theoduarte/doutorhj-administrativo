@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Entidade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request as CVXRequest;
 
 class EntidadesController extends Controller
 {
@@ -21,10 +24,40 @@ class EntidadesController extends Controller
     return view('entidade.create', compact('model'));
 	}
 
+	public function store(EntidadeRequest $request)
+	{
+		$model = Entidade::create($request->all());
+		$model->save();
+
+		return redirect()->route('entidades.index')->with('success', 'A Entidade foi cadastrada com sucesso!');
+	}
+
+	public function show($id)
+	{
+		$model = Entidade::findOrfail($id);
+
+		return view('entidades.show', compact('model'));
+	}
+
 	public function edit($id)
 	{
 		$model = Entidade::find($id);
+
+		return view('entidades.edit', compact('model'));
 	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id)
+	{
+			//
+	}
+
 
 	public function destroy($id)
 	{
