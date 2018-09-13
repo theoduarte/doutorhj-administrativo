@@ -46,7 +46,6 @@ class ServicoAdicionalController extends Controller
 	public function show($id)
 	{
 			$servico_adicionals = ServicoAdicional::findOrFail($id);
-			$planos = Plano::pluck('ds_plano', 'id');
 
 			return view('servico_adicionals.show', compact('servico_adicionals'));
 	}

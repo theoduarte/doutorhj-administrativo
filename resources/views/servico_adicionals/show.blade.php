@@ -43,7 +43,7 @@
 						</tr>
 						<tr>
 							<td>ID do Plano:</td>
-							<td>{{ $servico_adicionals->plano_id }}</td>
+							<td>{{ $servico_adicionals->plano->ds_plano }}</td>
 						</tr>
 						<tr>
 							<td>Criado em:</td>

@@ -67,7 +67,7 @@
 						<td>{{ sprintf("%04d", $servico->id) }}</td>
 						<td>{{$servico->titulo}}</td>
 						<td>@if($servico->cs_status == 'A') <span class="text-success"><strong><i class="ion-checkmark-circled"></i> Ativo</strong></span> @else <span class="text-danger"><strong><i class="ion-close-circled"></i> Inativo</strong></span> @endif</td>
-						<td>{{$servico->plano_id}}</td>
+						<td>{{$servico->plano->ds_plano}}</td>
 						<td>
 							<a href="{{ route('servico_adicionals.show', $servico->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
 							<a href="{{ route('servico_adicionals.edit', $servico->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
