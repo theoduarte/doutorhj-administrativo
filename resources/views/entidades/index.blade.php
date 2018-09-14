@@ -33,11 +33,57 @@
 						</div>
 						<div class="row">
 							<div style="width: 530px !important;">
+								<label for="FILTROAQUI!!">Filtrar por:</label><br>
+								<div class="form-group">
+									<input type="radio" id="tp_filtro_titulo" name="tp_filtro" value="titulo" @if( old('tp_filtro')=='titulo') checked @endif>
+									<label for="tp_filtro_titulo" style="cursor: pointer;">Titulo&nbsp;&nbsp;&nbsp;</label>
+
+									<input type="radio" id="tp_filtro_abreviacao" name="tp_filtro" value="abreviacao" @if( old('tp_filtro')=='abreviacao') checked @endif>
+									<label for="tp_filtro_abreviacao" style="cursor: pointer;">Abreviação&nbsp;&nbsp;&nbsp;</label>
+								</div>
 							</div>
 						</div>
 
-					</form>
+						<div class="row">
+							<div style="width:30% !important;">
+								<input type="text" class="form-control" name="nm_busca" id="nm_busca" value="{{ old('nm_busca') }}">
+							</div>
+							<div class="col-1">
+								<button type="submit" class="btn btn-primary" id="btnPesquisar"> <i class="fa fa-search"></i> </button>
+							</div>
+						</div>
+					</form></br>
 				</div>
+
+				<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
+					<tr>
+						<th>@sortablelink('id', 'Cód.')</th>
+						<th>@sortablelink('titulo', 'Titulo')</th>
+						<th>@sortablelink('abreviacao', 'Abreviação')</th>
+					</tr>
+
+					@foreach($entidades as $entidade)
+						<tr>
+							<td>{{ sprintf("%04d", $entidade->id)}}</td>
+							<td>{{ $entidade->titulo }}</td>
+							<td>{{ $entidade->abreviacao }}</td>
+							<td>
+								<a href="{{ route('entidades.show', $entidade->id)}}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5"></a>
+								<a href="{{ route('entidades.edit', $entidade->id)}}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5"></a>
+								<a href="{{ route('entidades.destroy', $entidade->id)}}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx"></a>
+							</td>
+						</tr>
+					@endforeach
+				</table>
+
+				<tfoot>
+					<div class="cvx-pagination">
+						<span class="text-primary">
+							{{ sprintf("%02d", $entidades->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $entidades->count()) }} Registro(s) exibido(s)
+						</span>
+						{!! $entidades->appends(request()->input())->links() !!}
+					</div>
+				</tfoot>
 			</div>
 		</div>
 	</div>
