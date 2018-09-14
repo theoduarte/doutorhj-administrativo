@@ -3,25 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Entidade;
-use Illuminate\Http\Request;
+use App\Http\Requests\EntidadeRequest;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Request as CVXRequest;
+use Illuminate\Support\Facades\Request;
 
 class EntidadeController extends Controller
 {
 	public function index()
 	{
-		// $get_term = CVXRequest::get('search_term');
-		// $search_term = UtilController::toStr($get_term);
+		$entidades = Entidade::where(function($query){
+			if(!empty(Request::input('nm_busca'))){
+				switch (Request::input('tp_filtro')){
+					case "titulo":
+						$query->where('titulo', 'ilike', '%'.UtilController::toStr(Request::input('titulo')).'%');
+						break;
+					case "abreviacao":
+						$query->where(DB::raw('to_str(abreviacao)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+						break;
+					default:
+						$query->where(DB::raw('to_str(titulo)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+				}
+			}
+		})->sortable()->paginate(10);
 
-		// $entidades = Entidade::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
-		return view('entidades.index');
+		Request::flash();
+
+		return view('entidades.index', compact('entidades'));
 	}
 
 	public function create()
 	{
 		$model = new Entidade();
-    return view('entidade.create', compact('model'));
+    return view('entidades.create', compact('model'));
 	}
 
 	public function store(EntidadeRequest $request)
