@@ -60,6 +60,7 @@
 						<th>@sortablelink('id', 'Cód.')</th>
 						<th>@sortablelink('titulo', 'Titulo')</th>
 						<th>@sortablelink('abreviacao', 'Abreviação')</th>
+						<th>Ações</th>
 					</tr>
 
 					@foreach($entidades as $entidade)
@@ -68,9 +69,9 @@
 							<td>{{ $entidade->titulo }}</td>
 							<td>{{ $entidade->abreviacao }}</td>
 							<td>
-								<a href="{{ route('entidades.show', $entidade->id)}}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5"></a>
-								<a href="{{ route('entidades.edit', $entidade->id)}}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5"></a>
-								<a href="{{ route('entidades.destroy', $entidade->id)}}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx"></a>
+								<a href="{{ route('entidades.show', $entidade->id)}}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5"> <i class="mdi mdi-eye"></i> </a>
+								<a href="{{ route('entidades.edit', $entidade->id)}}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5"> <i class="mdi mdi-lead-pencil"></i> </a>
+								<a href="{{ route('entidades.destroy', $entidade->id)}}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir a entidade {{$entidade->titulo}}"><i class="ti-trash"></i></a>
 							</td>
 						</tr>
 					@endforeach

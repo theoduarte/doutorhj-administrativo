@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entidade;
-use App\Http\Requests\EntidadeRequest;
+use App\Http\Requests\EntidadesRequest;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
@@ -38,7 +38,7 @@ class EntidadeController extends Controller
     return view('entidades.create', compact('model'));
 	}
 
-	public function store(EntidadeRequest $request)
+	public function store(EntidadesRequest $request)
 	{
 		$model = Entidade::create($request->all());
 		$model->save();
