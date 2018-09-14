@@ -17,7 +17,7 @@ use Kyslik\ColumnSortable\Sortable;
  */
 class ServicoAdicional extends Model
 {
-
+	
   use Sortable;
 
   public $sortable = ['id', 'titulo', 'plano_id', 'created_at', 'updated_at'];
@@ -30,6 +30,11 @@ class ServicoAdicional extends Model
   {
     return $this->belongsTo('App\Plano');
   }
+
+	public function servicoAdicionals()
+{
+		return $this->belongsToMany('App\ServicosAdicional', 'servico_servicoAdicionals');
+}
 
 
 }

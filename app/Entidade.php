@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 /**
  * @property int $id
@@ -15,16 +16,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Entidade extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['titulo', 'abreviacao', 'img_path', 'created_at', 'updated_at'];
+	use Sortable;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function planos()
-    {
-        return $this->belongsToMany('App\Plano');
-    }
+	public $sortable= ['id', 'titulo', 'abreviacao', 'created_at', 'updated_at'];
+  protected $fillable = ['titulo', 'abreviacao', 'img_path', 'created_at', 'updated_at'];
+
+  /**
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+   */
+  public function planos()
+  {
+      return $this->belongsToMany('App\Plano');
+  }
 }

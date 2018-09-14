@@ -23,6 +23,17 @@
 			<div class="card-box">
 				<h4 class="header-title m-t-0">Adicionar Serviço</h4>
 
+				@if ($errors->any())
+					<div class="alert alert-danger fade show">
+						<span class="close" data-dismiss="alert">×</span>
+						<ul>
+							@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
+
 				<form action="{{ route('servico_adicionals.store') }}" method="post">
 
 					{!! csrf_field() !!}
@@ -33,9 +44,14 @@
 								<label for="titulo">Título<span class="text-danger">*</span></label>
 								<input type="text" id="titulo" class="form-control" name="titulo" required maxlength="150" placeholder="Título do Serviço"  >
 							</div>
-							<div class="col-md-3">
-								<label for="codigo">ID Plano<span class="text-danger">*</span></label>
-								<input type="text" id="plano_id" class="form-control" name="plano_id" placeholder="ID do Plano"  >
+
+							<div class="form-group col-md-9">
+								<label for="plano_id">ID do Plano<span class="text-danger">*</span></label>
+								<select id="plano_id" name="plano_id" class="form-control select2" required>
+									@foreach($planos as $id=>$ds_plano)
+										<option value="{{$id}}" @if ( old('serv_adicional') == $id) selected="selected"  @endif>{{$ds_plano}}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 					</div>
@@ -63,3 +79,12 @@
 	</div>
 </div>
 @endsection
+
+@push('scripts')
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+
+
+	});
+</script>
+@endpush
