@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Plano;
+use App\Preco;
+use App\TipoPreco;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PrestadoresRequest;
@@ -266,12 +269,27 @@ class ClinicaController extends Controller
         $documentosclinica = $prestador->documentos;
 
         $user   = User::findorfail($prestador->responsavel->user_id);
-        $precoprocedimentos = Atendimento::where('clinica_id', $idClinica)->where('procedimento_id', '<>', null)->where('cs_status', '=', 'A')->select( DB::raw("id, procedimento_id, vl_com_atendimento, vl_net_atendimento, replace(ds_preco,'''','`') as ds_preco, cs_status, clinica_id") )->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
+		$planos = Plano::pluck('ds_plano', 'id');
 
-        $precoconsultas =     Atendimento::where('clinica_id', $idClinica)->where('consulta_id', '<>', null)->where('cs_status', '=', 'A')->select( DB::raw("id, consulta_id, vl_com_atendimento, vl_net_atendimento, replace(ds_preco,'''','`') as ds_preco, cs_status, clinica_id, profissional_id") )->orderBy('ds_preco', 'asc')->orderBy('vl_com_atendimento', 'desc')->get();
+//		$precoprocedimentos = Atendimento::where('atendimentos.clinica_id', $idClinica)
+//			->where('atendimentos.procedimento_id', '<>', null)
+//			->where('atendimentos.cs_status', '=', 'A')
+//			->select( DB::raw("atendimentos.procedimento_id, replace(ds_preco,'''','`') as ds_preco, atendimentos.clinica_id") )
+//			->orderBy('atendimentos.procedimento_id')
+////			->join('precos', 'precos.atendimento_id', '=', 'atendimentos.id')
+//			->groupBy('atendimentos.id')
+//			->with('precos')
+//			->get();
+
+		$precoprocedimentos = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])
+			->whereNotNull('procedimento_id')
+			->get();
+
+		$precoconsultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])
+			->whereNotNull('consulta_id')
+			->get();
 
         $documentoprofissional = [];
-
 
         if($search_term != '') {
             $list_profissionals = Profissional::where(DB::raw('to_str(nm_primario)'), 'LIKE', '%'.$search_term.'%')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('nm_primario', 'asc')->get();
@@ -284,7 +302,7 @@ class ClinicaController extends Controller
         //$list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->pluck('ds_especialidade', 'cd_especialidade', 'id');
         $list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->get();
 
-        return view('clinicas.edit', compact('estados', 'cargos', 'prestador', 'user',
+        return view('clinicas.edit', compact('estados', 'cargos', 'prestador', 'user', 'planos',
             'documentoprofissional', 'precoprocedimentos',
             'precoconsultas', 'documentosclinica', 'list_profissionals', 'list_especialidades', 'list_filials'));
     }
@@ -715,23 +733,54 @@ class ClinicaController extends Controller
     /**
      * precificacaoConsultaStore a newly created resource in storage.
      *
-     * @param  App\Clinica  $clinica
-     * @param  App\Http\Requests\PrecificacaoConsultaRequest  $request
+     * @param  Clinica  $clinica
+     * @param  PrecificacaoConsultaRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function precificacaoConsultaStore(Clinica $clinica, PrecificacaoConsultaRequest $request)
     {
-        foreach ($request->list_profissional_consulta as $profissionalId) {
-            $atendimento = new Atendimento();
-            $atendimento->clinica_id = $clinica->id;
-            $atendimento->profissional_id = $profissionalId;
-            $atendimento->vl_com_atendimento = $request->vl_com_consulta;
-            $atendimento->vl_net_atendimento = $request->vl_net_consulta;
-            $atendimento->consulta_id = $request->consulta_id;
-            $atendimento->ds_preco =  $request->descricao_consulta;
-            $atendimento->cs_status = 'A';
+		$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($request->get('data-vigencia'));
 
-            $atendimento->save();
+//		dd($request->all(), $data_vigencia);
+
+        foreach ($request->list_profissional_consulta as $profissionalId) {
+			$atendimento = Atendimento::where([
+				'clinica_id' => $clinica->id,
+				'profissional_id' => $profissionalId,
+				'consulta_id' => $request->consulta_id,
+				'cs_status' => 'A'
+			])->first();
+
+			if(is_null($atendimento)) {
+				$atendimento = new Atendimento();
+				$atendimento->clinica_id = $clinica->id;
+				$atendimento->profissional_id = $profissionalId;
+				$atendimento->consulta_id = $request->consulta_id;
+				$atendimento->ds_preco =  $request->descricao_consulta;
+				$atendimento->cs_status = 'A';
+				$atendimento->save();
+			}
+
+			$preco = Preco::where(['atendimento_id' => $atendimento->id, 'plano_id' => $request->plano_id, 'cs_status' => 'A'])
+				->where('data_inicio', '<=', date('Y-m-d'))
+				->where('data_fim', '>=', date('Y-m-d'));
+
+			if($preco->exists()) {
+				$error[] = "Preço {$atendimento->ds_preco} - {$atendimento->profissional->nm_primario}, plano {$preco->first()->plano->ds_plano} já cadastrado";
+			} else {
+				$preco = new Preco();
+				$preco->cd_preco = $atendimento->id;
+				$preco->atendimento_id = $atendimento->id;
+				$preco->plano_id = $request->plano_id;
+				$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+				$preco->cs_status = 'A';
+				$preco->data_inicio = $data_vigencia['de'];
+				$preco->data_fim = $data_vigencia['ate'];
+				$preco->vl_comercial = $request->vl_com_consulta;
+				$preco->vl_net = $request->vl_net_consulta;
+
+				$preco->save();
+			}
 
             # registra log
             $atendimento_obj    = "[]";
@@ -744,6 +793,10 @@ class ClinicaController extends Controller
 
             $this->registrarLog($titulo_log, $log, $tipo_log);
         }
+
+		if(isset($error) && !empty($error)) {
+			return redirect()->back()->with('error-alert', implode('<br>', $error));
+		}
 
         return redirect()->back()->with('success', 'A precificação da consulta foi salva com sucesso!');
     }
@@ -759,8 +812,6 @@ class ClinicaController extends Controller
     {
         $atendimento = Atendimento::findOrFail($request->atendimento_id);
         $atendimento->profissional_id = $request->profissional_id;
-        $atendimento->vl_com_atendimento = $request->vl_com_consulta;
-        $atendimento->vl_net_atendimento = $request->vl_net_consulta;
         $atendimento->ds_preco =  $request->ds_consulta;
 
         $atendimento->save();
@@ -801,55 +852,46 @@ class ClinicaController extends Controller
         return response()->json(['status' => true, 'mensagem' => 'A Consulta foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * precificacaoProcedimentoStore a newly created resource in storage.
      *
-     * @param  App\Clinica  $clinica
-     * @param  App\Http\Requests\PrecificacaoProcedimentoRequest  $request
+     * @param  Clinica  $clinica
+     * @param  PrecificacaoProcedimentoRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function precificacaoProcedimentoStore(Clinica $clinica, PrecificacaoProcedimentoRequest $request)
     {
-        
-        $atendimento = new Atendimento();
-        $atendimento->clinica_id = $clinica->id;
-        $atendimento->vl_com_atendimento = $request->vl_com_procedimento;
-        $atendimento->vl_net_atendimento = $request->vl_net_procedimento;
-        $atendimento->procedimento_id = $request->procedimento_id;
-        $atendimento->ds_preco =  $request->descricao_procedimento;
-        $atendimento->cs_status = 'A';
+		$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($request->get('data-vigencia'));
 
-        $atendimento->save();
+		$atendimento = Atendimento::where(['clinica_id' => $clinica->id, 'procedimento_id' => $request->procedimento_id, 'cs_status' => 'A'])->first();
+
+		if(is_null($atendimento)) {
+			$atendimento = new Atendimento();
+			$atendimento->clinica_id = $clinica->id;
+			$atendimento->procedimento_id = $request->procedimento_id;
+			$atendimento->ds_preco =  $request->descricao_procedimento;
+			$atendimento->cs_status = 'A';
+			$atendimento->save();
+		}
+
+		$preco = Preco::where(['atendimento_id' => $atendimento->id, 'plano_id' => $request->plano_id, 'cs_status' => 'A']);
+
+		if($preco->exists()) {
+			return redirect()->back()->with('error-alert', 'O plano ja está cadastrado. Por favor, tente novamente.');
+		}
+
+		$preco = new Preco();
+		$preco->cd_preco = $atendimento->id;
+		$preco->atendimento_id = $atendimento->id;
+		$preco->plano_id = $request->plano_id;
+		$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+		$preco->cs_status = 'A';
+		$preco->data_inicio = $data_vigencia['de'];
+		$preco->data_fim = $data_vigencia['ate'];
+		$preco->vl_comercial = $request->vl_com_procedimento;
+		$preco->vl_net = $request->vl_net_procedimento;
+
+		$preco->save();
 
         # registra log
         $atendimento_obj    = "[]";
@@ -868,15 +910,13 @@ class ClinicaController extends Controller
     /**
      * precificacaoProcedimentoUpdate a newly created resource in storage.
      *
-     * @param  App\Clinica  $clinica
-     * @param  App\Http\Requests\PrecificacaoProcedimentoRequest  $request
+     * @param  Clinica  $clinica
+     * @param  PrecificacaoProcedimentoRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function precificacaoProcedimentoUpdate(Clinica $clinica, PrecificacaoProcedimentoRequest $request)
     {
         $atendimento = Atendimento::findOrFail($request->atendimento_id);
-        $atendimento->vl_com_atendimento = $request->vl_com_procedimento;
-        $atendimento->vl_net_atendimento = $request->vl_net_procedimento;
         $atendimento->ds_preco =  $request->ds_procedimento;
         $atendimento = $this->setAtendimentoRelations($atendimento, $request->atendimento_filial);
 
@@ -901,7 +941,7 @@ class ClinicaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param App\Http\Requests\PrecificacaoProcedimentoRequest $request
+     * @param PrecificacaoProcedimentoRequest $request
      * @return \Illuminate\Http\Response
      */
     public function precificacaoProcedimentoDestroy(PrecificacaoProcedimentoRequest $request)
@@ -917,31 +957,6 @@ class ClinicaController extends Controller
 
         return response()->json(['status' => true, 'mensagem' => 'A Procedimento foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Remove the specified resource from storage.
@@ -971,12 +986,11 @@ class ClinicaController extends Controller
         return response()->json(['status' => true, 'mensagem' => 'O Atendimento foi removido com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
 
-
     /**
      * Consulta Cidade através da UF
      *
      * @param  \Illuminate\Http\Request  $request
-     
+
      */
     public function consultaCidade() {
         $output = null;

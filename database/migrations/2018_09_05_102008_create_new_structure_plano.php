@@ -88,7 +88,7 @@ class CreateNewStructurePlano extends Migration
 			$table->decimal('vl_comercial');
 			$table->decimal('vl_net');
 			$table->timestamp('data_inicio');
-			$table->timestamp('data_fim')->nullable();
+			$table->timestamp('data_fim');
 			$table->integer('atendimento_id')->nullable();
 			$table->integer('plano_id');
 			$table->integer('itemcheckup_id')->nullable();
@@ -140,6 +140,18 @@ class CreateNewStructurePlano extends Migration
 			$table->decimal('vl_max_funcionario');
 			$table->float('anuidade');
 			$table->integer('desconto');
+
+			$table->timestamp('created_at', 0)->useCurrent()->nullable();
+			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
+		});
+
+		Schema::create('tipo_cartaos', function(Blueprint $table)
+		{
+			$table->integer('id', true);
+			$table->string('descricao', 150);
+
+			$table->timestamp('created_at', 0)->useCurrent()->nullable();
+			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
 		});
 
 		Schema::create('entidade_plano', function(Blueprint $table)
@@ -161,6 +173,20 @@ class CreateNewStructurePlano extends Migration
 			$table->integer('tipo_plano_id');
 			$table->integer('plano_id');
 			$table->primary(['tipo_plano_id','plano_id'], 'planos_tipoplanos_pkey');
+		});
+
+		Schema::table('pacientes', function(Blueprint $table)
+		{
+			$table->addColumn('integer', 'empresa_id')->nullable();
+			$table->foreign('empresa_id', 'pacientes_empresa_id_foreign')->references('id')->on('empresas');
+		});
+
+		Schema::table('cartao_pacientes', function(Blueprint $table)
+		{
+			$table->addColumn('integer', 'empresa_id')->nullable();
+			$table->addColumn('integer', 'tp_cartao_id')->nullable();
+			$table->foreign('empresa_id', 'cartao_pacientes_empresa_id_foreign')->references('id')->on('empresas');
+			$table->foreign('tp_cartao_id', 'cartao_pacientes_tp_cartao_id_foreign')->references('id')->on('tipo_cartaos');
 		});
 
 		Schema::table('vigencia_pacientes', function(Blueprint $table)
@@ -261,6 +287,17 @@ class CreateNewStructurePlano extends Migration
 			$table->dropForeign('campanha_clinica_paciente_id_foreign');
 		});
 
+		Schema::table('pacientes', function(Blueprint $table)
+		{
+			$table->dropForeign('pacientes_empresa_id_foreign');
+		});
+
+		Schema::table('cartao_pacientes', function(Blueprint $table)
+		{
+			$table->dropForeign('cartao_pacientes_empresa_id_foreign');
+			$table->dropForeign('cartao_pacientes_tp_cartao_id_foreign');
+		});
+
 		Schema::drop('planos');
 		Schema::drop('tipo_planos');
 		Schema::drop('entidades');
@@ -274,5 +311,7 @@ class CreateNewStructurePlano extends Migration
 		Schema::drop('entidade_plano');
 		Schema::drop('campanha_clinica');
 		Schema::drop('plano_tipoplano');
+		Schema::drop('empresas');
+		Schema::drop('tipo_cartaos');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\UtilController;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -29,6 +30,18 @@ class Preco extends Model
      * @var array
      */
     protected $fillable = ['atendimento_id', 'plano_id', 'itemcheckup_id', 'tp_preco_id', 'cd_preco', 'vl_comercial', 'vl_net', 'data_inicio', 'data_fim', 'cs_status', 'created_at', 'updated_at'];
+
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'data_inicio',
+		'data_fim',
+		'created_at',
+		'updated_at',
+	];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -61,4 +74,24 @@ class Preco extends Model
     {
         return $this->belongsTo('App\TipoPreco', 'tp_preco_id');
     }
+
+	public function setVlNetAttribute($value)
+	{
+		$this->attributes['vl_net'] = UtilController::removeMaskMoney($value);
+	}
+
+	public function setVlComercialAttribute($value)
+	{
+		$this->attributes['vl_comercial'] = UtilController::removeMaskMoney($value);
+	}
+
+	public function getVlNetAttribute()
+	{
+		return number_format( $this->attributes['vl_net'],  2, ',', '.');
+	}
+
+	public function getVlComercialAttribute($val)
+	{
+		return number_format( $this->attributes['vl_comercial'],  2, ',', '.');
+	}
 }

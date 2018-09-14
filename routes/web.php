@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('checkups','CheckupsController');
     Route::resource('termos-condicoes','TermosCondicoesController');
     Route::resource('servico_adicionals', 'ServicoAdicionalController');
+	Route::resource('precos', 'PrecoController');
 
 
 
@@ -70,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('delete-tag-popular', 'TagPopularController@deleteTagPopularDestroy');
 
     Route::post('load-data-atendimento', 'AtendimentoController@loadAtendimentoShow');
+	Route::get('load-data-preco/{id}', 'PrecoController@loadPrecoShow');
 
     Route::post('add-precificacao-consulta/{clinica}/clinica', 'ClinicaController@precificacaoConsultaStore')->name('add-precificacao-consulta');
     Route::put('edit-precificacao-consulta/{clinica}/clinica', 'ClinicaController@precificacaoConsultaUpdate')->name('edit-precificacao-consulta');

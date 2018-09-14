@@ -9,13 +9,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $descricao
  * @property string $created_at
  * @property string $updated_at
- * @property Preco[] $precos
+ * @property CartaoPaciente[] $cartaoPacientes
  */
-class TipoPreco extends Model
+class TipoCartao extends Model
 {
-	const INDIVIDUAL = 1;
-	const CHECKUP = 2;
-
     /**
      * @var array
      */
@@ -24,8 +21,8 @@ class TipoPreco extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function precos()
+    public function cartaoPacientes()
     {
-        return $this->hasMany('App\Preco', 'tp_preco_id');
+        return $this->hasMany('App\CartaoPaciente', 'tp_cartao_id');
     }
 }

@@ -4,29 +4,47 @@
     </div>
 @endif
 <div class="form-group">
+
     <form method="post" action="{{ route('add-precificacao-procedimento',$prestador) }}" id="form-add-consulta">
         {!! csrf_field() !!}
     	<div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <label for="ds_procedimento" class="control-label">Descrição Procedimento<span class="text-danger">*</span></label>
                 <input id="ds_procedimento" type="text" class="form-control" name="ds_procedimento" value="{{ old('ds_procedimento') }}" placeholder="Informe a Descrição do Procedimento para buscar" autofocus maxlength="100" required>
                 <input type="hidden" id="cd_procedimento" name="cd_procedimento" value="" required>
                 <input type="hidden" id="descricao_procedimento" name="descricao_procedimento" value="">
                 <input type="hidden" id="procedimento_id" name="procedimento_id" value="">
             </div>
-            <div class="col-2">
-                <label for="vl_com_procedimento" class="control-label">Valor Comercial (R$)<span class="text-danger">*</span></label>
-                <input id="vl_com_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_com_procedimento" value="{{ old('vl_com_procedimento') }}"  maxlength="15" required>
-            </div>
-            <div class="col-2">
-                <label for="vl_net_procedimento" class="control-label">Valor NET (R$)<span class="text-danger">*</span></label>
-                <input id="vl_net_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_net_procedimento" value="{{ old('vl_net_procedimento') }}"  maxlength="15" required>
-            </div>
-    		<div class="col-2" style="padding-top: 30px;">
-    		    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Salvar</button>
-    		    <a onclick="limparProcedimento()" class="btn btn-icon btn-danger" title="Limpar Procedimento" style="margin-top: 10px;"><i class="mdi mdi-close"></i> Limpar</a>
-    		</div>
+			<div class="col-2">
+				<label for="plano_id" class="control-label">Plano<span class="text-danger">*</span></label>
+				<select id="plano_id" class="select2" name="plano_id" data-placeholder="Selecione ..." required>
+					<option></option>
+					@foreach($planos as $id=>$plano)
+						<option value="{{ $id }}" @if ( old('plano_id') == $id) selected  @endif>{{$plano}}</option>
+					@endforeach
+				</select>
+			</div>
+			<div class="col-2">
+				<label for="data-vigencia">Vigência do Preço:<span class="text-danger"></span></label>
+				<input type="text" class="form-control input-daterange" id="data-vigencia" name="data-vigencia" value="{{ old('data') }}" autocomplete="off">
+			</div>
+			<div class="col-2">
+				<label for="vl_com_procedimento" class="control-label">Valor Comercial (R$)<span class="text-danger">*</span></label>
+				<input id="vl_com_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_com_procedimento" value="{{ old('vl_com_procedimento') }}"  maxlength="15" required>
+			</div>
+			<div class="col-2">
+				<label for="vl_net_procedimento" class="control-label">Valor NET (R$)<span class="text-danger">*</span></label>
+				<input id="vl_net_procedimento" type="text" class="form-control mascaraMonetaria" name="vl_net_procedimento" value="{{ old('vl_net_procedimento') }}"  maxlength="15" required>
+			</div>
     	</div>
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-12">
+				<div class="pull-right">
+					<button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Salvar</button>
+					<a onclick="limparProcedimento()" class="btn btn-icon btn-danger" title="Limpar Procedimento"><i class="mdi mdi-close"></i> Limpar</a>
+				</div>
+			</div>
+		</div>
     	<br>
     	<div class="row">
     		<div class="col-12">
@@ -37,22 +55,45 @@
     					<th width="380">Procedimento</th>
     					<th class="text-left" style="width: 400px;">Locais Disponíveis</th>
     					<th width="300">Nomes Populares</th>
-    					<th width="100">Vl. Com. (R$)</th>
-    					<th width="100">Vl. NET (R$)</th>
+						<th>
+							<table class="table">
+								<tr>
+									<th class="text-nowrap">Plano</th>
+									<th class="text-nowrap">Vl. Com.</th>
+									<th class="text-nowrap">Vl. NET</th>
+									<th class="text-nowrap">Vigência</th>
+									<th>Ação</th>
+								</tr>
+							</table>
+						</th>
     					<th width="10">Ação</th>
     				</tr>
         			@foreach( $precoprocedimentos as $atendimento )
         				<tr id="tr-{{$atendimento->id}}">
         					<td>{{$atendimento->id}} <input type="hidden" class="procedimento_id" value="{{ $atendimento->procedimento->id }}"></td>
-        					<td><a href="{{ route('procedimentos.show', $atendimento->procedimento->id) }}" title="Exibir" class="btn-link text-primary"><i class="ion-search"></i> {{$atendimento->procedimento->cd_procedimento}}</a></td>
+        					<td class="text-nowrap"><a href="{{ route('procedimentos.show', $atendimento->procedimento->id) }}" title="Exibir" class="btn-link text-primary"><i class="ion-search"></i> {{$atendimento->procedimento->cd_procedimento}}</a></td>
         					<td>{{$atendimento->ds_preco}}</td>
         					<td>@if( isset($atendimento->filials) && sizeof($atendimento->filials) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->filials as $filial) <li><i class="mdi mdi-check"></i> @if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA FILIAL SELECIONADA</span>  @endif</td>
         					<td>@if( isset($atendimento->procedimento->tag_populars) && sizeof($atendimento->procedimento->tag_populars) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->procedimento->tag_populars as $tag) <li><i class="mdi mdi-check"></i> {{ $tag->cs_tag }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="ion-close-circled"></i></span>  @endif</td>
-        					<td>{{ $atendimento->vl_com_atendimento }}</td>
-        					<td>{{ $atendimento->vl_net_atendimento }}</td>
         					<td>
-        						<a onclick="loadDataProcedimento(this, {{ $atendimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
-    	                 		<a onclick="delLinhaProcedimento(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Excluir</a>
+								<table class="table">
+									@foreach($atendimento->precos as $preco)
+										<tr>
+											<td>{{$preco->plano->ds_plano}}</td>
+											<td>{{$preco->vl_comercial}}</td>
+											<td>{{$preco->vl_net}}</td>
+											<td>{{$preco->data_inicio->format('d/m/Y')}}<br>{{$preco->data_fim->format('d/m/Y')}}</td>
+											<td class="text-nowrap">
+												<button type="button" class="btn btn-sm btn-default" title="Editar Preço" onclick="loadDataPreco({{$preco->id}})"><i class="mdi mdi-lead-pencil"></i></button>
+												<button type="button" class="btn btn-sm btn-danger" title="Exluir Preço" onclick="delLinhaPreco('{{$preco->id}}', '{{$preco->plano->ds_plano}}')"><i class="ti-trash"></i></button>
+											</td>
+										</tr>
+									@endforeach
+								</table>
+							</td>
+        					<td>
+        						<a onclick="loadDataProcedimento(this, '{{ $atendimento->id }}')" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar Atendimento"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+    	                 		<a onclick="delLinhaProcedimento(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir Atendimento"><i class="ti-trash"></i> Excluir</a>
         					</td>
         				</tr>
     				@endforeach 
@@ -104,24 +145,43 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                        	<label for="vl_com_procedimento_edit" class="control-label">Valor Comercial (R$)</label>
-                        	<input type="text" id="vl_com_procedimento_edit" class="form-control mascaraMonetaria" name="vl_com_procedimento" placeholder="Valor Comercial" required>
-                        </div>
-                        <div class="col-md-6">
-                        	<label for="vl_net_procedimento_edit" class="control-label">Valor Net (R$)</label>
-                        	<input type="text" id="vl_net_procedimento_edit" class="form-control mascaraMonetaria" name="vl_net_procedimento" placeholder="Valor Net" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
-                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
-                </div>
-            </form>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
+						<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
+					</div>
+            	</form>
+			</div>
         </div>
     </div>
+</div>
+<div id="preco-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PrecoModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="edit-preco-title-modal">DrHoje: Editar Preço</h4>
+			</div>
+			<div class="modal-body">
+				<form method="post" action=""  id="form-edit-preco">
+					<input type="hidden" name="_method" value="PUT">
+					{!! csrf_field() !!}
+
+					<div class="row">
+						<div class="col-md-12">
+							<label for="edit-data-vigencia">Vigência do Preço:<span class="text-danger"></span></label>
+							<input type="text" class="form-control input-daterange" id="edit-data-vigencia" name="data-vigencia" value="{{ old('data-vigencia') }}" autocomplete="off">
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
+						<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
 	$(function(){
@@ -149,8 +209,73 @@
         $('#con-close-modal').find("#filial_profissional").trigger('change.select2');
     });
 
-    function loadDataProcedimento(element, atendimentoId) {
+	function loadDataPreco(precoId)
+	{
+		jQuery.ajax({
+			type: 'GET',
+			url: '/load-data-preco/'+precoId,
+			success: function (result) {
+				if(result.status) {
+					var preco = JSON.parse(result.preco);
 
+					var route = '{{route('precos.update', 'precoId')}}';
+					route = route.replace('precoId', precoId);
+
+					$('#form-edit-preco').attr('action', route);
+
+					$('#edit-data-vigencia').daterangepicker({startDate: preco.startDate, endDate: preco.endDate});
+
+					$('#preco-modal').modal();
+				}
+			},
+			error: function (result) {
+				swal(({
+					title: "Oops",
+					text: "Falha na operação!",
+					type: 'error',
+					confirmButtonClass: 'btn btn-confirm mt-2'
+				}));
+			}
+		});
+	}
+
+	function delLinhaPreco(precoId, ds_plano)
+	{
+		var mensagem = 'DrHoje';
+		swal({
+			title: mensagem,
+			text: 'O Preço "'+ds_plano+'" será movido da lista',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonClass: 'btn btn-confirm mt-2',
+			cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
+			confirmButtonText: 'Sim',
+			cancelButtonText: 'Cancelar'
+		}).then(function () {
+			var route = '{{route('precos.destroy', 'precoId')}}';
+			route = route.replace('precoId', precoId);
+
+			jQuery.ajax({
+				type: 'POST',
+				url: route,
+				data: {
+					'_method': 'delete',
+					'preco_id': precoId,
+					'_token': laravel_token
+				},
+				success: function (result) {
+					location.reload();
+				},
+				error: function (result) {
+					$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+				}
+			});
+
+		});
+	}
+
+    function loadDataProcedimento(element, atendimentoId)
+	{
     	var cd_procedimento = $(element).parent().parent().find('td:nth-child(2)').html();
 
     	jQuery.ajax({
@@ -197,16 +322,12 @@
 		
     	var ds_procedimento = $(element).parent().parent().find('td:nth-child(3)').html();
     	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
-    	var vl_com_procedimento = $(element).parent().parent().find('td:nth-child(6)').html();
-    	var vl_net_procedimento = $(element).parent().parent().find('td:nth-child(7)').html();
 
     	$('#form-edit-procedimento #profissional-procedimento-modal').find('input.form-control').val('');
     	$('#form-edit-procedimento #profissional-procedimento-modal').find('select.form-control').prop('selectedIndex',0);
 
 		$('#form-edit-procedimento #atendimento_id_edit').val(atendimentoId);
 		$('#form-edit-procedimento #ds_procedimento_edit').val(ds_procedimento);
-		$('#form-edit-procedimento #vl_com_procedimento_edit').val(vl_com_procedimento);
-    	$('#form-edit-procedimento #vl_net_procedimento_edit').val(vl_net_procedimento);
 		 
 		$("#profissional-procedimento-modal").modal();
     }

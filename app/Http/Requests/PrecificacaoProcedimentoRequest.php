@@ -28,8 +28,6 @@ class PrecificacaoProcedimentoRequest extends FormRequest
                 $rules = [
                     'atendimento_id' => 'required',
                     'ds_procedimento' => 'required',
-                    'vl_com_procedimento' => 'required',
-                    'vl_net_procedimento' => 'required',
                     'atendimento_filial' => 'required',
                 ];
                 
