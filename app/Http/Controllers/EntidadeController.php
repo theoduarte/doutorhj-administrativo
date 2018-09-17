@@ -67,9 +67,14 @@ class EntidadeController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id)
+	public function update(EntidadesRequest $request, $id)
 	{
-			//
+		$model = Entidade::findOrFail($id);
+		$dados = $request->all();
+
+		$model->update($dados);
+
+		return redirect()->route('entidades.index')->with('success', 'A Entidade foi Atualizada!');
 	}
 
 
@@ -84,5 +89,6 @@ class EntidadeController extends Controller
 				'message' => $e->getMessage(),
 			], 500);
 		}
+		return redirect()->route('entidades.index')->with('success', 'Entidade deletada!');
 	}
 }

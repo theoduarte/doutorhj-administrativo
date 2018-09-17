@@ -50,12 +50,12 @@ class ServicoAdicionalController extends Controller
 			return view('servico_adicionals.show', compact('servico_adicionals'));
 	}
 
-	public function update(Request $request, $id)
+	public function update(ServicoAdicionalRequest $request, $id)
 {
 		$servico_adicionals = ServicoAdicional::findOrFail($id);
 		$servico_adicionals->update($request->all());
 
-		return redirect()->route('servico_adicionals.index')->with('success', 'O Serviço Adicional foi editado com sucesso!');
+		return redirect()->route('servico_adicionals.index')->with('success', 'O Serviço foi atualizado!');
 }
 
   public function destroy($id)
@@ -69,5 +69,7 @@ class ServicoAdicionalController extends Controller
         'message' => $e->getMessage(),
       ], 500);
     }
+
+		return redirect()->route('servico_adicionals.index')->with('success', 'O Serviço foi deletado!');
   }
 }

@@ -36,16 +36,14 @@
 						</div>
 					@endif
 
-					<div class="form-row">
-						<div class="form-group' col-md-3">
-							<label for="titulo">Título<span class="text-danger">*</span></label>
-							<input type="text" id="titulo" class="form-control" name="titulo" required maxlength="150" placeholder="Título da Entidade">
-						</div>
-
-						<div class="form-group col-md-9">
-							<label for="abreviacao">Abreviação<span class="text-danger">*</span></label>
-							<input type="text" id="abreviacao" class="form-control" name="abreviacao" required maxlength="50" placeholder="Abreviação">
-						</div>
+					<div class="form-group' col-md-12">
+						<label for="titulo">Título<span class="text-danger">*</span></label>
+						<input type="text" id="titulo" class="form-control" name="titulo" required maxlength="150" placeholder="Título da Entidade">
+					</div>
+					</br>
+					<div class="form-group col-md-12">
+						<label for="abreviacao">Abreviação<span class="text-danger">*</span></label>
+						<input type="text" id="abreviacao" class="form-control" name="abreviacao" required maxlength="50" placeholder="Abreviação">
 					</div>
 
 					<div class="form-group text-right m-b-0">
