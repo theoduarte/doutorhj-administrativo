@@ -73,7 +73,7 @@ class EntidadeController extends Controller
  		// $model->formaPagamentos()->sync($dados['formapagamentos']);
  		// $model->consultors()->sync($dados['consultors']);
 
- 		return redirect()->route('entidades.show', $model)->with('success', 'Registro adicionado');;
+ 		return redirect()->route('entidades.show', $model)->with('success', 'Registro adicionado');
  	}
 
 
@@ -92,10 +92,10 @@ class EntidadeController extends Controller
 
 		$model->save();
 
-		$model->formaPagamentos()->sync($dados['formapagamentos']);
-		$model->consultors()->sync($dados['consultors']);
+		// $model->formaPagamentos()->sync($dados['formapagamentos']);
+		// $model->consultors()->sync($dados['consultors']);
 
-		return redirect()->route($model->routeModel().'show', $model)->with('success', 'Registro atualizado');
+		return redirect()->route('entidades.show', $model)->with('success', 'Registro adicionado');
 	}
 
 	public function destroy($id)
