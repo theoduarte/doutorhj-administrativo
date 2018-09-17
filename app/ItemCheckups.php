@@ -74,8 +74,8 @@ class ItemCheckups extends Model
         Validator::make( $request->all(), $fields, $messages )->validate();
     }
 
-    public function getItensGrouped($checkup){
-        return DB::select(" SELECT *
+	public function getItensGrouped($checkup) {
+    	return DB::select(" SELECT *
                               FROM (
                             SELECT  ic.checkup_id, ds_item, a.vl_com_atendimento, a.vl_net_atendimento, ic.vl_com_checkup, ic.vl_net_checkup, ic.vl_mercado,
                                 c.id consulta_id, c.cd_consulta, c.ds_consulta,
@@ -103,9 +103,9 @@ class ItemCheckups extends Model
                                  WHERE checkup_id = ?
                                  GROUP BY ic.checkup_id, c.id, c.cd_consulta, cn.id) TOTALS
                                  GROUP BY TOTALS.checkup_id) totais on (totais.checkup_id = valores.checkup_id)", [$checkup,$checkup] );
-    }
+	}
 
-    public function getItensExameGrouped($checkup){
+	public function getItensExameGrouped($checkup) {
         return DB::select(" SELECT *
                               FROM (   
                               SELECT ic.checkup_id, ds_item, a.vl_com_atendimento, a.vl_net_atendimento, ic.vl_com_checkup, ic.vl_net_checkup, ic.vl_mercado,
