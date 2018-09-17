@@ -9,8 +9,8 @@
 			<div class="page-title-box">
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
-					<li class="breadcrumb-item"> <a href="/">Home</a> </li>
-					<li class="breadcrumb-item"> <a href="{{ route('entidades.index') }}}">Entidades</a> </li>
+					<li class="breadcrumb-item"><a href="/">Home</a></li>
+					<li class="breadcrumb-item"><a href="{{ route('entidades.index') }}">Lista de entidades</a></li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>

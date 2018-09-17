@@ -30,6 +30,10 @@
 							<td width="75%">{{ $model->id }}</td>
 						</tr>
 						<tr>
+							<td>Titulo</td>
+							<td>{{ $model->titulo }}</td>
+						</tr>
+						<tr>
 							<td>Abreviação</td>
 							<td>{{ $model->abreviacao }}</td>
 						</tr>

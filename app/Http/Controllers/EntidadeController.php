@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entidade;
 use App\Http\Requests\EntidadesRequest;
+use App\Repositories\FileRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
@@ -34,16 +35,7 @@ class EntidadeController extends Controller
 
 	public function create()
 	{
-		$model = new Entidade();
-    return view('entidades.create', compact('model'));
-	}
-
-	public function store(EntidadesRequest $request)
-	{
-		$model = Entidade::create($request->all());
-		$model->save();
-
-		return redirect()->route('entidades.index')->with('success', 'A Entidade foi cadastrada com sucesso!');
+    return view('entidades.create');
 	}
 
 	public function show($id)
@@ -59,24 +51,52 @@ class EntidadeController extends Controller
 
 		return view('entidades.edit', compact('model'));
 	}
-
-	/**
-	 * Update the specified resource in storage.
+// --------------------------------------_
+/**
+	 * Store a newly created resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
+	 * @param  EntidadesRequest $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(EntidadesRequest $request, $id)
+	public function store(EntidadesRequest $request, FileRepository $repo)
+ 	{
+ 		$dados = $request->all();
+ 		// $dados['ativo'] = isset($dados['ativo']) && $dados['ativo'] ? true : false;
+
+ 		$model = new Entidade($dados);
+ 		$model->save();
+
+ 		$model->img_path = $repo->saveFile($request->imagem, $model->id, 'entidades');
+
+ 		$model->save();
+
+ 		// $model->formaPagamentos()->sync($dados['formapagamentos']);
+ 		// $model->consultors()->sync($dados['consultors']);
+
+ 		return redirect()->route('entidades.show', $model)->with('success', 'Registro adicionado');;
+ 	}
+
+
+
+	public function update(EntidadesRequest $request, $id, FileRepository $repo)
 	{
-		$model = Entidade::findOrFail($id);
+		$model = Entidade::find($id);
 		$dados = $request->all();
+
+		// $dados['ativo'] = isset($dados['ativo']) && $dados['ativo'] ? true : false;
 
 		$model->update($dados);
 
-		return redirect()->route('entidades.index')->with('success', 'A Entidade foi Atualizada!');
-	}
+		if($request->hasFile('imagem'))
+			$model->imgpath = $repo->saveFile($request->imagem, $model->id, 'entidades');
 
+		$model->save();
+
+		$model->formaPagamentos()->sync($dados['formapagamentos']);
+		$model->consultors()->sync($dados['consultors']);
+
+		return redirect()->route($model->routeModel().'show', $model)->with('success', 'Registro atualizado');
+	}
 
 	public function destroy($id)
 	{

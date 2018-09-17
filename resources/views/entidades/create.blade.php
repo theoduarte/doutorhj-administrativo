@@ -18,7 +18,7 @@
 		</div>
 	</div>
 
-	<form action="{{ route('entidades.store') }}" method="post">
+	<form action="{{ route('entidades.store') }}" method="post" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 		<div class="row">
 			<div class="col-12">
@@ -41,10 +41,16 @@
 						<input type="text" id="titulo" class="form-control" name="titulo" required maxlength="150" placeholder="Título da Entidade">
 					</div>
 					</br>
-					<div class="form-group col-md-12">
-						<label for="abreviacao">Abreviação<span class="text-danger">*</span></label>
-						<input type="text" id="abreviacao" class="form-control" name="abreviacao" required maxlength="50" placeholder="Abreviação">
-					</div>
+					<div class="form-row">
+						<div class="form-group col-md-9">
+							<label for="abreviacao">Abreviação<span class="text-danger">*</span></label>
+							<input type="text" id="abreviacao" class="form-control" name="abreviacao" required maxlength="50" placeholder="Abreviação">
+						</div>
+						<div class="form-group col-md-3">
+				        <label for="imagem">Imagem</label></br>
+				        <input class="form-control" type="file" id="imagem" name="imagem" accept="image/jpeg, image/png"/>
+				    </div>
+				</div>
 
 					<div class="form-group text-right m-b-0">
 						<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>
