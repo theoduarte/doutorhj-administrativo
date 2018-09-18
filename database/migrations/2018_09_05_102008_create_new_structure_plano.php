@@ -121,7 +121,7 @@ class CreateNewStructurePlano extends Migration
 			$table->integer('id', true);
 			$table->timestamp('data_inicio');
 			$table->timestamp('data_fim');
-			$table->boolean('cobertura');
+			$table->boolean('cobertura_ativa');
 			$table->float('vl_max_consumo');
 			$table->integer('plano_id');
 			$table->integer('paciente_id');

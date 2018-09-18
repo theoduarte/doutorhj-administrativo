@@ -48,7 +48,7 @@
 			}).change(function () {
 				if ($(this).val().length == 0) {
 					$('#datepicker-agenda').val(null);
-					$('input[name="clinica_id"').val(null);
+					$('input[name="clinica_id"]').val(null);
 				}
 			});
 		});
@@ -159,7 +159,7 @@
 								@foreach($agendamentos as $agendamento)
 									@foreach( $agendamento->atendimentos()->whereNull('deleted_at')->get() as $atendimento )
 										@php
-										$type = !empty( $atendimento->procedimento ) ? 'Exame' : 'Consulta';
+											$type = !empty( $atendimento->procedimento ) ? 'Exame' : 'Consulta';
 										@endphp
 										<tr>
 											<td>{{ $agendamento->te_ticket }}</td>
@@ -185,17 +185,15 @@
 													$atendimento->procedimento->grupoprocedimento->ds_grupo :
 													$atendimento->consulta->especialidade->ds_especialidade }}"
 													   id-especialidade="{{ !empty( $atendimento->procedimento ) ?
-														$atendimento->procedimento->id :
-																	 	$atendimento->consulta->id }}"
+														$atendimento->procedimento->id : $atendimento->consulta->id }}"
 													   tp-prestador="{{ $atendimento->clinica->tp_prestador }}"
 													   data-hora="{{ $agendamento->dt_atendimento }}"
 													   prestador="{{ $atendimento->clinica->nm_razao_social }}"
-													   nm-profissional="{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+													   nm-profissional="{{ !is_null($atendimento->profissional_id) ?  $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario : '' }}"
 													   valor-consulta="{{ number_format( $agendamento->itempedidos->sum('valor'),  2, ',', '.') }}"
 													   valor-pagamento="{{ number_format( $agendamento->itempedidos->first()->pedido->pagamentos->first()->amount/100,  2, ',', '.') }}"
 													   id-agendamento="{{ $agendamento->id }}"
 													   id-profissional="{{ $atendimento->profissional->id }}"
-													   nm-profissional="{{ $atendimento->profissional->nm_primario }} {{ $atendimento->profissional->nm_secundario }}"
 													   id-clinica="{{ $atendimento->clinica->id }}"
 													   nm-clinica="{{ $atendimento->clinica->nm_fantasia }}"
 													   id-paciente="{{ $agendamento->paciente->id }}"
@@ -224,7 +222,7 @@
 														   nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 														   data-hora="{{ $agendamento->dt_atendimento }}"
 														   prestador="{{ $atendimento->clinica->nm_razao_social }}"
-														   nm-profissional="{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+														   nm-profissional="{{ !is_null($atendimento->profissional_id) ? $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario : '' }}"
 														   valor-consulta="{{ number_format( $agendamento->itempedidos->sum('valor'),  2, ',', '.') }}"
 														   id-agendamento="{{ $agendamento->id }}"
 														   id-profissional="{{ $agendamento->profissional->id }}"
@@ -247,7 +245,7 @@
 															   nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 															   data-hora="{{ $agendamento->dt_atendimento }}"
 															   prestador="{{ $atendimento->clinica->nm_razao_social }}"
-															   nm-profissional="{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+															   nm-profissional="{{ !is_null($atendimento->profissional_id) ? $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario : '' }}"
 															   valor-consulta="{{ number_format( $agendamento->itempedidos->sum('valor'),  2, ',', '.') }}"
 															   id-agendamento="{{ $agendamento->id }}"
 															   id-profissional="{{ $agendamento->profissional->id }}"
@@ -270,7 +268,7 @@
 																   nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 																   data-hora="{{ $agendamento->dt_atendimento }}"
 																   prestador="{{ $atendimento->clinica->nm_razao_social }}"
-																   nm-profissional="{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+																   nm-profissional="{{ !is_null($atendimento->profissional_id) ? $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario : ''}}"
 																   valor-consulta="{{ number_format( $agendamento->itempedidos->sum('valor'),  2, ',', '.') }}"
 																   id-agendamento="{{ $agendamento->id }}"
 																   id-profissional="{{ $agendamento->profissional->id }}"
@@ -296,7 +294,7 @@
 																	   nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 																	   data-hora="{{ $agendamento->dt_atendimento }}"
 																	   prestador="{{ $atendimento->clinica->nm_razao_social }}"
-																	   nm-profissional="{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario }}"
+																	   nm-profissional="{{ !is_null($atendimento->profissional_id) ? $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario : ''}}"
 																	   valor-consulta="{{ number_format( $agendamento->itempedidos->sum('valor'),  2, ',', '.') }}"
 																	   id-agendamento="{{ $agendamento->id }}"
 																	   id-profissional="{{ $agendamento->profissional->id }}"

@@ -221,7 +221,7 @@
                     dataType: 'json',
                     success: function (result) {
                         if( result != null) {
-                            $('#dialog-update #novo_valor').val( result.vl_com_atendimento );
+                            $('#dialog-update #novo_valor').val( result.preco_ativo.vl_comercial );
 
                             if( $('#dialog-update #novo_valor').val() != $('#dialog-update #valor').val() ) {
                                 $('#dialog-update #novo_valor').addClass('is-invalid');
@@ -309,7 +309,7 @@
                 dataType: 'json',
                 success: function (result) {
                     if( result != null) {
-                        $('#dialog-update #novo_valor').val( result.vl_com_atendimento );
+                        $('#dialog-update #novo_valor').val( result.preco_ativo.vl_comercial );
 
                         if( $('#dialog-update #novo_valor').val() != $('#dialog-update #valor').val() ) {
                             $('#dialog-update #novo_valor').addClass('is-invalid');

@@ -835,19 +835,25 @@ HEREDOC;
         DB::beginTransaction();
 
         try {
-            $atendimento = Atendimento::where( 'clinica_id', $request::get('clinica_id') )
-                ->when($request::get('tipo_atendimento') == 'saude', function ($query) use ($request) {
-                    return $query->where( 'profissional_id', $request::get('profissional_id') );
-                })
-                ->where( ( $request::get('tipo_atendimento') == 'saude' ) ? 'consulta_id' : 'procedimento_id', $request::get('especialidade') )
-                ->where( 'cs_status', 'A' )->first();
-
             $agendamento = Agendamento::find( $request::get('agendamento_id') );
             $agendamento->filial_id = $request::get('filial_id');
             $agendamento->save();
 
+			$paciente = new Paciente();
+			$plano_id = $paciente->getPlanoAtivo($agendamento->paciente_id);
+
+			$atendimento = Atendimento::where( 'clinica_id', $request::get('clinica_id') )
+				->when($request::get('tipo_atendimento') == 'saude', function ($query) use ($request) {
+					return $query->where( 'profissional_id', $request::get('profissional_id') );
+				})
+				->where( ( $request::get('tipo_atendimento') == 'saude' ) ? 'consulta_id' : 'procedimento_id', $request::get('especialidade') )
+				->where( 'cs_status', 'A' )
+				->with('precoAtivo')->whereHas('precoAtivo', function($query) use ($plano_id) {
+					$query->where('plano_id', '=', $plano_id);
+				})->first();
+
             $itemPedido = Itempedido::where('agendamento_id', $agendamento->id)->first();
-            $itemPedido->valor = $atendimento->vl_com_atendimento;
+            $itemPedido->valor = $atendimento->precoAtivo->vl_comercial;
             $itemPedido->save();
 
             $oldAtendimento = $agendamento->atendimentos()->whereNull('deleted_at')->first();

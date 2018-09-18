@@ -22,6 +22,8 @@ use Kyslik\ColumnSortable\Sortable;
  */
 class Plano extends Model
 {
+	const OPEN = 1;
+
 	use Sortable;
 
     /**

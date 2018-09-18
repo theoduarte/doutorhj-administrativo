@@ -72,7 +72,18 @@ class Atendimento extends Model
 	 */
 	public function precos()
 	{
-		return $this->hasMany('App\Preco')->where('cs_status', '=', 'A');
+		return $this->hasMany('App\Preco')
+			->where('cs_status', '=', 'A')
+			->where('data_inicio', '<=', date('Y-m-d'))
+			->where('data_fim', '>=', date('Y-m-d'));
+	}
+
+	public function precoAtivo()
+	{
+		return $this->hasOne('App\Preco')
+			->where('cs_status', '=', 'A')
+			->where('data_inicio', '<=', date('Y-m-d'))
+			->where('data_fim', '>=', date('Y-m-d'));
 	}
 
 	/**
@@ -107,7 +118,11 @@ class Atendimento extends Model
 		return $this->hasMany('App\Agendamento');
 	}
 
-	public function getFirst($data) {
+	public function getFirst($data)
+	{
+		$agendamento = Agendamento::findOrFail($data['agendamento_id']);
+		$paciente = new Paciente();
+		$plano_id = $paciente->getPlanoAtivo($agendamento->paciente_id);
 
         $atendimentos =  $this::where(function ($query) use ($data) {
             $query->where('cs_status','A')->get();
@@ -133,10 +148,17 @@ class Atendimento extends Model
                     $query->where('profissional_id', $data['profissional_id'])->get();
                 }
             }
-        })->first();
+        })->with('precoAtivo')->whereHas('precoAtivo', function($query) use ($plano_id) {
+			$query->where('plano_id', '=', $plano_id);
+		})->first();
 
         return !empty($atendimentos) ? $atendimentos->toArray() : [];
     }
+
+	public function getProfissionalAttribute()
+	{
+		return $this->profissional()->first() ?: new Profissional();
+	}
 
     public function getFirstProcedimento($data) {
 
