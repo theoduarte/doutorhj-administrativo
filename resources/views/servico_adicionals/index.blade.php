@@ -11,7 +11,7 @@
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
+					<li class="breadcrumb-item"><a href="">Cadastros</a></li>
 					<li class="breadcrumb-item active">Serviço Adicional</li>
 				</ol>
 				<div class="clearfix"></div>
@@ -28,19 +28,14 @@
 				</p>
 
 				<div class="row justify-content-between">
-					<div class="col-8">
-						<div class="float-le">
+					<div class="col-3">
+						<div class="float-left">
 							<a href="{{ route('servico_adicionals.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar Serviço</a>
 						</div>
 					</div>
 
-					<div class="col-1">
-						<div class="form-group text-right m-b-0">
-							<a href="{{ route('servico_adicionals.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ion-close"></i> Limpar Busca</a>
-						</div>
-					</div>
 
-					<div class="col-2">
+					<div class="col-6">
 						<div class="form-group float-right">
 							<form action="{{ route('servico_adicionals.index') }}" id="form-search"  method="get">
 								<div class="input-group bootstrap-touchspin">
@@ -49,6 +44,11 @@
 									<span class="input-group-btn"><button type="button" class="btn btn-primary bootstrap-touchspin-up" onclick="$('#form-search').submit()"><i class="fa fa-search"></i></button></span>
 								</div>
 							</form>
+						</div>
+					</div>
+					<div class="col-3">
+						<div class="float-right">
+							<a href="{{ route('servico_adicionals.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5"><i class="ion-close"></i> Limpar Busca</a>
 						</div>
 					</div>
 				</div>

@@ -40,14 +40,14 @@ class EntidadeController extends Controller
 
 	public function show($id)
 	{
-		$model = Entidade::findOrfail($id);
+		$model = Entidade::findOrFail($id);
 
 		return view('entidades.show', compact('model'));
 	}
 
 	public function edit($id)
 	{
-		$model = Entidade::find($id);
+		$model = Entidade::findOrFail($id);
 
 		return view('entidades.edit', compact('model'));
 	}
@@ -88,7 +88,7 @@ class EntidadeController extends Controller
 		$model->update($dados);
 
 		if($request->hasFile('imagem'))
-			$model->imgpath = $repo->saveFile($request->imagem, $model->id, 'entidades');
+			$model->img_path = $repo->saveFile($request->imagem, $model->id, 'entidades');
 
 		$model->save();
 

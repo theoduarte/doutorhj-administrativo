@@ -18,7 +18,7 @@
 		</div>
 	</div>
 
-	<form action="{{ route('entidades.update', $model->id) }}" method="post">
+	<form action="{{ route('entidades.update', $model->id) }}" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="_method" value="PUT">
 		{!! csrf_field() !!}
 
@@ -41,14 +41,18 @@
 					<div class="form-row">
 						<div class="form-group col-md-12">
 							<label for="titulo">Título<span class="text-danger">*</span></label>
-							<input type="number" id="titulo" class="form-control" name="titulo" placeholder="Título" maxlength="150" required value="{{ $model->titulo }}">
+							<input type="text" id="titulo" class="form-control" name="titulo" placeholder="Título" maxlength="150" required value="{{ $model->titulo }}">
 						</div>
 					</div>
 
 					<div class="form-row">
-						<div class="form-group col-md-12">
+						<div class="form-group col-md-9">
 							<label for="abreviacao">Abreviação<span class="text-danger">*</span></label>
-							<input type="number" id="abreviacao" class="form-control" name="abreviacao" placeholder="Abreviação" maxlength="50" required value="{{ $model->abreviacao }}">
+							<input type="text" id="abreviacao" class="form-control" name="abreviacao" placeholder="Abreviação" value="{{ $model->abreviacao }}" maxlength="50" required>
+						</div>
+						<div class="form-group col-md-3">
+								<label for="imagem">Imagem: {{$model->img_path}}</label></br>
+								<input class="form-control" type="file" id="imagem" name="imagem" accept="image/jpeg, image/png" placeholder="{{ $model->img_path }}"value="{{ $model->img_path }}"/>
 						</div>
 					</div>
 

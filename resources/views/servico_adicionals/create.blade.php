@@ -35,17 +35,15 @@
 				@endif
 
 				<form action="{{ route('servico_adicionals.store') }}" method="post">
-
 					{!! csrf_field() !!}
-
 					<div class="form-group">
 						<div class="row">
-							<div class="col-md-9">
+							<div class="col-md-12">
 								<label for="titulo">Título<span class="text-danger">*</span></label>
 								<input type="text" id="titulo" class="form-control" name="titulo" required maxlength="150" placeholder="Título do Serviço"  >
 							</div>
 
-							<div class="form-group col-md-9">
+							<div class="form-group col-md-12">
 								<label for="plano_id">ID do Plano<span class="text-danger">*</span></label>
 								<select id="plano_id" name="plano_id" class="form-control select2" required>
 									@foreach($planos as $id=>$ds_plano)
@@ -63,10 +61,10 @@
 
 					<div class="col-md-3">
 						<label for="cs_status">Status<span class="text-danger">*</span></label>
-								<select id="cs_status" class="form-control" name="cs_status" required>
-								<option value="A">Ativo</option>
-								<option value="I">Inativo</option>
-								</select>
+						<select id="cs_status" class="form-control" name="cs_status" required>
+							<option value="A">Ativo</option>
+							<option value="I">Inativo</option>
+						</select>
 					</div>
 
 					<div class="form-group text-right m-b-0">

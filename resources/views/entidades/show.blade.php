@@ -11,7 +11,7 @@
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"> <a href="/">Home</a> </li>
 					<li class="breadcrumb-item"> <a href="{{ route('entidades.index') }}">Lista de entidades</a> </li>
-					<li class="breadcrumb-item active">Detalhes da Entidade</li>
+					<li class="breadcrumb-item active">Detalhes de '{{ $model->titulo }}'</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
@@ -30,12 +30,17 @@
 							<td width="75%">{{ $model->id }}</td>
 						</tr>
 						<tr>
-							<td>Titulo</td>
+							<td>Titulo:</td>
 							<td>{{ $model->titulo }}</td>
 						</tr>
 						<tr>
-							<td>Abreviação</td>
+							<td>Abreviação:</td>
 							<td>{{ $model->abreviacao }}</td>
+						</tr>
+						</tr>
+						<tr>
+							<td>Local:</td>
+							<td>{{ $model->img_path }}</td>
 						</tr>
 						<tr>
 							<td>Criado em:</td>

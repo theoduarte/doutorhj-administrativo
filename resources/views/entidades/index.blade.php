@@ -22,18 +22,17 @@
 	<div class="col-12">
 		<div class="card-box">
 			<h4 class="m-t-0 header-title">Entidades</h4>
-			<p class="text-muted m-b-30 font-13"}></p>
+			<p class="text-muted m-b-30 font-13"}>Listagem Completa</p>
 
 			<div class="row">
 				<div class="col-12">
 					<form class="form-edit-add" role="form" action="{{ route('entidades.index') }}" method="get" ecntype="multipart/form-data">
-
 						<div class="float-right">
 							<a href="{{ route('entidades.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"> <i class="fa fa-plus m-r-5"></i>Adicionar Entidade</a>
 						</div>
 						<div class="row">
 							<div style="width: 530px !important;">
-								<label for="FILTROAQUI!!">Filtrar por:</label><br>
+								<label for="tp_filtro_entidade">Filtrar por:</label><br>
 								<div class="form-group">
 									<input type="radio" id="tp_filtro_titulo" name="tp_filtro" value="titulo" @if( old('tp_filtro')=='titulo') checked @endif>
 									<label for="tp_filtro_titulo" style="cursor: pointer;">Titulo&nbsp;&nbsp;&nbsp;</label>
