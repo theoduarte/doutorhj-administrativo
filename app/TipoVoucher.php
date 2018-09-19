@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TipoVoucher extends Model
 {
+	const PLANO = 1;
+	const AVULSO = 2;
+
     /**
      * @var array
      */

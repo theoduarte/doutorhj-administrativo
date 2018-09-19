@@ -28,8 +28,8 @@
 
 		<div class="form-row">
 			<div class="form-group col-2">
-				<label for="plano_id" class="control-label">Plano<span class="text-danger">*</span></label>
-				<select id="plano_id" class="select2" name="plano_id" data-placeholder="Selecione ..." required>
+				<label for="plano_id_consulta" class="control-label">Plano<span class="text-danger">*</span></label>
+				<select id="plano_id_consulta" class="select2" name="plano_id" data-placeholder="Selecione ..." required>
 					<option></option>
 					@foreach($planos as $id=>$plano)
 						<option value="{{ $id }}" @if ( old('plano_id') == $id) selected  @endif>{{$plano}}</option>
@@ -52,7 +52,7 @@
 				<input id="vl_net_consulta" type="text" class="form-control mascaraMonetaria" name="vl_net_consulta" value="{{ old('vl_net_consulta') }}"  maxlength="15" required>
 			</div>
 
-			<div class="form-group col-2">
+			<div class="form-group col-4">
 				<div style="height: 30px;"></div>
 				<button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Salvar</button>
 				<a onclick="limparConsulta()" class="btn btn-icon btn-danger" title="Limpar Consulta"><i class="mdi mdi-close"></i> Limpar</a>

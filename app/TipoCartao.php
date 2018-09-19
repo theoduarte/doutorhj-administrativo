@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TipoCartao extends Model
 {
+	const INDIVIDUAL = 1;
+	const EMPRESARIAL = 2;
+	const PRE_PAGO = 3;
+
     /**
      * @var array
      */

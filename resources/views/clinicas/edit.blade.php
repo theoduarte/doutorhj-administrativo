@@ -68,6 +68,35 @@
     	</div>
    </form>
 </div>
+<div id="preco-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PrecoModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="edit-preco-title-modal">DrHoje: Editar Preço</h4>
+			</div>
+			<div class="modal-body">
+				<form method="post" action=""  id="form-edit-preco">
+					<input type="hidden" name="_method" value="PUT">
+					{!! csrf_field() !!}
+
+					<div class="row">
+						<div class="col-md-12">
+							<label for="edit-data-vigencia">Vigência do Preço:<span class="text-danger"></span></label>
+							<input type="text" class="form-control input-daterange" id="edit-data-vigencia" name="data-vigencia" value="{{ old('data-vigencia') }}" autocomplete="off">
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
+						<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 @push('scripts')
 	<script type="text/javascript">
 	jQuery(document).ready(function($) {
