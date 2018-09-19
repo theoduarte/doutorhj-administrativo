@@ -36,7 +36,7 @@
 								<div class="form-group">
 									<input type="radio" id="tp_filtro_titulo" name="tp_filtro" value="titulo" @if( old('tp_filtro')=='titulo') checked @endif>
 									<label for="tp_filtro_titulo" style="cursor: pointer;">Titulo&nbsp;&nbsp;&nbsp;</label>
-
+									
 									<input type="radio" id="tp_filtro_abreviacao" name="tp_filtro" value="abreviacao" @if( old('tp_filtro')=='abreviacao') checked @endif>
 									<label for="tp_filtro_abreviacao" style="cursor: pointer;">Abreviação&nbsp;&nbsp;&nbsp;</label>
 								</div>

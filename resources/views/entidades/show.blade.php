@@ -26,27 +26,27 @@
 				<table class="table table-bordered table-striped view-doutorhj">
 					<tbody>
 						<tr>
-							<td width="25%">Código(id):</td>
+							<td width="25%"><strong>Código(ID):</td>
 							<td width="75%">{{ $model->id }}</td>
 						</tr>
 						<tr>
-							<td>Titulo:</td>
+							<td><strong>Titulo:</strong></td>
 							<td>{{ $model->titulo }}</td>
 						</tr>
 						<tr>
-							<td>Abreviação:</td>
+							<td><strong>Abreviação:</strong></td>
 							<td>{{ $model->abreviacao }}</td>
 						</tr>
 						</tr>
 						<tr>
-							<td>Local:</td>
+							<td><strong>Local:</strong></td>
 							<td>{{ $model->img_path }}</td>
 						</tr>
 						<tr>
-							<td>Criado em:</td>
+							<td><strong>Criado em:</strong></td>
 							<td>{{ $model->created_at }}</td>
 						</tr>
-							<td>Atualizado em:</td>
+							<td><strong>Atualizado em:</strong></td>
 							<td>{{ $model->updated_at }}</td>
 						</tr>
 					</tbody>

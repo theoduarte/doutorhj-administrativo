@@ -17,7 +17,7 @@ class EntidadeController extends Controller
 			if(!empty(Request::input('nm_busca'))){
 				switch (Request::input('tp_filtro')){
 					case "titulo":
-						$query->where('titulo', 'ilike', '%'.UtilController::toStr(Request::input('titulo')).'%');
+						$query->where(DB::raw('to_str(titulo)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
 						break;
 					case "abreviacao":
 						$query->where(DB::raw('to_str(abreviacao)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');

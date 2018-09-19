@@ -23,8 +23,7 @@ class ServicoAdicionalController extends Controller
 
 	public function create()
 	{
-			$planos = Plano::pluck('ds_plano', 'id');
-			return view('servico_adicionals.create', compact('planos'));
+			return view('servico_adicionals.create');
 	}
 
 	public function store(ServicoAdicionalRequest $request)

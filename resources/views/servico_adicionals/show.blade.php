@@ -26,30 +26,30 @@
 				<table class="table table-bordered table-striped view-doutorhj">
 					<tbody>
 						<tr>
-							<td width="25%">ID:</td>
-							<td width="75%"><em><strong>{{ $servico_adicionals->id }}</strong></em></td>
+							<td width="25%"><strong>Código(ID):</strong></td>
+							<td width="75%">{{ $servico_adicionals->id }}</td>
 						</tr>
 						<tr>
-							<td>Título:</td>
+							<td><strong>Título:</strong></td>
 							<td>{{ $servico_adicionals->titulo }}</td>
 						</tr>
 						<tr>
-							<td>Descrição:</td>
+							<td><strong>Descrição:</strong></td>
 							<td>{{ $servico_adicionals->ds_servico }}</td>
 						</tr>
 						<tr>
-							<td>Status:</td>
+							<td><strong>Status:</strong></td>
 							<td>@if($servico_adicionals->cs_status == 'A') <span class="text-success"><strong><i class="ion-checkmark-circled"></i> Ativo</strong></span> @else <span class="text-danger"><strong><i class="ion-close-circled"></i> Inativo</strong></span> @endif</td>
 						</tr>
 						<tr>
-							<td>ID do Plano:</td>
+							<td><strong>ID do Plano:</strong></td>
 							<td>{{ $servico_adicionals->plano->ds_plano }}</td>
 						</tr>
 						<tr>
-							<td>Criado em:</td>
+							<td><strong>Criado em:</strong></td>
 							<td>{{ $servico_adicionals->created_at }}</td>
 						</tr>
-							<td>Atualizado em:</td>
+							<td><strong>Atualizado em:</strong></td>
 							<td>{{ $servico_adicionals->updated_at }}</td>
 						</tr>
 					</tbody>
