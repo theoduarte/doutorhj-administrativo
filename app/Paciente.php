@@ -57,7 +57,18 @@ class Paciente extends Model
 	    return $this->belongsTo(self::class, 'responsavel_id');
 	}
     
-	
+	public function getPlanoAtivo($paciente_id)
+	{
+		$vigenciaPac = VigenciaPaciente::where(['paciente_id' => $paciente_id, 'cobertura_ativa' => true])
+			->where('data_inicio', '<=', date('Y-m-d'))
+			->where('data_fim', '>=', date('Y-m-d'))->first();
+
+		if(is_null($vigenciaPac)) {
+			return Plano::OPEN;
+		} else {
+			return $vigenciaPac->plano_id;
+		}
+	}
 	
 	/*
 	 * Getters and Setters

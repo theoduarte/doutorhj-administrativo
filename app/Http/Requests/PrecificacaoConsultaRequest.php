@@ -28,8 +28,6 @@ class PrecificacaoConsultaRequest extends FormRequest
                 $rules = [
                     'atendimento_id' => 'required',
                     'ds_consulta' => 'required',
-                    'vl_com_consulta' => 'required',
-                    'vl_net_consulta' => 'required',
                     'profissional_id' => 'required',
                 ];
                 

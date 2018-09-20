@@ -7,44 +7,57 @@
 <div class="form-group">
     <form method="post" action="{{ route('add-precificacao-consulta',$prestador) }}" id="form-add">
         {!! csrf_field() !!}
-    	<div class="row">
-            <div class="col-8">
-    			<div class="row">
-    		        <div class="col-9">
-    		        	<label for="nm_razao_social" class="control-label">Consulta<span class="text-danger">*</span></label>
-    		            <input id="ds_consulta" type="text" class="form-control" name="ds_consulta" value="{{ old('ds_consulta') }}" placeholder="Informe a Descrição da Consulta para buscar" autofocus maxlength="100" required>
-    		       		<input type="hidden" id="cd_consulta" name="cd_consulta" value="">
-    		       		<input type="hidden" id="descricao_consulta" name="descricao_consulta" value="">
-    		       		<input type="hidden" id="consulta_id" name="consulta_id" value="">
-    		        </div>
-    		        <div class="col-3">
-    		            <label for="vl_com_consulta" class="control-label">Valor Comercial (R$)<span class="text-danger">*</span></label>
-    		            <input id="vl_com_consulta" type="text" class="form-control mascaraMonetaria" name="vl_com_consulta" value="{{ old('vl_com_consulta') }}"  maxlength="15" required>
-    		        </div>
-    			</div>
-    			
-    			<div class="row">
-    		        <div class="col-9">
-    		        	<label for="nm_profissional" class="control-label">Profissional<span class="text-danger">*</span></label>
-    		            <select id="list_profissional_consulta" class="select2 select2-multiple" name="list_profissional_consulta[]" multiple="multiple" multiple data-placeholder="Selecione ...">
-    			            @foreach($list_profissionals as $profissional)
-    			            <option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.' ('.$profissional->documentos->first()->tp_documento.': '.$profissional->documentos->first()->te_documento.')' }}</option>
-    			            @endforeach
-    		            </select>
-    		        </div>
-    		        <div class="col-3">
-    		            <label for="vl_net_consulta" class="control-label">Valor NET (R$)<span class="text-danger">*</span></label>
-    		            <input id="vl_net_consulta" type="text" class="form-control mascaraMonetaria" name="vl_net_consulta" value="{{ old('vl_net_consulta') }}"  maxlength="15" required>
-    		        </div>
-    			</div>
-    		</div>
-    		<div class="col-2">
-    			<div style="height: 30px;"></div>
-    		    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Salvar</button>
-                <div style="height: 30px;"></div>
-    		    <a onclick="limparConsulta()" class="btn btn-icon btn-danger" title="Limpar Consulta"><i class="mdi mdi-close"></i> Limpar</a>
-    		</div>
-    	</div> 
+		<div class="form-row">
+			<div class="form-group col-6">
+				<label for="nm_razao_social" class="control-label">Consulta<span class="text-danger">*</span></label>
+				<input id="ds_consulta" type="text" class="form-control" name="ds_consulta" value="{{ old('ds_consulta') }}" placeholder="Informe a Descrição da Consulta para buscar" autofocus maxlength="100" required>
+				<input type="hidden" id="cd_consulta" name="cd_consulta" value="">
+				<input type="hidden" id="descricao_consulta" name="descricao_consulta" value="">
+				<input type="hidden" id="consulta_id" name="consulta_id" value="">
+			</div>
+
+			<div class="form-group col-6">
+				<label for="nm_profissional" class="control-label">Profissional<span class="text-danger">*</span></label>
+				<select id="list_profissional_consulta" class="select2 select2-multiple" name="list_profissional_consulta[]" multiple="multiple" multiple data-placeholder="Selecione ...">
+					@foreach($list_profissionals as $profissional)
+						<option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.' ('.$profissional->documentos->first()->tp_documento.': '.$profissional->documentos->first()->te_documento.')' }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-2">
+				<label for="plano_id_consulta" class="control-label">Plano<span class="text-danger">*</span></label>
+				<select id="plano_id_consulta" class="select2" name="plano_id" data-placeholder="Selecione ..." required>
+					<option></option>
+					@foreach($planos as $id=>$plano)
+						<option value="{{ $id }}" @if ( old('plano_id') == $id) selected  @endif>{{$plano}}</option>
+					@endforeach
+				</select>
+			</div>
+
+			<div class="form-group col-2">
+				<label for="data_vigencia_consulta">Vigência do Preço:<span class="text-danger"></span></label>
+				<input type="text" class="form-control input-daterange" id="data_vigencia_consulta" name="data-vigencia" value="{{ old('data') }}" autocomplete="off">
+			</div>
+
+			<div class="form-group col-2">
+				<label for="vl_com_consulta" class="control-label">Valor Comercial (R$)<span class="text-danger">*</span></label>
+				<input id="vl_com_consulta" type="text" class="form-control mascaraMonetaria" name="vl_com_consulta" value="{{ old('vl_com_consulta') }}"  maxlength="15" required>
+			</div>
+
+			<div class="form-group col-2">
+				<label for="vl_net_consulta" class="control-label">Valor NET (R$)<span class="text-danger">*</span></label>
+				<input id="vl_net_consulta" type="text" class="form-control mascaraMonetaria" name="vl_net_consulta" value="{{ old('vl_net_consulta') }}"  maxlength="15" required>
+			</div>
+
+			<div class="form-group col-4">
+				<div style="height: 30px;"></div>
+				<button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Salvar</button>
+				<a onclick="limparConsulta()" class="btn btn-icon btn-danger" title="Limpar Consulta"><i class="mdi mdi-close"></i> Limpar</a>
+			</div>
+		</div>
     </form>
 	
     <br>
@@ -58,8 +71,17 @@
 					<th width="380">Consulta</th>
 					<th width="300">Profissional</th>
 					<th width="300">Nomes Populares</th>
-					<th width="100">Vl. Com. (R$)</th>
-					<th width="100">Vl. NET (R$)</th>
+					<th width="100">
+						<table class="table">
+							<tr>
+								<th class="text-nowrap">Plano</th>
+								<th class="text-nowrap">Vl. Com.</th>
+								<th class="text-nowrap">Vl. NET</th>
+								<th class="text-nowrap">Vigência</th>
+								<th>Ação</th>
+							</tr>
+						</table>
+					</th>
 					<th width="10">Ação</th>
 				</tr>
     			@foreach( $precoconsultas as $atendimento )
@@ -69,10 +91,24 @@
     					<td>{{$atendimento->ds_preco}}</td>
     					<td>@if($atendimento->profissional->cs_status == 'A') {{$atendimento->profissional->nm_primario.' '.$atendimento->profissional->nm_secundario.' ('.$atendimento->profissional->documentos()->first()->tp_documento.': '.$atendimento->profissional->documentos->first()->te_documento.')' }} @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA PROFISSIONAL SELECIONADO</span> @endif</td>
     					<td>@if( isset($atendimento->consulta->tag_populars) && sizeof($atendimento->consulta->tag_populars) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->consulta->tag_populars as $tag) <li><i class="mdi mdi-check"></i> {{ $tag->cs_tag }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="ion-close-circled"></i></span>  @endif</td>
-    					<td>{{$atendimento->vl_com_atendimento}}</td>
-    					<td>{{$atendimento->vl_net_atendimento}}</td>
     					<td>
-    						<a onclick="loadDataConsulta(this, {{ $atendimento->id }})" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+							<table class="table">
+								@foreach($atendimento->precos as $preco)
+									<tr>
+										<td>{{$preco->plano->ds_plano}}</td>
+										<td>{{$preco->vl_comercial}}</td>
+										<td>{{$preco->vl_net}}</td>
+										<td>{{$preco->data_inicio->format('d/m/Y')}}<br>{{$preco->data_fim->format('d/m/Y')}}</td>
+										<td class="text-nowrap">
+											<button type="button" class="btn btn-sm btn-default" title="Editar Preço" onclick="loadDataPreco({{$preco->id}})"><i class="mdi mdi-lead-pencil"></i></button>
+											<button type="button" class="btn btn-sm btn-danger" title="Exluir Preço" onclick="delLinhaPreco('{{$preco->id}}', '{{$preco->plano->ds_plano}}')"><i class="ti-trash"></i></button>
+										</td>
+									</tr>
+								@endforeach
+							</table>
+						</td>
+    					<td>
+    						<a onclick="loadDataConsulta(this, '{{ $atendimento->id }}')" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-lead-pencil"></i> Editar</a>
 	                 		<a onclick="delLinhaConsulta(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir"><i class="ti-trash"></i> Excluir</a>
     					</td>
     				</tr>
@@ -125,22 +161,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                        	<label for="vl_com_consulta_edit" class="control-label">Valor Comercial (R$)</label>
-                        	<input type="text" id="vl_com_consulta_edit" class="form-control mascaraMonetaria" name="vl_com_consulta" placeholder="Valor Comercial" required>
-                        </div>
-                        <div class="col-md-6">
-                        	<label for="vl_net_consulta_edit" class="control-label">Valor Net (R$)</label>
-                        	<input type="text" id="vl_net_consulta_edit" class="form-control mascaraMonetaria" name="vl_net_consulta" placeholder="Valor Net" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
-                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
-                </div>
-            </form>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>
+						<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal"><i class="mdi mdi-cancel"></i> Cancelar</button>
+					</div>
+            	</form>
+			</div>
         </div>
     </div>
 </div>
@@ -225,7 +252,6 @@
 	            }
             },
             error: function (result) {
-            	
                 swal(({
     	            title: "Oops",
     	            text: "Falha na operação!",
@@ -237,8 +263,6 @@
 		
     	var ds_consulta = $(element).parent().parent().find('td:nth-child(3)').html();
     	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
-    	var vl_com_atendimento = $(element).parent().parent().find('td:nth-child(6)').html();
-    	var vl_net_atendimento = $(element).parent().parent().find('td:nth-child(7)').html();
 
     	$('#profissional-consulta-modal').find('input.form-control').val('');
     	$('#profissional-consulta-modal').find('select.form-control').prop('selectedIndex',0);
@@ -246,8 +270,6 @@
 		$('#form-edit #consulta_id_edit').val(atendimento_id);
 		$('#form-edit #ds_consulta_edit').val(ds_consulta);
 		$('#form-edit #nm_profissional_consulta_edit').val(nm_profissional);
-		$('#form-edit #vl_com_consulta_edit').val(vl_com_atendimento);
-    	$('#form-edit #vl_net_consulta_edit').val(vl_net_atendimento);
         $('#form-edit #atendimento_id_edit_consulta').val(atendimento_id);        
 		 
 		$("#profissional-consulta-modal").modal();

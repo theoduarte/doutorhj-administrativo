@@ -11,9 +11,17 @@
     					<th>Id</th>
     					<th>Código</th>
     					<th>Consulta</th>
-    					<th style="width: 150px;">Valor Comercial</th>
-    					<th style="width: 150px;">Valor Net</th>
     					<th style="width: 400px;">Profissional</th>
+						<th>
+							<table class="table">
+								<tr>
+									<th class="text-nowrap">Plano</th>
+									<th class="text-nowrap">Vl. Com.</th>
+									<th class="text-nowrap">Vl. NET</th>
+									<th class="text-nowrap">Vigência</th>
+								</tr>
+							</table>
+						</th>
     				</tr>
         		</thead>
         		<tbody>
@@ -33,11 +41,21 @@
                 					<th>{{$consulta->consulta->id}}		     <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->consulta->id}}"></th>
                 					<th>{{$consulta->consulta->cd_consulta}} <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->consulta->cd_consulta}}"></th>
                 					<th>{{$consulta->consulta->ds_consulta}} <input type="hidden" name="precosConsultas[{{$consulta->consulta->id}}][]" value="{{$consulta->ds_preco}}"></th>
-                					<td>R$ {{$consulta->vl_com_atendimento}}</td>
-                					<td>R$ {{$consulta->vl_net_atendimento}}</td>
                 					<td>{{ $consulta->profissional->nm_primario.' '.$consulta->profissional->nm_secundario.' ('.$consulta->profissional->documentos()->first()->tp_documento.': '.$consulta->profissional->documentos->first()->te_documento.')' }}</td>
-                				</tr>
-            				@endforeach    			
+                					<td>
+										<table class="table">
+											@foreach($consulta->precos as $preco)
+												<tr>
+													<td>{{$preco->plano->ds_plano}}</td>
+													<td>{{$preco->vl_comercial}}</td>
+													<td>{{$preco->vl_net}}</td>
+													<td>{{$preco->data_inicio->format('d/m/Y')}}<br>{{$preco->data_fim->format('d/m/Y')}}</td>
+												</tr>
+											@endforeach
+										</table>
+									</td>
+								</tr>
+            				@endforeach
         				@endif
         			@endif
     			</tbody>

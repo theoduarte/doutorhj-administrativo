@@ -29,5 +29,9 @@ class DatabaseSeeder extends Seeder
 		$this->call(AgendamentosTableSeeder::class);
 		$this->call(ItempedidosTableSeeder::class);
 		
+        $this->call(TipoVouchersTableSeeder::class);
+        $this->call(TipoPlanosTableSeeder::class);
+        $this->call(TipoPrecosTableSeeder::class);
+        $this->call(TipoCartaosTableSeeder::class);
     }
 }

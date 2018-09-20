@@ -11,9 +11,16 @@
     					<th>Id</th>
     					<th>Código</th>
     					<th>Procedimento</th>
-    					<th style="width: 150px;">Valor Comercial</th>
-    					<th style="width: 150px;">Valor Net</th>
-    					<th style="width: 400px;">Profissional</th>
+    					<th style="width: 150px;">
+							<table class="table">
+								<tr>
+									<th class="text-nowrap">Plano</th>
+									<th class="text-nowrap">Vl. Com.</th>
+									<th class="text-nowrap">Vl. NET</th>
+									<th class="text-nowrap">Vigência</th>
+								</tr>
+							</table>
+						</th>
     				</tr>
     			</thead>
     			<tbody>
@@ -33,9 +40,18 @@
                 					<td>{{$procedimento->procedimento->id}}</td>
                 					<td>{{$procedimento->procedimento->cd_procedimento}}</td>
                 					<td>{{$procedimento->procedimento->ds_procedimento}}</td>
-                					<td>R$ {{$procedimento->vl_com_atendimento}}</td>
-                					<td>R$ {{$procedimento->vl_net_atendimento}}</td>
-                					<td>{{ $procedimento->profissional->nm_primario.' '.$procedimento->profissional->nm_secundario.' ('.$procedimento->profissional->documentos()->first()->tp_documento.': '.$procedimento->profissional->documentos->first()->te_documento.')' }}</td>
+                					<td>
+										<table class="table">
+											@foreach($procedimento->precos as $preco)
+												<tr>
+													<td>{{$preco->plano->ds_plano}}</td>
+													<td>{{$preco->vl_comercial}}</td>
+													<td>{{$preco->vl_net}}</td>
+													<td>{{$preco->data_inicio->format('d/m/Y')}}<br>{{$preco->data_fim->format('d/m/Y')}}</td>
+												</tr>
+											@endforeach
+										</table>
+									</td>
                 				</tr>
             				@endforeach
         				@endif

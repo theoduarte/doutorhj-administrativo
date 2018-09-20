@@ -7,60 +7,122 @@ use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $clinica_id
+ * @property int $consulta_id
+ * @property int $procedimento_id
+ * @property int $profissional_id
+ * @property string $ds_preco
+ * @property string $cs_status
+ * @property string $created_at
+ * @property string $updated_at
+ * @property Clinica $clinica
+ * @property Consulta $consulta
+ * @property Procedimento $procedimento
+ * @property Profissional $profissional
+ * @property Preco[] $precos
+ * @property AgendamentoAtendimento[] $agendamentoAtendimentos
+ * @property Filial[] $filials
+ * @property ItemCheckup[] $itemCheckups
+ * @property Agendamento[] $agendamentos
+ */
+
 class Atendimento extends Model
 {
 	use Sortable;
 	
-	public $fillable  = ['id', 'vl_com_atendimento', 'vl_net_atendimento', 'ds_preco'];
-	public $sortable  = ['id', 'vl_com_atendimento', 'vl_net_atendimento', 'ds_preco'];
-	
-	public function agendamentos()
+	public $fillable  = ['id', 'ds_preco'];
+	public $sortable  = ['id', 'ds_preco'];
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function clinica()
 	{
-	    return $this->hasMany('App\Agendamento');
+		return $this->belongsTo('App\Clinica');
 	}
-	
-	public function clinica(){
-	    return $this->belongsTo('App\Clinica');
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function consulta()
+	{
+		return $this->belongsTo('App\Consulta');
 	}
-	
-	public function consulta(){
-	    return $this->belongsTo('App\Consulta');
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function procedimento()
+	{
+		return $this->belongsTo('App\Procedimento');
 	}
-    
-	public function procedimento(){
-	    return $this->belongsTo('App\Procedimento');
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function profissional()
+	{
+		return $this->belongsTo('App\Profissional');
 	}
-    
-	public function profissional(){
-	    return $this->belongsTo('App\Profissional')->withDefault();
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function precos()
+	{
+		return $this->hasMany('App\Preco')
+			->where('cs_status', '=', 'A')
+			->where('data_inicio', '<=', date('Y-m-d H:i:s'))
+			->where('data_fim', '>=', date('Y-m-d H:i:s'));
 	}
-	
+
+	public function precoAtivo()
+	{
+		return $this->hasOne('App\Preco')
+			->where('cs_status', '=', 'A')
+			->where('data_inicio', '<=', date('Y-m-d H:i:s'))
+			->where('data_fim', '>=', date('Y-m-d H:i:s'));
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function agendamentoAtendimentos()
+	{
+		return $this->hasMany('App\AgendamentoAtendimento');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
 	public function filials()
 	{
 		return $this->belongsToMany('App\Filial');
 	}
 
-    public function setVlNetAtendimentoAttribute($value)
-    {
-        if (empty($value)) return;
-        $this->attributes['vl_net_atendimento'] = str_replace(',', '.', str_replace('.', '', $value));
-    }
-    
-    public function setVlComAtendimentoAttribute($value)
-    {
-        if (empty($value)) return;
-        $this->attributes['vl_com_atendimento'] = str_replace(',', '.', str_replace('.', '', $value));
-    }
-	
-	public function getVlNetAtendimentoAttribute(){
-	    return number_format( $this->attributes['vl_net_atendimento'],  2, ',', '.');
-	}
-	
-	public function getVlComAtendimentoAttribute($val){
-	    return number_format( $this->attributes['vl_com_atendimento'],  2, ',', '.');
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function itemCheckups()
+	{
+		return $this->hasMany('App\ItemCheckup');
 	}
 
-	public function getFirst($data) {
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function agendamentos()
+	{
+		return $this->hasMany('App\Agendamento');
+	}
+
+	public function getFirst($data)
+	{
+		$agendamento = Agendamento::findOrFail($data['agendamento_id']);
+		$paciente = new Paciente();
+		$plano_id = $paciente->getPlanoAtivo($agendamento->paciente_id);
 
         $atendimentos =  $this::where(function ($query) use ($data) {
             $query->where('cs_status','A')->get();
@@ -86,10 +148,17 @@ class Atendimento extends Model
                     $query->where('profissional_id', $data['profissional_id'])->get();
                 }
             }
-        })->first();
+        })->with('precoAtivo')->whereHas('precoAtivo', function($query) use ($plano_id) {
+			$query->where('plano_id', '=', $plano_id);
+		})->first();
 
         return !empty($atendimentos) ? $atendimentos->toArray() : [];
     }
+
+	public function getProfissionalAttribute()
+	{
+		return $this->profissional()->first() ?: new Profissional();
+	}
 
     public function getFirstProcedimento($data) {
 

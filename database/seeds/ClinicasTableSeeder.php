@@ -111,7 +111,7 @@ class ClinicasTableSeeder extends Seeder
 			)); */
 			
 			$idAtendimento = $numero;
-			
+
             DB::table('atendimentos')->insert(array (
                     0 =>
                     array (
