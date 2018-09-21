@@ -33,9 +33,13 @@
 								<label for="titulo">Título<span class="text-danger">*</span></label>
 								<input type="text" id="titulo" class="form-control" name="titulo" value="{{ $servico_adicionals->titulo }}" required maxlength="150" placeholder="Título do Serviço Adicional"  >
 							</div>
-							<div class="col-md-3">
-								<label for="codigo">ID Plano<span class="text-danger">*</span></label>
-								<input type="text" id="plano_id" class="form-control" name="plano_id" value="{{ $servico_adicionals->plano_id }}" required maxlength="100" placeholder="ID do Plano"  >
+							<div class="form-group col-md-3">
+								<label for="plano_id">ID do Plano<span class="text-danger">*</span></label>
+								<select id="plano_id" name="plano_id" class="form-control select2" required>
+									@foreach($planos as $id=>$ds_plano)
+										<option value="{{$id}}" @if ( old('serv_adicional') == $id) selected="selected"  @endif>{{$ds_plano}}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 					</div>
