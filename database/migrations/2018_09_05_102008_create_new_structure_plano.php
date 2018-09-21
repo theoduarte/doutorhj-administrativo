@@ -133,13 +133,18 @@ class CreateNewStructurePlano extends Migration
 		Schema::create('empresas', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->string('nome', 250);
+			$table->string('nome_fantasia', 250);
+			$table->string('razao_social', 250);
 			$table->bigInteger('cnpj');
-			$table->string('cs_status', 1);
+			$table->bigInteger('inscricao')->nullable();
+			$table->string('cs_status', 1)->default('A');
 			$table->decimal('vl_max_empresa');
 			$table->decimal('vl_max_funcionario');
-			$table->float('anuidade');
-			$table->integer('desconto');
+			$table->float('anuidade')->nullable();
+			$table->integer('desconto')->nullable();
+			$table->integer('tp_empresa_id');
+			$table->integer('endereco_id');
+			$table->integer('matriz_id')->nullable;
 
 			$table->timestamp('created_at', 0)->useCurrent()->nullable();
 			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
@@ -154,11 +159,42 @@ class CreateNewStructurePlano extends Migration
 			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
 		});
 
+		Schema::create('tipo_empresas', function(Blueprint $table)
+		{
+			$table->integer('id', true);
+			$table->string('descricao', 250);
+			$table->string('abreviacao', 10);
+
+			$table->timestamp('created_at', 0)->useCurrent()->nullable();
+			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
+		});
+
 		Schema::create('entidade_plano', function(Blueprint $table)
 		{
 			$table->integer('entidade_id');
 			$table->integer('plano_id');
 			$table->primary(['entidade_id','plano_id'], 'entidades_planos_pkey');
+		});
+
+		Schema::create('contato_empresa', function(Blueprint $table)
+		{
+			$table->integer('contato_id');
+			$table->integer('empresa_id');
+
+			$table->primary(['contato_id','empresa_id'], 'contatos_empresas_pkey');
+		});
+
+		Schema::create('empresa_user', function(Blueprint $table)
+		{
+			$table->integer('empresa_id');
+			$table->integer('user_id');
+			$table->string('telefone', 20);
+			$table->string('cpf', 14);
+
+			$table->timestamp('created_at', 0)->useCurrent()->nullable();
+			$table->timestamp('updated_at', 0)->useCurrent()->nullable();
+
+			$table->primary(['empresa_id','user_id'], 'empresas_users_pkey');
 		});
 
 		Schema::create('campanha_clinica', function(Blueprint $table)
@@ -178,6 +214,7 @@ class CreateNewStructurePlano extends Migration
 		Schema::table('pacientes', function(Blueprint $table)
 		{
 			$table->addColumn('integer', 'empresa_id')->nullable();
+			$table->string('mundipagg_token', 250)->nullable();
 			$table->foreign('empresa_id', 'pacientes_empresa_id_foreign')->references('id')->on('empresas');
 		});
 
@@ -187,6 +224,13 @@ class CreateNewStructurePlano extends Migration
 			$table->addColumn('integer', 'tp_cartao_id')->nullable();
 			$table->foreign('empresa_id', 'cartao_pacientes_empresa_id_foreign')->references('id')->on('empresas');
 			$table->foreign('tp_cartao_id', 'cartao_pacientes_tp_cartao_id_foreign')->references('id')->on('tipo_cartaos');
+		});
+
+		Schema::table('empresas', function(Blueprint $table)
+		{
+			$table->foreign('tp_empresa_id', 'empresas_tp_empresa_id_foreign')->references('id')->on('tipo_empresas');
+			$table->foreign('endereco_id', 'empresas_endereco_id_foreign')->references('id')->on('enderecos');
+			$table->foreign('matriz_id', 'empresas_matriz_id_foreign')->references('id')->on('empresas');
 		});
 
 		Schema::table('vigencia_pacientes', function(Blueprint $table)
@@ -220,6 +264,18 @@ class CreateNewStructurePlano extends Migration
 		{
 			$table->foreign('entidade_id', 'entidade_plano_entidade_id_foreign')->references('id')->on('entidades');
 			$table->foreign('plano_id', 'entidade_plano_id_foreign')->references('id')->on('planos');
+		});
+
+		Schema::table('contato_empresa', function(Blueprint $table)
+		{
+			$table->foreign('contato_id', 'contato_empresa_contato_id_foreign')->references('id')->on('contatos');
+			$table->foreign('empresa_id', 'contato_empresa_empresa_id_foreign')->references('id')->on('empresas');
+		});
+
+		Schema::table('empresa_user', function(Blueprint $table)
+		{
+			$table->foreign('empresa_id', 'empresa_user_empresa_id_foreign')->references('id')->on('empresas');
+			$table->foreign('user_id', 'empresa_user_contato_id_foreign')->references('id')->on('users');
 		});
 
 		Schema::table('plano_tipoplano', function(Blueprint $table)
@@ -275,6 +331,25 @@ class CreateNewStructurePlano extends Migration
 			$table->dropForeign('entidade_plano_id_foreign');
 		});
 
+		Schema::table('empresas', function(Blueprint $table)
+		{
+			$table->dropForeign('empresas_tp_empresa_id_foreign');
+			$table->dropForeign('empresas_endereco_id_foreign');
+			$table->dropForeign('empresas_matriz_id_foreign');
+		});
+
+		Schema::table('contato_empresa', function(Blueprint $table)
+		{
+			$table->dropForeign('contato_empresa_contato_id_foreign');
+			$table->dropForeign('contato_empresa_empresa_id_foreignc');
+		});
+
+		Schema::table('empresa_user', function(Blueprint $table)
+		{
+			$table->dropForeign('empresa_user_empresa_id_foreign');
+			$table->dropForeign('empresa_user_contato_id_foreign');
+		});
+
 		Schema::table('plano_tipoplano', function(Blueprint $table)
 		{
 			$table->dropForeign('plano_tipoplano_tipo_plano_id_foreign');
@@ -290,12 +365,16 @@ class CreateNewStructurePlano extends Migration
 		Schema::table('pacientes', function(Blueprint $table)
 		{
 			$table->dropForeign('pacientes_empresa_id_foreign');
+			$table->dropColumn('empresa_id');
+			$table->dropColumn('mundipagg_token');
 		});
 
 		Schema::table('cartao_pacientes', function(Blueprint $table)
 		{
 			$table->dropForeign('cartao_pacientes_empresa_id_foreign');
 			$table->dropForeign('cartao_pacientes_tp_cartao_id_foreign');
+			$table->dropColumn('empresa_id');
+			$table->dropColumn('tp_cartao_id');
 		});
 
 		Schema::drop('planos');
@@ -313,5 +392,8 @@ class CreateNewStructurePlano extends Migration
 		Schema::drop('plano_tipoplano');
 		Schema::drop('empresas');
 		Schema::drop('tipo_cartaos');
+		Schema::drop('tipo_empresas');
+		Schema::drop('contato_empresa');
+		Schema::drop('empresa_user');
     }
 }

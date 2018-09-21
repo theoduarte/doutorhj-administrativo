@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Doutor HJ: Clínicas')
+@section('title', 'Doutor HJ: Empresas')
 
 @section('container')
 <div class="container-fluid">
@@ -10,8 +10,8 @@
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item"><a href="{{ route('planos.index') }}">Todas as Clínicas</a></li>
-					<li class="breadcrumb-item active">Planos</li>
+					<li class="breadcrumb-item"><a href="{{ route('empresas.index') }}">Todas as Empresas</a></li>
+					<li class="breadcrumb-item active">Empresas</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>
@@ -26,10 +26,10 @@
 				
 				<div class="row ">
 					<div class="col-12"> 
-						<form class="form-edit-add" role="form" action="{{ route('planos.index') }}" method="get" enctype="multipart/form-data">
+						<form class="form-edit-add" role="form" action="{{ route('empresas.index') }}" method="get" enctype="multipart/form-data">
                 			
         					<div class="float-right">
-        						<a href="{{ route('planos.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar</a>
+        						<a href="{{ route('empresas.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar</a>
         					</div>	
             				<div class="row">
             					<div  style="width: 529px !important;">
@@ -61,7 +61,7 @@
     						<th>Tipo de Plano</th>
     						<th>Ações</th>
     					</tr>
-    					@foreach($planos as $plano)
+    					@foreach($empresas as $empresa)
 						<tr>
     						<td>{{ sprintf("%04d", $plano->id) }}</td>
     						<td>{{$plano->cd_plano}}</td>
@@ -72,9 +72,9 @@
 								@endforeach
 							</td>
     						<td>
-    							<a href="{{ route('planos.show', $plano->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-    							<a href="{{ route('planos.edit', $plano->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-    							<a href="{{ route('planos.destroy', $plano->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o plano {{$plano->ds_plano}}?"><i class="ti-trash"></i></a>
+    							<a href="{{ route('empresas.show', $plano->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+    							<a href="{{ route('empresas.edit', $plano->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+    							<a href="{{ route('empresas.destroy', $plano->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o plano {{$plano->ds_plano}}?"><i class="ti-trash"></i></a>
     						</td>
     					</tr>
     					@endforeach
@@ -82,9 +82,9 @@
                     <tfoot>	
                     	<div class="cvx-pagination">
                     		<span class="text-primary">
-                    			{{ sprintf("%02d", $planos->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $planos->count()) }} Registro(s) exibido(s)
+                    			{{ sprintf("%02d", $empresas->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $empresas->count()) }} Registro(s) exibido(s)
                     		</span>
-                    		{!! $planos->appends(request()->input())->links() !!}
+                    		{!! $empresas->appends(request()->input())->links() !!}
                     	</div>
                     </tfoot>
 				</div>
