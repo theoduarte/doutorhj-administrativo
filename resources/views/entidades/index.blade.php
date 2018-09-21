@@ -59,7 +59,6 @@
 						<th>@sortablelink('id', 'Cód.')</th>
 						<th>@sortablelink('titulo', 'Titulo')</th>
 						<th>@sortablelink('abreviacao', 'Abreviação')</th>
-						<th>Local</th>
 						<th>Ações</th>
 					</tr>
 
@@ -68,7 +67,6 @@
 							<td>{{ sprintf("%04d", $entidade->id)}}</td>
 							<td>{{ $entidade->titulo }}</td>
 							<td>{{ $entidade->abreviacao }}</td>
-							<td>{{ $entidade->img_path }}</td>
 							<td>
 								<a href="{{ route('entidades.show', $entidade->id)}}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5"> <i class="mdi mdi-eye"></i> </a>
 								<a href="{{ route('entidades.edit', $entidade->id)}}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5"> <i class="mdi mdi-lead-pencil"></i> </a>

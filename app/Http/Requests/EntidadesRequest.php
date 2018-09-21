@@ -24,8 +24,8 @@ class EntidadesRequest extends FormRequest
     public function rules()
     {
         return [
-					'titulo'			=> 'required|max:150|min:3',
-					'abreviacao'	=> 'required|max:50|min:3',
+            'titulo'		=> 'required|max:150|min:3',
+            'abreviacao'	=> 'required|max:50|min:3',
         ];
     }
 }

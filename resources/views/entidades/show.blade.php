@@ -18,40 +18,47 @@
 		</div>
 	</div>
 
-	<div class="row">
+    <div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				<h4 class="header-title m-t-0 m-b-20">Detalhes da Entidade</h4>
+                <h4 class="header-title m-t-0 m-b-20">Detalhes da Entidade</h4>
+                <div>
+                    <table class="table table-bordered table-striped view-doutorhj">
+                        <tbody>
+                            <tr>
+                                <td width="25%"><strong>Código(ID):</td>
+                                <td width="75%">{{ $model->id }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Titulo:</strong></td>
+                                <td>{{ $model->titulo }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Abreviação:</strong></td>
+                                <td>{{ $model->abreviacao }}</td>
+                            </tr>
+                            </tr>
+                            <tr>
+                                <td><strong>Criado em:</strong></td>
+                                <td>{{ $model->created_at }}</td>
+                            </tr>
+                                <td><strong>Atualizado em:</strong></td>
+                                <td>{{ $model->updated_at }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Imagem:</strong></td>
+                                {{--<td><img class="rounded img-thumbnail" src="http://localhost:8000/storage/{{ $model->img_path }}" height="150" width="200"/></td>--}}
+                                <td><img class="rounded mx-auto d-block" src="http://localhost:8000/storage/{{ $model->img_path }}" alt="..." height = "400"/></td>
+                            </tr>
 
-				<table class="table table-bordered table-striped view-doutorhj">
-					<tbody>
-						<tr>
-							<td width="25%"><strong>Código(ID):</td>
-							<td width="75%">{{ $model->id }}</td>
-						</tr>
-						<tr>
-							<td><strong>Titulo:</strong></td>
-							<td>{{ $model->titulo }}</td>
-						</tr>
-						<tr>
-							<td><strong>Abreviação:</strong></td>
-							<td>{{ $model->abreviacao }}</td>
-						</tr>
-						</tr>
-						<tr>
-							<td><strong>Local:</strong></td>
-							<td>{{ $model->img_path }}</td>
-						</tr>
-						<tr>
-							<td><strong>Criado em:</strong></td>
-							<td>{{ $model->created_at }}</td>
-						</tr>
-							<td><strong>Atualizado em:</strong></td>
-							<td>{{ $model->updated_at }}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div>
+                </div>
+            </div>
+
 			<div class="form-group text-right m-b-0">
 				<a href="{{ route('entidades.edit', $model->id) }}" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-lead-pencil"></i> Editar</a>
 				<a href="{{ route('entidades.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
@@ -60,3 +67,11 @@
 	</div>
 </div>
 @endsection
+
+@push('scripts')
+	<script type="text/javascript">
+        jQuery(document).ready(function($) {
+
+        });
+	</script>
+@endpush
