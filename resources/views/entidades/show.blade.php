@@ -47,8 +47,7 @@
                             </tr>
                             <tr>
                                 <td><strong>Imagem:</strong></td>
-                                {{--<td><img class="rounded img-thumbnail" src="http://localhost:8000/storage/{{ $model->img_path }}" height="150" width="200"/></td>--}}
-                                <td><img class="rounded mx-auto d-block" src="http://localhost:8000/storage/{{ $model->img_path }}" alt="..." height = "400"/></td>
+                                <td><img class="rounded mx-auto d-block" src="{{ asset('storage/'.$model->img_path) }}" alt="..." height = "400"/></td>
                             </tr>
 
                         </tbody>

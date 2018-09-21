@@ -58,7 +58,7 @@
 					<tr>
 						<th>@sortablelink('id', 'Cód.')</th>
 						<th>@sortablelink('titulo', 'Titulo')</th>
-						<th>@sortablelink('abreviacao', 'Abreviação')</th>
+						<th>Abreviação</th>
 						<th>Ações</th>
 					</tr>
 
