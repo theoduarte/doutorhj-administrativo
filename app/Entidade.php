@@ -16,16 +16,16 @@ use Kyslik\ColumnSortable\Sortable;
  */
 class Entidade extends Model
 {
-	use Sortable;
+    use Sortable;
 
-	public $sortable= ['id', 'titulo', 'abreviacao', 'created_at', 'updated_at'];
-  protected $fillable = ['titulo', 'abreviacao', 'img_path', 'created_at', 'updated_at'];
+    public $sortable= ['id', 'titulo', 'abreviacao', 'created_at', 'updated_at'];
+    protected $fillable = ['titulo', 'abreviacao', 'img_path', 'created_at', 'updated_at'];
 
-  /**
-   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-   */
-  public function planos()
-  {
-      return $this->belongsToMany('App\Plano');
-  }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function planos()
+    {
+        return $this->belongsToMany('App\Plano');
+    }
 }

@@ -11,7 +11,7 @@
 					<ol class="breadcrumb float-right">
 						<li class="breadcrumb-item"><a href="/">Home</a></li>
 						<li class="breadcrumb-item"><a href="{{ route('entidades.index') }}">Lista de Entidades</a></li>
-						<li class="breadcrumb-item active">Cadastrar Entidade</li>
+						<li class="breadcrumb-item active">Editar Entidade</li>
 					</ol>
 					<div class="clearfix"></div>
 				</div>
@@ -48,7 +48,7 @@
 						<div class="form-row">
 							<div class="form-group col-md-12">
 								<label for="abreviacao">Abreviação<span class="text-danger">*</span></label>
-								<textarea id="abreviacao" class="form-control" name="abreviacao" placeholder="Abreviacao da entidade" maxlength="50" required >{{ $model->abreviacao }}</textarea>
+								<textarea id="abreviacao" class="form-control" name="abreviacao" placeholder="Abreviacao da entidade" maxlength="50" required >{{ $model->abreviacao }}9</textarea>
 							</div>
 						</div>
 

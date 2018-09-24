@@ -36,7 +36,7 @@
 							</div>
 						@endif
 						<div class="form-group">
-							<div class="form-group' col-md-12">
+							<div class="form-group col-md-12">
 								<label for="titulo">Título<span class="text-danger">*</span></label>
 								<input type="text" id="titulo" class="form-control" name="titulo" required maxlength="150" placeholder="Título da Entidade">
 							</div>
@@ -44,7 +44,7 @@
 						</br>
 						<div class="form-group">
 							<div class="form-group col-md-12">
-								<label for="abreviacao">Abreviação<span class="text-danger type="text"danger">*</span></label>
+								<label for="abreviacao">Abreviação<span class="text-danger">*</span></label>
 								<textarea id="abreviacao" class="form-control" name="abreviacao" placeholder="Abreviação" ></textarea>
 							</div>
 						</div>

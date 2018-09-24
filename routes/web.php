@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('servico_adicionals', 'ServicoAdicionalController');
 	Route::resource('precos', 'PrecoController');
     Route::resource('entidades', 'EntidadeController');
+    Route::resource('vouchers', 'VoucherController');
 
 
 

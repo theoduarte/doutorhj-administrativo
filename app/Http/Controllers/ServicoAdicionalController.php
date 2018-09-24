@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ServicoAdicional;
 use App\Http\Requests\ServicoAdicionalRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use Illuminate\Support\Facades\DB;
 use App\Plano;

@@ -22,7 +22,7 @@
 	<div class="col-12">
 		<div class="card-box">
 			<h4 class="m-t-0 header-title">Entidades</h4>
-			<p class="text-muted m-b-30 font-13"}>Listagem Completa</p>
+			<p class="text-muted m-b-30 font-13">Listagem Completa</p>
 
 			<div class="row">
 				<div class="col-12">

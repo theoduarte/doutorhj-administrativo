@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
+
 
 /**
  * @property int $id
@@ -26,6 +28,10 @@ class Voucher extends Model
     /**
      * @var array
      */
+
+    use Sortable;
+
+    public $sortable = ['id', 'titulo', 'cd_voucher', 'ds_voucher', 'prazo_utilizacao', 'tp_voucher_id', 'plano_id', 'paciente_id', 'campanha_id', 'created_at', 'updated_at'];
     protected $fillable = ['tp_voucher_id', 'plano_id', 'paciente_id', 'campanha_id', 'titulo', 'cd_voucher', 'ds_voucher', 'prazo_utilizacao', 'created_at', 'updated_at'];
 
     /**

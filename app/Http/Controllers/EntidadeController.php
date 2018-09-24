@@ -64,7 +64,7 @@ class EntidadeController extends Controller
  		// $dados['ativo'] = isset($dados['ativo']) && $dados['ativo'] ? true : false;
 
  		$model = new Entidade($dados);
- 		$model->save();
+// 		$model->save();
 
  		$model->img_path = $repo->saveFile($request->imagem, $model->id, 'entidades');
 
