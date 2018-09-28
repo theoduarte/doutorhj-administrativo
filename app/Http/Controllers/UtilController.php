@@ -28,11 +28,31 @@ class UtilController extends Controller
 		return $titulo;
 	}
 
-	static function removeMaskMoney($get_valor) {
+	public static function removeMaskMoney($get_valor) {
 		$source = array('.', ',');
 		$replace = array('', '.');
 		$valor = str_replace($source, $replace, $get_valor); //remove os pontos e substitui a virgula pelo ponto
 		return $valor; //retorna o valor formatado para gravar no banco
+	}
+
+	public static function mask($val, $mask)
+	{
+		if(!empty($val)) {
+			$val = (string)$val;
+		}
+		$maskared = '';
+		$k = 0;
+		for($i = 0; $i<=strlen($mask)-1; $i++) {
+			if($mask[$i] == '#') {
+				if(isset($val[$k]))
+					$maskared .= $val[$k++];
+			} else {
+				if(isset($mask[$i]))
+					$maskared .= $mask[$i];
+			}
+
+		}
+		return $maskared;
 	}
 
 	/**

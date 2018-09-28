@@ -39,6 +39,7 @@
 							<option value="2" @if( $perfiluser->tipo_permissao == 2 ) selected='selected' @endif>Gestor</option>
 							<option value="3" @if( $perfiluser->tipo_permissao == 3 ) selected='selected' @endif>Prestador</option>
 							<option value="4" @if( $perfiluser->tipo_permissao == 4 ) selected='selected' @endif>Cliente</option>
+							<option value="5" @if( $perfiluser->tipo_permissao == 5 ) selected='selected' @endif>Empresa</option>
 						</select>
 					</div>
 					

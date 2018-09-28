@@ -122,7 +122,7 @@ class CreateNewStructurePlano extends Migration
 			$table->timestamp('data_inicio');
 			$table->timestamp('data_fim');
 			$table->boolean('cobertura_ativa');
-			$table->float('vl_max_consumo');
+			$table->decimal('vl_max_consumo');
 			$table->integer('plano_id');
 			$table->integer('paciente_id');
 
@@ -135,16 +135,16 @@ class CreateNewStructurePlano extends Migration
 			$table->integer('id', true);
 			$table->string('nome_fantasia', 250);
 			$table->string('razao_social', 250);
-			$table->bigInteger('cnpj');
+			$table->string('cnpj', 18);
 			$table->bigInteger('inscricao')->nullable();
 			$table->string('cs_status', 1)->default('A');
 			$table->decimal('vl_max_empresa');
 			$table->decimal('vl_max_funcionario');
-			$table->float('anuidade')->nullable();
-			$table->integer('desconto')->nullable();
+			$table->decimal('anuidade')->nullable();
+			$table->decimal('desconto')->nullable();
 			$table->integer('tp_empresa_id');
 			$table->integer('endereco_id');
-			$table->integer('matriz_id')->nullable;
+			$table->integer('matriz_id')->nullable();
 
 			$table->timestamp('created_at', 0)->useCurrent()->nullable();
 			$table->timestamp('updated_at', 0)->useCurrent()->nullable();

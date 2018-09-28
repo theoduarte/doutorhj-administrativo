@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\UtilController;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -11,13 +12,13 @@ use Kyslik\ColumnSortable\Sortable;
  * @property int $endereco_id
  * @property int $matriz_id
  * @property string $nome_fantasia
- * @property integer $cnpj
+ * @property string $cnpj
  * @property string $inscricao_estadual
  * @property string $cs_status
  * @property float $vl_max_empresa
  * @property float $vl_max_funcionario
  * @property float $anuidade
- * @property int $desconto
+ * @property float $desconto
  * @property string $created_at
  * @property string $updated_at
  * @property string $razao_social
@@ -26,8 +27,8 @@ use Kyslik\ColumnSortable\Sortable;
  * @property Empresa $empresa
  * @property CartaoPaciente[] $cartaoPacientes
  * @property Contato[] $contatos
- * @property EmpresaUser[] $empresaUsers
  * @property Paciente[] $pacientes
+ * @property Representante[] $representantes
  */
 class Empresa extends Model
 {
@@ -81,16 +82,66 @@ class Empresa extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function empresaUsers()
+    public function pacientes()
     {
-        return $this->hasMany('App\EmpresaUser');
+        return $this->hasMany('App\Paciente');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function pacientes()
+    public function representantes()
     {
-        return $this->hasMany('App\Paciente');
+        return $this->hasMany('App\Representante');
     }
+
+	public function setCnpjAttribute($value)
+	{
+		$this->attributes['cnpj'] = UtilController::retiraMascara($value);
+	}
+
+	public function getCnpjAttribute()
+	{
+		if(isset($this->attributes['cnpj'])) return UtilController::mask($this->attributes['cnpj'], '##.###.###/####-##');
+	}
+
+	public function setAnuidadeAttribute($value)
+	{
+		if(!is_null($value)) $this->attributes['anuidade'] = UtilController::removeMaskMoney($value);
+	}
+
+	public function getAnuidadeAttribute()
+	{
+		if(isset($this->attributes['anuidade'])) return number_format( $this->attributes['anuidade'],  2, ',', '.');
+	}
+
+	public function setDescontoAttribute($value)
+	{
+		if(!is_null($value)) $this->attributes['desconto'] = UtilController::removeMaskMoney($value);
+	}
+
+	public function getDescontoAttribute()
+	{
+		if(isset($this->attributes['desconto'])) return number_format( $this->attributes['desconto'],  2, ',', '.');
+	}
+
+	public function setVlMaxEmpresaAttribute($value)
+	{
+		$this->attributes['vl_max_empresa'] = UtilController::removeMaskMoney($value);
+	}
+
+	public function getVlMaxEmpresaAttribute()
+	{
+		if(isset($this->attributes['vl_max_empresa'])) return number_format( $this->attributes['vl_max_empresa'],  2, ',', '.');
+	}
+
+	public function setVlMaxFuncionarioAttribute($value)
+	{
+		$this->attributes['vl_max_funcionario'] = UtilController::removeMaskMoney($value);
+	}
+
+	public function getVlMaxFuncionarioAttribute()
+	{
+		if(isset($this->attributes['vl_max_funcionario'])) return number_format( $this->attributes['vl_max_funcionario'],  2, ',', '.');
+	}
 }

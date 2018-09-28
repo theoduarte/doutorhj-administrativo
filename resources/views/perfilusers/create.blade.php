@@ -39,6 +39,7 @@
 							<option value="2">Gestor</option>
 							<option value="3">Prestador</option>
 							<option value="4">Cliente</option>
+							<option value="5">Empresa</option>
 						</select>
 					</div>
 					
