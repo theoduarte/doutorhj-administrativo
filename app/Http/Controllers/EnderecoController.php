@@ -45,8 +45,14 @@ class EnderecoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {	
+    	
+    	$endereco           = new Endereco($request->all());
+    	$endereco->nr_cep = UtilController::retiraMascara($request->input('nr_cep'));
+    	 
+    	$endereco->save();
+    	 
+    	return redirect()->route('enderecos.index')->with('success', 'O Endereço foi cadastrado com sucesso!');
     }
 
     /**

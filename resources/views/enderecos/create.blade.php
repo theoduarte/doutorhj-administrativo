@@ -135,7 +135,7 @@
                                 <select id="cidade_id" name="cidade_id" class="form-control">
                                     <option></option>
                                     @foreach ($cidades as $cidade)
-                                        <option value="{{ $cidade->id }}" uf="{{ $cidade->estado->sg_estado }}" @if ( old('cidade_id') == $cidade->id) selected="selected" @endif >{{ $cidade->nm_cidade }}</option>
+                                        <option value="{{ $cidade->id }}" uf="{{ $cidade->estado->sg_estado }}" @if ( old('cidade_id') == $cidade->id) selected="selected" @endif >{{ $cidade->nm_cidade }} - {{ $cidade->estado->sg_estado }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -160,8 +160,9 @@
 <script type="text/javascript">
 $(document).ready(function () {
 	
-    $( "#cidade_id" ).change({
-        $('#sg_estado').val($(this).attr('uf'))
+    $( "#cidade_id" ).change(function() {
+        var uf = $('option:selected', this).attr('uf');
+        $('#sg_estado').val(uf);
     });
     
 });
