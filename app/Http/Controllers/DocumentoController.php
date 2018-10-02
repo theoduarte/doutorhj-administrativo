@@ -13,8 +13,26 @@ class DocumentoController extends Controller
 
 		$model = Documento::where(['tp_documento' => 'CPF', 'te_documento' => $cpfLimpo])->first();
 		if(!is_null($model)) {
+
+			$representante = $model->representantes->first();
+			if(!is_null($representante)) {
+				$contato = $representante->contatos->where('tp_contato', 'CP')->first();
+				if(!is_null($contato)) {
+					$pessoa = [
+						'email' => $representante->user->email,
+						'nm_primario' => $representante->nm_primario,
+						'nm_secundario' => $representante->nm_secundario,
+						'cs_sexo' => $representante->cs_sexo,
+						'dt_nascimento' => $representante->dt_nascimento,
+						'telefone' => $contato->ds_contato,
+						'user_id' => $representante->user_id,
+					];
+
+					return Response()->json(['status' => true, 'pessoa' => $pessoa]);
+				}
+			}
+
 			$paciente = $model->pacientes->where('cs_status', 'A')->first();
-			$profissional = $model->profissionals->where('cs_status', 'A')->first();
 			if(!is_null($paciente)) {
 				$contato = $paciente->contatos->where('tp_contato', 'CP')->first();
 				if(!is_null($contato)) {
@@ -25,11 +43,15 @@ class DocumentoController extends Controller
 						'cs_sexo' => $paciente->cs_sexo,
 						'dt_nascimento' => $paciente->dt_nascimento,
 						'telefone' => $contato->ds_contato,
+						'user_id' => $paciente->user_id,
 					];
 
 					return Response()->json(['status' => true, 'pessoa' => $pessoa]);
 				}
-			} elseif(!is_null($profissional)) {
+			}
+
+			$profissional = $model->profissionals->where('cs_status', 'A')->first();
+			if(!is_null($profissional)) {
 				$contato = $profissional->contatos->where('tp_contato', 'CP')->first();
 				if(!is_null($contato)) {
 					$pessoa = [
@@ -39,6 +61,7 @@ class DocumentoController extends Controller
 						'cs_sexo' => $profissional->cs_sexo,
 						'dt_nascimento' => $profissional->dt_nascimento,
 						'telefone' => $contato->ds_contato,
+						'user_id' => $profissional->user_id,
 					];
 
 					return Response()->json(['status' => true, 'pessoa' => $pessoa]);

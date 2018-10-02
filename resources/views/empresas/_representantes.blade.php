@@ -8,11 +8,13 @@
 
 <div class="row">
 	<div class="col-12">
+		<input type="hidden" id="empresa_id" name="empresa_id" value="{{$model->id}}">
 		<table id="tblRepresentantes" name="tblRepresentantes" class="table table-striped table-bordered table-doutorhj">
 			<tr>
 				<th>Id</th>
 				<th>Nome</th>
 				<th>CPF</th>
+				<th>Telefone</th>
 				<th>Data de Nascimento</th>
 				<th width="10">Ação</th>
 			</tr>
@@ -21,10 +23,11 @@
 					<td>{{$representante->id}}</td>
 					<td>{{$representante->nome}}</td>
 					<td>{{$representante->cpf}}</td>
+					<td>{{$representante->telefone}}</td>
 					<td>{{$representante->dt_nascimento}}</td>
 					<td>
-						<a onclick="loadDataProcedimento(this, '{{ $atendimento->id }}')" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar Atendimento"><i class="mdi mdi-lead-pencil"></i> Editar</a>
-						<a onclick="delLinhaProcedimento(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir Atendimento"><i class="ti-trash"></i> Excluir</a>
+						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-edit" title="Editar Representante" href="{{route('representantes.editModal', $representante->id)}}"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Representante" href="{{route('representantes.destroy', $representante->id)}}"><i class="ti-trash"></i> Excluir</a>
 					</td>
 				</tr>
 			@endforeach
@@ -43,12 +46,6 @@
 
 @push('scripts')
 <script>
-	$.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		}
-	});
-
 	$(function() {
 		$('.btn-create').on('click', function(e) {
 			e.preventDefault();
@@ -59,38 +56,48 @@
 			$('#modalRepresentante').modal('show');
 		});
 
-/*		$('body').on('click', '.btn-show', function(e) {
+		$('.btn-edit').on('click', function(e) {
 			e.preventDefault();
-			$('#modalEntrgDoc .modal-body').html('');
+			$('#modalRepresentante .modal-body').html('');
 			var url = $(this).attr('href');
 
-			var urlLoad = "{{route('empresas.create', ['id' => 'idCondicao'])}}";
-			urlLoad = urlLoad.replace('idCondicao', getIdUrl(url));
-
-			$('#modalEntrgDoc .modal-body').load(urlLoad);
-			$('#modalEntrgDoc').modal('show');
+			$('#modalRepresentante .modal-body').load(url);
+			$('#modalRepresentante').modal('show');
 		});
 
-		$('body').on('click', '.btn-create', function(e) {
+		$('.btn-delete').on('click', function(e) {
 			e.preventDefault();
-			$('#modalEntrgDoc .modal-body').html('');
-
-			var urlLoad = "{{route('empresas.create', ['idRegra' => $model->id])}}";
-			$('#modalEntrgDoc .modal-body').load(urlLoad);
-			$('#modalEntrgDoc').modal('show');
-		});
-
-		$('body').on('click', '.btn-edit', function(e) {
-			e.preventDefault();
-			$('#modalEntrgDoc .modal-body').html('');
 			var url = $(this).attr('href');
+			var mensagem = 'DrHoje';
 
-			var urlLoad = "{{route('empresas.edit', ['id' => 'idCondicao'])}}";
-			urlLoad = urlLoad.replace('idCondicao', getIdUrl(url));
+			swal({
+				title: mensagem,
+				text: 'O Representante será movido da lista',
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonClass: 'btn btn-confirm mt-2',
+				cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
+				confirmButtonText: 'Sim',
+				cancelButtonText: 'Cancelar'
+			}).then(function () {
+				jQuery.ajax({
+					type: 'POST',
+					url: url,
+					data: {
+						'_method': 'DELETE',
+						'empresa_id': $('#empresa_id').val(),
+						'_token': '{!! csrf_token() !!}'
+					},
+					success: function (result) {
+						reloadShowTab();
+					},
+					error: function (result) {
+						$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+					}
+				});
 
-			$('#modalEntrgDoc .modal-body').load(urlLoad);
-			$('#modalEntrgDoc').modal('show');
-		});*/
+			});
+		});
 
 		$('#modalRepresentante').on('hidden.bs.modal', function () {
 			reloadShowTab();

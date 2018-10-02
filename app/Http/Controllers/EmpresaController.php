@@ -133,7 +133,7 @@ class EmpresaController extends Controller
 
 		$tipoEmpresas = TipoEmpresa::pluck('descricao', 'id');
 		$estados = Estado::orderBy('ds_estado')->get();
-		$representantes = Representante::orderBy('nm_primario')->get();
+		$representantes = $model->representantes;
 
 		return view('empresas.edit', compact('model', 'tipoEmpresas', 'estados', 'representantes'));
 	}

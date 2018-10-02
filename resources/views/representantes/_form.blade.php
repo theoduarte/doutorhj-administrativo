@@ -68,7 +68,7 @@
 		<select id="perfiluser_id" class="form-control" name="perfiluser_id" required autofocus>
 			<option></option>
 			@foreach($perfilusers as $id=>$perfiluser)
-				<option value="{{$id}}">{{$perfiluser}}</option>
+				<option value="{{$id}}" {{($model->perfiluser_id ?? old('perfiluser_id')) == $id ? 'selected' : ''}}>{{$perfiluser}}</option>
 			@endforeach
 		</select>
 	</div>
@@ -103,22 +103,22 @@
 					success: function (data) {
 						$('#cvx-cpf-loading').addClass('cvx-no-loading');
 
-						if(data.pessoa.email != '') $('#email').val(data.pessoa.email).prop('readonly', true);
+						if(data.pessoa != undefined && data.pessoa.email != '') $('#email').val(data.pessoa.email).prop('readonly', true);
 						else $('#email').prop('readonly', false);
 
-						if(data.pessoa.nm_primario != '') $('#nm_primario').val(data.pessoa.nm_primario).prop('readonly', true);
+						if(data.pessoa != undefined && data.pessoa.nm_primario != '') $('#nm_primario').val(data.pessoa.nm_primario).prop('readonly', true);
 						else $('#nm_primario').prop('readonly', false);
 
-						if(data.pessoa.nm_secundario != '') $('#nm_secundario').val(data.pessoa.nm_secundario).prop('readonly', true);
+						if(data.pessoa != undefined && data.pessoa.nm_secundario != '') $('#nm_secundario').val(data.pessoa.nm_secundario).prop('readonly', true);
 						else $('#nm_secundario').prop('readonly', false);
 
-						if(data.pessoa.cs_sexo != '') $('#cs_sexo').val(data.pessoa.cs_sexo).prop('disabled', true);
+						if(data.pessoa != undefined && data.pessoa.cs_sexo != '') $('#cs_sexo').val(data.pessoa.cs_sexo).prop('disabled', true);
 						else $('#cs_sexo').prop('readonly', false);
 
-						if(data.pessoa.dt_nascimento != '') $('#dt_nascimento').val(data.pessoa.dt_nascimento).prop('readonly', true);
+						if(data.pessoa != undefined && data.pessoa.dt_nascimento != '') $('#dt_nascimento').val(data.pessoa.dt_nascimento).prop('readonly', true);
 						else $('#dt_nascimento').prop('readonly', false);
 
-						if(data.pessoa.telefone != '') $('#telefone').val(data.pessoa.telefone).prop('readonly', true);
+						if(data.pessoa != undefined && data.pessoa.telefone != '') $('#telefone').val(data.pessoa.telefone).prop('readonly', true);
 						else $('#telefone').prop('readonly', false);
 					},
 					error: function (data) {

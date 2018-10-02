@@ -65,6 +65,14 @@ class Documento extends Model
         return $this->belongsToMany('App\Profissional');
     }
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function representantes()
+	{
+		return $this->belongsToMany('App\Representante');
+	}
+
 	public function getTeDocumentoAttribute($nrDocumento){
 		if( $this->attributes['tp_documento'] == 'CPF' ) {
 			return \App\Http\Controllers\UtilController::formataCpf($nrDocumento);

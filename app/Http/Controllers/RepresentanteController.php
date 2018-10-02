@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Contato;
+use App\Documento;
 use App\Http\Requests\RepresentanteRequest;
 use App\Perfiluser;
 use App\Representante;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use League\Flysystem\Util;
+use Illuminate\Support\Facades\Request as CVXRequest;
 
 class RepresentanteController extends Controller
 {
@@ -35,10 +42,81 @@ class RepresentanteController extends Controller
 	{
 		$dados = $request->all();
 
-		$model = new Representante($dados);
-		$model->save();
+		DB::beginTransaction();
+		try {
+			$documento_obj = new DocumentoController();
+			$user = $documento_obj->getUserByCpf($dados['cpf'])->getData();
+			if(!$user->status) {
+				$user = new User();
+				$user->name = strtoupper($dados['nm_primario'].' '.$dados['nm_secundario']);
+				$user->email = $dados['email'];
+				$user->password = bcrypt(uniqid('empresa@newSenha'));
+				$user->tp_user = 'REP';
+				$user->save();
+			} else {
+				$user = User::findOrFail($user->pessoa->user_id);
+				if(empty($user->email)) {
+					$user->email = $dados['email'];
+					$user->save();
+				}
+			}
 
-		return redirect()->route($model->routeModel().'show', $model)->with('success', 'Registro adicionado');
+			$cpf = UtilController::retiraMascara($dados['cpf']);
+			$documento = Documento::where(['tp_documento' => 'CPF', 'te_documento' => $cpf])->first();
+
+			$model = $documento->representantes->first();
+			if(is_null($model)) {
+				$model = new Representante($dados);
+				$model->user_id = $user->id;
+				$model->save();
+			}
+
+			if(is_null($documento)) {
+				$documento = new Documento();
+				$documento->tp_documento = 'CPF';
+				$documento->te_documento = $cpf;
+				$documento->save();
+
+				$model->documentos()->attach($documento->id);
+			} else {
+				if(!is_null($model) && $model->empresas->where('id', $dados['empresa_id'])->count() > 0) {
+					DB::rollback();
+					return response()->json([
+						'message' => 'Representante já cadastrado nessa empresa',
+					], 403);
+				}
+			}
+
+			$contato = Contato::where(['tp_contato' => 'CP', 'ds_contato' => $dados['telefone']])->first();
+			if(is_null($contato)) {
+				$contato->tp_contato = 'CP';
+				$contato->ds_contato = $dados['telefone'];
+				$contato->save();
+
+				$model->contatos()->attach($contato->id);
+			}
+
+			$model->empresas()->attach($dados['empresa_id']);
+		} catch (\Exception $e) {
+			DB::rollback();
+			report($e);
+			return response()->json([
+				'message' => 'Erro ao salvar o representante. Reinicie o navegador e tente novamente.',
+				'e' => $e->getMessage()
+			], 500);
+		} catch (QueryException $e) {
+			DB::rollback();
+			report($e);
+			return response()->json([
+				'message' => 'Erro ao salvar o representante. Reinicie o navegador e tente novamente.',
+				'e' => $e->getMessage()
+			], 500);
+		}
+
+		DB::commit();
+		return response()->json([
+			'status' => true
+		], 201);
 	}
 
 	/**
@@ -50,7 +128,7 @@ class RepresentanteController extends Controller
 	public function showModal($id)
 	{
 		$model = Representante::findOrFail($id);
-		return view($model->routeModel().'modalShow', compact('model'));
+		return view('representantes.modalShow', compact('model'));
 	}
 
 	/**
@@ -61,11 +139,11 @@ class RepresentanteController extends Controller
 	 */
 	public function editModal($id)
 	{
-		$model = Representante::find($id);
+		$model = Representante::findOrFail($id);
 
 		$perfilusers = Perfiluser::where('tipo_permissao', 5)->pluck('titulo', 'id');
 
-		return view($model->routeModel().'modalEdit', compact('model', 'perfilusers'));
+		return view('representantes.modalEdit', compact('model', 'perfilusers'));
 	}
 
 	/**
@@ -80,9 +158,12 @@ class RepresentanteController extends Controller
 		$model = Representante::find($id);
 		$dados = $request->all();
 
-		$model->update($dados);
+		$model->perfiluser_id = $dados['perfiluser_id'];
+		$model->save();
 
-		return redirect()->route($model->routeModel().'show', $model)->with('success', 'Registro atualizado');
+		return response()->json([
+			'status' => true
+		], 201);
 	}
 
 	/**
@@ -93,9 +174,10 @@ class RepresentanteController extends Controller
 	 */
 	public function destroy($id)
 	{
+		$empresa_id = CVXRequest::post('empresa_id');
 		try {
 			$model = Representante::findOrFail($id);
-			$model->delete();
+			$model->empresas()->detach([$empresa_id]);
 		} catch(QueryException $e) {
 			report($e);
 			return response()->json([

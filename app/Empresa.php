@@ -25,10 +25,10 @@ use Kyslik\ColumnSortable\Sortable;
  * @property TipoEmpresa $tipoEmpresa
  * @property Endereco $endereco
  * @property Empresa $empresa
+ * @property Representante[] $representantes
  * @property CartaoPaciente[] $cartaoPacientes
  * @property Contato[] $contatos
  * @property Paciente[] $pacientes
- * @property Representante[] $representantes
  */
 class Empresa extends Model
 {
@@ -64,6 +64,14 @@ class Empresa extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function representantes()
+    {
+        return $this->belongsToMany('App\Representante');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function cartaoPacientes()
@@ -85,14 +93,6 @@ class Empresa extends Model
     public function pacientes()
     {
         return $this->hasMany('App\Paciente');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function representantes()
-    {
-        return $this->hasMany('App\Representante');
     }
 
 	public function setCnpjAttribute($value)

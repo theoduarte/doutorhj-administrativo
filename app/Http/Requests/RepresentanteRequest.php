@@ -24,8 +24,6 @@ class RepresentanteRequest extends FormRequest
 			'nm_secundario' 	=> 'Sobrenome',
 			'cs_sexo' 			=> 'Sexo',
 			'dt_nascimento' 	=> 'Nascimento',
-			'cpf'  				=> 'CPF',
-			'telefone'			=> 'Telefone',
 			'email'				=> 'Email',
 			'perfiluser_id'		=> 'Perfil do Usuário'
 		];
@@ -43,8 +41,6 @@ class RepresentanteRequest extends FormRequest
 			'nm_secundario' 	=> 'required|string|max:100',
 			'cs_sexo' 			=> 'required|string|max:1',
 			'dt_nascimento' 	=> 'required|max:10|data',
-			'cpf'  				=> 'required|max:15|formato_cpf|cpf',
-			'telefone'			=> 'required|celular_com_ddd',
 			'email'				=> 'required|email',
 			'perfiluser_id'		=> 'required|integer|exists:perfilusers,id'
         ];

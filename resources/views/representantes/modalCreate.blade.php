@@ -15,7 +15,6 @@
 	$(function() {
 		$('form').submit(function(e) {
 			e.preventDefault();
-
 			var disabled = $('#cs_sexo');
 			disabled.prop('disabled', false);
 
@@ -27,7 +26,7 @@
 				url: action_url,
 				data: form_data,
 				success: function(data) {
-					$("#modalCondCobert").modal("hide");
+					$("#modalRepresentante").modal("hide");
 				},
 				error: function(data) {
 					disabled.prop('disabled', true);
@@ -37,6 +36,9 @@
 				 	$.each(data.responseJSON.errors, function(key, value) {
 						errors = errors+'<li>'+value+'</li>';
 					});
+					if(data.responseJSON.message != '' && data.responseJSON.errors == undefined) {
+						errors = errors+'<li>'+data.responseJSON.message+'</li>';
+					}
 					errors = errors+'</ul></div>';
 
 					$('#errors-representante').append(errors);
