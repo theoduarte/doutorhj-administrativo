@@ -4,13 +4,15 @@
 
 <div id="errors-representante">
 @if ($errors->any())
-	<div class="alert alert-danger fade show">
-		<span class="close" data-dismiss="alert">×</span>
+	<div class="alert alert-danger alert-dismissible fade show">
 		<ul>
 			@foreach ($errors->all() as $error)
 				<li>{{ $error }}</li>
 			@endforeach
 		</ul>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
 	</div>
 @endif
 </div>
@@ -123,13 +125,13 @@
 					},
 					error: function (data) {
 						$('#cvx-cpf-loading').addClass('cvx-no-loading');
-						var errors = '<div class="alert alert-danger fade show"><span class="close" data-dismiss="alert">×</span><ul>';
+						var errors = '<div class="alert alert-danger alert-dismissible fade show"><ul>';
 
 						$('#errors-representante').html('');
 						$.each(data.responseJSON.errors, function (key, value) {
 							errors = errors + '<li>' + value + '</li>';
 						});
-						errors = errors + '</ul></div>';
+						errors = errors + '</ul><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
 						$('#errors-representante').append(errors);
 					}

@@ -30,7 +30,7 @@
 				},
 				error: function(data) {
 					disabled.prop('disabled', true);
-					var errors = '<div class="alert alert-danger fade show"><span class="close" data-dismiss="alert">×</span><ul>';
+					var errors = '<div class="alert alert-danger alert-dismissible fade show"><ul>';
 
 					$('#errors-representante').html('');
 				 	$.each(data.responseJSON.errors, function(key, value) {
@@ -39,7 +39,7 @@
 					if(data.responseJSON.message != '' && data.responseJSON.errors == undefined) {
 						errors = errors+'<li>'+data.responseJSON.message+'</li>';
 					}
-					errors = errors+'</ul></div>';
+					errors = errors + '</ul><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
 					$('#errors-representante').append(errors);
 				}

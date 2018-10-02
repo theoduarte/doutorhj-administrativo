@@ -53,7 +53,7 @@ class RepresentanteController extends Controller
 						'message' => 'Email de usuário ja cadastrado.',
 					], 403);
 				}
-				
+
 				$user = new User();
 				$user->name = strtoupper($dados['nm_primario'].' '.$dados['nm_secundario']);
 				$user->email = $dados['email'];
