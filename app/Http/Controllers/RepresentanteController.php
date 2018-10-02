@@ -47,6 +47,13 @@ class RepresentanteController extends Controller
 			$documento_obj = new DocumentoController();
 			$user = $documento_obj->getUserByCpf($dados['cpf'])->getData();
 			if(!$user->status) {
+				if(User::where('email', 'ilike', $dados['email'])->where('cs_status', 'A')->first()) {
+					DB::rollback();
+					return response()->json([
+						'message' => 'Email de usuário ja cadastrado.',
+					], 403);
+				}
+				
 				$user = new User();
 				$user->name = strtoupper($dados['nm_primario'].' '.$dados['nm_secundario']);
 				$user->email = $dados['email'];
@@ -63,6 +70,12 @@ class RepresentanteController extends Controller
 
 			$cpf = UtilController::retiraMascara($dados['cpf']);
 			$documento = Documento::where(['tp_documento' => 'CPF', 'te_documento' => $cpf])->first();
+			if(is_null($documento)) {
+				$documento = new Documento();
+				$documento->tp_documento = 'CPF';
+				$documento->te_documento = $cpf;
+				$documento->save();
+			}
 
 			$model = $documento->representantes->first();
 			if(is_null($model)) {
@@ -71,45 +84,35 @@ class RepresentanteController extends Controller
 				$model->save();
 			}
 
-			if(is_null($documento)) {
-				$documento = new Documento();
-				$documento->tp_documento = 'CPF';
-				$documento->te_documento = $cpf;
-				$documento->save();
-
-				$model->documentos()->attach($documento->id);
-			} else {
-				if(!is_null($model) && $model->empresas->where('id', $dados['empresa_id'])->count() > 0) {
-					DB::rollback();
-					return response()->json([
-						'message' => 'Representante já cadastrado nessa empresa',
-					], 403);
-				}
-			}
-
 			$contato = Contato::where(['tp_contato' => 'CP', 'ds_contato' => $dados['telefone']])->first();
 			if(is_null($contato)) {
+				$contato = new Contato();
 				$contato->tp_contato = 'CP';
 				$contato->ds_contato = $dados['telefone'];
 				$contato->save();
-
-				$model->contatos()->attach($contato->id);
 			}
 
+			if($model->empresas->where('id', $dados['empresa_id'])->count() > 0) {
+				DB::rollback();
+				return response()->json([
+					'message' => 'Representante já cadastrado nessa empresa',
+				], 403);
+			}
+
+			if(!$model->documentos->contains($documento->id)) $model->documentos()->attach($documento->id);
+			if(!$model->contatos->contains($contato->id)) $model->contatos()->attach($contato->id);
 			$model->empresas()->attach($dados['empresa_id']);
 		} catch (\Exception $e) {
 			DB::rollback();
 			report($e);
 			return response()->json([
 				'message' => 'Erro ao salvar o representante. Reinicie o navegador e tente novamente.',
-				'e' => $e->getMessage()
 			], 500);
 		} catch (QueryException $e) {
 			DB::rollback();
 			report($e);
 			return response()->json([
 				'message' => 'Erro ao salvar o representante. Reinicie o navegador e tente novamente.',
-				'e' => $e->getMessage()
 			], 500);
 		}
 

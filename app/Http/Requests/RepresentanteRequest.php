@@ -25,7 +25,10 @@ class RepresentanteRequest extends FormRequest
 			'cs_sexo' 			=> 'Sexo',
 			'dt_nascimento' 	=> 'Nascimento',
 			'email'				=> 'Email',
-			'perfiluser_id'		=> 'Perfil do Usuário'
+			'perfiluser_id'		=> 'Perfil do Usuário',
+			'cpf'  				=> 'CPF',
+			'telefone'			=> 'Telefone',
+			'email'				=> 'Email',
 		];
 	}
 
@@ -41,8 +44,11 @@ class RepresentanteRequest extends FormRequest
 			'nm_secundario' 	=> 'required|string|max:100',
 			'cs_sexo' 			=> 'required|string|max:1',
 			'dt_nascimento' 	=> 'required|max:10|data',
-			'email'				=> 'required|email',
-			'perfiluser_id'		=> 'required|integer|exists:perfilusers,id'
+			'email'				=> 'required|email|',
+			'perfiluser_id'		=> 'required|integer|exists:perfilusers,id',
+			'cpf'  				=> 'required|max:15|formato_cpf|cpf',
+			'telefone'			=> 'required|celular_com_ddd',
+			'email'				=> 'required|max:250|email'
         ];
     }
 }
