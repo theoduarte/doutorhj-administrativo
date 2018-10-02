@@ -341,7 +341,7 @@ class CreateNewStructurePlano extends Migration
 		Schema::table('contato_empresa', function(Blueprint $table)
 		{
 			$table->dropForeign('contato_empresa_contato_id_foreign');
-			$table->dropForeign('contato_empresa_empresa_id_foreignc');
+			$table->dropForeign('contato_empresa_empresa_id_foreign');
 		});
 
 		Schema::table('empresa_user', function(Blueprint $table)
