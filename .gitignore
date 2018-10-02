@@ -4,7 +4,6 @@
 /storage/*.key
 /public/users
 /vendor
-/database/seeds
 /database/factories
 /.idea/*
 .idea
