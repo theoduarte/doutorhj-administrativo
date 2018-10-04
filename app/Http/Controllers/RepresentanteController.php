@@ -58,7 +58,9 @@ class RepresentanteController extends Controller
 				$user->name = strtoupper($dados['nm_primario'].' '.$dados['nm_secundario']);
 				$user->email = $dados['email'];
 				$user->password = bcrypt(uniqid('empresa@newSenha'));
-				$user->tp_user = 'REP';
+				$user->tp_user = 'RES';
+				$user->cs_status = 'A';
+				$user->avatar = 'users/default.png';
 				$user->save();
 			} else {
 				$user = User::findOrFail($user->pessoa->user_id);

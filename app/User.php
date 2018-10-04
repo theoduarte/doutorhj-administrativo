@@ -10,17 +10,11 @@ class User extends Authenticatable
 {
     use Notifiable;
     use Sortable;
-    
-    
-    
+
     public $sortable  = ['id', 'name', 'email', 'tp_user', 'cs_status', 'perfiluser_id'];
-
     protected $fillable = ['name', 'email', 'password', 'tp_user', 'cs_status', 'perfiluser_id'];
-
     protected $hidden = ['password', 'remember_token'];
-    
-    
-    
+
     /*
      * Constants
      */
@@ -31,8 +25,7 @@ class User extends Authenticatable
         self::ATIVO   => 'Ativo',
         self::INATIVO => 'Inativo'
     );
-    
-    
+
     /*
      * Relationships
      */
@@ -66,4 +59,27 @@ class User extends Authenticatable
     public function destinatarios(){
     	return $this->hasMany('App\MensagemDestinatario', 'destinatario_id');
     }
+
+	public function getCelular()
+	{
+		$representante = $this->representantes->first();
+		if(!is_null($representante)) {
+			$contato = $representante->contatos()->where('tp_contato', 'CP')->first();
+			if(!is_null($contato)) return $contato->ds_contato;
+		}
+
+		$paciente = $this->pacientes->first();
+		if(!is_null($paciente)) {
+			$contato = $paciente->contatos()->where('tp_contato', 'CP')->first();
+			if(!is_null($contato)) return $contato->ds_contato;
+		}
+
+		$profissional = $this->profissionals->first();
+		if(!is_null($profissional)) {
+			$contato = $profissional->contatos()->where('tp_contato', 'CP')->first();
+			if(!is_null($contato)) return $contato->ds_contato;
+		}
+
+		return null;
+	}
 }
