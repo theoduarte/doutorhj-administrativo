@@ -106,22 +106,22 @@
 						$('#cvx-cpf-loading').addClass('cvx-no-loading');
 
 						if(data.pessoa != undefined && data.pessoa.email != '') $('#email').val(data.pessoa.email).prop('readonly', true);
-						else $('#email').prop('readonly', false);
+						else $('#email').val('').prop('readonly', false);
 
 						if(data.pessoa != undefined && data.pessoa.nm_primario != '') $('#nm_primario').val(data.pessoa.nm_primario).prop('readonly', true);
-						else $('#nm_primario').prop('readonly', false);
+						else $('#nm_primario').val('').prop('readonly', false);
 
 						if(data.pessoa != undefined && data.pessoa.nm_secundario != '') $('#nm_secundario').val(data.pessoa.nm_secundario).prop('readonly', true);
-						else $('#nm_secundario').prop('readonly', false);
+						else $('#nm_secundario').val('').prop('readonly', false);
 
 						if(data.pessoa != undefined && data.pessoa.cs_sexo != '') $('#cs_sexo').val(data.pessoa.cs_sexo).prop('disabled', true);
-						else $('#cs_sexo').prop('readonly', false);
+						else $('#cs_sexo').val('').prop('disabled', false);
 
 						if(data.pessoa != undefined && data.pessoa.dt_nascimento != '') $('#dt_nascimento').val(data.pessoa.dt_nascimento).prop('readonly', true);
-						else $('#dt_nascimento').prop('readonly', false);
+						else $('#dt_nascimento').val('').prop('readonly', false);
 
 						if(data.pessoa != undefined && data.pessoa.telefone != '') $('#telefone').val(data.pessoa.telefone).prop('readonly', true);
-						else $('#telefone').prop('readonly', false);
+						else $('#telefone').val('').prop('readonly', false);
 					},
 					error: function (data) {
 						$('#cvx-cpf-loading').addClass('cvx-no-loading');
