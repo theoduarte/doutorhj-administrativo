@@ -129,7 +129,7 @@ class EmpresaController extends Controller
 	 */
 	public function edit($id)
 	{
-		$model = Empresa::find($id);
+		$model = Empresa::findOrFail($id);
 
 		$tipoEmpresas = TipoEmpresa::pluck('descricao', 'id');
 		$estados = Estado::orderBy('ds_estado')->get();

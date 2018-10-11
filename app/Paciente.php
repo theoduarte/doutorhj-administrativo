@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 class Paciente extends Model
 {
 	use Sortable;
-	
-	
+
 	public $fillable      = ['id', 'nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'cargo_id'];
 	public $sortable      = ['id', 'nm_primario', 'nm_secundario'];
 	public $dates 	      = ['dt_nascimento'];
-    
-	
-	
+
+	protected $hidden = ['access_token', 'time_to_live', 'mundipagg_token'];
+	protected $appends = ['plano_ativo'];
+
 	/*
 	 * Constants
 	 */
@@ -27,9 +27,7 @@ class Paciente extends Model
 	    self::MASCULINO => 'Masculino',
 	    self::FEMININO  => 'Feminino'
 	);
-	
-	
-	
+
 	/*
 	 * Relationship
 	 */
@@ -92,5 +90,10 @@ class Paciente extends Model
 	public function getNmSecundarioAttribute()
 	{
 	    return mb_strtoupper($this->attributes['nm_secundario']);
+	}
+
+	public function getPlanoAtivoAttribute()
+	{
+		return Plano::findOrFail($this->getPlanoAtivo($this->attributes['id'])); //some logic to return numbers
 	}
 }
