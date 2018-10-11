@@ -11,7 +11,7 @@
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
 					<li class="breadcrumb-item"><a href="{{ route('planos.index') }}">Todas as Clínicas</a></li>
-					<li class="breadcrumb-item active">Clínicas</li>
+					<li class="breadcrumb-item active">Planos</li>
 				</ol>
 				<div class="clearfix"></div>
 			</div>

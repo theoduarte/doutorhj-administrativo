@@ -31,12 +31,15 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('servico_adicionals', 'ServicoAdicionalController');
 	Route::resource('precos', 'PrecoController');
     Route::resource('entidades', 'EntidadeController');
-
-
-
 	Route::resource('planos', 'PlanoController');
+	Route::resource('empresas', 'EmpresaController');
+	Route::resource('representantes', 'RepresentanteController');
 
+	Route::get('documentos/getUserByCpf/{cpf}', 'DocumentoController@getUserByCpf')->name('documentos.get-user-by-cpf');
 
+	Route::get('representantes/{id}/showModal', 'RepresentanteController@showModal')->name('representantes.showModal');
+	Route::get('representantes/createModal/{idEmpresa}', 'RepresentanteController@createModal')->name('representantes.createModal');
+	Route::get('representantes/{id}/editModal', 'RepresentanteController@editModal')->name('representantes.editModal');
 
     Route::get('checkups-configure/{checkup}','CheckupsController@configure')->name('checkups.configure');
     Route::get('get-active-clinicas-by-especialidade','CheckupsController@getClinicasByEspecidalide')->name('get-active-clinicas-by-especialidade');
@@ -100,8 +103,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get-active-filials-by-clinica-profissional-consulta','AgendamentoController@getFilialsByClinicaProfissionalConsulta')->name('get-active-filials-by-clinica-profissional-consulta');
     Route::get('get-active-filials-by-clinica-procedimento','AgendamentoController@getFilialsByClinicaProcedimento')->name('get-active-filials-by-clinica-procedimento');
     Route::post('create-new-agendamento-atendimento','AgendamentoController@createNewAgendamentoAtendimento')->name('create-new-agendamento-atendimento');
-
-
 });
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
