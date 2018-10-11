@@ -98,15 +98,15 @@ class EmpresaController extends Controller
 			$model->contatos()->sync($arContatos);
 		} catch (\Exception $e) {
 			DB::rollback();
-			return redirect()->route('clinicas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
+			return redirect()->route('empresas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
 		} catch(QueryException $e) {
 			DB::rollback();
-			return redirect()->route('clinicas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
+			return redirect()->route('empresas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
 		}
 
 		DB::commit();
 
-		return redirect()->route('empresas.show', $model)->with('success', 'Registro adicionado');;
+		return redirect()->route('empresas.edit', $model)->with('success', 'Registro adicionado');;
 	}
 
 	/**

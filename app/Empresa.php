@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\UtilController;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 

@@ -136,7 +136,7 @@ class CreateNewStructurePlano extends Migration
 			$table->string('nome_fantasia', 250);
 			$table->string('razao_social', 250);
 			$table->string('cnpj', 18);
-			$table->bigInteger('inscricao')->nullable();
+			$table->string('inscricao_estadual', 20)->nullable();
 			$table->string('cs_status', 1)->default('A');
 			$table->decimal('vl_max_empresa');
 			$table->decimal('vl_max_funcionario');
