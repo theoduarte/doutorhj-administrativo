@@ -40,7 +40,7 @@
 					</div>
 					<div class="col-2">
 						<div class="form-group float-right">
-							<form action="{{ route('cargos.index') }}" id="form-search"  method="get">
+							<form action="{{ route('tipo_logs.index') }}" id="form-search"  method="get">
 								<div class="input-group bootstrap-touchspin">
 									<input type="text" id="search_term" value="<?php echo isset($_GET['search_term']) ? $_GET['search_term'] : ''; ?>" name="search_term" class="form-control" style="display: block;">
 									<span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
@@ -55,26 +55,27 @@
 					<tr>
 						<th>@sortablelink('id')</th>
 						<th>@sortablelink('titulo', 'Título')</th>
+						<th>@sortablelink('updated_at', 'Modificado em')</th>
 						<th>Ações</th>
 					</tr>
-					@foreach($cargos as $cargo)
+					@foreach($tipos as $tipo)
 				
 					<tr>
-						<td>{{$cargo->id}}</td>
-						<td>{{$cargo->cd_cargo}}</td>
-						<td>{{$cargo->ds_cargo}}</td>
+						<td>{{$tipo->id}}</td>
+						<td>{{$tipo->titulo}}</td>
+						<td>{{$tipo->updated_at}}</td>
 						<td>
-							<a href="{{ route('cargos.show', $cargo->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-							<a href="{{ route('cargos.edit', $cargo->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
-							<a href="{{ route('cargos.destroy', $cargo->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o Cargo: {{ $cargo->ds_cargo }}"><i class="ti-trash"></i></a>
+							<a href="{{ route('tipo_logs.show', $tipo->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
+							<a href="{{ route('tipo_logs.edit', $tipo->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+							<a href="{{ route('tipo_logs.destroy', $tipo->id) }}" class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete-cvx" title="Excluir" data-method="DELETE" data-form-name="form_{{ uniqid() }}" data-message="Tem certeza que deseja excluir o Tipo de Log: {{ $tipo->titulo }}"><i class="ti-trash"></i></a>
 						</td>
 					</tr>
 					@endforeach
 				</table>
                 <tfoot>
                 	<div class="cvx-pagination">
-                		<span class="text-primary">{{ sprintf("%02d", $cargos->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $cargos->count()) }} Registro(s) exibido(s)</span>
-                		{!! $cargos->links() !!}
+                		<span class="text-primary">{{ sprintf("%02d", $tipos->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $tipos->count()) }} Registro(s) exibido(s)</span>
+                		{!! $tipos->links() !!}
                 	</div>
                 </tfoot>
            </div>

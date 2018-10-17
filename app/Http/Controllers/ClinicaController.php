@@ -893,12 +893,20 @@ class ClinicaController extends Controller
 
 		$preco->save();
 
+		$plano_id = $request->plano_id;
+		$plano = Plano::findorfail($plano_id);
+		$usuario_id         = Auth::user()->id;
+		$usuario            = User::findorfail($usuario_id);
+		
         # registra log
-        $atendimento_obj    = "[]";
-        $titulo_log         = 'Adicionar Procedimento';
+		$user_obj           = $usuario->toJson();
+		$preco_obj          = $preco->toJson();
+		$atendimento_obj    = $atendimento->toJson();
+		$plano_obj          = $plano->toJson();
+        $titulo_log         = 'Adicionar Preço';
         $tipo_log           = 1;
-        $ct_log = "reg_anterior:[]";
-        $new_log = "reg_novo:[$atendimento_obj]";
+        $ct_log             = "reg_anterior:[]";
+        $new_log            = "reg_novo:[$user_obj, $preco_obj, $atendimento_obj, $plano_obj]";
 
         $log = "{".$ct_log.",".$new_log."}";
 

@@ -20,7 +20,7 @@ class RegistroLogController extends Controller
     	$get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	 
-    	$registros = RegistroLog::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(descricao)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    	$registros = RegistroLog::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(descricao)'), 'LIKE', '%'.$search_term.'%')->orderby('created_at', 'desc')->sortable()->paginate(10);
     	 
     	return view('registro_logs.index', compact('registros'));
     }

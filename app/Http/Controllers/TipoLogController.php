@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\TipoLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as CVXRequest;
+use Illuminate\Support\Facades\DB;
 
 class TipoLogController extends Controller
 {
@@ -14,7 +16,12 @@ class TipoLogController extends Controller
      */
     public function index()
     {
-        //
+        $get_term = CVXRequest::get('search_term');
+        $search_term = UtilController::toStr($get_term);
+        
+        $tipos = TipoLog::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->orderby('created_at', 'desc')->sortable()->paginate(10);
+        
+        return view('tipo_logs.index', compact('tipos'));
     }
 
     /**

@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users','UserController');
     Route::resource('agenda','AgendamentoController')->only(['index']);
     Route::resource('registro_logs','RegistroLogController');
+    Route::resource('tipo_logs','TipoLogController');
     Route::resource('cupom_descontos','CupomDescontoController');
     Route::resource('checkups','CheckupsController');
     Route::resource('termos-condicoes','TermosCondicoesController');
