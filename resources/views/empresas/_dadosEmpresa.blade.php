@@ -21,14 +21,19 @@
 </div>
 
 <div class="form-row">
-	<div class="form-group col-md-6">
+	<div class="form-group col-md-4">
 		<label for="razao_social">Razão Social<span class="text-danger">*</span></label>
 		<input type="text" id="razao_social" class="form-control" name="razao_social" placeholder="Razão Social" maxlength="250" required value="{{$model->razao_social ?? old("razao_social")}}">
 	</div>
 
-	<div class="form-group col-md-6">
+	<div class="form-group col-md-4">
 		<label for="nome_fantasia">Nome Fantasia<span class="text-danger">*</span></label>
 		<input type="text" id="nome_fantasia" class="form-control" name="nome_fantasia" placeholder="Nome Fantasia" maxlength="250" required value="{{$model->nome_fantasia ?? old('nome_fantasia')}}">
+	</div>
+
+	<div class="form-group col-md-4">
+		<label for="logomarca">Logomarca<span class="text-danger">*</span></label>
+		<input type="file" id="logomarca" class="form-control" name="logomarca" value="{{$model->logomarca ?? old('logomarca')}}">
 	</div>
 </div>
 
@@ -135,19 +140,19 @@
 		<div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
 			<label for="nm_cidade" class="control-label">Cidade<span class="text-danger">*</span></label>
 			<input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="{{ $model->endereco->cidade->nm_cidade ?? old("nm_cidade") }}" required  maxlength="50">
-			<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ $model->endereco->cidade->cd_ibge ?? old('cd_ibge') }}" >
+			<input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="{{ $model->endereco->cidade->cd_ibge ?? old('cd_cidade_ibge') }}" >
 		</div>
 	</div>
 </div>
 
 <h4 class="header-title m-t-0 m-b-30" style="padding-top: 30px;">Contatos</h4>
 <div class="form-row">
-	<div class="col-md-2">
+	<div class="col-md-2 form-group{{ $errors->has('contato_financeiro') ? ' has-error' : '' }}">
 		<label for="contato_financeiro" class="control-label">Contato Financeiro<span class="text-danger">*</span></label>
 		<input type="text" id="contato_financeiro" placeholder="" class="form-control mascaraTelefone" name="contato_financeiro" required autofocus value="{{ $model->contatos->where('tp_contato', 'CA')->first()->ds_contato ?? old('contato_financeiro') }}">
 	</div>
 
-	<div class="col-md-2">
+	<div class="col-md-2 form-group{{ $errors->has('contato_administrativo') ? ' has-error' : '' }}">
 		<label for="contato_administrativo" class="control-label">Contato Administrativo<span class="text-danger">*</span></label>
 		<input type="text" id="contato_administrativo" placeholder="" class="form-control mascaraTelefone" name="contato_administrativo" required autofocus value="{{ $model->contatos->where('tp_contato', 'CA')->first()->ds_contato ?? old('contato_administrativo')}}">
 	</div>
@@ -155,24 +160,24 @@
 
 <h4 class="header-title m-t-0 m-b-30" style="padding-top: 30px;">Dados Financeiros</h4>
 <div class="form-row">
-	<div class="col-md-3">
+	<div class="col-md-3 form-group{{ $errors->has('anuidade') ? ' has-error' : '' }}">
 		<label for="anuidade" class="control-label">Anuidade</label>
 		<input type="text" id="anuidade" placeholder="" class="form-control mascaraMonetaria" name="anuidade" maxlength="15" value="{{ $model->anuidade ?? old('anuidade') }}">
 	</div>
 
-	<div class="col-md-3">
+	<div class="col-md-3 form-group{{ $errors->has('desconto') ? ' has-error' : '' }}">
 		<label for="desconto" class="control-label">Desconto na Tabela</label>
 		<input type="text" id="desconto" placeholder="" class="form-control mascaraMonetaria" name="desconto" maxlength="15" value="{{$model->desconto ?? old('desconto')}}">
 	</div>
 
-	<div class="col-md-3">
+	<div class="col-md-3 form-group{{ $errors->has('vl_max_empresa') ? ' has-error' : '' }}">
 		<label for="vl_max_empresa" class="control-label">Limite da Empresa<span class="text-danger">*</span></label>
-		<input type="text" id="vl_max_empresa" placeholder="" class="form-control mascaraMonetaria" name="vl_max_empresa" maxlength="15" required value="{{ $model->vl_max_empresa ?? old('vl_max_empresa') }}">
+		<input type="text" id="vl_max_empresa" placeholder="" class="form-control mascaraMonetaria" name="vl_max_empresa" maxlength="15" value="{{ $model->vl_max_empresa ?? old('vl_max_empresa') }}">
 	</div>
 
-	<div class="col-md-3">
+	<div class="col-md-3 form-group{{ $errors->has('vl_max_funcionario') ? ' has-error' : '' }}">
 		<label for="vl_max_funcionario" class="control-label">Limite por Funcionário<span class="text-danger">*</span></label>
-		<input type="text" id="vl_max_funcionario" placeholder="" class="form-control mascaraMonetaria" name="vl_max_funcionario" maxlength="15" required value="{{ $model->vl_max_funcionario ?? old('vl_max_funcionario') }}">
+		<input type="text" id="vl_max_funcionario" placeholder="" class="form-control mascaraMonetaria" name="vl_max_funcionario" maxlength="15" value="{{ $model->vl_max_funcionario ?? old('vl_max_funcionario') }}">
 	</div>
 </div>
 

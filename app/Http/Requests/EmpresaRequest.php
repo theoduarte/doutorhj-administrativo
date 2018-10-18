@@ -43,6 +43,7 @@ class EmpresaRequest extends FormRequest
 			'cd_cidade_ibge' 		=> 'Cidade',
 			'contato_financeiro' 	=> 'Contato Financeiro',
 			'contato_administrativo'=> 'Contato Administrativo',
+			'logomarca'				=> 'Logomarca',
 		];
 	}
 
@@ -53,6 +54,12 @@ class EmpresaRequest extends FormRequest
 	 */
 	public function rules()
 	{
+		if ($this->method() == 'PUT') {
+			$logomarca_rule = 'image';
+		} else {
+			// Create operation. There is no id yet.
+			$logomarca_rule = 'required|image';
+		}
 		return [
 			'razao_social' 			=> 'required|string|max:250',
 			'nome_fantasia' 		=> 'required|string|max:250',
@@ -73,6 +80,7 @@ class EmpresaRequest extends FormRequest
 			'cd_cidade_ibge' 		=> 'required|integer',
 			'contato_financeiro' 	=> 'required|celular_com_ddd',
 			'contato_administrativo'=> 'required|celular_com_ddd',
+			'logomarca'				=> $logomarca_rule,
 		];
 	}
 }

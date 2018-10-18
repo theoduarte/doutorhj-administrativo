@@ -50,6 +50,10 @@
 							<td>{{ $model->inscricao_estadual }}</td>
 						</tr>
 						<tr>
+							<td>Logomarca</td>
+							<td><img width="200" src="{{$model->logomarca_path}}"></td>
+						</tr>
+						<tr>
 							<td colspan="2"><h4>Contato</h4></td>
 						</tr>
 						<tr>

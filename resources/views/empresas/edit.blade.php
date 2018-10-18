@@ -18,7 +18,7 @@
 			</div>
 		</div>
 
-		<form action="{{ route('empresas.update', $model->id) }}" method="post">
+		<form action="{{ route('empresas.update', $model->id) }}" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="_method" value="PUT">
 			{!! csrf_field() !!}
 

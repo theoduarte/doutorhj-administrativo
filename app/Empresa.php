@@ -23,6 +23,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @property string $created_at
  * @property string $updated_at
  * @property string $razao_social
+ * @property string $logomarca_path
  * @property boolean $pre_autorizar
  * @property string $mundipagg_token
  * @property TipoEmpresa $tipoEmpresa
@@ -41,7 +42,7 @@ class Empresa extends Model
 	/**
 	 * @var array
 	 */
-	protected $fillable = ['tp_empresa_id', 'endereco_id', 'matriz_id', 'resp_financeiro_id', 'nome_fantasia', 'cnpj', 'inscricao_estadual', 'cs_status', 'vl_max_empresa', 'vl_max_funcionario', 'anuidade', 'desconto', 'created_at', 'updated_at', 'razao_social', 'pre_autorizar', 'mundipagg_token'];
+	protected $fillable = ['tp_empresa_id', 'endereco_id', 'matriz_id', 'resp_financeiro_id', 'nome_fantasia', 'cnpj', 'inscricao_estadual', 'cs_status', 'vl_max_empresa', 'vl_max_funcionario', 'anuidade', 'desconto', 'created_at', 'updated_at', 'razao_social', 'pre_autorizar', 'mundipagg_token', 'logomarca_path'];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
