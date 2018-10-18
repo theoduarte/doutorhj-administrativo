@@ -8,11 +8,14 @@ use App\Empresa;
 use App\Endereco;
 use App\Estado;
 use App\Http\Requests\EmpresaRequest;
+use App\Repositories\FileRepository;
 use App\Representante;
 use App\TipoEmpresa;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\URL;
+use Intervention\Image\File;
 
 class EmpresaController extends Controller
 {
@@ -64,7 +67,7 @@ class EmpresaController extends Controller
 	 * @param  CarenciaRequest $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(EmpresaRequest $request)
+	public function store(EmpresaRequest $request, FileRepository $repo)
 	{
 		$arContatos = [];
 		$dados = $request->all();
@@ -95,6 +98,12 @@ class EmpresaController extends Controller
 			$model->endereco_id = $endereco->id;
 			$model->save();
 
+			if($request->hasFile('logomarca')) {
+				$logo_path = $repo->saveFile($request->logomarca, $model->id, 'empresas');
+				$model->logomarca_path = URL::to("/storage/{$logo_path}");
+				$model->save();
+			}
+
 			$model->contatos()->sync($arContatos);
 		} catch (\Exception $e) {
 			DB::rollback();
@@ -106,7 +115,7 @@ class EmpresaController extends Controller
 
 		DB::commit();
 
-		return redirect()->route('empresas.edit', $model)->with('success', 'Registro adicionado');;
+		return redirect()->route('empresas.edit', $model)->with('success', 'Registro adicionado');
 	}
 
 	/**
@@ -145,7 +154,7 @@ class EmpresaController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(EmpresaRequest $request, $id)
+	public function update(EmpresaRequest $request, $id, FileRepository $repo)
 	{
 		$model = Empresa::findOrFail($id);
 		$dados = $request->all();
@@ -173,6 +182,11 @@ class EmpresaController extends Controller
 			$contato2 = $model->contatos->where('tp_contato', 'CF')->first();
 			$contato2->ds_contato = $request->input('contato_financeiro');
 			$contato2->save();
+
+			if($request->hasFile('logomarca')) {
+				$logo_path = $repo->saveFile($request->logomarca, $model->id, 'empresas');
+				$dados['logomarca_path'] = URL::to("/storage/{$logo_path}");
+			}
 
 			$model->update($dados);
 		} catch (\Exception $e) {

@@ -16,6 +16,7 @@ class AlterTableEmpresa extends Migration
 		Schema::table('empresas', function(Blueprint $table)
 		{
 			$table->string('mundipagg_token', 250)->nullable();
+			$table->string('logomarca_path', 400)->nullable();
 		});
     }
 
@@ -29,6 +30,7 @@ class AlterTableEmpresa extends Migration
 		Schema::table('empresas', function(Blueprint $table)
 		{
 			$table->dropColumn('mundipagg_token');
+			$table->dropColumn('logomarca_path');
 		});
     }
 }
