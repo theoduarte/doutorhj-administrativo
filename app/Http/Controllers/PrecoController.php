@@ -40,7 +40,7 @@ class PrecoController extends Controller
 
 	public function update(Request $request, $id)
 	{
-		$preco = Preco::with('atendimento')->findOrFail($id);
+		$preco = Preco::with(['atendimento', 'plano'])->findOrFail($id);
 		
 		$atendimento = $preco->atendimento;
 		$preco_novo = [];
@@ -84,8 +84,8 @@ class PrecoController extends Controller
     		    $preco_obj                = $preco_novo->toJson();
     		    $atendimento_obj          = $atendimento->toJson();
     		    
-    		    $ct_log   = "reg_anterior:[$user_obj, $preco_anterior_obj, $atendimento_obj]";
-    		    $new_log  = "reg_novo:[$user_obj, $preco_obj, $atendimento_obj]";
+    		    $ct_log   = '"reg_anterior":'.'{"user":'.$user_obj.', "preco":'.$preco_anterior_obj.', "atendimento":'.$atendimento_obj.'}';
+    		    $new_log  = '"reg_novo":'.'{"user":'.$user_obj.', "preco":'.$preco_obj.', "atendimento":'.$atendimento_obj.'}';
     		    
     		    $log = "{".$ct_log.",".$new_log."}";
     		    
@@ -118,7 +118,7 @@ class PrecoController extends Controller
 	public function destroy($id)
 	{
 		try {
-			$model = Preco::findOrFail($id);
+			$model = Preco::with('plano')->findOrFail($id);
 			$model->cs_status = 'I';
 			
 			$model->save();
@@ -134,8 +134,8 @@ class PrecoController extends Controller
 			$user_obj                 = $usuario->toJson();
 			$preco_obj                = $model->toJson();
 			
-			$ct_log   = "reg_anterior:[]";
-			$new_log  = "reg_novo:[$user_obj, $preco_obj]";
+			$ct_log   = '"reg_anterior":'.'{}';
+			$new_log  = '"reg_novo":'.'{"user":'.$user_obj.', "preco":'.$preco_obj.'}';
 			
 			$log = "{".$ct_log.",".$new_log."}";
 			

@@ -75,7 +75,8 @@ class Atendimento extends Model
 		return $this->hasMany('App\Preco')
 			->where('cs_status', '=', 'A')
 			->where('data_inicio', '<=', date('Y-m-d H:i:s'))
-			->where('data_fim', '>=', date('Y-m-d H:i:s'));
+			->where('data_fim', '>=', date('Y-m-d H:i:s'))
+		    ->orderby('plano_id', 'asc');
 	}
 
 	public function precoAtivo()

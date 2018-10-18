@@ -24,14 +24,15 @@ class RegistroLogController extends Controller
     	
     	foreach ($registros as $registro) {
     	    //$registro->descricao = json_decode('['.$registro->descricao.']', true);
-    	    $registro->descricao = str_replace('reg_anterior', '"reg_anterior"', $registro->descricao);
-    	    $registro->descricao = str_replace('reg_novo', '"reg_novo"', $registro->descricao);
+    	    //$registro->descricao = str_replace('reg_anterior', '"reg_anterior"', $registro->descricao);
+    	    //$registro->descricao = str_replace('reg_novo', '"reg_novo"', $registro->descricao);
     	    //dd('['.((string)$registro->descricao).']');
-    	    $object = json_decode( '['.((string)$registro->descricao).']', true );
-    	    dd($object);
+    	    $object = json_decode( ((string)$registro->descricao), true );
+    	    //dd($object);
+    	    $registro->descricao = $object;
     	}
     	
-    	dd($registros);
+    	//dd($registros);
     	 
     	return view('registro_logs.index', compact('registros'));
     }

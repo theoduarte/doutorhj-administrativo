@@ -900,13 +900,15 @@ class ClinicaController extends Controller
 		
         # registra log
 		$user_obj           = $usuario->toJson();
+		$preco->plano       = $plano;
 		$preco_obj          = $preco->toJson();
 		$atendimento_obj    = $atendimento->toJson();
-		$plano_obj          = $plano->toJson();
+		//$plano_obj          = $plano->toJson();
         $titulo_log         = 'Adicionar Preço';
         $tipo_log           = 1;
-        $ct_log             = "reg_anterior:[]";
-        $new_log            = "reg_novo:[$user_obj, $preco_obj, $atendimento_obj, $plano_obj]";
+        
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{"user":'.$user_obj.', "preco":'.$preco_obj.', "atendimento":'.$atendimento_obj.'}';
 
         $log = "{".$ct_log.",".$new_log."}";
 
