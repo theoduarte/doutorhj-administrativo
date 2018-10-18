@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Preco;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use App\Plano;
+use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Atendimento;
+use Illuminate\Support\Facades\DB;
 
 class PrecoController extends Controller
 {
@@ -35,16 +40,73 @@ class PrecoController extends Controller
 
 	public function update(Request $request, $id)
 	{
-		$preco = Preco::findOrFail($id);
-
+		$preco = Preco::with('atendimento')->findOrFail($id);
+		
+		$atendimento = $preco->atendimento;
+		$preco_novo = [];
+		
 		$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($request->get('data-vigencia'));
 
 		$preco->data_inicio = $data_vigencia['de'];
 		$preco->data_fim = $data_vigencia['ate'];
+		
+		########### STARTING TRANSACTION ############
+		DB::beginTransaction();
+		#############################################
+		
+		try {
+    		if($request->get('vl_com_edit_procedimento') != $preco->vl_comercial | $request->get('vl_net_edit_procedimento') != $preco->vl_net) {
+    		    
+    		    $preco_novo = $preco->replicate();
+    		    $preco_novo->push();
+    		    $preco_novo->vl_comercial  = $request->get('vl_com_edit_procedimento');
+    		    $preco_novo->vl_net        = $request->get('vl_net_edit_procedimento');
+    		    $preco->cs_status = 'I';
+    		    
+    		    $preco_novo->save();
+    		    
+    		    $usuario_id         = Auth::user()->id;
+    		    $usuario            = User::findorfail($usuario_id);
+    		    
+    		    $titulo_log         = 'Adicionar Preço a Procedimento';
+    		    $tipo_log           = 1;
+    		} else {
+    		    $preco_novo   = $preco;
+    		    $titulo_log   = 'Editar Vigência de Preço';
+    		    $tipo_log     = 3;
+    		}
+    
+    		if($preco->save()) {
+    		    
+    		    # registra log
+    		    $user_obj                 = $usuario->toJson();
+    		    $preco_anterior_obj       = $preco->toJson();
+    		    $preco_obj                = $preco_novo->toJson();
+    		    $atendimento_obj          = $atendimento->toJson();
+    		    
+    		    $ct_log   = "reg_anterior:[$user_obj, $preco_anterior_obj, $atendimento_obj]";
+    		    $new_log  = "reg_novo:[$user_obj, $preco_obj, $atendimento_obj]";
+    		    
+    		    $log = "{".$ct_log.",".$new_log."}";
+    		    
+    		    $reglog = new RegistroLogController();
+    		    $reglog->registrarLog($titulo_log, $log, $tipo_log);
+    		    
+    		} else {
+    		    return redirect()->back()->with('error-alert', 'A vigência do preço cadastrada. Por favor, tente novamente.');
+    		}
+		} catch (\Exception $e) {
+		    ########### FINISHIING TRANSACTION ##########
+		    DB::rollback();
+		    #############################################
+		    return redirect()->back()->with('error-alert', 'A vigência do preço cadastrada. Por favor, tente novamente.');
+		}
+		
+		########### FINISHIING TRANSACTION ##########
+		DB::commit();
+		#############################################
 
-		$preco->save();
-
-		return redirect()->back()->with('success', 'A vigencia do preço foi salva com sucesso!');
+		return redirect()->back()->with('success', 'A vigência do preço foi salva com sucesso!');
 	}
 
 	/**
@@ -58,7 +120,28 @@ class PrecoController extends Controller
 		try {
 			$model = Preco::findOrFail($id);
 			$model->cs_status = 'I';
+			
 			$model->save();
+			
+			
+			# registra log
+			$usuario_id         = Auth::user()->id;
+			$usuario            = User::findorfail($usuario_id);
+			
+			$titulo_log         = 'Excluir Preço';
+			$tipo_log           = 4;
+			
+			$user_obj                 = $usuario->toJson();
+			$preco_obj                = $model->toJson();
+			
+			$ct_log   = "reg_anterior:[]";
+			$new_log  = "reg_novo:[$user_obj, $preco_obj]";
+			
+			$log = "{".$ct_log.",".$new_log."}";
+			
+			$reglog = new RegistroLogController();
+			$reglog->registrarLog($titulo_log, $log, $tipo_log);
+			
 		} catch(QueryException $e) {
 			report($e);
 			return response()->json([

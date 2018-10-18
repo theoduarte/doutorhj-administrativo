@@ -86,6 +86,17 @@
 							<input type="text" class="form-control input-daterange" id="edit-data-vigencia" name="data-vigencia" value="{{ old('data-vigencia') }}" autocomplete="off">
 						</div>
 					</div>
+					
+					<div class="row">
+						<div class="col-md-6">
+							<label for="vl_com_edit_procedimento">Vl. Comercial:<span class="text-danger"></span></label>
+							<input type="text" class="form-control mascaraMonetaria" id="vl_com_edit_procedimento" name="vl_com_edit_procedimento" value="{{ old('vl_com_edit_procedimento') }}" autocomplete="off">
+						</div>
+						<div class="col-md-6">
+							<label for="vl_net_edit_procedimento">Vl. Net:<span class="text-danger"></span></label>
+							<input type="text" class="form-control mascaraMonetaria" id="vl_net_edit_procedimento" name="vl_net_edit_procedimento" value="{{ old('vl_net_edit_procedimento') }}" autocomplete="off">
+						</div>
+					</div>
 
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-content-save"></i> Salvar</button>

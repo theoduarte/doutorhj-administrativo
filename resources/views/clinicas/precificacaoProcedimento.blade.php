@@ -198,6 +198,9 @@
 
 					$('#edit-data-vigencia').daterangepicker({startDate: preco.startDate, endDate: preco.endDate});
 
+					$('#vl_com_edit_procedimento').val(preco.vl_comercial);
+					$('#vl_net_edit_procedimento').val(preco.vl_net);
+
 					$('#preco-modal').modal();
 				}
 			},

@@ -21,6 +21,17 @@ class RegistroLogController extends Controller
     	$search_term = UtilController::toStr($get_term);
     	 
     	$registros = RegistroLog::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(descricao)'), 'LIKE', '%'.$search_term.'%')->orderby('created_at', 'desc')->sortable()->paginate(10);
+    	
+    	foreach ($registros as $registro) {
+    	    //$registro->descricao = json_decode('['.$registro->descricao.']', true);
+    	    $registro->descricao = str_replace('reg_anterior', '"reg_anterior"', $registro->descricao);
+    	    $registro->descricao = str_replace('reg_novo', '"reg_novo"', $registro->descricao);
+    	    //dd('['.((string)$registro->descricao).']');
+    	    $object = json_decode( '['.((string)$registro->descricao).']', true );
+    	    dd($object);
+    	}
+    	
+    	dd($registros);
     	 
     	return view('registro_logs.index', compact('registros'));
     }

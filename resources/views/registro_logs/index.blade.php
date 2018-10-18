@@ -61,7 +61,7 @@
 					<tr>
 						<td>{{$registro->id}}</td>
 						<td>{{$registro->titulo}}</td>
-						<td>{{$registro->descricao}}</td>
+						<td>{{ $registro->titulo }}</td>
 						<td>
 							<a href="{{ route('registro_logs.show', $registro->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
 							<a href="{{ route('registro_logs.edit', $registro->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
