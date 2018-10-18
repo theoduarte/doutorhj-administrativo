@@ -94,7 +94,7 @@ class AgendamentoController extends Controller
                                     WHEN agendamentos.cs_status::int = 90  THEN 9
                                     WHEN agendamentos.cs_status::int = 100 THEN 10 END') ,'asc')
         ->orderBy( 'agendamentos.dt_atendimento')
-        ->paginate(10);
+        ->paginate(20);
 
         // dd( DB::getQueryLog() );
 

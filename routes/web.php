@@ -16,6 +16,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('cargos','CargoController');
     Route::resource('enderecos', 'EnderecoController');
     Route::resource('grupo_procedimentos','GrupoProcedimentoController');
+    Route::resource('logradouros', 'LogradouroController');
     Route::resource('procedimentos','ProcedimentoController');
     Route::resource('tipo_atendimentos','TipoatendimentoController');
     Route::resource('consultas','ConsultaController');
