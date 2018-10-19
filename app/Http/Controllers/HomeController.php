@@ -28,7 +28,7 @@ class HomeController extends Controller
 			if(isset($obj_cielo->Payment->Status))
         		$pagamento->status_payment = $obj_cielo->Payment->Status;
 			else
-				return 0;
+				$pagamento->status_payment = 0;
         }
         
         //--PAGAMENTOS FINALIZADOS---------------------------------
