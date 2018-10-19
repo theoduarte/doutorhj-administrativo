@@ -217,10 +217,27 @@ class AgendamentoController extends Controller
         
         $token_atendimento = $agendamento->te_ticket;
         
+        ####################################### registra log> #######################################
+        $paciente_obj       = $paciente->toJson();
+        $filial_obj         = $filial->toJson();
+        $agendamento_obj    = $ct_agendamento->toJson();
+        $pedido_obj         = $pedido->toJson();
+        
+        $titulo_log = 'Realizar Agendamento';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{"paciente":'.$paciente_obj.', "filial":'.$filial_obj.', "agendamento":'.$agendamento_obj.', "pedido":'.$pedido_obj.'}';
+        $tipo_log = 1;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
+        
         //--enviar mensagem informando o pre agendamento da solicitacao----------------
         try {
             $this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento, $filial);
-        } catch (Exception $e) {}
+        } catch (\Exception $e) {}
     }
     
     /**
@@ -229,17 +246,28 @@ class AgendamentoController extends Controller
      * @param string $teTicket
      */
     public function addCancelamento($teTicket, $dtAtendimento, $obsCancelamento=null) {
-        $agendamento = Agendamento::where('te_ticket', '=', $teTicket)
-                       ->where('dt_atendimento', Carbon::createFromFormat("Y-m-d H:i:s", $dtAtendimento));
+        $agendamento = Agendamento::where('te_ticket', '=', $teTicket)->where('dt_atendimento', Carbon::createFromFormat("Y-m-d H:i:s", $dtAtendimento));
         
-        $agendamento->update(array('cs_status' => Agendamento::CANCELADO,
-                                   'obs_cancelamento' => $obsCancelamento));
+        $agendamento->update(array('cs_status' => Agendamento::CANCELADO, 'obs_cancelamento' => $obsCancelamento));
+        
+        ####################################### registra log> #######################################
+        $agendamento_obj    = $agendamento->toJson();
+        
+        $titulo_log = 'Realizar Cancelamento de Consulta';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{"agendamento":'.$agendamento_obj.'}';
+        $tipo_log = 3;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
     }
     
     /**
      * Consulta lista de horários livres em uma data.
      *
-     * @param date $data
      * @return \Illuminate\Http\JsonResponse
      */
     public function getHorariosLivres(Request $request){
@@ -279,25 +307,55 @@ class AgendamentoController extends Controller
     /**
      * Muda Status de um agendamento
      * 
-     * @param unknown $teTicket
+     * @param string $teTicket
      */
     public function setStatus($teTicket, $cdStatus){
-        $agendamento = \App\Agendamento::where('te_ticket', '=', $teTicket);
+        $agendamento = Agendamento::where('te_ticket', '=', $teTicket);
+        $ct_agendamento = $agendamento;
         
         $arDados = array('cs_status' => $cdStatus);
         $agendamento->update($arDados);
+        
+        ####################################### registra log> #######################################
+        $ct_agendamento_obj = $ct_agendamento->toJson();
+        $agendamento_obj    = $agendamento->toJson();
+        
+        $titulo_log = 'Editar Status de Agendamento';
+        $ct_log   = '"reg_anterior":'.'{"agendamento":'.$ct_agendamento_obj.'}';
+        $new_log  = '"reg_novo":'.'{"agendamento":'.$agendamento_obj.'}';
+        $tipo_log = 3;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
     }
     
     /**
      * Muda Status de um agendamento pelo ID
      * 
-     * @param unknown $teTicket
+     * @param string $teTicket
      */
     public function setStatusById($id, $cdStatus){
-        $agendamento = \App\Agendamento::find($id);
+        $agendamento = Agendamento::find($id);
         
         $arDados = array('cs_status' => $cdStatus);
         $agendamento->update($arDados);
+        
+        ####################################### registra log> #######################################
+        $agendamento_obj    = $agendamento->toJson();
+        
+        $titulo_log = 'Editar Status de Agendamento';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{"agendamento":'.$agendamento_obj.'}';
+        $tipo_log = 3;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
     }
     
     /**
@@ -861,8 +919,27 @@ HEREDOC;
               $agendamento->atendimentos()->updateExistingPivot( $oldAtendimento->id, ['deleted_at' => date('Y-m-d H:i:s') ] );  
             }
             
-            $agendamento->atendimentos()->attach( $atendimento->id, ['created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ] );  
-        } catch (Exception $e) {
+            $agendamento->atendimentos()->attach( $atendimento->id, ['created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ] );
+            
+            $filial = Filial::findorfail($request::get('filial_id'));
+            
+            ####################################### registra log> #######################################
+            $paciente_obj       = $paciente->toJson();
+            $filial_obj         = $filial->toJson();
+            $agendamento_obj    = $agendamento->toJson();
+            
+            $titulo_log = 'Realizar Agendamento';
+            $ct_log   = '"reg_anterior":'.'{}';
+            $new_log  = '"reg_novo":'.'{"paciente":'.$paciente_obj.', "filial":'.$filial_obj.', "agendamento":'.$agendamento_obj.'}';
+            $tipo_log = 1;
+            
+            $log = "{".$ct_log.",".$new_log."}";
+            
+            $reglog = new RegistroLogController();
+            $reglog->registrarLog($titulo_log, $log, $tipo_log);
+            ####################################### </registra log #######################################
+            
+        } catch (\Exception $e) {
             DB::rollback();
         }
 

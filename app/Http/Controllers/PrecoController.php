@@ -34,6 +34,21 @@ class PrecoController extends Controller
 
 		$preco->startDate = $preco->data_inicio->format('d/m/Y');
 		$preco->endDate = $preco->data_fim->format('d/m/Y');
+		
+		# registra log
+		
+		$titulo_log         = 'Consultar Preço';
+		$tipo_log           = 2;
+		
+		$preco_obj          = $preco->toJson();
+		
+		$ct_log   = '"reg_anterior":'.'{}';
+		$new_log  = '"reg_novo":'.'{"preco":'.$preco_obj.'}';
+		
+		$log = "{".$ct_log.",".$new_log."}";
+		
+		$reglog = new RegistroLogController();
+		$reglog->registrarLog($titulo_log, $log, $tipo_log);
 
 		return response()->json(['status' => true, 'preco' => $preco->toJson()]);
 	}
@@ -65,9 +80,6 @@ class PrecoController extends Controller
     		    
     		    $preco_novo->save();
     		    
-    		    $usuario_id         = Auth::user()->id;
-    		    $usuario            = User::findorfail($usuario_id);
-    		    
     		    $titulo_log         = 'Adicionar Preço a Procedimento';
     		    $tipo_log           = 1;
     		} else {
@@ -79,13 +91,12 @@ class PrecoController extends Controller
     		if($preco->save()) {
     		    
     		    # registra log
-    		    $user_obj                 = $usuario->toJson();
     		    $preco_anterior_obj       = $preco->toJson();
     		    $preco_obj                = $preco_novo->toJson();
     		    $atendimento_obj          = $atendimento->toJson();
     		    
-    		    $ct_log   = '"reg_anterior":'.'{"user":'.$user_obj.', "preco":'.$preco_anterior_obj.', "atendimento":'.$atendimento_obj.'}';
-    		    $new_log  = '"reg_novo":'.'{"user":'.$user_obj.', "preco":'.$preco_obj.', "atendimento":'.$atendimento_obj.'}';
+    		    $ct_log   = '"reg_anterior":'.'{"preco":'.$preco_anterior_obj.', "atendimento":'.$atendimento_obj.'}';
+    		    $new_log  = '"reg_novo":'.'{"preco":'.$preco_obj.', "atendimento":'.$atendimento_obj.'}';
     		    
     		    $log = "{".$ct_log.",".$new_log."}";
     		    
@@ -123,19 +134,15 @@ class PrecoController extends Controller
 			
 			$model->save();
 			
-			
 			# registra log
-			$usuario_id         = Auth::user()->id;
-			$usuario            = User::findorfail($usuario_id);
 			
 			$titulo_log         = 'Excluir Preço';
 			$tipo_log           = 4;
 			
-			$user_obj                 = $usuario->toJson();
-			$preco_obj                = $model->toJson();
+			$preco_obj          = $model->toJson();
 			
 			$ct_log   = '"reg_anterior":'.'{}';
-			$new_log  = '"reg_novo":'.'{"user":'.$user_obj.', "preco":'.$preco_obj.'}';
+			$new_log  = '"reg_novo":'.'{"preco":'.$preco_obj.'}';
 			
 			$log = "{".$ct_log.",".$new_log."}";
 			

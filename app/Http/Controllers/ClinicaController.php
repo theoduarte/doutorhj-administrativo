@@ -112,7 +112,6 @@ class ClinicaController extends Controller
             $documentoCnpj->save();
             $documento_ids = [$documentoCnpj->id];
 
-
             # endereco da empresa
             $endereco           = new Endereco($request->all());
             $cidade             = Cidade::where(['cd_ibge'=>$request->input('cd_cidade_ibge')])->get()->first();
@@ -168,9 +167,17 @@ class ClinicaController extends Controller
                 $responsavel_obj    = $responsavel->toJson();
                 $contato_obj        = $contato1->toJson();
 
-                $log = "[$user_obj, $clinica_obj, $documento_obj, $endereco_obj, $responsavel_obj, $contato_obj]";
-
-                $this->registrarLog('Adicionar Clinica', $log, 1);
+                //$log = "[$user_obj, $clinica_obj, $documento_obj, $endereco_obj, $responsavel_obj, $contato_obj]";
+                
+                $titulo_log = 'Adicionar Clinica';
+                $ct_log   = '"reg_anterior":'.'{}';
+                $new_log  = '"reg_novo":'.'{"user":'.$user_obj.', "clinica":'.$clinica_obj.', "documento":'.$documento_obj.', "endereco":'.$endereco_obj.', "responsavel":'.$responsavel_obj.', "contato":'.$contato_obj.'}';
+                $tipo_log = 1;
+                
+                $log = "{".$ct_log.",".$new_log."}";
+                
+                $reglog = new RegistroLogController();
+                $reglog->registrarLog($titulo_log, $log, $tipo_log);
 
             }
 
@@ -188,22 +195,6 @@ class ClinicaController extends Controller
         #############################################
 
         return redirect()->route('clinicas.index')->with('success', 'O prestador foi cadastrado com sucesso!');
-    }
-
-    /**
-     * Registra os logs of specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    private function registrarLog($titulo, $descricao, $tipo_log)
-    {
-        $log = new RegistroLog();
-        $log->titulo = $titulo;
-        $log->descricao = $descricao;
-        $log->tipolog_id = $tipo_log;
-        $log->user_id = Auth::user()->id;
-        $log->save();
     }
 
     /**
@@ -383,19 +374,23 @@ class ClinicaController extends Controller
         $prestador = $this->setClinicaRelations($prestador, $documento_ids, $endereco_ids, $contato_ids);
         if ($prestador->save()) {
 
+            # Registra log
             $user_obj           = $usuario->toJson();
             $clinica_obj        = $prestador->toJson();
             $documento_obj      = $documento->toJson();
             $endereco_obj       = $endereco->toJson();
             $responsavel_obj    = $responsavel->toJson();
             $contato_obj        = $contato->toJson();
-
-            $ct_log = "reg_anterior:[$ct_user_obj, $ct_clinica_obj, $ct_documento_obj, $ct_endereco_obj, $ct_responsavel_obj, $ct_contato_obj]";
-            $new_log = "reg_novo:[$user_obj, $clinica_obj, $documento_obj, $endereco_obj, $responsavel_obj, $contato_obj]";
-
+            
+            $titulo_log = 'Editar Clínica';
+            $ct_log   = '"reg_anterior":'.'{"user":'.$ct_user_obj.', "clinica":'.$ct_clinica_obj.', "documento":'.$ct_documento_obj.', "endereco":'.$ct_endereco_obj.', "responsavel":'.$ct_responsavel_obj.', "contato":'.$ct_contato_obj.'}';
+            $new_log  = '"reg_novo":'.'{"user":'.$user_obj.', "clinica":'.$clinica_obj.', "documento":'.$documento_obj.', "endereco":'.$endereco_obj.', "responsavel":'.$responsavel_obj.', "contato":'.$contato_obj.'}';
+            $tipo_log = 3;
+            
             $log = "{".$ct_log.",".$new_log."}";
-
-            $this->registrarLog('Editar Clinica', $log, 3);
+            
+            $reglog = new RegistroLogController();
+            $reglog->registrarLog($titulo_log, $log, $tipo_log);
         }
         //$prestador->save();
 
@@ -414,65 +409,89 @@ class ClinicaController extends Controller
         $clinica = Clinica::findorfail($idClinica);
         $clinica_obj = $clinica->toJson();
 
-        //--desabilita todos os contatos desse prestador------
-        $clinica->load('contatos');
-        $contatos = $clinica->contatos;
-        //$clinica->contatos()->delete();
-
-        foreach ($contatos as $contato) {
-            $contato->ds_contato = '(61) 00000-0000';
-            $contato->save();
-        }
-
-        //--desabilita todos os enderecos desse prestador----
-        $clinica->load('enderecos');
-        $enderecos = $clinica->enderecos;
-        //$clinica->enderecos()->delete();
-
-        foreach ($enderecos as $endereco) {
-            $endereco->te_endereco = 'CANCELADO';
-            $endereco->save();
-        }
-
-        //--desabilita todos os documentos desse prestador----
-        $clinica->load('documentos');
-        $documentos = $clinica->documentos;
-        //$clinica->documentos()->delete();
-
-        foreach ($documentos as $documento) {
-            $documento->te_documento = '11111111111';
-            $documento->save();
-        }
-
-        //--desabilita o responsavel por este prestador e o usuario tambem----
-        $clinica->load('responsavel');
-        $responsavel = $clinica->responsavel;
-
-        if (!empty($responsavel)) {
-            $responsavel->telefone 	= '(61) 00000-0000';
-            $responsavel->cpf 		= '11111111111';
-            $responsavel->save();
-
-            $responsavel->load('user');
-            $user_responsavel = $responsavel->user;
-
-            if(!empty($user_responsavel)) {
-                $user_responsavel->email = 'CANCELADO@comvex.com.br';
-                $user_responsavel->save();
+        ########### STARTING TRANSACTION ############
+        DB::beginTransaction();
+        #############################################
+        
+        try{
+            //--desabilita todos os contatos desse prestador------
+            $clinica->load('contatos');
+            $contatos = $clinica->contatos;
+            //$clinica->contatos()->delete();
+    
+            foreach ($contatos as $contato) {
+                $contato->ds_contato = '(61) 00000-0000';
+                $contato->save();
             }
+    
+            //--desabilita todos os enderecos desse prestador----
+            $clinica->load('enderecos');
+            $enderecos = $clinica->enderecos;
+            //$clinica->enderecos()->delete();
+    
+            foreach ($enderecos as $endereco) {
+                $endereco->te_endereco = 'CANCELADO';
+                $endereco->save();
+            }
+    
+            //--desabilita todos os documentos desse prestador----
+            $clinica->load('documentos');
+            $documentos = $clinica->documentos;
+            //$clinica->documentos()->delete();
+    
+            foreach ($documentos as $documento) {
+                $documento->te_documento = '11111111111';
+                $documento->save();
+            }
+    
+            //--desabilita o responsavel por este prestador e o usuario tambem----
+            $clinica->load('responsavel');
+            $responsavel = $clinica->responsavel;
+    
+            if (!empty($responsavel)) {
+                $responsavel->telefone 	= '(61) 00000-0000';
+                $responsavel->cpf 		= '11111111111';
+                $responsavel->save();
+    
+                $responsavel->load('user');
+                $user_responsavel = $responsavel->user;
+    
+                if(!empty($user_responsavel)) {
+                    $user_responsavel->email = 'CANCELADO@comvex.com.br';
+                    $user_responsavel->save();
+                }
+            }
+    
+            //--desabilita o cadastro desse prestador----
+            //$clinica->delete();
+            $clinica->cs_status = 'I';
+            $clinica->save();
+    
+            //Atendimento::where('clinica_id', $idClinica)->delete();
+    
+            # registra log
+            
+            $titulo_log = 'Excluir Clínica';
+            $tipo_log   = 4;
+            
+            $ct_log   = '"reg_anterior":'.'{}';
+            $new_log  = '"reg_novo":'.'{"clinica":'.$clinica_obj.'}';
+            
+            $log = "{".$ct_log.",".$new_log."}";
+            
+            $reglog = new RegistroLogController();
+            $reglog->registrarLog($titulo_log, $log, $tipo_log);
+            
+        } catch (\Exception $e) {
+            ########### FINISHIING TRANSACTION ##########
+            DB::rollback();
+            #############################################
+            return redirect()->route('clinicas.index')->with('error-alert', 'O prestador não foi excluído. Por favor, tente novamente.');
         }
-
-        //--desabilita o cadastro desse prestador----
-        //$clinica->delete();
-        $clinica->cs_status = 'I';
-        $clinica->save();
-
-        //Atendimento::where('clinica_id', $idClinica)->delete();
-
-        # registra log
-        $log = "[$clinica_obj]";
-
-        $this->registrarLog('Excluir Clinica', $log, 4);
+        
+        ########### FINISHIING TRANSACTION ##########
+        DB::commit();
+        #############################################
 
         return redirect()->route('clinicas.index')->with('success', 'Clínica excluída com sucesso!');
     }
@@ -661,17 +680,20 @@ class ClinicaController extends Controller
         if ($profissional->save()) {
 
             # registra log
+            
             $profissional_obj           = $profissional->toJson();
             $documento_obj              = $documento->toJson();
+            
             $titulo_log                 = $profissional_id != '' ? 'Editar Profissional' : 'Adicionar Profissional';
             $tipo_log                   = $profissional_id != '' ? 3 : 1;
-
-            $ct_log = "reg_anterior:[$ct_profissional_obj, $ct_documento_obj]";
-            $new_log = "reg_novo:[$profissional_obj, $documento_obj]";
-
+            
+            $ct_log   = '"reg_anterior":'.'{"profissional":'.$profissional_obj.', "documento":'.$documento_obj.'}';
+            $new_log  = '"reg_novo":'.'{"profissional":'.$ct_profissional_obj.', "documento":'.$ct_documento_obj.'}';
+            
             $log = "{".$ct_log.",".$new_log."}";
-
-            $this->registrarLog($titulo_log, $log, $tipo_log);
+            
+            $reglog = new RegistroLogController();
+            $reglog->registrarLog($titulo_log, $log, $tipo_log);
 
         } else {
             return response()->json(['status' => false, 'mensagem' => 'O Profissional não foi salvo. Por favor, tente novamente.']);
@@ -718,10 +740,19 @@ class ClinicaController extends Controller
 
             # registra log
             $profissional_obj           = $profissional->toJson();
-
-            $log = "[$profissional_obj]";
-
-            $this->registrarLog('Excluir Profissional', $log, 4);
+            
+            # registra log
+            
+            $titulo_log = 'Excluir Profissional';
+            $tipo_log   = 4;
+            
+            $ct_log   = '"reg_anterior":'.'{}';
+            $new_log  = '"reg_novo":'.'{"profissional":'.$profissional_obj.'}';
+            
+            $log = "{".$ct_log.",".$new_log."}";
+            
+            $reglog = new RegistroLogController();
+            $reglog->registrarLog($titulo_log, $log, $tipo_log);
 
         } else {
             return response()->json(['status' => false, 'mensagem' => 'O Profissional não foi removido. Por favor, tente novamente.']);
@@ -781,17 +812,20 @@ class ClinicaController extends Controller
 
 				$preco->save();
 			}
-
+            
             # registra log
-            $atendimento_obj    = "[]";
-            $titulo_log         = 'Adicionar Consulta';
-            $tipo_log           = 1;
-            $ct_log = "reg_anterior:[]";
-            $new_log = "reg_novo:[$atendimento_obj]";
-
+			$preco_obj          = $preco->toJson();
+            $atendimento_obj    = $atendimento->toJson();
+            
+            $titulo_log = 'Adicionar Consulta';
+            $ct_log   = '"reg_anterior":'.'{}';
+            $new_log  = '"reg_novo":'.'{"atendimento":'.$atendimento_obj.', "preco":'.$preco_obj.'}';
+            $tipo_log = 1;
+            
             $log = "{".$ct_log.",".$new_log."}";
-
-            $this->registrarLog($titulo_log, $log, $tipo_log);
+            
+            $reglog = new RegistroLogController();
+            $reglog->registrarLog($titulo_log, $log, $tipo_log);
         }
 
 		if(isset($error) && !empty($error)) {
@@ -804,8 +838,7 @@ class ClinicaController extends Controller
     /**
      * precificacaoConsultaUpdate a newly created resource in storage.
      *
-     * @param  App\Clinica  $clinica
-     * @param  App\Http\Requests\PrecificacaoConsultaRequest  $request
+     * @param  Clinica  $clinica
      * @return \Illuminate\Http\Response
      */
     public function precificacaoConsultaUpdate(Clinica $clinica, PrecificacaoConsultaRequest $request)
@@ -819,23 +852,23 @@ class ClinicaController extends Controller
          # registra log
         $atendimentoOld    = json_encode( $atendimento->getOriginal() );
         $atendimentoNew    = json_encode( $atendimento->getAttributes() );
-
-        $titulo_log         = 'Editar Atendimento';
-        $tipo_log           = 3;
-
-        $ct_log = "reg_anterior:[$atendimentoOld]";
-        $new_log = "reg_novo:[$atendimentoNew]";
-
+        
+        $titulo_log = 'Editar Consulta';
+        $ct_log   = '"reg_anterior":'.'{"atendimento":'.$atendimentoOld.'}';
+        $new_log  = '"reg_novo":'.'{"atendimento":'.$atendimentoNew.'}';
+        $tipo_log = 3;
+        
         $log = "{".$ct_log.",".$new_log."}";
-
-        $this->registrarLog($titulo_log, $log, $tipo_log);
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        
         return redirect()->back()->with('success', 'A precificação da consulta foi salva com sucesso!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param App\Http\Requests\PrecificacaoConsultaRequest $request
      * @return \Illuminate\Http\Response
      */
     public function precificacaoConsultaDestroy(PrecificacaoConsultaRequest $request)
@@ -846,8 +879,16 @@ class ClinicaController extends Controller
 
         # registra log
         $atendimento_obj = $atendimento->toJson();
-        $log = "[$atendimento_obj]";
-        $this->registrarLog('Excluir Consulta', $log, 4);
+        
+        $titulo_log = 'Excluir Consulta';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{"atendimento":'.$atendimento_obj.'}';
+        $tipo_log = 4;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
 
         return response()->json(['status' => true, 'mensagem' => 'A Consulta foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
@@ -895,11 +936,8 @@ class ClinicaController extends Controller
 
 		$plano_id = $request->plano_id;
 		$plano = Plano::findorfail($plano_id);
-		$usuario_id         = Auth::user()->id;
-		$usuario            = User::findorfail($usuario_id);
 		
         # registra log
-		$user_obj           = $usuario->toJson();
 		$preco->plano       = $plano;
 		$preco_obj          = $preco->toJson();
 		$atendimento_obj    = $atendimento->toJson();
@@ -908,11 +946,12 @@ class ClinicaController extends Controller
         $tipo_log           = 1;
         
         $ct_log   = '"reg_anterior":'.'{}';
-        $new_log  = '"reg_novo":'.'{"user":'.$user_obj.', "preco":'.$preco_obj.', "atendimento":'.$atendimento_obj.'}';
+        $new_log  = '"reg_novo":'.'{"preco":'.$preco_obj.', "atendimento":'.$atendimento_obj.'}';
 
         $log = "{".$ct_log.",".$new_log."}";
-
-        $this->registrarLog($titulo_log, $log, $tipo_log);
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
 
         return redirect()->back()->with('success', 'A precificação da procedimento foi salva com sucesso!');
     }
@@ -935,15 +974,16 @@ class ClinicaController extends Controller
          # registra log
         $atendimentoOld    = json_encode( $atendimento->getOriginal() );
         $atendimentoNew    = json_encode( $atendimento->getAttributes() );
-
-        $titulo_log = 'Editar Atendimento';
-        $tipo_log   = 3;
-        $ct_log     = "reg_anterior:[$atendimentoOld]";
-        $new_log    = "reg_novo:[$atendimentoNew]";
-
+        
+        $titulo_log = 'Editar Procedimento';
+        $ct_log   = '"reg_anterior":'.'{"atendimento":'.$atendimentoOld.'}';
+        $new_log  = '"reg_novo":'.'{"atendimento":'.$atendimentoNew.'}';
+        $tipo_log = 3;
+        
         $log = "{".$ct_log.",".$new_log."}";
-
-        $this->registrarLog($titulo_log, $log, $tipo_log);
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
 
         return redirect()->back()->with('success', 'A precificação da procedimento foi salva com sucesso!');
     }
@@ -959,11 +999,19 @@ class ClinicaController extends Controller
         $atendimento = Atendimento::findorfail( $request->atendimento_id );
         $atendimento->cs_status = 'I';
         $atendimento->save();
-
+        
         # registra log
         $atendimento_obj = $atendimento->toJson();
-        $log = "[$atendimento_obj]";
-        $this->registrarLog('Excluir Procedimento', $log, 4);
+        
+        $titulo_log = 'Excluir Procedimento';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{"atendimento":'.$atendimento_obj.'}';
+        $tipo_log = 4;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
 
         return response()->json(['status' => true, 'mensagem' => 'A Procedimento foi removida com sucesso!', 'atendimento' => $atendimento->toJson()]);
     }
@@ -981,13 +1029,19 @@ class ClinicaController extends Controller
         $atendimento->cs_status = 'I';
 
         if ($atendimento->save()) {
-
+            
             # registra log
-            $atendimento_obj           = $atendimento->toJson();
-
-            $log = "[$atendimento_obj]";
-
-            $this->registrarLog('Excluir Procedimento', $log, 4);
+            $atendimento_obj = $atendimento->toJson();
+            
+            $titulo_log = 'Excluir Procedimento';
+            $ct_log   = '"reg_anterior":'.'{}';
+            $new_log  = '"reg_novo":'.'{"atendimento":'.$atendimento_obj.'}';
+            $tipo_log = 4;
+            
+            $log = "{".$ct_log.",".$new_log."}";
+            
+            $reglog = new RegistroLogController();
+            $reglog->registrarLog($titulo_log, $log, $tipo_log);
 
         } else {
             return response()->json(['status' => false, 'mensagem' => 'O Atendimento não foi removido. Por favor, tente novamente.']);

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use App\Http\Requests\ProfissionaisEditRequest;
+use App\Profissional;
+use App\User;
+use App\Especialidade;
 
 class ProfissionalController extends Controller
 {
@@ -15,7 +18,7 @@ class ProfissionalController extends Controller
      */
     public function index()
     {
-        $profissionals = \App\Profissional::WhereHas(
+        $profissionals = Profissional::WhereHas(
                                                 'documentos', function($query){
                                                     if(!empty(Request::get('nm_busca'))){
                                                         if( Request::get('tp_filtro') == 'registro' ){
@@ -63,10 +66,9 @@ class ProfissionalController extends Controller
      */
     public function store(Request $request)
     {
-        $usuarios = \App\User::create($request->all());
+        $usuarios = User::create($request->all());
         
-        $request->session()->flash('message', 'Profissional cadastrado com sucesso!');
-        return redirect('/usuarios');
+        return redirect()->route('profissionals.index')->with('success', 'O Profissional cadastrado com sucesso!');
     }
     
     /**
@@ -77,7 +79,7 @@ class ProfissionalController extends Controller
      */
     public function show($idProfissional)
     {
-        $profissionals = \App\Profissional::findorfail($idProfissional);
+        $profissionals = Profissional::findorfail($idProfissional);
         $profissionals->load('documentos');
         $profissionals->load('especialidades');
 
@@ -92,9 +94,9 @@ class ProfissionalController extends Controller
      */
     public function edit($idProfissional)
     {
-        $arEspecialidade = \App\Especialidade::all();
+        $arEspecialidade = Especialidade::all();
         
-        $profissionals = \App\Profissional::findorfail($idProfissional);
+        $profissionals = Profissional::findorfail($idProfissional);
         $profissionals->load('documentos');
         $profissionals->load('especialidades');
         
@@ -112,12 +114,44 @@ class ProfissionalController extends Controller
     {
         $dados = Request::all();
         
-        $profissional = \App\Profissional::findorfail($idProfissional);
+        $profissional = Profissional::findorfail($idProfissional);
+        $ct_profissional = $profissional;
         $profissional->update($dados);
         $profissional->documentos()->update(['tp_documento'=>$dados['tp_documento'], 'te_documento'=>$dados['te_documento']]);
-        if(!empty($dados['especialidade'])) $profissional->especialidades()->sync($dados['especialidade']);
         
-        return redirect()->route('profissionals.index')->with('success', 'O usuário foi atualizado com sucesso!');
+        if(!empty($dados['especialidade'])) {
+            $profissional->especialidades()->sync($dados['especialidade']);
+        }
+        
+        ####################################### registra log> #######################################
+        $ct_profissional_obj    = $ct_profissional->toJson();
+        $profissional_obj       = $profissional->toJson();
+        
+        $titulo_log = 'Editar Profissional';
+        $ct_log   = '"reg_anterior":'.'{"profissional":'.$ct_profissional_obj.'}';
+        $new_log  = '"reg_novo":'.'{"profissional":'.$profissional_obj.'}';
+        $tipo_log = 3;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
+        
+        return redirect()->route('profissionals.index')->with('success', 'O Profissional foi atualizado com sucesso!');
+    }
+    
+    /**
+     * Consulta profissionais atrelados a uma clínica.
+     *
+     * @param integer $idClinica
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProfissionaisPorClinica($idClinica){
+        
+        $profissional = Profissional::where('clinica_id', '=', $idClinica)->where('cs_status', 'A')->orderBy('nm_primario', 'asc')->get(['id', 'nm_primario', 'nm_secundario']);
+        
+        return Response()->json($profissional);
     }
     
     /**
@@ -131,20 +165,5 @@ class ProfissionalController extends Controller
 
         
         return redirect()->route('profissionals.index')->with('success', 'Profissional inativado com sucesso!');
-    }
-    
-    /**
-     * Consulta profissionais atrelados a uma clínica.
-     * 
-     * @param integer $idClinica
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getProfissionaisPorClinica($idClinica){
-        $profissional = \App\Profissional::where('clinica_id', '=', $idClinica)
-                            ->where('cs_status', 'A')
-                            ->orderBy('nm_primario', 'asc')
-                            ->get(['id', 'nm_primario', 'nm_secundario']);
-        
-        return Response()->json($profissional);
     }
 }

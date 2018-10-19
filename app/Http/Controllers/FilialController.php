@@ -114,11 +114,11 @@ class FilialController extends Controller
     	
     	$nm_nome_fantasia = $request->input('nm_nome_fantasia');
     	
+    	########### STARTING TRANSACTION ############
+    	DB::beginTransaction();
+    	#############################################
+    	
     	try {
-	    	
-	    	########### STARTING TRANSACTION ############
-	    	DB::beginTransaction();
-	    	#############################################
 	    
 	    	# endereco da filial
 	    	
@@ -168,17 +168,17 @@ class FilialController extends Controller
 	    		$filial_id = $filial->id;
 	    
 	    		# registra log
-	    		$titulo_log			= 'Adicionar Filial';
 	    		$filial_obj         = $filial->toJson();
-	    		$tipo_log			= 1;
-	    		$registro_obj 		= new RegistroLogController();
-	    
-	    		$ct_log = "reg_anterior:[]";
-	    		$new_log = "reg_novo:[$filial_obj]";
-	    
+	    		
+	    		$titulo_log = 'Adicionar Filial';
+	    		$ct_log   = '"reg_anterior":'.'{}';
+	    		$new_log  = '"reg_novo":'.'{"filial":'.$filial_obj.'}';
+	    		$tipo_log = 1;
+	    		
 	    		$log = "{".$ct_log.",".$new_log."}";
-	    
-	    		$registro_obj->registrarLog($titulo_log, $log, $tipo_log);
+	    		
+	    		$reglog = new RegistroLogController();
+	    		$reglog->registrarLog($titulo_log, $log, $tipo_log);
 	    
 	    	} else {
 	    		return response()->json(['status' => false, 'mensagem' => 'A Filial não foi salva. Por favor, tente novamente.']);
@@ -212,14 +212,19 @@ class FilialController extends Controller
     	if ($filial->save()) {
     		
     		$filial->profissionals()->detach();
-    
+    		
     		# registra log
-    		$filial_obj           = $filial->toJson();
-    		$registro_obj 		= new RegistroLogController();
-    
-    		$log = "[$filial_obj]";
-    
-    		$registro_obj->registrarLog('Excluir Filial', $log, 4);
+    		$atendimento_obj = $atendimento->toJson();
+    		
+    		$titulo_log = 'Excluir Filial';
+    		$ct_log   = '"reg_anterior":'.'{}';
+    		$new_log  = '"reg_novo":'.'{"filial":'.$filial_obj.'}';
+    		$tipo_log = 4;
+    		
+    		$log = "{".$ct_log.",".$new_log."}";
+    		
+    		$reglog = new RegistroLogController();
+    		$reglog->registrarLog($titulo_log, $log, $tipo_log);
     
     	} else {
     		return response()->json(['status' => false, 'mensagem' => 'A Filial não foi removida. Por favor, tente novamente.']);

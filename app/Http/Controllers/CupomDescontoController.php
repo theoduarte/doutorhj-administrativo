@@ -59,6 +59,21 @@ class CupomDescontoController extends Controller
         
         $cupom_desconto->save();
         
+        ####################################### registra log> #######################################
+        $ct_cupom_obj       = [];
+        $cupom_obj          = $cupom_desconto->toJson();
+        
+        $titulo_log = 'Adicionar Cupom de Desconto';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{"cupom":'.$cupom_obj.'}';
+        $tipo_log = 1;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
+        
         return redirect()->route('cupom_descontos.index')->with('success', 'O Cupom de Desconto foi cadastrado com sucesso!');
     }
 
@@ -98,8 +113,24 @@ class CupomDescontoController extends Controller
     public function update(Request $request, $id)
     {
         $cupom_desconto = CupomDesconto::findOrFail($id);
+        $ct_cupom_obj = $cupom_desconto;
         
         $cupom_desconto->update($request->all());
+        
+        ####################################### registra log> #######################################
+        $ct_cupom_obj       = $ct_cupom_obj->toJson();
+        $cupom_obj          = $cupom_desconto->toJson();
+        
+        $titulo_log = 'Editar Cupom de Desconto';
+        $ct_log   = '"reg_anterior":'.'{"cupom":'.$ct_cupom_obj.'}';
+        $new_log  = '"reg_novo":'.'{"cupom":'.$cupom_obj.'}';
+        $tipo_log = 3;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
         
         return redirect()->route('cupom_descontos.index')->with('success', 'O Cupom de Desconto foi editado com sucesso!');
     }
@@ -116,6 +147,20 @@ class CupomDescontoController extends Controller
         
         $cupom_desconto->cs_status = 'I';
         $cupom_desconto->save();
+        
+        ####################################### registra log> #######################################
+        $cupom_obj          = $cupom_desconto->toJson();
+        
+        $titulo_log = 'Desativar Cupom de Desconto';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{"cupom":'.$cupom_obj.'}';
+        $tipo_log = 4;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
         
         return redirect()->route('cupom_descontos.index')->with('success', 'Registro Desativado com sucesso!');
     }
