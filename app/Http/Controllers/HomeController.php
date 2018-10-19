@@ -25,7 +25,10 @@ class HomeController extends Controller
         
         foreach($pagamentos as $pagamento) {        	
         	$obj_cielo = json_decode($pagamento->cielo_result);
-        	$pagamento->status_payment = $obj_cielo->Payment->Status;
+			if(isset($obj_cielo->Payment->Status))
+        		$pagamento->status_payment = $obj_cielo->Payment->Status;
+			else
+				return 0;
         }
         
         //--PAGAMENTOS FINALIZADOS---------------------------------
