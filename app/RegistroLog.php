@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Carbon;
 
 class RegistroLog extends Model
 {
@@ -18,5 +19,10 @@ class RegistroLog extends Model
     
     public function tipo_log(){
         return $this->belongsTo('App\TipoLog');
+    }
+    
+    public function getCreatedAtAttribute($data) {
+        $obData = new Carbon($data);
+        return $obData->format('d/m/Y H:i');
     }
 }

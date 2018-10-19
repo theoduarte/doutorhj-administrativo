@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Atendimento;
 use Illuminate\Support\Facades\DB;
+use App\RegistroLog;
 
 class PrecoController extends Controller
 {
@@ -68,7 +69,7 @@ class PrecoController extends Controller
 		########### STARTING TRANSACTION ############
 		DB::beginTransaction();
 		#############################################
-		
+		//$user_owner = "{}";
 		try {
     		if($request->get('vl_com_edit_procedimento') != $preco->vl_comercial | $request->get('vl_net_edit_procedimento') != $preco->vl_net) {
     		    
@@ -82,10 +83,17 @@ class PrecoController extends Controller
     		    
     		    $titulo_log         = 'Adicionar Preço a Procedimento';
     		    $tipo_log           = 1;
+    		    
     		} else {
     		    $preco_novo   = $preco;
     		    $titulo_log   = 'Editar Vigência de Preço';
     		    $tipo_log     = 3;
+    		    
+    		    //--busca o usuario do registro anterior--------
+    		    //$reg_anterior = RegistroLog::with('user')->where(function ($query) { $query->where('tipolog_id', 3)->orWhere('tipolog_id', 4);})->where('ativo', '=', true)->where(DB::raw('to_str(descricao)'), 'LIKE', '%'.'"preco":{"id":'.$preco->id.'%')->orderby('created_at', 'desc')->limit(1)->get();
+    		    
+    		    //$user_owner = !empty($reg_anterior->first()) ? ($reg_anterior->first()->user)->toJson() : "{}";
+    		    //dd($user_owner);
     		}
     
     		if($preco->save()) {
@@ -104,13 +112,13 @@ class PrecoController extends Controller
     		    $reglog->registrarLog($titulo_log, $log, $tipo_log);
     		    
     		} else {
-    		    return redirect()->back()->with('error-alert', 'A vigência do preço cadastrada. Por favor, tente novamente.');
+    		    return redirect()->back()->with('error-alert', 'A vigência do preço não foicadastrada. Por favor, tente novamente.');
     		}
 		} catch (\Exception $e) {
 		    ########### FINISHIING TRANSACTION ##########
 		    DB::rollback();
 		    #############################################
-		    return redirect()->back()->with('error-alert', 'A vigência do preço cadastrada. Por favor, tente novamente.');
+		    return redirect()->back()->with('error-alert', 'A vigência do preço não foi cadastrada. Por favor, tente novamente.');
 		}
 		
 		########### FINISHIING TRANSACTION ##########

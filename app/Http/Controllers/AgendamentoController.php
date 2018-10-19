@@ -19,6 +19,7 @@ use App\Profissional;
 use App\Filial;
 use App\Atendimento;
 use App\ItemPedido;
+use App\RegistroLog;
 
 class AgendamentoController extends Controller
 {
@@ -253,8 +254,11 @@ class AgendamentoController extends Controller
         ####################################### registra log> #######################################
         $agendamento_obj    = $agendamento->toJson();
         
+        //--busca o usuario do registro anterior--------
+        $reg_anterior = RegistroLog::with('user')->where('tipolog_id', 3)->where('tipolog_id', 4)->where('ativo', '=', true)->where(DB::raw('to_str(descricao)'), 'LIKE', '%'.'"agendamento":{"id":'.$agendamento->id.'%' )->orderby('created_at', 'desc')->limit(1)->get();
+        
         $titulo_log = 'Realizar Cancelamento de Consulta';
-        $ct_log   = '"reg_anterior":'.'{}';
+        $ct_log   = '"reg_anterior":'.'{"user":'.$reg_anterior->user.'}';
         $new_log  = '"reg_novo":'.'{"agendamento":'.$agendamento_obj.'}';
         $tipo_log = 3;
         

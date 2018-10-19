@@ -918,7 +918,7 @@ class ClinicaController extends Controller
 		$preco = Preco::where(['atendimento_id' => $atendimento->id, 'plano_id' => $request->plano_id, 'cs_status' => 'A']);
 
 		if($preco->exists()) {
-			return redirect()->back()->with('error-alert', 'O plano ja está cadastrado. Por favor, tente novamente.');
+			return redirect()->back()->with('error-alert', 'O plano já está cadastrado. Por favor, tente novamente.');
 		}
 
 		$preco = new Preco();

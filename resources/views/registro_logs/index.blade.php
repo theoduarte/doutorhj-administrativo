@@ -53,7 +53,9 @@
 					<tr>
 						<th>@sortablelink('id')</th>
 						<th>@sortablelink('titulo', 'Código')</th>
+						<th>@sortablelink('user_id', 'Usuário')</th>
 						<th>@sortablelink('descricao', 'Descrição')</th>
+						<th>@sortablelink('created_at', 'Data/hora')</th>
 						<th>Ações</th>
 					</tr>
 					@foreach($registros as $registro)
@@ -61,21 +63,24 @@
 					<tr>
 						<td>{{$registro->id}}</td>
 						<td>{{$registro->titulo}}</td>
+						<td class="text-left">
+							<strong class="text-primary">Nome:</strong> <span class="text-danger">{{$registro->user->name}}</span><br>
+							<strong class="text-primary">E-mail:</strong> <span class="text-danger">{{$registro->user->email}}</span>
+						</td>
 						<td>
 							<div class="row">
 								<div class="col-md-6">
 									<label><strong>Registro anterior</strong></label>
 									@if(!empty($registro->descricao['reg_anterior']))
 									<ul class="text-left">
-										<li><strong class="text-primary">Usuário:</strong> <span @if($registro->descricao['reg_anterior']['user']['name'] != $registro->descricao['reg_novo']['user']['name']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['user']['name'] }}</span></li>
-										<li><strong class="text-primary">E-mail:</strong> <span @if($registro->descricao['reg_anterior']['user']['email'] != $registro->descricao['reg_novo']['user']['email']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['user']['email'] }}</span></li>
-										<hr>
 										<li><strong class="text-primary">Item Atendimento:</strong> <span @if($registro->descricao['reg_anterior']['atendimento']['ds_preco'] != $registro->descricao['reg_novo']['atendimento']['ds_preco']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['atendimento']['ds_preco'] }}</span></li>
 										<li><strong class="text-primary">Cód. Atendimento:</strong> <span @if($registro->descricao['reg_anterior']['atendimento']['id'] != $registro->descricao['reg_novo']['atendimento']['id']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['atendimento']['id'] }}</span></li>
 										<hr>
 										<li><strong class="text-primary">Cód. Plano:</strong> <span @if($registro->descricao['reg_anterior']['preco']['plano_id'] != $registro->descricao['reg_novo']['preco']['plano_id']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['preco']['plano']['ds_plano'] }}</span></li>
 										<li><strong class="text-primary">Vl. Comercial:</strong> <span @if($registro->descricao['reg_anterior']['preco']['vl_comercial'] != $registro->descricao['reg_novo']['preco']['vl_comercial']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['preco']['vl_comercial'] }}</span></li>
 										<li><strong class="text-primary">Vl. Comercial:</strong> <span @if($registro->descricao['reg_anterior']['preco']['vl_net'] != $registro->descricao['reg_novo']['preco']['vl_net']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['preco']['vl_net'] }}</span></li>
+										<li><strong class="text-primary">Data início:</strong> <span @if($registro->descricao['reg_anterior']['preco']['data_inicio'] != $registro->descricao['reg_novo']['preco']['data_inicio']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['preco']['data_inicio'] }}</span></li>
+										<li><strong class="text-primary">Data fim:</strong> <span @if($registro->descricao['reg_anterior']['preco']['data_fim'] != $registro->descricao['reg_novo']['preco']['data_fim']) class="text-danger @endif">{{ $registro->descricao['reg_anterior']['preco']['data_fim'] }}</span></li>
 									</ul>
 									@else
 									--------
@@ -85,17 +90,25 @@
 									<label><strong>Registro atual</strong></label>
 									@if(sizeof($registro->descricao['reg_novo']) > 0)
 									<ul class="text-left">
-										<li><strong class="text-primary">Usuário:</strong> <span @if(empty($registro->descricao['reg_anterior']['user']) || ($registro->descricao['reg_anterior']['user']['name'] != $registro->descricao['reg_novo']['user']['name'])) class="text-danger @endif">{{ $registro->descricao['reg_novo']['user']['name'] }}</span></li>
-										<li><strong class="text-primary">E-mail:</strong> <span @if(empty($registro->descricao['reg_anterior']['user']) || ($registro->descricao['reg_anterior']['user']['email'] != $registro->descricao['reg_novo']['user']['email'])) class="text-danger @endif">{{ $registro->descricao['reg_novo']['user']['email'] }}</span></li>
-										<hr>
 										@if(!empty($registro->descricao['reg_anterior']['atendimento']))
 										<li><strong class="text-primary">Item Atendimento:</strong> <span @if($registro->descricao['reg_anterior']['atendimento']['ds_preco'] != $registro->descricao['reg_novo']['atendimento']['ds_preco']) class="text-danger @endif">{{ $registro->descricao['reg_novo']['atendimento']['ds_preco'] }}</span></li>
 										<li><strong class="text-primary">Cód. Atendimento:</strong> <span @if($registro->descricao['reg_anterior']['atendimento']['id'] != $registro->descricao['reg_novo']['atendimento']['id']) class="text-danger @endif">{{ $registro->descricao['reg_novo']['atendimento']['id'] }}</span></li>
 										<hr>
 										@endif
+										
+										@if(!empty($registro->descricao['reg_anterior']['preco']))
 										<li><strong class="text-primary">Cód. Plano:</strong> <span @if(empty($registro->descricao['reg_anterior']['preco']) || ($registro->descricao['reg_anterior']['preco']['plano_id'] != $registro->descricao['reg_novo']['preco']['plano_id'])) class="text-danger @endif">{{ $registro->descricao['reg_novo']['preco']['plano']['ds_plano'] }}</span></li>
 										<li><strong class="text-primary">Vl. Comercial:</strong> <span @if(empty($registro->descricao['reg_anterior']['preco']) || ($registro->descricao['reg_anterior']['preco']['vl_comercial'] != $registro->descricao['reg_novo']['preco']['vl_comercial'])) class="text-danger @endif">{{ $registro->descricao['reg_novo']['preco']['vl_comercial'] }}</span></li>
 										<li><strong class="text-primary">Vl. Comercial:</strong> <span @if(empty($registro->descricao['reg_anterior']['preco']) || ($registro->descricao['reg_anterior']['preco']['vl_net'] != $registro->descricao['reg_novo']['preco']['vl_net'])) class="text-danger @endif">{{ $registro->descricao['reg_novo']['preco']['vl_net'] }}</span></li>
+										<li><strong class="text-primary">Data início:</strong> <span @if($registro->descricao['reg_anterior']['preco']['data_inicio'] != $registro->descricao['reg_novo']['preco']['data_inicio']) class="text-danger @endif">{{ $registro->descricao['reg_novo']['preco']['data_inicio'] }}</span></li>
+										<li><strong class="text-primary">Data fim:</strong> <span @if($registro->descricao['reg_anterior']['preco']['data_fim'] != $registro->descricao['reg_novo']['preco']['data_fim']) class="text-danger @endif">{{ $registro->descricao['reg_novo']['preco']['data_fim'] }}</span></li>
+										@elseif(!empty($registro->descricao['reg_novo']['preco']))
+										<li><strong class="text-primary">Cód. Plano:</strong> <span>{{ $registro->descricao['reg_novo']['preco']['plano']['ds_plano'] }}</span></li>
+										<li><strong class="text-primary">Vl. Comercial:</strong> <span>{{ $registro->descricao['reg_novo']['preco']['vl_comercial'] }}</span></li>
+										<li><strong class="text-primary">Vl. Comercial:</strong> <span>{{ $registro->descricao['reg_novo']['preco']['vl_net'] }}</span></li>
+										<li><strong class="text-primary">Data início:</strong> <span>{{ $registro->descricao['reg_novo']['preco']['data_inicio'] }}</span></li>
+										<li><strong class="text-primary">Data fim:</strong> <span>{{ $registro->descricao['reg_novo']['preco']['data_fim'] }}</span></li>
+										@endif
 									</ul>
 									@else
 									--------
@@ -103,9 +116,10 @@
 								</div>
 							</div>
 						</td>
+						<td>{{$registro->created_at}}</td>
 						<td>
-							<a href="{{ route('registro_logs.show', $registro->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
-							<a href="{{ route('registro_logs.edit', $registro->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
+							<a href="{{ route('registro_logs.show', $registro->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir log completo"><i class="mdi mdi-eye"></i></a>
+							<!-- <a href="{{ route('registro_logs.edit', $registro->id) }}" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a> -->
 						</td>
 					</tr>
 					@endforeach
