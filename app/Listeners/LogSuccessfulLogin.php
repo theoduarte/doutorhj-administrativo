@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Menu;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\RegistroLogController;
 
 class LogSuccessfulLogin
 {
@@ -41,7 +42,18 @@ class LogSuccessfulLogin
         ->select('menus.*', 'menus.id', 'menus.titulo')
         ->get();
         
-        //dd($menus_app);
+        ####################################### registra log> #######################################
+        
+        $titulo_log = 'Login no Sistema';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{}';
+        $tipo_log = 6;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        
         Session::put('menus_app', $menus_app);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Controllers\RegistroLogController;
 
 class LoginController extends Controller
 {
@@ -40,6 +41,20 @@ class LoginController extends Controller
     }
     
     public function logout(Request $request) {
+        
+        ####################################### registra log> #######################################
+        
+        $titulo_log = 'Logout no Sistema';
+        $ct_log   = '"reg_anterior":'.'{}';
+        $new_log  = '"reg_novo":'.'{}';
+        $tipo_log = 7;
+        
+        $log = "{".$ct_log.",".$new_log."}";
+        
+        $reglog = new RegistroLogController();
+        $reglog->registrarLog($titulo_log, $log, $tipo_log);
+        ####################################### </registra log #######################################
+        
     	Auth::logout();
     	return redirect('/login');
     }

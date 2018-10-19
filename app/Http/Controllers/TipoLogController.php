@@ -31,7 +31,7 @@ class TipoLogController extends Controller
      */
     public function create()
     {
-        //
+        return view('tipo_logs.create');
     }
 
     /**
@@ -42,7 +42,11 @@ class TipoLogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tipo = TipoLog::create($request->all());
+        
+        $tipo->save();
+        
+        return redirect()->route('tipo_logs.index')->with('success', 'O Tipo de Log foi cadastrado com sucesso!');
     }
 
     /**
@@ -51,9 +55,11 @@ class TipoLogController extends Controller
      * @param  \App\TipoLog  $tipoLog
      * @return \Illuminate\Http\Response
      */
-    public function show(TipoLog $tipoLog)
+    public function show($id)
     {
-        //
+        $tipo = TipoLog::findOrFail($id);
+        
+        return view('tipo_logs.show', compact('tipo'));
     }
 
     /**
@@ -62,9 +68,11 @@ class TipoLogController extends Controller
      * @param  \App\TipoLog  $tipoLog
      * @return \Illuminate\Http\Response
      */
-    public function edit(TipoLog $tipoLog)
+    public function edit($id)
     {
-        //
+        $tipo = TipoLog::findOrFail($id);
+        
+        return view('tipo_logs.edit', compact('tipo'));
     }
 
     /**
@@ -74,9 +82,13 @@ class TipoLogController extends Controller
      * @param  \App\TipoLog  $tipoLog
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipoLog $tipoLog)
+    public function update(Request $request, $id)
     {
-        //
+        $tipo = TipoLog::findOrFail($id);
+        
+        $tipo->update($request->all());
+        
+        return redirect()->route('tipo_logs.index')->with('success', 'O Tipo de Log foi editado com sucesso!');
     }
 
     /**
@@ -85,8 +97,12 @@ class TipoLogController extends Controller
      * @param  \App\TipoLog  $tipoLog
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoLog $tipoLog)
+    public function destroy($id)
     {
-        //
+        $tipo = TipoLog::findOrFail($id);
+        
+        $tipo->delete();
+        
+        return redirect()->route('tipo_logs.index')->with('success', 'Registro Excluído com sucesso!');
     }
 }
