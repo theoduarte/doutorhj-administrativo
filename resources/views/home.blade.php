@@ -306,7 +306,13 @@
 												<td>{{$pagamento->pedido->paciente->nm_primario.' '.$pagamento->pedido->paciente->nm_secundario}}</td>
 												<td>{{$pagamento->pedido->itens_pedido()->first()->agendamento->dt_atendimento}}</td>
 												<td>{{$pagamento->pedido->dt_pagamento}}</td>
-												<td>@if($pagamento->status_payment == 0) <span class="badge badge-warning">Não Autorizado</span> @elseif($pagamento->status_payment == 1) <span class="badge badge-purple">Autorizado</span> @elseif($pagamento->status_payment == 2) <span class="badge badge-success">Finalizado</span> @else <span class="badge badge-danger">Negado</span> @endif</td>
+												<td>
+													@if($pagamento->status_payment == 0) <span class="badge badge-warning">Não Autorizado</span>
+													@elseif($pagamento->status_payment == 1) <span class="badge badge-purple">Autorizado</span>
+													@elseif($pagamento->status_payment == 2) <span class="badge badge-success">Finalizado</span>
+													@elseif($pagamento->status_payment == 3) <span class="badge badge-warning">Pendente</span>
+													@else <span class="badge badge-danger">Negado</span>
+													@endif</td>
 												<td>{{ !empty($pagamento->pedido->itens_pedido()->first()->agendamento->atendimentos()->whereNull('deleted_at')->first()->clinica) ? $pagamento->pedido->itens_pedido()->first()->agendamento->atendimentos()->whereNull('deleted_at')->first()->clinica->nm_fantasia : null}}</td>
 											</tr>
 											@endforeach

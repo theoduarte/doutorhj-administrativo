@@ -27,8 +27,12 @@ class HomeController extends Controller
         	$obj_cielo = json_decode($pagamento->cielo_result);
 			if(isset($obj_cielo->Payment->Status))
         		$pagamento->status_payment = $obj_cielo->Payment->Status;
-			else
-				$pagamento->status_payment = 0;
+			elseif(isset($obj_cielo->status)) {
+				$pagamento->status_payment = Payment::getStatusMundipag($obj_cielo->status);
+			} else {
+				$pagamento->status_payment = null;
+			}
+
         }
         
         //--PAGAMENTOS FINALIZADOS---------------------------------

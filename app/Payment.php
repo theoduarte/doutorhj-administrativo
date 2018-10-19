@@ -26,4 +26,20 @@ class Payment extends Model
 	{
 		return $this->hasMany('App\DebitCardResponse');
 	}
+
+	public static function getStatusMundipag($status)
+	{
+		switch($status) {
+			case 'pending':
+				return 3;
+			case 'paid':
+				return 1;
+			case 'canceled':
+				return null;
+			case 'processing':
+				return 3;
+			case 'failed':
+				return 0;
+		};
+	}
 }
