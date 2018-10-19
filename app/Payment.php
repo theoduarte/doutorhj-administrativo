@@ -33,11 +33,11 @@ class Payment extends Model
 			case 'pending':
 				return 3;
 			case 'paid':
-				return 1;
+				return 2;
 			case 'canceled':
 				return null;
 			case 'processing':
-				return 3;
+				return 1;
 			case 'failed':
 				return 0;
 		};
