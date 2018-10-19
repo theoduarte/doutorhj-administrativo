@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contato;
 use App\Documento;
+use App\Empresa;
 use App\Http\Requests\RepresentanteRequest;
 use App\Perfiluser;
 use App\Representante;
@@ -54,10 +55,13 @@ class RepresentanteController extends Controller
 					], 403);
 				}
 
+				$empresa = Empresa::findOrFail($dados['empresa_id']);
+				$cnpj = UtilController::retiraMascara($empresa->cnpj);
+
 				$user = new User();
 				$user->name = strtoupper($dados['nm_primario'].' '.$dados['nm_secundario']);
 				$user->email = $dados['email'];
-				$user->password = bcrypt(uniqid('empresa@newSenha'));
+				$user->password = bcrypt("senha@{$cnpj}");
 				$user->tp_user = 'RES';
 				$user->cs_status = 'A';
 				$user->avatar = 'users/default.png';
