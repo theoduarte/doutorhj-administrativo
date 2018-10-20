@@ -49,7 +49,7 @@
 					</div>
 					
 					<div class="form-group row">
-						<div class="col-sm-12 col-md-6 {{ $errors->has('email') ? ' has-error' : '' }}">
+						<div class="col-sm-12 col-md-5 {{ $errors->has('email') ? ' has-error' : '' }}">
 			                <div class="form-group">
 			                    <label for="password" class="control-label">Senha<span class="text-danger">*</span></label>
 			                    <input id="password" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password" value="{{ $usuario->password }}" required  maxlength="50">
@@ -60,7 +60,7 @@
 			                    @endif
 			                </div>
 			            </div>
-			            <div class="col-sm-12 col-md-6 {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+			            <div class="col-sm-12 col-md-5 {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
 			                <div class="form-group {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
 			                    <label for="password_confirmation" class="control-label">Repita a Senha<span class="text-danger">*</span></label>
 			                    <input id="password_confirmation" type="password" class="form-control semDefinicaoLetrasMaiusculasMinusculas" name="password_confirmation" value="{{ $usuario->password }}" required  maxlength="50">
@@ -71,13 +71,21 @@
 			                    @endif
 			                </div>
 			            </div>
+			            <div class="col-sm-12 col-md-2">
+			            	<label for="change-password" class="control-label">Alterar Senha?</label>
+			            	<select id="change-password" class="form-control" name="change-password">
+			            		<option value="" >Selecione</option>
+								<option value="1" >SIM</option>
+								<option value="0" >NÃO</option>
+							</select>
+			            </div>
 			        </div>
 			        
 			        <div class="form-group row">
 			        	<div class="col-sm-12 col-md-8">
 			        		<div class="form-group">
 								<label for="avatar">Imagem(Avatar):<span class="text-danger">*</span></label>
-								<input type="file" id="avatar" class="form-control" name="avatar" value="{{ $usuario->avatar }}" placeholder="Imagem/Avatar" maxlength="250" required  >
+								<input type="file" id="avatar" class="form-control" name="avatar" value="{{ $usuario->avatar }}" placeholder="Imagem/Avatar" maxlength="250"  >
 							</div>
 						</div>
 						<div class="col-sm-12 col-md-4">

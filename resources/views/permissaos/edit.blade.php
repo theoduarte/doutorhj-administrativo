@@ -36,8 +36,19 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="codigo_permissao">Código Permissão<span class="text-danger">*</span></label>
-						<input type="text" id="codigo_permissao" class="form-control" name="codigo_permissao" value="{{ $permissao->codigo_permissao }}" placeholder="Código da Permissão" maxlength="32" readonly="readonly" required   >
+						<div class="row">
+							<div class="col-md-8">
+								<label for="codigo_permissao">Código Permissão<span class="text-danger">*</span></label>
+								<input type="text" id="codigo_permissao" class="form-control" name="codigo_permissao" value="{{ $permissao->codigo_permissao }}" placeholder="Código da Permissão" maxlength="32" readonly="readonly" required   >
+							</div>
+							<div class="col-md-4">
+								<label for="acesso_privado">Acesso privado? <span class="text-danger">*</span></label>
+								<select id="acesso_privado" class="form-control" name="acesso_privado">
+									<option value="true" @if($permissao->acesso_privado) selected="selected" @endif >SIM</option>
+									<option value="false" @if(!$permissao->acesso_privado) selected="selected" @endif >NÃO</option>
+								</select>
+							</div>
+						</div>
 					</div>
 					
 					<div class="form-group">

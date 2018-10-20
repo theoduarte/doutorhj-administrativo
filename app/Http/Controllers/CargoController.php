@@ -17,10 +17,10 @@ class CargoController extends Controller
 	 */
 	public function __construct()
 	{
-// 		$action = Route::current();
-// 		$action_name = $action->action['as'];
+		$action = Route::current();
+		$action_name = $action->action['as'];
 	
-// 		$this->middleware("cvx:$action_name");
+        $this->middleware("cvx:$action_name");
 	}
 	
     /**
@@ -58,7 +58,7 @@ class CargoController extends Controller
     {
     	$cargo = Cargo::create($request->all());
     	
-    	$cargo->save();
+    	//$cargo->save();
     	
     	return redirect()->route('cargos.index')->with('success', 'O Cargo foi cadastrado com sucesso!');
     }

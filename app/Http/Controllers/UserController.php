@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Request as CVXRequest;
 use Illuminate\Filesystem\Filesystem;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use App\Perfiluser;
 use App\Http\Requests\UsuariosRequest;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +15,20 @@ use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
+    
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $action = Route::current();
+        $action_name = $action->action['as'];
+        
+        $this->middleware("cvx:$action_name");
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -136,7 +151,11 @@ class UserController extends Controller
     	$usuario            		= User::findOrFail($id);
     	$usuario->name      		= $request->input('name');
     	$usuario->email     		= $request->input('email');
-    	$usuario->password  		= bcrypt($request->input('password'));
+    	
+    	if ( (String)$request->input('change-password') === "1" ) {
+    	    $usuario->password  = bcrypt($request->input('password'));
+    	}
+    	
     	$usuario->tp_user   		= $request->input('tp_user');
     	$usuario->cs_status 		= 'A';
     	$usuario->avatar 			= 'users/default.png';

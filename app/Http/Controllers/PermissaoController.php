@@ -50,6 +50,12 @@ class PermissaoController extends Controller
     	$query = "SELECT last_value FROM public.permissaos_id_seq as nextval";
     	$nextval = DB::select($query);
     	$next_rid = isset($nextval[0]) ? $nextval[0]->last_value : 0;
+    	
+//     	$count = DB::table('permissaos')->count();
+//     	if($count == 0) {
+//     	    $next_rid = 1;
+//     	}
+    	
     	$code_permission = sprintf( "%010d", decbin($next_rid));
     	
     	return view('permissaos.create', compact('code_permission'));

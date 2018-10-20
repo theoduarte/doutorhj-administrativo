@@ -36,7 +36,7 @@ class UsuariosRequest extends FormRequest
     		case 'PUT':
     			$rules = [
 	    			'name'       => 'required|max:250',
-	    			'email'      => 'required|max:250|min:3|email|unique:users,email'.$this->user_id,
+	    			'email'      => 'required|max:250|min:3|email|unique:users,email,'.$this->user,
 	    			'password'   => 'required|string|min:6|confirmed'
     			];
     			
