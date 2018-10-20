@@ -105,6 +105,14 @@
 										<li><strong class="text-primary">Nr. Documento:</strong> <span>{{ $registro->descricao['reg_anterior']['contato']['ds_contato'] }}</span></li>
 										<hr>
 										@endif
+										
+										@if(!empty($registro->descricao['reg_anterior']['user']))
+										<li><strong class="text-primary">Id.:</strong> <span>{{ $registro->descricao['reg_anterior']['user']['id'] }}</span></li>
+										<li><strong class="text-primary">Nome de usuário:</strong> <span>{{ $registro->descricao['reg_anterior']['user']['name'] }}</span></li>
+										<li><strong class="text-primary">E-mail:</strong> <span>{{ $registro->descricao['reg_anterior']['user']['email'] }}</span></li>
+										<li><strong class="text-primary">Status:</strong> <span>@if($registro->descricao['reg_anterior']['user']['cs_status'] == 'A') Ativo @else Inativo @endif</span></li>
+										<hr>
+										@endif
 									</ul>
 									@else
 									--------
@@ -169,6 +177,20 @@
 										<li><strong class="text-primary">Nr. Documento:</strong> <span>{{ $registro->descricao['reg_novo']['documento']['te_documento'] }}</span></li>
 										<li><strong class="text-primary">Tipo Contato:</strong> <span>{{ $registro->descricao['reg_novo']['contato']['tp_contato'] }}</span></li>
 										<li><strong class="text-primary">Nr. Documento:</strong> <span>{{ $registro->descricao['reg_novo']['contato']['ds_contato'] }}</span></li>
+										<hr>
+										@endif
+										
+										@if(!empty($registro->descricao['reg_anterior']['user']))
+										<li><strong class="text-primary">Id.:</strong> <span @if($registro->descricao['reg_anterior']['user']['id'] != $registro->descricao['reg_anterior']['user']['id']) class="text-danger" @endif>{{ $registro->descricao['reg_anterior']['user']['id'] }}</span></li>
+										<li><strong class="text-primary">Nome de usuário:</strong> <span @if($registro->descricao['reg_anterior']['user']['name'] != $registro->descricao['reg_anterior']['user']['name']) class="text-danger" @endif>{{ $registro->descricao['reg_anterior']['user']['name'] }}</span></li>
+										<li><strong class="text-primary">E-mail:</strong> <span @if($registro->descricao['reg_anterior']['user']['email'] != $registro->descricao['reg_anterior']['user']['email']) class="text-danger" @endif>{{ $registro->descricao['reg_anterior']['user']['email'] }}</span></li>
+										<li><strong class="text-primary">Status:</strong> <span>@if($registro->descricao['reg_anterior']['user']['cs_status'] == 'A') Ativo @else Inativo @endif</span></li>
+										<hr>
+										@elseif(!empty($registro->descricao['reg_novo']['user']))
+										<li><strong class="text-primary">Id.:</strong> <span>{{ $registro->descricao['reg_novo']['user']['id'] }}</span></li>
+										<li><strong class="text-primary">Nome de usuário:</strong> <span>{{ $registro->descricao['reg_novo']['user']['name'] }}</span></li>
+										<li><strong class="text-primary">E-mail:</strong> <span>{{ $registro->descricao['reg_novo']['user']['email'] }}</span></li>
+										<li><strong class="text-primary">Status:</strong> <span>@if($registro->descricao['reg_novo']['user']['cs_status'] == 'A') Ativo @else Inativo @endif</span></li>
 										<hr>
 										@endif
 									</ul>

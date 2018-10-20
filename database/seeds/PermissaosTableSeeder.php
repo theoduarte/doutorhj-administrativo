@@ -39,7 +39,7 @@ class PermissaosTableSeeder extends Seeder
                     'titulo' => 'User[Excluir]',
                     'acesso_privado' => 'FALSE',
                     'codigo_permissao' => '0000000011',
-					'url_action' => 'users.delete',
+					'url_action' => 'users.destroy',
 					'url_model' => 'users',
 					'descricao' => 'Exclui o usuário.'
                 ),

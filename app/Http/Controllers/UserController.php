@@ -39,7 +39,7 @@ class UserController extends Controller
     	$get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	
-    	$usuarios = User::where(DB::raw('to_str(name)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(email)'), 'LIKE', '%'.$search_term.'%')->orderby('created_at', 'desc')->sortable()->paginate(10);
+    	$usuarios = User::where(DB::raw('to_str(name)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(email)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
     	 
     	return view('users.index', compact('usuarios'));
     }
@@ -92,6 +92,19 @@ class UserController extends Controller
     			
     			$usuario->save();
     		}
+    		
+    		# registra log
+    		$user_obj           = $usuario->toJson();
+    		
+    		$titulo_log = 'Adicionar Usuário';
+    		$ct_log   = '"reg_anterior":'.'{}';
+    		$new_log  = '"reg_novo":'.'{"user":'.$user_obj.'}';
+    		$tipo_log = 1;
+    		
+    		$log = "{".$ct_log.",".$new_log."}";
+    		
+    		$reglog = new RegistroLogController();
+    		$reglog->registrarLog($titulo_log, $log, $tipo_log);
     		
     	} else {
     		########### FINISHIING TRANSACTION ##########
@@ -149,6 +162,7 @@ class UserController extends Controller
     	//$usuario = User::create($request->all());
     	 
     	$usuario            		= User::findOrFail($id);
+    	$ct_user_obj                = $usuario->toJson();
     	$usuario->name      		= $request->input('name');
     	$usuario->email     		= $request->input('email');
     	
@@ -173,6 +187,19 @@ class UserController extends Controller
     			 
     			$usuario->save();
     		}
+    		
+    		# Registra log
+    		$user_obj           = $usuario->toJson();
+    		
+    		$titulo_log = 'Editar Usuário';
+    		$ct_log   = '"reg_anterior":'.'{"user":'.$ct_user_obj.'}';
+    		$new_log  = '"reg_novo":'.'{"user":'.$user_obj.'}';
+    		$tipo_log = 3;
+    		
+    		$log = "{".$ct_log.",".$new_log."}";
+    		
+    		$reglog = new RegistroLogController();
+    		$reglog->registrarLog($titulo_log, $log, $tipo_log);
     	
     	} else {
     		########### FINISHIING TRANSACTION ##########
@@ -194,13 +221,31 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-    	$usuario = User::findOrFail($id);
+    	$usuario       = User::findOrFail($id);
+    	$ct_user_obj   = $usuario->toJson();
     	
-    	if($usuario->avatar != 'users/default.png') {
-    		File::deleteDirectory(public_path().'/files/users/'.$usuario->id);
-    	}
+//     	if($usuario->avatar != 'users/default.png') {
+//     		File::deleteDirectory(public_path().'/files/users/'.$usuario->id);
+//     	}
     	 
-    	$usuario->delete();
+//     	$usuario->delete();
+    	$usuario->cs_status = 'I';
+    	$usuario->save();
+    	
+    	
+    	# registra log
+    	
+    	$user_obj      = $usuario->toJson();
+    	$titulo_log = 'Excluir Usuário';
+    	$tipo_log   = 4;
+    	
+    	$ct_log   = '"reg_anterior":{"user":'.$ct_user_obj.'}';
+    	$new_log  = '"reg_novo":'.'{"user":'.$user_obj.'}';
+    	
+    	$log = "{".$ct_log.",".$new_log."}";
+    	
+    	$reglog = new RegistroLogController();
+    	$reglog->registrarLog($titulo_log, $log, $tipo_log);
     	 
     	return redirect()->route('users.index')->with('success', 'Registro Excluído com sucesso!');
     }
