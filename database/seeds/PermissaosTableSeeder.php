@@ -627,31 +627,199 @@ class PermissaosTableSeeder extends Seeder
                     'url_action' => 'get-atendimento-values-by-procedimento',
                     'url_model' => 'checkups',
                     'descricao' => 'Lista atendimentos ativos por procedimento.'
+                ),
+                68 => array(
+                    'id' => '69',
+                    'titulo' => 'Cliente[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001000101',
+                    'url_action' => 'clientes.create',
+                    'url_model' => 'clientes',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de cliente.'
+                ),
+                69 => array(
+                    'id' => '70',
+                    'titulo' => 'Cliente[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001000110',
+                    'url_action' => 'clientes.store',
+                    'url_model' => 'clientes',
+                    'descricao' => 'Salva o cliente.'
+                ),
+                70 => array(
+                    'id' => '71',
+                    'titulo' => 'Cliente[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001000111',
+                    'url_action' => 'clientes.destroy',
+                    'url_model' => 'clientes',
+                    'descricao' => 'Exclui o cliente.'
+                ),
+                71 => array(
+                    'id' => '72',
+                    'titulo' => 'Cliente[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001001000',
+                    'url_action' => 'clientes.edit',
+                    'url_model' => 'clientes',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                72 => array(
+                    'id' => '73',
+                    'titulo' => 'Cliente[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001001001',
+                    'url_action' => 'clientes.update',
+                    'url_model' => 'clientes',
+                    'descricao' => 'Atualiza os dados do cliente.'
+                ),
+                73 => array(
+                    'id' => '74',
+                    'titulo' => 'Cliente[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001001010',
+                    'url_action' => 'clientes.index',
+                    'url_model' => 'clientes',
+                    'descricao' => 'Lista todos os clientes.'
+                ),
+                74 => array(
+                    'id' => '75',
+                    'titulo' => 'Cliente[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001001011',
+                    'url_action' => 'clientes.show',
+                    'url_model' => 'clientes',
+                    'descricao' => 'Exibe os dados do cliente.'
+                ),
+                75 => array(
+                    'id' => '76',
+                    'titulo' => 'Consulta[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001001100',
+                    'url_action' => 'consultas.create',
+                    'url_model' => 'consultas',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de consulta.'
+                ),
+                76 => array(
+                    'id' => '77',
+                    'titulo' => 'Consulta[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001001101',
+                    'url_action' => 'consultas.store',
+                    'url_model' => 'consultas',
+                    'descricao' => 'Salva a consulta.'
+                ),
+                77 => array(
+                    'id' => '78',
+                    'titulo' => 'Consulta[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001001110',
+                    'url_action' => 'consultas.destroy',
+                    'url_model' => 'consultas',
+                    'descricao' => 'Exclui a consulta.'
+                ),
+                78 => array(
+                    'id' => '79',
+                    'titulo' => 'Consulta[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001001111',
+                    'url_action' => 'consultas.edit',
+                    'url_model' => 'consultas',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                79 => array(
+                    'id' => '80',
+                    'titulo' => 'Consulta[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001010000',
+                    'url_action' => 'consultas.update',
+                    'url_model' => 'consultas',
+                    'descricao' => 'Atualiza os dados da consulta.'
+                ),
+                80 => array(
+                    'id' => '81',
+                    'titulo' => 'Consulta[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001010001',
+                    'url_action' => 'consultas.index',
+                    'url_model' => 'consultas',
+                    'descricao' => 'Lista todas as consultas.'
+                ),
+                81 => array(
+                    'id' => '82',
+                    'titulo' => 'Consulta[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001010010',
+                    'url_action' => 'consultas.show',
+                    'url_model' => 'consultas',
+                    'descricao' => 'Exibe os dados da consulta.'
+                ),
+                82 => array(
+                    'id' => '83',
+                    'titulo' => 'CupomDesconto[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001010011',
+                    'url_action' => 'cupom_descontos.create',
+                    'url_model' => 'cupom_descontos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de cupom de desconto.'
+                ),
+                83 => array(
+                    'id' => '84',
+                    'titulo' => 'CupomDesconto[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001010100',
+                    'url_action' => 'cupom_descontos.store',
+                    'url_model' => 'cupom_descontos',
+                    'descricao' => 'Salva o cupom de desconto.'
+                ),
+                84 => array(
+                    'id' => '85',
+                    'titulo' => 'CupomDesconto[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001010101',
+                    'url_action' => 'cupom_descontos.destroy',
+                    'url_model' => 'cupom_descontos',
+                    'descricao' => 'Exclui o cupom de desconto.'
+                ),
+                85 => array(
+                    'id' => '86',
+                    'titulo' => 'CupomDesconto[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001010110',
+                    'url_action' => 'cupom_descontos.edit',
+                    'url_model' => 'cupom_descontos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                86 => array(
+                    'id' => '87',
+                    'titulo' => 'CupomDesconto[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001010111',
+                    'url_action' => 'cupom_descontos.update',
+                    'url_model' => 'cupom_descontos',
+                    'descricao' => 'Atualiza os dados do cupom de desconto.'
+                ),
+                87 => array(
+                    'id' => '88',
+                    'titulo' => 'CupomDesconto[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001011000',
+                    'url_action' => 'cupom_descontos.index',
+                    'url_model' => 'cupom_descontos',
+                    'descricao' => 'Lista todos os do cupons de desconto.'
+                ),
+                88 => array(
+                    'id' => '82',
+                    'titulo' => 'CupomDesconto[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001011001',
+                    'url_action' => 'cupom_descontos.show',
+                    'url_model' => 'cupom_descontos',
+                    'descricao' => 'Exibe os dados do do cupom de desconto.'
                 )
                 
                 /*
                  * |        | GET|HEAD  | /                                                                                                                              |                                                     | Closure                                                                            | web          |
-|        | GET|HEAD  | clientes                                                                                                                       | clientes.index                                      | App\Http\Controllers\ClienteController@index                                       | web,auth     |
-|        | POST      | clientes                                                                                                                       | clientes.store                                      | App\Http\Controllers\ClienteController@store                                       | web,auth     |
-|        | GET|HEAD  | clientes/create                                                                                                                | clientes.create                                     | App\Http\Controllers\ClienteController@create                                      | web,auth     |
-|        | DELETE    | clientes/{cliente}                                                                                                             | clientes.destroy                                    | App\Http\Controllers\ClienteController@destroy                                     | web,auth     |
-|        | PUT|PATCH | clientes/{cliente}                                                                                                             | clientes.update                                     | App\Http\Controllers\ClienteController@update                                      | web,auth     |
-|        | GET|HEAD  | clientes/{cliente}                                                                                                             | clientes.show                                       | App\Http\Controllers\ClienteController@show                                        | web,auth     |
-|        | GET|HEAD  | clientes/{cliente}/edit                                                                                                        | clientes.edit                                       | App\Http\Controllers\ClienteController@edit                                        | web,auth     |
-|        | GET|HEAD  | consultas                                                                                                                      | consultas.index                                     | App\Http\Controllers\ConsultaController@index                                      | web,auth     |
-|        | POST      | consultas                                                                                                                      | consultas.store                                     | App\Http\Controllers\ConsultaController@store                                      | web,auth     |
-|        | GET|HEAD  | consultas/create                                                                                                               | consultas.create                                    | App\Http\Controllers\ConsultaController@create                                     | web,auth     |
-|        | DELETE    | consultas/{consulta}                                                                                                           | consultas.destroy                                   | App\Http\Controllers\ConsultaController@destroy                                    | web,auth     |
-|        | PUT|PATCH | consultas/{consulta}                                                                                                           | consultas.update                                    | App\Http\Controllers\ConsultaController@update                                     | web,auth     |
-|        | GET|HEAD  | consultas/{consulta}                                                                                                           | consultas.show                                      | App\Http\Controllers\ConsultaController@show                                       | web,auth     |
-|        | GET|HEAD  | consultas/{consulta}/edit                                                                                                      | consultas.edit                                      | App\Http\Controllers\ConsultaController@edit                                       | web,auth     |
-|        | GET|HEAD  | cupom_descontos                                                                                                                | cupom_descontos.index                               | App\Http\Controllers\CupomDescontoController@index                                 | web,auth     |
-|        | POST      | cupom_descontos                                                                                                                | cupom_descontos.store                               | App\Http\Controllers\CupomDescontoController@store                                 | web,auth     |
-|        | GET|HEAD  | cupom_descontos/create                                                                                                         | cupom_descontos.create                              | App\Http\Controllers\CupomDescontoController@create                                | web,auth     |
-|        | DELETE    | cupom_descontos/{cupom_desconto}                                                                                               | cupom_descontos.destroy                             | App\Http\Controllers\CupomDescontoController@destroy                               | web,auth     |
-|        | PUT|PATCH | cupom_descontos/{cupom_desconto}                                                                                               | cupom_descontos.update                              | App\Http\Controllers\CupomDescontoController@update                                | web,auth     |
-|        | GET|HEAD  | cupom_descontos/{cupom_desconto}                                                                                               | cupom_descontos.show                                | App\Http\Controllers\CupomDescontoController@show                                  | web,auth     |
-|        | GET|HEAD  | cupom_descontos/{cupom_desconto}/edit                                                                                          | cupom_descontos.edit                                | App\Http\Controllers\CupomDescontoController@edit                                  | web,auth     |
 |        | GET|HEAD  | documentos/getUserByCpf/{cpf}                                                                                                  | documentos.get-user-by-cpf                          | App\Http\Controllers\DocumentoController@getUserByCpf                              | web,auth     |
 |        | POST      | empresas                                                                                                                       | empresas.store                                      | App\Http\Controllers\EmpresaController@store                                       | web,auth     |
 |        | GET|HEAD  | empresas                                                                                                                       | empresas.index                                      | App\Http\Controllers\EmpresaController@index                                       | web,auth     |
