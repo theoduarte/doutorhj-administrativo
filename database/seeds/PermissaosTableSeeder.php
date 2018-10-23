@@ -809,115 +809,854 @@ class PermissaosTableSeeder extends Seeder
                     'descricao' => 'Lista todos os do cupons de desconto.'
                 ),
                 88 => array(
-                    'id' => '82',
+                    'id' => '89',
                     'titulo' => 'CupomDesconto[Exibir]',
                     'acesso_privado' => 'FALSE',
                     'codigo_permissao' => '0001011001',
                     'url_action' => 'cupom_descontos.show',
                     'url_model' => 'cupom_descontos',
                     'descricao' => 'Exibe os dados do do cupom de desconto.'
+                ),
+                89 => array(
+                    'id' => '90',
+                    'titulo' => 'Documento[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001011010',
+                    'url_action' => 'documentos.get-user-by-cpf',
+                    'url_model' => 'documentos',
+                    'descricao' => 'Exibe o usuário por CPF.'
+                ),
+                90 => array(
+                    'id' => '91',
+                    'titulo' => 'Empresa[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001011011',
+                    'url_action' => 'empresas.create',
+                    'url_model' => 'empresas',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de empresa.'
+                ),
+                91 => array(
+                    'id' => '92',
+                    'titulo' => 'Empresa[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001011100',
+                    'url_action' => 'empresas.store',
+                    'url_model' => 'empresas',
+                    'descricao' => 'Salva a empresa.'
+                ),
+                92 => array(
+                    'id' => '93',
+                    'titulo' => 'Empresa[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001011101',
+                    'url_action' => 'empresas.destroy',
+                    'url_model' => 'empresas',
+                    'descricao' => 'Exclui a empresa.'
+                ),
+                93 => array(
+                    'id' => '94',
+                    'titulo' => 'Empresa[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001011110',
+                    'url_action' => 'empresas.edit',
+                    'url_model' => 'empresas',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                94 => array(
+                    'id' => '95',
+                    'titulo' => 'Empresa[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001011111',
+                    'url_action' => 'empresas.update',
+                    'url_model' => 'empresas',
+                    'descricao' => 'Atualiza os dados da empresa.'
+                ),
+                95 => array(
+                    'id' => '96',
+                    'titulo' => 'Empresa[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001100000',
+                    'url_action' => 'empresas.index',
+                    'url_model' => 'empresas',
+                    'descricao' => 'Lista todas as empresas.'
+                ),
+                96 => array(
+                    'id' => '97',
+                    'titulo' => 'Empresa[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001100001',
+                    'url_action' => 'empresas.show',
+                    'url_model' => 'empresas',
+                    'descricao' => 'Exibe os dados da empresa.'
+                ),
+                97 => array(
+                    'id' => '98',
+                    'titulo' => 'Endereco[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001100010',
+                    'url_action' => 'enderecos.create',
+                    'url_model' => 'enderecos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de endereço.'
+                ),
+                98 => array(
+                    'id' => '99',
+                    'titulo' => 'Endereco[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001100011',
+                    'url_action' => 'enderecos.store',
+                    'url_model' => 'enderecos',
+                    'descricao' => 'Salva o endereço.'
+                ),
+                99 => array(
+                    'id' => '100',
+                    'titulo' => 'Endereco[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001100100',
+                    'url_action' => 'enderecos.destroy',
+                    'url_model' => 'enderecos',
+                    'descricao' => 'Exclui o endereço.'
+                ),
+                100 => array(
+                    'id' => '101',
+                    'titulo' => 'Endereco[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001100101',
+                    'url_action' => 'enderecos.edit',
+                    'url_model' => 'enderecos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                101 => array(
+                    'id' => '102',
+                    'titulo' => 'Endereco[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001100110',
+                    'url_action' => 'enderecos.update',
+                    'url_model' => 'enderecos',
+                    'descricao' => 'Atualiza os dados do endereço.'
+                ),
+                102 => array(
+                    'id' => '103',
+                    'titulo' => 'Endereco[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001100111',
+                    'url_action' => 'enderecos.index',
+                    'url_model' => 'enderecos',
+                    'descricao' => 'Lista todos os endereços.'
+                ),
+                103 => array(
+                    'id' => '104',
+                    'titulo' => 'Endereco[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001101000',
+                    'url_action' => 'enderecos.show',
+                    'url_model' => 'enderecos',
+                    'descricao' => 'Exibe os dados do endereço.'
+                ),
+                104 => array(
+                    'id' => '105',
+                    'titulo' => 'Entidade[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001101001',
+                    'url_action' => 'entidades.create',
+                    'url_model' => 'entidades',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de entidade.'
+                ),
+                105 => array(
+                    'id' => '106',
+                    'titulo' => 'Entidade[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001101010',
+                    'url_action' => 'entidades.store',
+                    'url_model' => 'entidades',
+                    'descricao' => 'Salva a entidade.'
+                ),
+                106 => array(
+                    'id' => '107',
+                    'titulo' => 'Entidade[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001101011',
+                    'url_action' => 'entidades.destroy',
+                    'url_model' => 'entidades',
+                    'descricao' => 'Exclui a entidade.'
+                ),
+                107 => array(
+                    'id' => '108',
+                    'titulo' => 'Entidade[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001101100',
+                    'url_action' => 'entidades.edit',
+                    'url_model' => 'entidades',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                108 => array(
+                    'id' => '109',
+                    'titulo' => 'Entidade[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001101101',
+                    'url_action' => 'entidades.update',
+                    'url_model' => 'entidades',
+                    'descricao' => 'Atualiza os dados da entidade'
+                ),
+                109 => array(
+                    'id' => '110',
+                    'titulo' => 'Entidade[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001101110',
+                    'url_action' => 'entidades.index',
+                    'url_model' => 'entidades',
+                    'descricao' => 'Lista todos as entidades.'
+                ),
+                110 => array(
+                    'id' => '111',
+                    'titulo' => 'Entidade[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001101111',
+                    'url_action' => 'entidades.show',
+                    'url_model' => 'entidades',
+                    'descricao' => 'Exibe os dados da entidade.'
+                ),
+                111 => array(
+                    'id' => '112',
+                    'titulo' => 'GrupoProcedimento[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001110000',
+                    'url_action' => 'grupo_procedimentos.create',
+                    'url_model' => 'grupo_procedimentos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de grupo de procedimento.'
+                ),
+                112 => array(
+                    'id' => '113',
+                    'titulo' => 'GrupoProcedimento[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001110001',
+                    'url_action' => 'grupo_procedimentos.store',
+                    'url_model' => 'grupo_procedimentos',
+                    'descricao' => 'Salva o grupo de procedimento.'
+                ),
+                113 => array(
+                    'id' => '114',
+                    'titulo' => 'GrupoProcedimento[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001110010',
+                    'url_action' => 'grupo_procedimentos.destroy',
+                    'url_model' => 'grupo_procedimentos',
+                    'descricao' => 'Exclui o grupo de procedimento.'
+                ),
+                114 => array(
+                    'id' => '115',
+                    'titulo' => 'GrupoProcedimento[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001110011',
+                    'url_action' => 'grupo_procedimentos.edit',
+                    'url_model' => 'grupo_procedimentos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                115 => array(
+                    'id' => '116',
+                    'titulo' => 'GrupoProcedimento[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001110100',
+                    'url_action' => 'grupo_procedimentos.update',
+                    'url_model' => 'grupo_procedimentos',
+                    'descricao' => 'Atualiza os dados do grupo de procedimento.'
+                ),
+                116 => array(
+                    'id' => '117',
+                    'titulo' => 'GrupoProcedimento[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001110101',
+                    'url_action' => 'grupo_procedimentos.index',
+                    'url_model' => 'grupo_procedimentos',
+                    'descricao' => 'Lista todos os grupos de procedimento.'
+                ),
+                117 => array(
+                    'id' => '118',
+                    'titulo' => 'GrupoProcedimento[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001110110',
+                    'url_action' => 'grupo_procedimentos.show',
+                    'url_model' => 'grupo_procedimentos',
+                    'descricao' => 'Exibe os dados do grupo de procedimento.'
+                ),
+                118 => array(
+                    'id' => '119',
+                    'titulo' => 'ItemCheckup[ExcluirConsulta]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001110111',
+                    'url_action' => 'item-checkups-consulta.destroy',
+                    'url_model' => 'item_checkups',
+                    'descricao' => 'Exclui o item checkup de consulta.'
+                ),
+                119 => array(
+                    'id' => '120',
+                    'titulo' => 'ItemCheckup[AdicionarConsulta]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001111000',
+                    'url_action' => 'item-checkups-consulta.store',
+                    'url_model' => 'item_checkups',
+                    'descricao' => 'Salva o item checkup de consulta.'
+                ),
+                120 => array(
+                    'id' => '121',
+                    'titulo' => 'ItemCheckup[ExcluirProcedimento]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001111001',
+                    'url_action' => 'item-checkups-exame.destroy',
+                    'url_model' => 'item_checkups',
+                    'descricao' => 'Exclui o item checkup de procedimento.'
+                ),
+                121 => array(
+                    'id' => '122',
+                    'titulo' => 'ItemCheckup[adicionarProcedimento]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001111010',
+                    'url_action' => 'item-checkups-exame.store',
+                    'url_model' => 'item_checkups',
+                    'descricao' => 'Salva o item checkup de procedimento.'
+                ),
+                122 => array(
+                    'id' => '123',
+                    'titulo' => 'Itemmenu[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001111011',
+                    'url_action' => 'itemmenus.create',
+                    'url_model' => 'itemmenus',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de item de menu.'
+                ),
+                123 => array(
+                    'id' => '124',
+                    'titulo' => 'Itemmenu[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001111100',
+                    'url_action' => 'itemmenus.store',
+                    'url_model' => 'itemmenus',
+                    'descricao' => 'Salva o item de menu.'
+                ),
+                124 => array(
+                    'id' => '125',
+                    'titulo' => 'Itemmenu[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001111101',
+                    'url_action' => 'itemmenus.destroy',
+                    'url_model' => 'itemmenus',
+                    'descricao' => 'Exclui o item de menu.'
+                ),
+                125 => array(
+                    'id' => '126',
+                    'titulo' => 'Itemmenu[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001111110',
+                    'url_action' => 'itemmenus.edit',
+                    'url_model' => 'itemmenus',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                126 => array(
+                    'id' => '127',
+                    'titulo' => 'Itemmenu[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0001111111',
+                    'url_action' => 'itemmenus.update',
+                    'url_model' => 'itemmenus',
+                    'descricao' => 'Atualiza os dados do item de menu.'
+                ),
+                127 => array(
+                    'id' => '128',
+                    'titulo' => 'Itemmenu[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010000000',
+                    'url_action' => 'itemmenus.index',
+                    'url_model' => 'itemmenus',
+                    'descricao' => 'Lista todos os itens de menu.'
+                ),
+                128 => array(
+                    'id' => '129',
+                    'titulo' => 'Itemmenu[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010000001',
+                    'url_action' => 'itemmenus.show',
+                    'url_model' => 'itemmenus',
+                    'descricao' => 'Exibe os dados do item de menu.'
+                ),
+                129 => array(
+                    'id' => '130',
+                    'titulo' => 'Atendimento[ExibirData]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010000010',
+                    'url_action' => 'mostrar-data-atendimento',
+                    'url_model' => 'atendimentos',
+                    'descricao' => 'Exibe a data do atendimento.'
+                ),
+                130 => array(
+                    'id' => '131',
+                    'titulo' => 'Preco[ExibirData]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010000011',
+                    'url_action' => 'mostrar-data-preco',
+                    'url_model' => 'precos',
+                    'descricao' => 'Exibe a data do preço.'
+                ),
+                131 => array(
+                    'id' => '132',
+                    'titulo' => 'Preco[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010000100',
+                    'url_action' => 'precos.create',
+                    'url_model' => 'precos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de preço.'
+                ),
+                132 => array(
+                    'id' => '133',
+                    'titulo' => 'Preco[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010000101',
+                    'url_action' => 'precos.store',
+                    'url_model' => 'precos',
+                    'descricao' => 'Salva o preço.'
+                ),
+                133 => array(
+                    'id' => '134',
+                    'titulo' => 'Preco[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010000110',
+                    'url_action' => 'precos.destroy',
+                    'url_model' => 'precos',
+                    'descricao' => 'Exclui o preço.'
+                ),
+                134 => array(
+                    'id' => '135',
+                    'titulo' => 'Preco[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010000111',
+                    'url_action' => 'precos.edit',
+                    'url_model' => 'precos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                135 => array(
+                    'id' => '136',
+                    'titulo' => 'Preco[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010001000',
+                    'url_action' => 'precos.update',
+                    'url_model' => 'precos',
+                    'descricao' => 'Atualiza os dados do preço.'
+                ),
+                136 => array(
+                    'id' => '137',
+                    'titulo' => 'Preco[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010001001',
+                    'url_action' => 'precos.index',
+                    'url_model' => 'precos',
+                    'descricao' => 'Lista todos os preços.'
+                ),
+                137 => array(
+                    'id' => '138',
+                    'titulo' => 'Logradouro[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010001010',
+                    'url_action' => 'logradouros.show',
+                    'url_model' => 'logradouros',
+                    'descricao' => 'Exibe os dados do logradouro.'
+                ),
+                138 => array(
+                    'id' => '139',
+                    'titulo' => 'Logradouro[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010001011',
+                    'url_action' => 'logradouros.create',
+                    'url_model' => 'logradouros',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de logradouro.'
+                ),
+                139 => array(
+                    'id' => '140',
+                    'titulo' => 'Logradouro[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010001100',
+                    'url_action' => 'logradouros.store',
+                    'url_model' => 'logradouros',
+                    'descricao' => 'Salva o logradouro.'
+                ),
+                140 => array(
+                    'id' => '141',
+                    'titulo' => 'Logradouro[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010001101',
+                    'url_action' => 'logradouros.destroy',
+                    'url_model' => 'logradouros',
+                    'descricao' => 'Exclui o logradouro.'
+                ),
+                141 => array(
+                    'id' => '142',
+                    'titulo' => 'Logradouro[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010001110',
+                    'url_action' => 'logradouros.edit',
+                    'url_model' => 'logradouros',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                142 => array(
+                    'id' => '143',
+                    'titulo' => 'Logradouro[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010001111',
+                    'url_action' => 'logradouros.update',
+                    'url_model' => 'logradouros',
+                    'descricao' => 'Atualiza os dados do logradouro.'
+                ),
+                143 => array(
+                    'id' => '144',
+                    'titulo' => 'Logradouro[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010010000',
+                    'url_action' => 'logradouros.index',
+                    'url_model' => 'logradouros',
+                    'descricao' => 'Lista todos os logradouros.'
+                ),
+                144 => array(
+                    'id' => '145',
+                    'titulo' => 'Preco[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010010001',
+                    'url_action' => 'precos.show',
+                    'url_model' => 'precos',
+                    'descricao' => 'Exibe o preços.'
+                ),
+                145 => array(
+                    'id' => '146',
+                    'titulo' => 'Menu[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010010010',
+                    'url_action' => 'menus.create',
+                    'url_model' => 'menus',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de menu.'
+                ),
+                146 => array(
+                    'id' => '147',
+                    'titulo' => 'Menu[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010010011',
+                    'url_action' => 'menus.store',
+                    'url_model' => 'menus',
+                    'descricao' => 'Salva o menu.'
+                ),
+                147 => array(
+                    'id' => '148',
+                    'titulo' => 'Menu[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010010100',
+                    'url_action' => 'menus.destroy',
+                    'url_model' => 'menus',
+                    'descricao' => 'Exclui o menu.'
+                ),
+                148 => array(
+                    'id' => '149',
+                    'titulo' => 'Menu[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010010101',
+                    'url_action' => 'menus.edit',
+                    'url_model' => 'menus',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                149 => array(
+                    'id' => '150',
+                    'titulo' => 'Menu[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010010110',
+                    'url_action' => 'menus.update',
+                    'url_model' => 'menus',
+                    'descricao' => 'Atualiza os dados do menu.'
+                ),
+                150 => array(
+                    'id' => '151',
+                    'titulo' => 'Menu[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010010111',
+                    'url_action' => 'menus.index',
+                    'url_model' => 'menus',
+                    'descricao' => 'Lista todos os menus.'
+                ),
+                151 => array(
+                    'id' => '152',
+                    'titulo' => 'Menu[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010011000',
+                    'url_action' => 'menus.show',
+                    'url_model' => 'menus',
+                    'descricao' => 'Exibe os dados do menu.'
+                ),
+                152 => array(
+                    'id' => '153',
+                    'titulo' => 'Mensagem[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010011001',
+                    'url_action' => 'listar-notificacoes',
+                    'url_model' => 'mensagems',
+                    'descricao' => 'Lista todos as mensagens.'
+                ),
+                153 => array(
+                    'id' => '154',
+                    'titulo' => 'Mensagem[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010011010',
+                    'url_action' => 'exibir-notificacao',
+                    'url_model' => 'mensagems',
+                    'descricao' => 'Exibe os dados da mensagem.'
+                ),
+                154 => array(
+                    'id' => '155',
+                    'titulo' => 'Perfiluser[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010011011',
+                    'url_action' => 'perfilusers.create',
+                    'url_model' => 'perfilusers',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de perfil de usuário.'
+                ),
+                155 => array(
+                    'id' => '156',
+                    'titulo' => 'Perfiluser[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010011100',
+                    'url_action' => 'perfilusers.store',
+                    'url_model' => 'perfilusers',
+                    'descricao' => 'Salva o perfil de usuário.'
+                ),
+                156 => array(
+                    'id' => '157',
+                    'titulo' => 'Perfiluser[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010011101',
+                    'url_action' => 'perfilusers.destroy',
+                    'url_model' => 'perfilusers',
+                    'descricao' => 'Exclui o perfil de usuário.'
+                ),
+                157 => array(
+                    'id' => '158',
+                    'titulo' => 'Perfiluser[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010011110',
+                    'url_action' => 'perfilusers.edit',
+                    'url_model' => 'perfilusers',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                158 => array(
+                    'id' => '159',
+                    'titulo' => 'Perfiluser[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010011111',
+                    'url_action' => 'perfilusers.update',
+                    'url_model' => 'perfilusers',
+                    'descricao' => 'Atualiza os dados do perfil de usuário.'
+                ),
+                159 => array(
+                    'id' => '160',
+                    'titulo' => 'Perfiluser[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010100000',
+                    'url_action' => 'perfilusers.index',
+                    'url_model' => 'perfilusers',
+                    'descricao' => 'Lista todos os perfis de usuário.'
+                ),
+                160 => array(
+                    'id' => '161',
+                    'titulo' => 'Perfiluser[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010100001',
+                    'url_action' => 'perfilusers.show',
+                    'url_model' => 'perfilusers',
+                    'descricao' => 'Exibe os dados do perfil de usuário.'
+                ),
+                161 => array(
+                    'id' => '162',
+                    'titulo' => 'Permissao[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010100010',
+                    'url_action' => 'permissaos.create',
+                    'url_model' => 'permissaos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de permissão.'
+                ),
+                162 => array(
+                    'id' => '163',
+                    'titulo' => 'Permissao[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010100011',
+                    'url_action' => 'permissaos.store',
+                    'url_model' => 'permissaos',
+                    'descricao' => 'Salva a permissão.'
+                ),
+                163 => array(
+                    'id' => '164',
+                    'titulo' => 'Permissao[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010100100',
+                    'url_action' => 'permissaos.destroy',
+                    'url_model' => 'permissaos',
+                    'descricao' => 'Exclui a permissão.'
+                ),
+                164 => array(
+                    'id' => '165',
+                    'titulo' => 'Permissao[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010100101',
+                    'url_action' => 'permissaos.edit',
+                    'url_model' => 'permissaos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                165 => array(
+                    'id' => '166',
+                    'titulo' => 'Permissao[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010100110',
+                    'url_action' => 'permissaos.update',
+                    'url_model' => 'permissaos',
+                    'descricao' => 'Atualiza os dados da permissão.'
+                ),
+                166 => array(
+                    'id' => '167',
+                    'titulo' => 'Permissao[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010100111',
+                    'url_action' => 'permissaos.index',
+                    'url_model' => 'permissaos',
+                    'descricao' => 'Lista todas as permissões.'
+                ),
+                167 => array(
+                    'id' => '168',
+                    'titulo' => 'Permissao[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010101000',
+                    'url_action' => 'permissaos.show',
+                    'url_model' => 'permissaos',
+                    'descricao' => 'Exibe os dados da permissão.'
+                ),
+                168 => array(
+                    'id' => '169',
+                    'titulo' => 'Plano[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010101001',
+                    'url_action' => 'permissaos.create',
+                    'url_model' => 'permissaos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de permissão.'
+                ),
+                169 => array(
+                    'id' => '170',
+                    'titulo' => 'Plano[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010101010',
+                    'url_action' => 'planos.store',
+                    'url_model' => 'planos',
+                    'descricao' => 'Salva o plano.'
+                ),
+                170 => array(
+                    'id' => '171',
+                    'titulo' => 'Plano[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010101011',
+                    'url_action' => 'planos.destroy',
+                    'url_model' => 'planos',
+                    'descricao' => 'Exclui o plano.'
+                ),
+                171 => array(
+                    'id' => '172',
+                    'titulo' => 'Plano[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010101100',
+                    'url_action' => 'planos.edit',
+                    'url_model' => 'planos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                172 => array(
+                    'id' => '173',
+                    'titulo' => 'Plano[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010101101',
+                    'url_action' => 'planos.update',
+                    'url_model' => 'planos',
+                    'descricao' => 'Atualiza os dados do plano.'
+                ),
+                173 => array(
+                    'id' => '174',
+                    'titulo' => 'Plano[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010101110',
+                    'url_action' => 'planos.index',
+                    'url_model' => 'planos',
+                    'descricao' => 'Lista todos os planos.'
+                ),
+                174 => array(
+                    'id' => '175',
+                    'titulo' => 'Plano[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010101111',
+                    'url_action' => 'planos.show',
+                    'url_model' => 'planos',
+                    'descricao' => 'Exibe os dados do plano.'
+                ),
+                175 => array(
+                    'id' => '176',
+                    'titulo' => 'Procedimento[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010110000',
+                    'url_action' => 'procedimentos.create',
+                    'url_model' => 'procedimentos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de procedimento.'
+                ),
+                176 => array(
+                    'id' => '177',
+                    'titulo' => 'Procedimento[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010110001',
+                    'url_action' => 'procedimentos.store',
+                    'url_model' => 'procedimentos',
+                    'descricao' => 'Salva o procedimento.'
+                ),
+                177 => array(
+                    'id' => '178',
+                    'titulo' => 'Procedimento[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010110010',
+                    'url_action' => 'procedimentos.destroy',
+                    'url_model' => 'procedimentos',
+                    'descricao' => 'Exclui o procedimento.'
+                ),
+                178 => array(
+                    'id' => '179',
+                    'titulo' => 'Procedimento[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010110011',
+                    'url_action' => 'procedimentos.edit',
+                    'url_model' => 'procedimentos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                179 => array(
+                    'id' => '180',
+                    'titulo' => 'Procedimento[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010110100',
+                    'url_action' => 'procedimentos.update',
+                    'url_model' => 'procedimentos',
+                    'descricao' => 'Atualiza os dados do procedimento.'
+                ),
+                180 => array(
+                    'id' => '181',
+                    'titulo' => 'Procedimento[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010110101',
+                    'url_action' => 'procedimentos.index',
+                    'url_model' => 'procedimentos',
+                    'descricao' => 'Lista todos os procedimentos.'
+                ),
+                181 => array(
+                    'id' => '182',
+                    'titulo' => 'Procedimento[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010110110',
+                    'url_action' => 'procedimentos.show',
+                    'url_model' => 'procedimentos',
+                    'descricao' => 'Exibe os dados do procedimento.'
                 )
                 
                 /*
                  * |        | GET|HEAD  | /                                                                                                                              |                                                     | Closure                                                                            | web          |
-|        | GET|HEAD  | documentos/getUserByCpf/{cpf}                                                                                                  | documentos.get-user-by-cpf                          | App\Http\Controllers\DocumentoController@getUserByCpf                              | web,auth     |
-|        | POST      | empresas                                                                                                                       | empresas.store                                      | App\Http\Controllers\EmpresaController@store                                       | web,auth     |
-|        | GET|HEAD  | empresas                                                                                                                       | empresas.index                                      | App\Http\Controllers\EmpresaController@index                                       | web,auth     |
-|        | GET|HEAD  | empresas/create                                                                                                                | empresas.create                                     | App\Http\Controllers\EmpresaController@create                                      | web,auth     |
-|        | GET|HEAD  | empresas/{empresa}                                                                                                             | empresas.show                                       | App\Http\Controllers\EmpresaController@show                                        | web,auth     |
-|        | DELETE    | empresas/{empresa}                                                                                                             | empresas.destroy                                    | App\Http\Controllers\EmpresaController@destroy                                     | web,auth     |
-|        | PUT|PATCH | empresas/{empresa}                                                                                                             | empresas.update                                     | App\Http\Controllers\EmpresaController@update                                      | web,auth     |
-|        | GET|HEAD  | empresas/{empresa}/edit                                                                                                        | empresas.edit                                       | App\Http\Controllers\EmpresaController@edit                                        | web,auth     |
-|        | GET|HEAD  | enderecos                                                                                                                      | enderecos.index                                     | App\Http\Controllers\EnderecoController@index                                      | web,auth     |
-|        | POST      | enderecos                                                                                                                      | enderecos.store                                     | App\Http\Controllers\EnderecoController@store                                      | web,auth     |
-|        | GET|HEAD  | enderecos/create                                                                                                               | enderecos.create                                    | App\Http\Controllers\EnderecoController@create                                     | web,auth     |
-|        | PUT|PATCH | enderecos/{endereco}                                                                                                           | enderecos.update                                    | App\Http\Controllers\EnderecoController@update                                     | web,auth     |
-|        | GET|HEAD  | enderecos/{endereco}                                                                                                           | enderecos.show                                      | App\Http\Controllers\EnderecoController@show                                       | web,auth     |
-|        | DELETE    | enderecos/{endereco}                                                                                                           | enderecos.destroy                                   | App\Http\Controllers\EnderecoController@destroy                                    | web,auth     |
-|        | GET|HEAD  | enderecos/{endereco}/edit                                                                                                      | enderecos.edit                                      | App\Http\Controllers\EnderecoController@edit                                       | web,auth     |
-|        | POST      | entidades                                                                                                                      | entidades.store                                     | App\Http\Controllers\EntidadeController@store                                      | web,auth     |
-|        | GET|HEAD  | entidades                                                                                                                      | entidades.index                                     | App\Http\Controllers\EntidadeController@index                                      | web,auth     |
-|        | GET|HEAD  | entidades/create                                                                                                               | entidades.create                                    | App\Http\Controllers\EntidadeController@create                                     | web,auth     |
-|        | DELETE    | entidades/{entidade}                                                                                                           | entidades.destroy                                   | App\Http\Controllers\EntidadeController@destroy                                    | web,auth     |
-|        | PUT|PATCH | entidades/{entidade}                                                                                                           | entidades.update                                    | App\Http\Controllers\EntidadeController@update                                     | web,auth     |
-|        | GET|HEAD  | entidades/{entidade}                                                                                                           | entidades.show                                      | App\Http\Controllers\EntidadeController@show                                       | web,auth     |
-|        | GET|HEAD  | entidades/{entidade}/edit                                                                                                      | entidades.edit                                      | App\Http\Controllers\EntidadeController@edit                                       | web,auth     |
-|        | GET|HEAD  | grupo_procedimentos                                                                                                            | grupo_procedimentos.index                           | App\Http\Controllers\GrupoProcedimentoController@index                             | web,auth     |
-|        | POST      | grupo_procedimentos                                                                                                            | grupo_procedimentos.store                           | App\Http\Controllers\GrupoProcedimentoController@store                             | web,auth     |
-|        | GET|HEAD  | grupo_procedimentos/create                                                                                                     | grupo_procedimentos.create                          | App\Http\Controllers\GrupoProcedimentoController@create                            | web,auth     |
-|        | PUT|PATCH | grupo_procedimentos/{grupo_procedimento}                                                                                       | grupo_procedimentos.update                          | App\Http\Controllers\GrupoProcedimentoController@update                            | web,auth     |
-|        | DELETE    | grupo_procedimentos/{grupo_procedimento}                                                                                       | grupo_procedimentos.destroy                         | App\Http\Controllers\GrupoProcedimentoController@destroy                           | web,auth     |
-|        | GET|HEAD  | grupo_procedimentos/{grupo_procedimento}                                                                                       | grupo_procedimentos.show                            | App\Http\Controllers\GrupoProcedimentoController@show                              | web,auth     |
-|        | GET|HEAD  | grupo_procedimentos/{grupo_procedimento}/edit                                                                                  | grupo_procedimentos.edit                            | App\Http\Controllers\GrupoProcedimentoController@edit                              | web,auth     |
-|        | GET|HEAD  | home                                                                                                                           | home                                                | App\Http\Controllers\HomeController@index                                          | web,auth     |
-|        | DELETE    | item-checkups-consulta.destroy/{checkupId}/checkupId/{consultaId}/consultaId/{clinicas}/clinicas/{profissionals}/profissionals | item-checkups-consulta.destroy                      | App\Http\Controllers\ItemCheckupsController@destroy                                | web,auth     |
-|        | POST      | item-checkups-consulta.store/{checkup}                                                                                         | item-checkups-consulta.store                        | App\Http\Controllers\ItemCheckupsController@store                                  | web,auth     |
-|        | DELETE    | item-checkups-exame.destroy/{checkupId}/checkupId/{procedimentoId}/procedimentoId/{clinicas}/clinicas                          | item-checkups-exame.destroy                         | App\Http\Controllers\ItemCheckupsController@destroyExame                           | web,auth     |
-|        | POST      | item-checkups-exame.store/{checkup}                                                                                            | item-checkups-exame.store                           | App\Http\Controllers\ItemCheckupsController@storeExame                             | web,auth     |
-|        | POST      | itemmenus                                                                                                                      | itemmenus.store                                     | App\Http\Controllers\ItemmenuController@store                                      | web,auth     |
-|        | GET|HEAD  | itemmenus                                                                                                                      | itemmenus.index                                     | App\Http\Controllers\ItemmenuController@index                                      | web,auth     |
-|        | GET|HEAD  | itemmenus/create                                                                                                               | itemmenus.create                                    | App\Http\Controllers\ItemmenuController@create                                     | web,auth     |
-|        | DELETE    | itemmenus/{itemmenu}                                                                                                           | itemmenus.destroy                                   | App\Http\Controllers\ItemmenuController@destroy                                    | web,auth     |
-|        | GET|HEAD  | itemmenus/{itemmenu}                                                                                                           | itemmenus.show                                      | App\Http\Controllers\ItemmenuController@show                                       | web,auth     |
-|        | PUT|PATCH | itemmenus/{itemmenu}                                                                                                           | itemmenus.update                                    | App\Http\Controllers\ItemmenuController@update                                     | web,auth     |
-|        | GET|HEAD  | itemmenus/{itemmenu}/edit                                                                                                      | itemmenus.edit                                      | App\Http\Controllers\ItemmenuController@edit                                       | web,auth     |
-|        | POST      | load-data-atendimento                                                                                                          | mostrar-data-atendimento                            | App\Http\Controllers\AtendimentoController@loadAtendimentoShow                     | web,auth     |
-|        | GET|HEAD  | load-data-preco/{id}                                                                                                           | mostrar-data-preco                                  | App\Http\Controllers\PrecoController@loadPrecoShow                                 | web,auth     |
-|        | POST      | logradouros                                                                                                                    | logradouros.store                                   | App\Http\Controllers\LogradouroController@store                                    | web,auth     |
-|        | GET|HEAD  | logradouros                                                                                                                    | logradouros.index                                   | App\Http\Controllers\LogradouroController@index                                    | web,auth     |
-|        | GET|HEAD  | logradouros/create                                                                                                             | logradouros.create                                  | App\Http\Controllers\LogradouroController@create                                   | web,auth     |
-|        | DELETE    | logradouros/{logradouro}                                                                                                       | logradouros.destroy                                 | App\Http\Controllers\LogradouroController@destroy                                  | web,auth     |
-|        | GET|HEAD  | logradouros/{logradouro}                                                                                                       | logradouros.show                                    | App\Http\Controllers\LogradouroController@show                                     | web,auth     |
-|        | PUT|PATCH | logradouros/{logradouro}                                                                                                       | logradouros.update                                  | App\Http\Controllers\LogradouroController@update                                   | web,auth     |
-|        | GET|HEAD  | logradouros/{logradouro}/edit                                                                                                  | logradouros.edit                                    | App\Http\Controllers\LogradouroController@edit                                     | web,auth     |
-|        | GET|HEAD  | menus                                                                                                                          | menus.index                                         | App\Http\Controllers\MenuController@index                                          | web,auth     |
-|        | POST      | menus                                                                                                                          | menus.store                                         | App\Http\Controllers\MenuController@store                                          | web,auth     |
-|        | GET|HEAD  | menus/create                                                                                                                   | menus.create                                        | App\Http\Controllers\MenuController@create                                         | web,auth     |
-|        | GET|HEAD  | menus/{menu}                                                                                                                   | menus.show                                          | App\Http\Controllers\MenuController@show                                           | web,auth     |
-|        | PUT|PATCH | menus/{menu}                                                                                                                   | menus.update                                        | App\Http\Controllers\MenuController@update                                         | web,auth     |
-|        | DELETE    | menus/{menu}                                                                                                                   | menus.destroy                                       | App\Http\Controllers\MenuController@destroy                                        | web,auth     |
-|        | GET|HEAD  | menus/{menu}/edit                                                                                                              | menus.edit                                          | App\Http\Controllers\MenuController@edit                                           | web,auth     |
-|        | GET|HEAD  | notificacoes                                                                                                                   | listar-notificacoes                                 | App\Http\Controllers\MensagemController@getListaNotificacoes                       | web,auth     |
-|        | GET|HEAD  | notificacoes/visualizado/{id}                                                                                                  | exibir-notificacao                                  | App\Http\Controllers\MensagemController@setStatusVisualizado                       | web,auth     |
-|        | POST      | password/email                                                                                                                 | password.email                                      | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail              | web,guest    |
-|        | POST      | password/reset                                                                                                                 |                                                     | App\Http\Controllers\Auth\ResetPasswordController@reset                            | web,guest    |
-|        | GET|HEAD  | password/reset                                                                                                                 | password.request                                    | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm             | web,guest    |
-|        | GET|HEAD  | password/reset/{token}                                                                                                         | password.reset                                      | App\Http\Controllers\Auth\ResetPasswordController@showResetForm                    | web,guest    |
-|        | GET|HEAD  | perfilusers                                                                                                                    | perfilusers.index                                   | App\Http\Controllers\PerfiluserController@index                                    | web,auth     |
-|        | POST      | perfilusers                                                                                                                    | perfilusers.store                                   | App\Http\Controllers\PerfiluserController@store                                    | web,auth     |
-|        | GET|HEAD  | perfilusers/create                                                                                                             | perfilusers.create                                  | App\Http\Controllers\PerfiluserController@create                                   | web,auth     |
-|        | GET|HEAD  | perfilusers/{perfiluser}                                                                                                       | perfilusers.show                                    | App\Http\Controllers\PerfiluserController@show                                     | web,auth     |
-|        | PUT|PATCH | perfilusers/{perfiluser}                                                                                                       | perfilusers.update                                  | App\Http\Controllers\PerfiluserController@update                                   | web,auth     |
-|        | DELETE    | perfilusers/{perfiluser}                                                                                                       | perfilusers.destroy                                 | App\Http\Controllers\PerfiluserController@destroy                                  | web,auth     |
-|        | GET|HEAD  | perfilusers/{perfiluser}/edit                                                                                                  | perfilusers.edit                                    | App\Http\Controllers\PerfiluserController@edit                                     | web,auth     |
-|        | POST      | permissaos                                                                                                                     | permissaos.store                                    | App\Http\Controllers\PermissaoController@store                                     | web,auth     |
-|        | GET|HEAD  | permissaos                                                                                                                     | permissaos.index                                    | App\Http\Controllers\PermissaoController@index                                     | web,auth     |
-|        | GET|HEAD  | permissaos/create                                                                                                              | permissaos.create                                   | App\Http\Controllers\PermissaoController@create                                    | web,auth     |
-|        | GET|HEAD  | permissaos/{permissao}                                                                                                         | permissaos.show                                     | App\Http\Controllers\PermissaoController@show                                      | web,auth     |
-|        | PUT|PATCH | permissaos/{permissao}                                                                                                         | permissaos.update                                   | App\Http\Controllers\PermissaoController@update                                    | web,auth     |
-|        | DELETE    | permissaos/{permissao}                                                                                                         | permissaos.destroy                                  | App\Http\Controllers\PermissaoController@destroy                                   | web,auth     |
-|        | GET|HEAD  | permissaos/{permissao}/edit                                                                                                    | permissaos.edit                                     | App\Http\Controllers\PermissaoController@edit                                      | web,auth     |
-|        | GET|HEAD  | planos                                                                                                                         | planos.index                                        | App\Http\Controllers\PlanoController@index                                         | web,auth     |
-|        | POST      | planos                                                                                                                         | planos.store                                        | App\Http\Controllers\PlanoController@store                                         | web,auth     |
-|        | GET|HEAD  | planos/create                                                                                                                  | planos.create                                       | App\Http\Controllers\PlanoController@create                                        | web,auth     |
-|        | GET|HEAD  | planos/{plano}                                                                                                                 | planos.show                                         | App\Http\Controllers\PlanoController@show                                          | web,auth     |
-|        | PUT|PATCH | planos/{plano}                                                                                                                 | planos.update                                       | App\Http\Controllers\PlanoController@update                                        | web,auth     |
-|        | DELETE    | planos/{plano}                                                                                                                 | planos.destroy                                      | App\Http\Controllers\PlanoController@destroy                                       | web,auth     |
-|        | GET|HEAD  | planos/{plano}/edit                                                                                                            | planos.edit                                         | App\Http\Controllers\PlanoController@edit                                          | web,auth     |
-|        | GET|HEAD  | precos                                                                                                                         | precos.index                                        | App\Http\Controllers\PrecoController@index                                         | web,auth     |
-|        | POST      | precos                                                                                                                         | precos.store                                        | App\Http\Controllers\PrecoController@store                                         | web,auth     |
-|        | GET|HEAD  | precos/create                                                                                                                  | precos.create                                       | App\Http\Controllers\PrecoController@create                                        | web,auth     |
-|        | GET|HEAD  | precos/{preco}                                                                                                                 | precos.show                                         | App\Http\Controllers\PrecoController@show                                          | web,auth     |
-|        | DELETE    | precos/{preco}                                                                                                                 | precos.destroy                                      | App\Http\Controllers\PrecoController@destroy                                       | web,auth     |
-|        | PUT|PATCH | precos/{preco}                                                                                                                 | precos.update                                       | App\Http\Controllers\PrecoController@update                                        | web,auth     |
-|        | GET|HEAD  | precos/{preco}/edit                                                                                                            | precos.edit                                         | App\Http\Controllers\PrecoController@edit                                          | web,auth     |
-|        | POST      | procedimentos                                                                                                                  | procedimentos.store                                 | App\Http\Controllers\ProcedimentoController@store                                  | web,auth     |
-|        | GET|HEAD  | procedimentos                                                                                                                  | procedimentos.index                                 | App\Http\Controllers\ProcedimentoController@index                                  | web,auth     |
-|        | GET|HEAD  | procedimentos/create                                                                                                           | procedimentos.create                                | App\Http\Controllers\ProcedimentoController@create                                 | web,auth     |
-|        | DELETE    | procedimentos/{procedimento}                                                                                                   | procedimentos.destroy                               | App\Http\Controllers\ProcedimentoController@destroy                                | web,auth     |
-|        | PUT|PATCH | procedimentos/{procedimento}                                                                                                   | procedimentos.update                                | App\Http\Controllers\ProcedimentoController@update                                 | web,auth     |
-|        | GET|HEAD  | procedimentos/{procedimento}                                                                                                   | procedimentos.show                                  | App\Http\Controllers\ProcedimentoController@show                                   | web,auth     |
-|        | GET|HEAD  | procedimentos/{procedimento}/edit                                                                                              | procedimentos.edit                                  | App\Http\Controllers\ProcedimentoController@edit                                   | web,auth     |
 |        | GET|HEAD  | profissionais/{idClinica}                                                                                                      | listar-profissionals-por-clinica                    | App\Http\Controllers\ProfissionalController@getProfissionaisPorClinica             | web,auth     |
 |        | POST      | profissionals                                                                                                                  | profissionals.store                                 | App\Http\Controllers\ProfissionalController@store                                  | web,auth     |
 |        | GET|HEAD  | profissionals                                                                                                                  | profissionals.index                                 | App\Http\Controllers\ProfissionalController@index                                  | web,auth     |
@@ -926,8 +1665,6 @@ class PermissaosTableSeeder extends Seeder
 |        | DELETE    | profissionals/{profissional}                                                                                                   | profissionals.destroy                               | App\Http\Controllers\ProfissionalController@destroy                                | web,auth     |
 |        | GET|HEAD  | profissionals/{profissional}                                                                                                   | profissionals.show                                  | App\Http\Controllers\ProfissionalController@show                                   | web,auth     |
 |        | GET|HEAD  | profissionals/{profissional}/edit                                                                                              | profissionals.edit                                  | App\Http\Controllers\ProfissionalController@edit                                   | web,auth     |
-|        | GET|HEAD  | register                                                                                                                       | register                                            | App\Http\Controllers\Auth\RegisterController@showRegistrationForm                  | web,guest    |
-|        | POST      | register                                                                                                                       |                                                     | App\Http\Controllers\Auth\RegisterController@register                              | web,guest    |
 |        | GET|HEAD  | registro_logs                                                                                                                  | registro_logs.index                                 | App\Http\Controllers\RegistroLogController@index                                   | web,auth     |
 |        | POST      | registro_logs                                                                                                                  | registro_logs.store                                 | App\Http\Controllers\RegistroLogController@store                                   | web,auth     |
 |        | GET|HEAD  | registro_logs/create                                                                                                           | registro_logs.create                                | App\Http\Controllers\RegistroLogController@create                                  | web,auth     |
@@ -980,6 +1717,7 @@ class PermissaosTableSeeder extends Seeder
 |        | DELETE    | users/{user}                                                                                                                   | users.destroy                                       | App\Http\Controllers\UserController@destroy                                        | web,auth     |
 |        | PUT|PATCH | users/{user}                                                                                                                   | users.update                                        | App\Http\Controllers\UserController@update                                         | web,auth     |
 |        | GET|HEAD  | users/{user}/edit                                                                                                              | users.edit                                          | App\Http\Controllers\UserController@edit                                           | web,auth     |
+                 
                  */
                 
             )
