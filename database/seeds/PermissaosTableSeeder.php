@@ -1653,72 +1653,484 @@ class PermissaosTableSeeder extends Seeder
                     'url_action' => 'procedimentos.show',
                     'url_model' => 'procedimentos',
                     'descricao' => 'Exibe os dados do procedimento.'
+                ),
+                182 => array(
+                    'id' => '183',
+                    'titulo' => 'Profissional[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010110111',
+                    'url_action' => 'profissionals.create',
+                    'url_model' => 'profissionals',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de profissional.'
+                ),
+                183 => array(
+                    'id' => '184',
+                    'titulo' => 'Profissional[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010111000',
+                    'url_action' => 'profissionals.store',
+                    'url_model' => 'profissionals',
+                    'descricao' => 'Salva o profissional.'
+                ),
+                184 => array(
+                    'id' => '185',
+                    'titulo' => 'Profissional[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010111001',
+                    'url_action' => 'profissionals.destroy',
+                    'url_model' => 'profissionals',
+                    'descricao' => 'Exclui o profissional.'
+                ),
+                185 => array(
+                    'id' => '186',
+                    'titulo' => 'Profissional[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010111010',
+                    'url_action' => 'profissionals.edit',
+                    'url_model' => 'profissionals',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                186 => array(
+                    'id' => '187',
+                    'titulo' => 'Profissional[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010111011',
+                    'url_action' => 'profissionals.update',
+                    'url_model' => 'profissionals',
+                    'descricao' => 'Atualiza os dados do profissional.'
+                ),
+                187 => array(
+                    'id' => '188',
+                    'titulo' => 'Profissional[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010111100',
+                    'url_action' => 'profissionals.index',
+                    'url_model' => 'profissionals',
+                    'descricao' => 'Lista todos os profissionais.'
+                ),
+                188 => array(
+                    'id' => '189',
+                    'titulo' => 'Profissional[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010111101',
+                    'url_action' => 'profissionals.show',
+                    'url_model' => 'profissionals',
+                    'descricao' => 'Exibe os dados do profissional.'
+                ),
+                189 => array(
+                    'id' => '190',
+                    'titulo' => 'Profissional[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010111110',
+                    'url_action' => 'listar-profissionals-por-clinica',
+                    'url_model' => 'profissionals',
+                    'descricao' => 'Exibe os dados do profissional.'
+                ),
+                190 => array(
+                    'id' => '191',
+                    'titulo' => 'RegistroLog[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0010111111',
+                    'url_action' => 'registro_logs.create',
+                    'url_model' => 'registro_logs',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de registro de log.'
+                ),
+                191 => array(
+                    'id' => '192',
+                    'titulo' => 'RegistroLog[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011000000',
+                    'url_action' => 'registro_logs.store',
+                    'url_model' => 'registro_logs',
+                    'descricao' => 'Salva o registro de log.'
+                ),
+                192 => array(
+                    'id' => '193',
+                    'titulo' => 'RegistroLog[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011000001',
+                    'url_action' => 'registro_logs.destroy',
+                    'url_model' => 'registro_logs',
+                    'descricao' => 'Exclui o registro de log.'
+                ),
+                193 => array(
+                    'id' => '194',
+                    'titulo' => 'RegistroLog[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011000010',
+                    'url_action' => 'registro_logs.edit',
+                    'url_model' => 'registro_logs',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                194 => array(
+                    'id' => '195',
+                    'titulo' => 'RegistroLog[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011000011',
+                    'url_action' => 'registro_logs.update',
+                    'url_model' => 'registro_logs',
+                    'descricao' => 'Atualiza os dados do registro de log.'
+                ),
+                195 => array(
+                    'id' => '196',
+                    'titulo' => 'RegistroLog[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011000100',
+                    'url_action' => 'registro_logs.index',
+                    'url_model' => 'registro_logs',
+                    'descricao' => 'Lista todos os registros de log.'
+                ),
+                196 => array(
+                    'id' => '197',
+                    'titulo' => 'RegistroLog[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011000101',
+                    'url_action' => 'registro_logs.show',
+                    'url_model' => 'registro_logs',
+                    'descricao' => 'Exibe os dados do registro de log.'
+                ),
+                197 => array(
+                    'id' => '198',
+                    'titulo' => 'Representante[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011000110',
+                    'url_action' => 'representantes.create',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de representante.'
+                ),
+                198 => array(
+                    'id' => '199',
+                    'titulo' => 'Representante[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011000111',
+                    'url_action' => 'representantes.store',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Salva o representante.'
+                ),
+                199 => array(
+                    'id' => '200',
+                    'titulo' => 'Representante[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011001000',
+                    'url_action' => 'representantes.destroy',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Exclui o representante.'
+                ),
+                200 => array(
+                    'id' => '201',
+                    'titulo' => 'Representante[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011001001',
+                    'url_action' => 'representantes.edit',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                201 => array(
+                    'id' => '202',
+                    'titulo' => 'Representante[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011001010',
+                    'url_action' => 'representantes.update',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Atualiza os dados do representante.'
+                ),
+                202 => array(
+                    'id' => '203',
+                    'titulo' => 'Representante[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011001011',
+                    'url_action' => 'representantes.index',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Lista todos os representantes.'
+                ),
+                203 => array(
+                    'id' => '204',
+                    'titulo' => 'Representante[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011001100',
+                    'url_action' => 'representantes.show',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Exibe os dados do representante.'
+                ),
+                204 => array(
+                    'id' => '205',
+                    'titulo' => 'Representante[CriarModal]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011001101',
+                    'url_action' => 'representantes.createModal',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Cria modal para representantes.'
+                ),
+                205 => array(
+                    'id' => '206',
+                    'titulo' => 'Representante[ExibirModal]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011001110',
+                    'url_action' => 'representantes.showModal',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Cria modal para exibir os dados do representante.'
+                ),
+                206 => array(
+                    'id' => '207',
+                    'titulo' => 'Representante[EditarModal]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011001111',
+                    'url_action' => 'representantes.editModal',
+                    'url_model' => 'representantes',
+                    'descricao' => 'Cria modal para editar os dados do representante.'
+                ),
+                207 => array(
+                    'id' => '208',
+                    'titulo' => 'ServicoAdicional[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011010000',
+                    'url_action' => 'servico_adicionals.create',
+                    'url_model' => 'servico_adicionals',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de serviço adicional.'
+                ),
+                208 => array(
+                    'id' => '209',
+                    'titulo' => 'ServicoAdicional[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011010001',
+                    'url_action' => 'servico_adicionals.store',
+                    'url_model' => 'servico_adicionals',
+                    'descricao' => 'Salva o serviço adicional.'
+                ),
+                209 => array(
+                    'id' => '210',
+                    'titulo' => 'ServicoAdicional[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011010010',
+                    'url_action' => 'servico_adicionals.destroy',
+                    'url_model' => 'servico_adicionals',
+                    'descricao' => 'Exclui o serviço adicional.'
+                ),
+                210 => array(
+                    'id' => '211',
+                    'titulo' => 'ServicoAdicional[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011010011',
+                    'url_action' => 'servico_adicionals.edit',
+                    'url_model' => 'servico_adicionals',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                211 => array(
+                    'id' => '212',
+                    'titulo' => 'ServicoAdicional[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011010100',
+                    'url_action' => 'servico_adicionals.update',
+                    'url_model' => 'servico_adicionals',
+                    'descricao' => 'Atualiza os dados do serviço adicional.'
+                ),
+                212 => array(
+                    'id' => '213',
+                    'titulo' => 'ServicoAdicional[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011010101',
+                    'url_action' => 'servico_adicionals.index',
+                    'url_model' => 'servico_adicionals',
+                    'descricao' => 'Lista todos os serviços adicionais.'
+                ),
+                213 => array(
+                    'id' => '214',
+                    'titulo' => 'ServicoAdicional[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011010110',
+                    'url_action' => 'servico_adicionals.show',
+                    'url_model' => 'servico_adicionals',
+                    'descricao' => 'Exibe os dados do serviço adicional.'
+                ),
+                214 => array(
+                    'id' => '215',
+                    'titulo' => 'TermosCondicoes[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011010111',
+                    'url_action' => 'termos-condicoes.create',
+                    'url_model' => 'termos-condicoes',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de termos e condições.'
+                ),
+                215 => array(
+                    'id' => '216',
+                    'titulo' => 'TermosCondicoes[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011011000',
+                    'url_action' => 'termos-condicoes.store',
+                    'url_model' => 'termos-condicoes',
+                    'descricao' => 'Salva os termos e condições.'
+                ),
+                216 => array(
+                    'id' => '217',
+                    'titulo' => 'TermosCondicoes[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011011001',
+                    'url_action' => 'termos-condicoes.destroy',
+                    'url_model' => 'termos-condicoes',
+                    'descricao' => 'Exclui os termos e condições.'
+                ),
+                217 => array(
+                    'id' => '218',
+                    'titulo' => 'TermosCondicoes[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011011010',
+                    'url_action' => 'termos-condicoes.edit',
+                    'url_model' => 'termos-condicoes',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                218 => array(
+                    'id' => '219',
+                    'titulo' => 'TermosCondicoes[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011011011',
+                    'url_action' => 'termos-condicoes.update',
+                    'url_model' => 'termos-condicoes',
+                    'descricao' => 'Atualiza os dados dos termos e condições.'
+                ),
+                219 => array(
+                    'id' => '220',
+                    'titulo' => 'TermosCondicoes[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011011100',
+                    'url_action' => 'termos-condicoes.index',
+                    'url_model' => 'termos-condicoes',
+                    'descricao' => 'Lista todos os termos e condições.'
+                ),
+                220 => array(
+                    'id' => '221',
+                    'titulo' => 'TermosCondicoes[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011011101',
+                    'url_action' => 'termos-condicoes.show',
+                    'url_model' => 'termos-condicoes',
+                    'descricao' => 'Exibe os dados dos termos e condições.'
+                ),
+                221 => array(
+                    'id' => '222',
+                    'titulo' => 'Tipoatendimento[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011011110',
+                    'url_action' => 'tipo_atendimentos.create',
+                    'url_model' => 'tipo_atendimentos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de tipo de atendimento.'
+                ),
+                222 => array(
+                    'id' => '223',
+                    'titulo' => 'Tipoatendimento[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011011111',
+                    'url_action' => 'tipo_atendimentos.store',
+                    'url_model' => 'tipo_atendimentos',
+                    'descricao' => 'Salva o tipo de atendimento.'
+                ),
+                223 => array(
+                    'id' => '224',
+                    'titulo' => 'Tipoatendimento[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011100000',
+                    'url_action' => 'tipo_atendimentos.destroy',
+                    'url_model' => 'tipo_atendimentos',
+                    'descricao' => 'Exclui o tipo de atendimento.'
+                ),
+                224 => array(
+                    'id' => '225',
+                    'titulo' => 'Tipoatendimento[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011100001',
+                    'url_action' => 'tipo_atendimentos.edit',
+                    'url_model' => 'tipo_atendimentos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                225 => array(
+                    'id' => '226',
+                    'titulo' => 'Tipoatendimento[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011100010',
+                    'url_action' => 'tipo_atendimentos.update',
+                    'url_model' => 'tipo_atendimentos',
+                    'descricao' => 'Atualiza os dados do tipo de atendimento.'
+                ),
+                226 => array(
+                    'id' => '227',
+                    'titulo' => 'Tipoatendimento[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011100011',
+                    'url_action' => 'tipo_atendimentos.index',
+                    'url_model' => 'tipo_atendimentos',
+                    'descricao' => 'Lista todos os tipos de atendimento.'
+                ),
+                227 => array(
+                    'id' => '228',
+                    'titulo' => 'Tipoatendimento[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011100100',
+                    'url_action' => 'tipo_atendimentos.show',
+                    'url_model' => 'tipo_atendimentos',
+                    'descricao' => 'Exibe os dados do tipo de atendimento.'
+                ),
+                228 => array(
+                    'id' => '229',
+                    'titulo' => 'TipoLog[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011100101',
+                    'url_action' => 'tipo_logs.create',
+                    'url_model' => 'tipo_logs',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de tipo de log.'
+                ),
+                229 => array(
+                    'id' => '230',
+                    'titulo' => 'TipoLog[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011100110',
+                    'url_action' => 'tipo_logs.store',
+                    'url_model' => 'tipo_logs',
+                    'descricao' => 'Salva o tipo de log.'
+                ),
+                230 => array(
+                    'id' => '231',
+                    'titulo' => 'TipoLog[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011100111',
+                    'url_action' => 'tipo_logs.destroy',
+                    'url_model' => 'tipo_logs',
+                    'descricao' => 'Exclui o tipo de log.'
+                ),
+                231 => array(
+                    'id' => '232',
+                    'titulo' => 'TipoLog[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011101000',
+                    'url_action' => 'tipo_logs.edit',
+                    'url_model' => 'tipo_logs',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                232 => array(
+                    'id' => '233',
+                    'titulo' => 'TipoLog[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011101001',
+                    'url_action' => 'tipo_logs.update',
+                    'url_model' => 'tipo_logs',
+                    'descricao' => 'Atualiza os dados do tipo de log.'
+                ),
+                233 => array(
+                    'id' => '234',
+                    'titulo' => 'TipoLog[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011101010',
+                    'url_action' => 'tipo_logs.index',
+                    'url_model' => 'tipo_logs',
+                    'descricao' => 'Lista todos os tipos de log.'
+                ),
+                234 => array(
+                    'id' => '235',
+                    'titulo' => 'TipoLog[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011101011',
+                    'url_action' => 'tipo_logs.show',
+                    'url_model' => 'tipo_logs',
+                    'descricao' => 'Exibe os dados do tipo de log.'
                 )
-                
-                /*
-                 * |        | GET|HEAD  | /                                                                                                                              |                                                     | Closure                                                                            | web          |
-|        | GET|HEAD  | profissionais/{idClinica}                                                                                                      | listar-profissionals-por-clinica                    | App\Http\Controllers\ProfissionalController@getProfissionaisPorClinica             | web,auth     |
-|        | POST      | profissionals                                                                                                                  | profissionals.store                                 | App\Http\Controllers\ProfissionalController@store                                  | web,auth     |
-|        | GET|HEAD  | profissionals                                                                                                                  | profissionals.index                                 | App\Http\Controllers\ProfissionalController@index                                  | web,auth     |
-|        | GET|HEAD  | profissionals/create                                                                                                           | profissionals.create                                | App\Http\Controllers\ProfissionalController@create                                 | web,auth     |
-|        | PUT|PATCH | profissionals/{profissional}                                                                                                   | profissionals.update                                | App\Http\Controllers\ProfissionalController@update                                 | web,auth     |
-|        | DELETE    | profissionals/{profissional}                                                                                                   | profissionals.destroy                               | App\Http\Controllers\ProfissionalController@destroy                                | web,auth     |
-|        | GET|HEAD  | profissionals/{profissional}                                                                                                   | profissionals.show                                  | App\Http\Controllers\ProfissionalController@show                                   | web,auth     |
-|        | GET|HEAD  | profissionals/{profissional}/edit                                                                                              | profissionals.edit                                  | App\Http\Controllers\ProfissionalController@edit                                   | web,auth     |
-|        | GET|HEAD  | registro_logs                                                                                                                  | registro_logs.index                                 | App\Http\Controllers\RegistroLogController@index                                   | web,auth     |
-|        | POST      | registro_logs                                                                                                                  | registro_logs.store                                 | App\Http\Controllers\RegistroLogController@store                                   | web,auth     |
-|        | GET|HEAD  | registro_logs/create                                                                                                           | registro_logs.create                                | App\Http\Controllers\RegistroLogController@create                                  | web,auth     |
-|        | GET|HEAD  | registro_logs/{registro_log}                                                                                                   | registro_logs.show                                  | App\Http\Controllers\RegistroLogController@show                                    | web,auth     |
-|        | PUT|PATCH | registro_logs/{registro_log}                                                                                                   | registro_logs.update                                | App\Http\Controllers\RegistroLogController@update                                  | web,auth     |
-|        | DELETE    | registro_logs/{registro_log}                                                                                                   | registro_logs.destroy                               | App\Http\Controllers\RegistroLogController@destroy                                 | web,auth     |
-|        | GET|HEAD  | registro_logs/{registro_log}/edit                                                                                              | registro_logs.edit                                  | App\Http\Controllers\RegistroLogController@edit                                    | web,auth     |
-|        | GET|HEAD  | representantes                                                                                                                 | representantes.index                                | App\Http\Controllers\RepresentanteController@index                                 | web,auth     |
-|        | POST      | representantes                                                                                                                 | representantes.store                                | App\Http\Controllers\RepresentanteController@store                                 | web,auth     |
-|        | GET|HEAD  | representantes/create                                                                                                          | representantes.create                               | App\Http\Controllers\RepresentanteController@create                                | web,auth     |
-|        | GET|HEAD  | representantes/createModal/{idEmpresa}                                                                                         | representantes.createModal                          | App\Http\Controllers\RepresentanteController@createModal                           | web,auth     |
-|        | GET|HEAD  | representantes/{id}/editModal                                                                                                  | representantes.editModal                            | App\Http\Controllers\RepresentanteController@editModal                             | web,auth     |
-|        | GET|HEAD  | representantes/{id}/showModal                                                                                                  | representantes.showModal                            | App\Http\Controllers\RepresentanteController@showModal                             | web,auth     |
-|        | GET|HEAD  | representantes/{representante}                                                                                                 | representantes.show                                 | App\Http\Controllers\RepresentanteController@show                                  | web,auth     |
-|        | PUT|PATCH | representantes/{representante}                                                                                                 | representantes.update                               | App\Http\Controllers\RepresentanteController@update                                | web,auth     |
-|        | DELETE    | representantes/{representante}                                                                                                 | representantes.destroy                              | App\Http\Controllers\RepresentanteController@destroy                               | web,auth     |
-|        | GET|HEAD  | representantes/{representante}/edit                                                                                            | representantes.edit                                 | App\Http\Controllers\RepresentanteController@edit                                  | web,auth     |
-|        | GET|HEAD  | servico_adicionals                                                                                                             | servico_adicionals.index                            | App\Http\Controllers\ServicoAdicionalController@index                              | web,auth     |
-|        | POST      | servico_adicionals                                                                                                             | servico_adicionals.store                            | App\Http\Controllers\ServicoAdicionalController@store                              | web,auth     |
-|        | GET|HEAD  | servico_adicionals/create                                                                                                      | servico_adicionals.create                           | App\Http\Controllers\ServicoAdicionalController@create                             | web,auth     |
-|        | DELETE    | servico_adicionals/{servico_adicional}                                                                                         | servico_adicionals.destroy                          | App\Http\Controllers\ServicoAdicionalController@destroy                            | web,auth     |
-|        | PUT|PATCH | servico_adicionals/{servico_adicional}                                                                                         | servico_adicionals.update                           | App\Http\Controllers\ServicoAdicionalController@update                             | web,auth     |
-|        | GET|HEAD  | servico_adicionals/{servico_adicional}                                                                                         | servico_adicionals.show                             | App\Http\Controllers\ServicoAdicionalController@show                               | web,auth     |
-|        | GET|HEAD  | servico_adicionals/{servico_adicional}/edit                                                                                    | servico_adicionals.edit                             | App\Http\Controllers\ServicoAdicionalController@edit                               | web,auth     |
-|        | GET|HEAD  | termos-condicoes                                                                                                               | termos-condicoes.index                              | App\Http\Controllers\TermosCondicoesController@index                               | web,auth     |
-|        | POST      | termos-condicoes                                                                                                               | termos-condicoes.store                              | App\Http\Controllers\TermosCondicoesController@store                               | web,auth     |
-|        | GET|HEAD  | termos-condicoes/create                                                                                                        | termos-condicoes.create                             | App\Http\Controllers\TermosCondicoesController@create                              | web,auth     |
-|        | PUT|PATCH | termos-condicoes/{termos_condico}                                                                                              | termos-condicoes.update                             | App\Http\Controllers\TermosCondicoesController@update                              | web,auth     |
-|        | GET|HEAD  | termos-condicoes/{termos_condico}                                                                                              | termos-condicoes.show                               | App\Http\Controllers\TermosCondicoesController@show                                | web,auth     |
-|        | DELETE    | termos-condicoes/{termos_condico}                                                                                              | termos-condicoes.destroy                            | App\Http\Controllers\TermosCondicoesController@destroy                             | web,auth     |
-|        | GET|HEAD  | termos-condicoes/{termos_condico}/edit                                                                                         | termos-condicoes.edit                               | App\Http\Controllers\TermosCondicoesController@edit                                | web,auth     |
-|        | GET|HEAD  | tipo_atendimentos                                                                                                              | tipo_atendimentos.index                             | App\Http\Controllers\TipoatendimentoController@index                               | web,auth     |
-|        | POST      | tipo_atendimentos                                                                                                              | tipo_atendimentos.store                             | App\Http\Controllers\TipoatendimentoController@store                               | web,auth     |
-|        | GET|HEAD  | tipo_atendimentos/create                                                                                                       | tipo_atendimentos.create                            | App\Http\Controllers\TipoatendimentoController@create                              | web,auth     |
-|        | DELETE    | tipo_atendimentos/{tipo_atendimento}                                                                                           | tipo_atendimentos.destroy                           | App\Http\Controllers\TipoatendimentoController@destroy                             | web,auth     |
-|        | GET|HEAD  | tipo_atendimentos/{tipo_atendimento}                                                                                           | tipo_atendimentos.show                              | App\Http\Controllers\TipoatendimentoController@show                                | web,auth     |
-|        | PUT|PATCH | tipo_atendimentos/{tipo_atendimento}                                                                                           | tipo_atendimentos.update                            | App\Http\Controllers\TipoatendimentoController@update                              | web,auth     |
-|        | GET|HEAD  | tipo_atendimentos/{tipo_atendimento}/edit                                                                                      | tipo_atendimentos.edit                              | App\Http\Controllers\TipoatendimentoController@edit                                | web,auth     |
-|        | GET|HEAD  | tipo_logs                                                                                                                      | tipo_logs.index                                     | App\Http\Controllers\TipoLogController@index                                       | web,auth     |
-|        | POST      | tipo_logs                                                                                                                      | tipo_logs.store                                     | App\Http\Controllers\TipoLogController@store                                       | web,auth     |
-|        | GET|HEAD  | tipo_logs/create                                                                                                               | tipo_logs.create                                    | App\Http\Controllers\TipoLogController@create                                      | web,auth     |
-|        | GET|HEAD  | tipo_logs/{tipo_log}                                                                                                           | tipo_logs.show                                      | App\Http\Controllers\TipoLogController@show                                        | web,auth     |
-|        | DELETE    | tipo_logs/{tipo_log}                                                                                                           | tipo_logs.destroy                                   | App\Http\Controllers\TipoLogController@destroy                                     | web,auth     |
-|        | PUT|PATCH | tipo_logs/{tipo_log}                                                                                                           | tipo_logs.update                                    | App\Http\Controllers\TipoLogController@update                                      | web,auth     |
-|        | GET|HEAD  | tipo_logs/{tipo_log}/edit                                                                                                      | tipo_logs.edit                                      | App\Http\Controllers\TipoLogController@edit                                        | web,auth     |
-|        | GET|HEAD  | users                                                                                                                          | users.index                                         | App\Http\Controllers\UserController@index                                          | web,auth     |
-|        | POST      | users                                                                                                                          | users.store                                         | App\Http\Controllers\UserController@store                                          | web,auth     |
-|        | GET|HEAD  | users/create                                                                                                                   | users.create                                        | App\Http\Controllers\UserController@create                                         | web,auth     |
-|        | GET|HEAD  | users/{user}                                                                                                                   | users.show                                          | App\Http\Controllers\UserController@show                                           | web,auth     |
-|        | DELETE    | users/{user}                                                                                                                   | users.destroy                                       | App\Http\Controllers\UserController@destroy                                        | web,auth     |
-|        | PUT|PATCH | users/{user}                                                                                                                   | users.update                                        | App\Http\Controllers\UserController@update                                         | web,auth     |
-|        | GET|HEAD  | users/{user}/edit                                                                                                              | users.edit                                          | App\Http\Controllers\UserController@edit                                           | web,auth     |
-                 
-                 */
                 
             )
         );
