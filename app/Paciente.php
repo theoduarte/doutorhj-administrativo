@@ -6,6 +6,43 @@ use Illuminate\Support\Carbon;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $cargo_id
+ * @property int $responsavel_id
+ * @property int $empresa_id
+ * @property string $nm_primario
+ * @property string $nm_secundario
+ * @property string $cs_sexo
+ * @property string $dt_nascimento
+ * @property string $access_token
+ * @property string $time_to_live
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $parentesco
+ * @property string $cs_status
+ * @property string $mundipagg_token
+ * @property Cargo $cargo
+ * @property Paciente $paciente
+ * @property User $user
+ * @property Empresa $empresa
+ * @property Contato[] $contatos
+ * @property Endereco[] $enderecos
+ * @property Pedido[] $pedidos
+ * @property Agendamento[] $agendamentos
+ * @property Documento[] $documentos
+ * @property CartaoPaciente[] $cartaoPacientes
+ * @property VigenciaPaciente[] $vigenciaPacientes
+ * @property Voucher[] $vouchers
+ * @property Campanha[] $campanhas
+ *
+ * @property Plano $plano_ativo
+ * @property float $vl_max_consumo
+ * @property float $vl_consumido
+ * @property float $saldo_empresarial
+ */
+
 class Paciente extends Model
 {
 	use Sortable;
@@ -15,7 +52,7 @@ class Paciente extends Model
 	public $dates 	      = ['dt_nascimento'];
 
 	protected $hidden = ['access_token', 'time_to_live', 'mundipagg_token'];
-	protected $appends = ['plano_ativo'];
+	protected $appends = ['plano_ativo', ];
 
 	/*
 	 * Constants
@@ -38,36 +75,51 @@ class Paciente extends Model
 	public function contatos(){
 	    return $this->belongsToMany('App\Contato');
 	}
-    
-	public function enderecos(){
+
+	public function empresa() {
+		return $this->belongsTo('App\Empresa');
+	}
+
+	public function pedidos() {
+		return $this->hasMany('App\Pedido');
+	}
+
+	public function agendamentos() {
+		return $this->hasMany('App\Agendamento');
+	}
+
+	public function enderecos() {
 	    return $this->belongsToMany('App\Endereco');
 	}
 	
-	public function documentos(){
+	public function documentos() {
 	    return $this->belongsToMany('App\Documento'); 
 	}
 	
-	public function user(){
+	public function user() {
 	    return $this->belongsTo('App\User');
 	}
 
-	public function responsavel(){
+	public function responsavel() {
 	    return $this->belongsTo(self::class, 'responsavel_id');
 	}
-    
-	public function getPlanoAtivo($paciente_id)
-	{
-		$vigenciaPac = VigenciaPaciente::where(['paciente_id' => $paciente_id, 'cobertura_ativa' => true])
-			->where('data_inicio', '<=', date('Y-m-d'))
-			->where('data_fim', '>=', date('Y-m-d'))->first();
 
-		if(is_null($vigenciaPac)) {
-			return Plano::OPEN;
-		} else {
-			return $vigenciaPac->plano_id;
-		}
+	public function cartaoPacientes() {
+		return $this->hasMany('App\CartaoPaciente');
 	}
-	
+
+	public function vigenciaPacientes() {
+		return $this->hasMany('App\VigenciaPaciente');
+	}
+
+	public function vouchers() {
+		return $this->hasMany('App\Voucher');
+	}
+
+	public function campanhas() {
+		return $this->belongsToMany('App\Campanha', 'campanha_clinica');
+	}
+
 	/*
 	 * Getters and Setters
 	 */
@@ -95,5 +147,22 @@ class Paciente extends Model
 	public function getPlanoAtivoAttribute()
 	{
 		return Plano::findOrFail($this->getPlanoAtivo($this->attributes['id'])); //some logic to return numbers
+	}
+
+	public static function getPlanoAtivo($paciente_id = null)
+	{
+		if(is_null($paciente_id)) {
+			return Plano::OPEN;
+		}
+
+		$vigenciaPac = VigenciaPaciente::where(['paciente_id' => $paciente_id, 'cobertura_ativa' => true])
+			->where('data_inicio', '<=', date('Y-m-d'))
+			->where('data_fim', '>=', date('Y-m-d'))->first();
+
+		if(is_null($vigenciaPac)) {
+			return Plano::OPEN;
+		} else {
+			return $vigenciaPac->plano_id;
+		}
 	}
 }
