@@ -36,7 +36,7 @@
 						<label for="tipo_permissao">Tipo de Permissão<span class="text-danger">*</span></label>
 						<select id="tipo_permissao" class="form-control" name="tipo_permissao" placeholder="Selecione o Tipo de Permissão" required>
 							<option value="1" @if( $perfiluser->tipo_permissao == 1 ) selected='selected' @endif >Administrador</option>
-							<option value="2" @if( $perfiluser->tipo_permissao == 2 ) selected='selected' @endif>Gestor</option>
+							<option value="2" @if( $perfiluser->tipo_permissao == 2 ) selected='selected' @endif>Operador DrHoje</option>
 							<option value="3" @if( $perfiluser->tipo_permissao == 3 ) selected='selected' @endif>Prestador</option>
 							<option value="4" @if( $perfiluser->tipo_permissao == 4 ) selected='selected' @endif>Cliente</option>
 							<option value="5" @if( $perfiluser->tipo_permissao == 5 ) selected='selected' @endif>Empresa</option>
@@ -48,20 +48,20 @@
 						<textarea id="descricao" class="form-control" name="descricao" placeholder="Descrição do Menu" required >{{ $perfiluser->descricao }}</textarea>
 					</div>
 					
-					<div class="form-group">
+					<!-- <div class="form-group">
 						<label for="perfiluser_permissao">Permissões<span class="text-danger">*</span></label>
-						<select id="perfiluser_permissao" name="perfiluser_permissaos[]" class="multi-select cvx_select_multiple" multiple="" >
-						@foreach($list_permissaos as $id => $titulo)
-							<option value="{{ $id }}"
+						<select id="perfiluser_permissao" name="perfiluser_permissaos2[]" class="multi-select cvx_select_multiple" multiple="" >
+						@foreach($list_permissaos as $permissao)
+							<option value="{{ $permissao->id }}"
 								<?php foreach ($list_selecionadas_permissaos->permissaos as $pss):?>
-								<?php if ($id == $pss->id):?> selected <?php endif;?>
+								<?php if ($permissao->id == $pss->id):?> selected <?php endif;?>
 								<?php endforeach;?>
 							>
-							{{ $titulo }}
+							{{ $permissao->titulo }}
 							</option>
 						@endforeach
 						</select>
-					</div>
+					</div> -->
 					
 					<div class="form-group">
 						<label for="menu_perfiluser">Menus<span class="text-danger">*</span></label>
@@ -76,6 +76,27 @@
 							</option>
 						@endforeach
 						</select>
+					</div>
+					
+					<div class="form-group">
+						<label for="menu_perfiluser">Permissões do Sistema<span class="text-danger">*</span></label>
+						<div id="checkTree">
+                            <ul>
+                                <li>Painel Administrativo DoutorHoje
+                                    <ul>
+                                    	@foreach($list_permissaos_grouped as $titulo => $grouped)
+                                        <li data-jstree='{"type":"tree_node", "opened":true}'><?php echo ucfirst($titulo); ?>
+                                            <ul>
+                                            	@foreach($grouped as $permissao)
+                                                <li data-jstree='{@foreach($list_selecionadas_permissaos->permissaos as $pss) @if($permissao["id"] == $pss->id) "selected":true, @endif @endforeach "type":"tree_node"}'>{{ $permissao["titulo_novo"] }}<input type="checkbox" class="cb_item_tree_node" name="perfiluser_permissaos[]" value="{{ $permissao['id'] }}" @foreach($list_selecionadas_permissaos->permissaos as $pss) @if($permissao['id'] == $pss->id) checked="checked"  @endif @endforeach></li>                                                
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
 					</div>
 					
 					<div class="form-group text-right m-b-0">

@@ -19,7 +19,7 @@ class TipoLogController extends Controller
         $get_term = CVXRequest::get('search_term');
         $search_term = UtilController::toStr($get_term);
         
-        $tipos = TipoLog::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->orderby('created_at', 'desc')->sortable()->paginate(10);
+        $tipos = TipoLog::where(DB::raw('to_str(titulo)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
         
         return view('tipo_logs.index', compact('tipos'));
     }

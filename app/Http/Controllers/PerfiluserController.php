@@ -19,10 +19,12 @@ class PerfiluserController extends Controller
 	 */
 	public function __construct()
 	{
-// 	    $action = Route::current();
-// 	    $action_name = $action->action['as'];
-	    
-// 	    $this->middleware("cvx:$action_name");
+	    try {
+	        $action = Route::current();
+	        $action_name = $action->action['as'];
+	        
+	        $this->middleware("cvx:$action_name");
+	    } catch (\Exception $e) {}
 	}
 	
     /**
@@ -110,8 +112,20 @@ class PerfiluserController extends Controller
     	
     	//--busca os itens nao relacionados ao perfil de usuario---------------------
     	//$list_nao_selecionadas_permissaos = Permissao::whereNotIn('permissaos.id', $list_permisssao_id)->get(['id','titulo']);
-    	$list_permissaos = Permissao::orderBy('titulo', 'asc')->pluck('titulo', 'id');
+    	//$list_permissaos = Permissao::orderBy('titulo', 'asc')->pluck('titulo', 'id');
+    	$list_permissaos = Permissao::orderBy('titulo', 'asc')->get();
+    	$list_permissaos_temp = Permissao::orderBy('titulo', 'asc')->get()->toArray();
     	
+    	for($i = 0; $i < sizeof($list_permissaos_temp); $i++) {
+    	    $titulo = $list_permissaos_temp[$i]['titulo'];
+    	    $url_model = substr_replace($list_permissaos_temp[$i]['url_model'], "", -1);
+    	    $titulo_novo = strstr($titulo, '[');
+    	    $list_permissaos_temp[$i]['titulo_novo'] = $titulo_novo;
+    	}
+    	
+    	//dd($list_permissaos_temp);
+    	$list_permissaos_grouped = UtilController::array_group_by( $list_permissaos_temp, "url_model");
+    	//dd($list_permissaos_grouped);
     	/* $list_nao_selecionadas_permissaos = DB::table('permissaos')
     	->join('perfiluser_permissao', function($join) { $join->on('permissaos.id', '=', 'perfiluser_permissao.permissao_id')->on('perfiluser_permissao.perfiluser_id', '=', $id);})
     	->select('permissaos.*', 'permissaos.id', 'permissaos.titulo')
@@ -129,7 +143,7 @@ class PerfiluserController extends Controller
     	//$list_nao_selecionadas_menus = Permissao::whereNotIn('menus.id', $list_permisssao_id)->get(['id','titulo']);
     	$list_menus = Menu::orderBy('titulo', 'asc')->pluck('titulo', 'id');
     	
-    	return view('perfilusers.edit', compact('perfiluser', 'list_selecionadas_permissaos', 'list_permissaos', 'list_selecionadas_menus', 'list_menus'));
+    	return view('perfilusers.edit', compact('perfiluser', 'list_selecionadas_permissaos', 'list_permissaos', 'list_permissaos_grouped', 'list_selecionadas_menus', 'list_menus'));
     }
 
     /**
@@ -143,6 +157,7 @@ class PerfiluserController extends Controller
     {
     	$perfiluser = Perfiluser::findOrFail($id);
     	
+    	//dd($request->all());
     	$perfiluser->update($request->all());
     	
     	$perfiluser = $this->setPerfiluserRelations($perfiluser, $request);

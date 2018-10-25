@@ -42,6 +42,9 @@ a.jstree-anchor i.ti-check-box {
 a.jstree-anchor i.ti-na {
     color: #ef5350;
 }
+.cb_item_tree_node {
+	display: none;
+}
 .btn-danger {
     color: #fff ! important;
 }

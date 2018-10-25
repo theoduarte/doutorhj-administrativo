@@ -30,7 +30,21 @@ $( document ).ready(function() {
     });
 
     // Checkbox
-    $('#checkTree').jstree({
+    $('#checkTree')
+    .on("select_node.jstree", function (e, data) {
+    	//alert("node_id: " + data.node.id);
+    	
+    	if($('#'+data.node.id+'_anchor').parent().find('ul.jstree-children').length) {
+    		$('#'+data.node.id+'_anchor').parent().find('ul.jstree-children').find('input.cb_item_tree_node').prop('checked', true)
+    	} else {
+    		$('#'+data.node.id).find('input.cb_item_tree_node').prop('checked', true);
+    	}
+    })
+    .on("deselect_node.jstree", function (e, data) {
+    	//alert("node_id: " + data.node.id);
+    	$('#'+data.node.id).find('input.cb_item_tree_node').prop('checked', false);
+    })
+    .jstree({
         'core' : {
             'themes' : {
                 'responsive': false
@@ -42,9 +56,13 @@ $( document ).ready(function() {
             },
             'file' : {
                 'icon' : 'fa fa-file'
+            },
+            'tree_node' : {
+                'icon' : 'fa fa-circle item_tree_node'
             }
         },
-        'plugins' : ['types', 'checkbox']
+        'ui': { theme_name : "checkbox" },
+        'plugins' : ['types', 'checkbox', 'ui']
     });
 
     // Drag & Drop

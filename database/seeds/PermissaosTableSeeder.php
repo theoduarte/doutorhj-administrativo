@@ -126,7 +126,7 @@ class PermissaosTableSeeder extends Seeder
                 ),
                 12 => array(
                     'id' => '13',
-                    'titulo' => 'Profissional[Exibir]',
+                    'titulo' => 'Agendamento[ExibirProfissional]',
                     'acesso_privado' => 'FALSE',
                     'codigo_permissao' => '0000001101',
                     'url_action' => 'exibir-profissional',
@@ -1533,8 +1533,8 @@ class PermissaosTableSeeder extends Seeder
                     'titulo' => 'Plano[Criar]',
                     'acesso_privado' => 'FALSE',
                     'codigo_permissao' => '0010101001',
-                    'url_action' => 'permissaos.create',
-                    'url_model' => 'permissaos',
+                    'url_action' => 'planos.create',
+                    'url_model' => 'planos',
                     'descricao' => 'Realiza a exibição do formulário de cadastro de permissão.'
                 ),
                 169 => array(
@@ -1719,7 +1719,7 @@ class PermissaosTableSeeder extends Seeder
                 ),
                 189 => array(
                     'id' => '190',
-                    'titulo' => 'Profissional[Exibir]',
+                    'titulo' => 'Profissional[ListarporClinica]',
                     'acesso_privado' => 'FALSE',
                     'codigo_permissao' => '0010111110',
                     'url_action' => 'listar-profissionals-por-clinica',
