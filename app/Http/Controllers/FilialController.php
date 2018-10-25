@@ -8,10 +8,27 @@ use Illuminate\Support\Facades\Request as CVXRequest;
 use App\Clinica;
 use App\Endereco;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use App\Cidade;
 
 class FilialController extends Controller
 {
+    
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
     /**
      * Display a listing of the resource.
      *

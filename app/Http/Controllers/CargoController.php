@@ -17,10 +17,12 @@ class CargoController extends Controller
 	 */
 	public function __construct()
 	{
-		$action = Route::current();
-		$action_name = $action->action['as'];
-	
-        $this->middleware("cvx:$action_name");
+	    try {
+	        $action = Route::current();
+	        $action_name = $action->action['as'];
+	        
+	        $this->middleware("cvx:$action_name");
+	    } catch (\Exception $e) {}
 	}
 	
     /**
