@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'DoctorHj: Painel Administrativo'),
+    'name' => env('APP_NAME', 'DoutorHoje: Painel Administrativo'),
 
     /*
     |--------------------------------------------------------------------------
