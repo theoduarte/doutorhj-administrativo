@@ -7,9 +7,25 @@ use Illuminate\Support\Facades\Auth;
 use App\Mensagem;
 use App\MensagemDestinatario;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 class MensagemController extends Controller
 {
+    
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
     
     /**
      * Marca notificaao como visualizada.

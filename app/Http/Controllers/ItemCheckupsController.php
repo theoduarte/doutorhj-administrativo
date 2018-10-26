@@ -8,9 +8,25 @@ use App\Procedimento;
 use App\ItemCheckups;
 use App\Checkups;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class ItemCheckupsController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
     /**
      * Store a newly created resource in storage.
      *

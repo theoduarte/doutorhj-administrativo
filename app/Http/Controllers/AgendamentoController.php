@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
 use App\Agendamento;
 use App\Clinica;
 use App\Mensagem;
@@ -23,6 +24,21 @@ use App\RegistroLog;
 
 class AgendamentoController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
     /**
      * Display a listing of the resource.
      * 

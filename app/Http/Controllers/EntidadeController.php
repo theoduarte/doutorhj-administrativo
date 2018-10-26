@@ -5,10 +5,32 @@ namespace App\Http\Controllers;
 use App\Entidade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use App\Http\Requests\EntidadesRequest;
 // use Illuminate\Support\Facades\Request as CVXRequest;
 
 class EntidadeController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
 	public function index()
 	{
 		// $get_term = CVXRequest::get('search_term');
@@ -24,7 +46,7 @@ class EntidadeController extends Controller
     return view('entidade.create', compact('model'));
 	}
 
-	public function store(EntidadeRequest $request)
+	public function store(EntidadesRequest $request)
 	{
 		$model = Entidade::create($request->all());
 		$model->save();

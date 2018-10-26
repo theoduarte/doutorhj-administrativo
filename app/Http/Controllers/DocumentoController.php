@@ -4,9 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Documento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class DocumentoController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
+    /**
+     * Busca o usuário pelo CPF.
+     *
+     * @return \Illuminate\Http\Response
+     */
 	public function getUserByCpf($cpf)
 	{
 		$cpfLimpo = UtilController::retiraMascara($cpf);

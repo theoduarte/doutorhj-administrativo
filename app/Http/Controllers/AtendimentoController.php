@@ -2,11 +2,27 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Request as CVXRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Atendimento;
 
 class AtendimentoController extends Controller
-{   
+{
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
     //############# AJAX SERVICES ##################
     /**
      * loadTagPopularList a newly created resource in storage.

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PacientesRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use App\Cidade;
 use App\Endereco;
 
@@ -12,7 +13,22 @@ use App\Endereco;
  * 
  */
 class PacienteController extends Controller
-{    
+{
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
     /**
      * Método para mostrar a página de cadastro do paciente 
      * 

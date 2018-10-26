@@ -5,9 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use App\Http\Requests\PacientesEditRequest;
+use Illuminate\Support\Facades\Route;
+use App\User;
 
 class ClienteController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -112,7 +129,7 @@ class ClienteController extends Controller
             $pacientes->load('documentos');
             $pacientes->load('contatos');
             
-        }catch( Exception $e ){
+        }catch( \Exception $e ){
             print $e->getMessage();
         }
 
@@ -140,7 +157,7 @@ class ClienteController extends Controller
             $pacientes->load('user');
             $pacientes->load('documentos');
             $pacientes->load('contatos');
-        }catch( Exception $e ){
+        }catch( \Exception $e ){
             print $e->getMessage();
         }
         
@@ -176,7 +193,7 @@ class ClienteController extends Controller
                 $documentos = \App\Documento::findorfail($documentos_id);
                 $documentos->update(['tp_documento'=>$dados['tp_documento'][$indice], 'te_documento'=>UtilController::retiraMascara($dados['te_documento'][$indice])]);
             }
-        }catch( Exception $e ){
+        }catch( \Exception $e ){
             return redirect()->route('clientes.index')->with('error', $e->getMessage());
         }
         

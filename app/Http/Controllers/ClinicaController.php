@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PrestadoresRequest;
 use App\Http\Requests\EditarPrestadoresRequest;
+use Illuminate\Support\Facades\Route;
 use App\Http\Requests\PrecificacaoConsultaRequest;
 use App\Http\Requests\PrecificacaoProcedimentoRequest;
 use Illuminate\Support\Facades\Request as CVXRequest;
@@ -33,6 +34,21 @@ use App\Filial;
 
 class ClinicaController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
     /**
      * Display a listing of the resource.
      *

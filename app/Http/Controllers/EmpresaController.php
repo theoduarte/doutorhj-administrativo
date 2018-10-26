@@ -9,16 +9,31 @@ use App\Endereco;
 use App\Estado;
 use App\Http\Requests\EmpresaRequest;
 use App\Repositories\FileRepository;
-use App\Representante;
 use App\TipoEmpresa;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Route;
 use Intervention\Image\File;
 
 class EmpresaController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        try {
+            $action = Route::current();
+            $action_name = $action->action['as'];
+            
+            $this->middleware("cvx:$action_name");
+        } catch (\Exception $e) {}
+    }
+    
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -64,7 +79,6 @@ class EmpresaController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  CarenciaRequest $request
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(EmpresaRequest $request, FileRepository $repo)
@@ -150,7 +164,6 @@ class EmpresaController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  CarenciaRequest $request
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
