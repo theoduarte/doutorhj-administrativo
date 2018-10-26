@@ -162,8 +162,12 @@ class PermissaoController extends Controller
     public function hasPermissao(User $user_session,  $action_name) {
     	
     	//dd($user_session->perfiluser->tipo_permissao);
-    	if($user_session->perfiluser->tipo_permissao == 1) {
-    		return true;
+    	try {
+    	    if($user_session->perfiluser->tipo_permissao == 1) {
+    	        return true;
+    	    }
+    	} catch (\Exception $e) {
+    	    return false;
     	}
     	
     	$permission_code = $this->getPerfilCode($action_name);
