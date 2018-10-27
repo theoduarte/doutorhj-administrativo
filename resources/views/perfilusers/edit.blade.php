@@ -87,7 +87,7 @@
                                 <li>Painel Administrativo DoutorHoje
                                     <ul>
                                     	@foreach($list_permissaos_grouped as $titulo => $grouped)
-                                        <li data-jstree='{"type":"tree_node", "opened":true}'><?php echo ucfirst($titulo); ?>
+                                        <li data-jstree='{"type":"tree_node", "opened":true}'>{{ ucfirst($titulo) }}
                                             <ul>
                                             	@foreach($grouped as $permissao)
                                                 <li data-jstree='{@foreach($list_selecionadas_permissaos->permissaos as $pss) @if($permissao["id"] == $pss->id) "selected":true, @endif @endforeach "type":"tree_node"}'>{{ $permissao["titulo_novo"] }}<input type="checkbox" class="cb_item_tree_node" name="perfiluser_permissaos[]" value="{{ $permissao['id'] }}" @foreach($list_selecionadas_permissaos->permissaos as $pss) @if($permissao['id'] == $pss->id) checked="checked"  @endif @endforeach></li>                                                

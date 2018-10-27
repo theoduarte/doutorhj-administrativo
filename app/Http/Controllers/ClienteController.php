@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Request;
 use App\Http\Requests\PacientesEditRequest;
 use Illuminate\Support\Facades\Route;
 use App\User;
+use App\Estado;
+use App\Especialidade;
 
 class ClienteController extends Controller
 {
@@ -118,8 +120,8 @@ class ClienteController extends Controller
     public function show($id)
     {
         try{
-            $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
-            $arEstados       = \App\Estado::orderBy('ds_estado')->get();
+            $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
+            $arEstados       = Estado::orderBy('ds_estado')->get();
             
             $usuarios  = \App\User::findorfail($id);
             
@@ -148,8 +150,8 @@ class ClienteController extends Controller
     {
         try{
             $arCargos        = \App\Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-            $arEstados       = \App\Estado::orderBy('ds_estado')->get();
-            $arEspecialidade = \App\Especialidade::orderBy('ds_especialidade')->get();
+            $arEstados       = Estado::orderBy('ds_estado')->get();
+            $arEspecialidade = Especialidade::orderBy('ds_especialidade')->get();
             
             $usuarios = \App\User::findorfail($idUsuario);
             

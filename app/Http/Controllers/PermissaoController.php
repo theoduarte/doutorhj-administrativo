@@ -163,7 +163,7 @@ class PermissaoController extends Controller
     	
     	//dd($user_session->perfiluser->tipo_permissao);
     	try {
-    	    if($user_session->perfiluser->tipo_permissao == 1) {
+    	    if($user_session->perfiluser->id == 1) {
     	        return true;
     	    }
     	} catch (\Exception $e) {

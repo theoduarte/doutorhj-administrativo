@@ -89,7 +89,30 @@ class PerfiluserController extends Controller
     	
     	$list_tipo_permissao = [1 => 'Administrador', 2 => 'Operador DrHoje', 3 => 'Prestador', 4 => 'Cliente', 5 => 'Empresa', 6 => 'Diretor DrHoje', 10 => 'Responsável'];
     	
-    	return view('perfilusers.show', compact('perfiluser', 'list_tipo_permissao'));
+    	$list_selecionadas_permissaos = Perfiluser::find($id)->load('permissaos');
+    	
+    	$list_permissaos_temp = Permissao::orderBy('titulo', 'asc')->get()->toArray();
+    	
+    	for($i = 0; $i < sizeof($list_permissaos_temp); $i++) {
+    	    $titulo = $list_permissaos_temp[$i]['titulo'];
+    	    $url_model = substr_replace($list_permissaos_temp[$i]['url_model'], "", -1);
+    	    $titulo_novo = strstr($titulo, '[');
+    	    $list_permissaos_temp[$i]['titulo_novo'] = $titulo_novo;
+    	}
+    	
+    	$list_permissaos_grouped = UtilController::array_group_by( $list_permissaos_temp, "url_model");
+    	
+    	$list_menus = Menu::with('itemmenus')->orderBy('titulo', 'asc')->get();
+    	
+    	//$list_selecionados_menus = Perfiluser::with('menus', 'menus.itemmenus')->where('id', $id)->get();
+    	
+    	$list_selecionados_menus = Menu::with(array('itemmenus' => function ($query) {$query->orderBy('titulo', 'asc');}))
+        	->join('menu_perfiluser', function($join1) { $join1->on('menus.id', '=', 'menu_perfiluser.menu_id');})
+        	->join('perfilusers', function($join2) use($id) { $join2->on('menu_perfiluser.perfiluser_id', '=', 'perfilusers.id')->on('perfilusers.id', '=', DB::raw($id));})
+        	->select('menus.*', 'menus.id', 'menus.titulo')
+        	->get();
+        	
+    	return view('perfilusers.show', compact('perfiluser', 'list_tipo_permissao', 'list_selecionadas_permissaos', 'list_permissaos_grouped', 'list_menus', 'list_selecionados_menus'));
     }
 
     /**

@@ -21,7 +21,17 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card-box">
-				<h4 class="header-title m-t-0 m-b-20">Detalhes do Menu</h4>
+				<div class="row">
+					<div class="col-md-2">
+						<h4 class="header-title m-t-0 m-b-20">Detalhes do Menu</h4>
+					</div>
+					<div class="col-md-2 text-center text-success">
+						<span class="ti-check-box"></span> PERMITIDO
+					</div>
+					<div class="col-md-2 text-center text-danger">
+						<span class="ti-na"></span> SEM PERMISSÃO
+					</div>
+				</div>
 				
 				<table class="table table-bordered table-striped view-doutorhj">
 					<tbody>
@@ -48,15 +58,26 @@
 									<ul>
 										<li>DoutorHj: Entidades
 											<ul>
-												<li>Cargos
+												@foreach($list_permissaos_grouped as $titulo => $grouped)
+                                                <li data-jstree='{"type":"tree_node", "opened":true}'>{{ ucfirst($titulo) }}
+                                                    <ul>
+                                                    	@foreach($grouped as $permissao)
+                                                    	@php ($tem_permissao = false)
+                                                    	
+                                                        <li data-jstree='{"opened":true, @foreach($list_selecionadas_permissaos->permissaos as $pss) @if($permissao["id"] == $pss->id)  <?php $tem_permissao = true; ?> "type":"has_permission"  @endif @endforeach @if(!$tem_permissao) "type":"not_allowed" @endif }'>{{ $permissao["titulo_novo"] }}</li>                                                
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                                @endforeach
+												<!-- <li>Cargos
 													<ul>
-														<li data-jstree='{"type":"file", "type":"has_permission"}'>Listar</li>
+														<li data-jstree='{"opened":true, "type":"has_permission"}'>Listar</li>
 														<li data-jstree='{"opened":true, "type":"not_allowed"}'>Adicionar</li>
 														<li data-jstree='{"opened":true, "type":"has_permission"}'>Exibir</li>
 														<li data-jstree='{"opened":true, "type":"not_allowed"}'>Atualizar</li>
 														<li data-jstree='{"opened":true, "type":"not_allowed"}'>Excluir</li>
 													</ul>
-												</li>
+												</li> -->
 											</ul>
 										</li>
 									</ul>
@@ -70,7 +91,20 @@
 									<ul>
 										<li>DoutorHj: Menus do Sistema
 											<ul>
-												<li>Cadastros
+                                                
+                                                @foreach($list_selecionados_menus as $grouped)
+                                                <li data-jstree='{"type":"tree_node", "opened":false}'>{{ ucfirst($grouped->titulo) }}
+                                                    <ul>
+                                                    	@foreach($grouped->itemmenus as $itemmenu)
+                                                    	
+                                                    	
+                                                        <li data-jstree='{"opened":true, "type":"has_permission" }'>{{ $itemmenu->titulo }}</li>                                                
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                                @endforeach
+                                                
+												<!-- <li>Cadastros
 													<ul>
 														<li data-jstree='{"opened":true, "type":"has_permission"}'>Cargos</li>
 													</ul>
@@ -88,7 +122,7 @@
 														<li data-jstree='{"type":"file", "type":"not_allowed"}'>Registro de Logs</li>
 														<li data-jstree='{"opened":true, "type":"not_allowed"}'>Tipos de Logs</li>
 													</ul>
-												</li>
+												</li> -->
 											</ul>
 										</li>
 									</ul>

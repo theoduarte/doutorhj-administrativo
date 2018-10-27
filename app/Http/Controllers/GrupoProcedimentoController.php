@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request as CVXRequest;
+use App\Menu;
 
 class GrupoProcedimentoController extends Controller
 {
