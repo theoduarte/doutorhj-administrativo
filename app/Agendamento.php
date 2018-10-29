@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\UtilController;
 use Illuminate\Support\Carbon;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ class Agendamento extends Model
     public $fillable  = ['id', 'te_ticket', 'profissional_id', 'paciente_id', 'clinica_id', 'dt_atendimento', 'cs_status'];
     public $sortable  = ['id', 'te_ticket', 'dt_atendimento', 'cs_status'];
     public $dates 	  = ['dt_atendimento'];
+	protected $appends = ['vl_pedido', ];
     
     /*
      * Constants
@@ -138,6 +140,25 @@ class Agendamento extends Model
     public static function getStatusAgendamento() {
         return static::$cs_status;
     }
-    
-    
+
+	public function getVlPedidoAttribute()
+	{
+		return $this->getVlPedido($this->attributes['id']); //some logic to return numbers
+	}
+
+    public static function getVlPedido($agendamento_id = null)
+	{
+		if(is_null($agendamento_id)) {
+			return null;
+		}
+
+		$vlPedido = Itempedido::where('agendamento_id', $agendamento_id)
+			->select(DB::raw('SUM(valor) as vl_pedido'))->first();
+
+		if(is_null($vlPedido) && empty($vlPedido->vl_pedido)) {
+			return 0;
+		} else {
+			return $vlPedido->vl_pedido;
+		}
+	}
 }

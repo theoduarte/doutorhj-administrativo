@@ -45,62 +45,62 @@ class AgendamentoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $clinicas = Clinica::all();
+	{
+		$clinicas = Clinica::all();
 
-        $status = Agendamento::getStatusAgendamento();
-        
-        $clinicaID = Request::get('clinica_id');
-        $nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
-        $data = Request::get('data') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data')) :'';
+		$status = Agendamento::getStatusAgendamento();
 
-        // DB::enableQueryLog();
-        $agendamentos = Agendamento::
-        where( function ($query) use ($request) {
-            if( !empty($request::get('cs_status')) ) {
-                $query->whereIn( 'cs_status', $request::get('cs_status') );
-            }
+		$clinicaID = Request::get('clinica_id');
+		$nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
+		$data = Request::get('data') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data')) : '';
 
-            if( !empty($request::get('data')) ) {
-                $date = UtilController::getDataRangeTimePickerToCarbon($request::get('data'));
+		// DB::enableQueryLog();
+		$agendamentos = Agendamento::
+		where(function ($query) use ($request) {
+			if (!empty($request::get('cs_status'))) {
+				$query->whereIn('cs_status', $request::get('cs_status'));
+			}
 
-                $dateBegin  = $date['de']; 
-                $dateEnd    = $date['ate']; 
+			if (!empty($request::get('data'))) {
+				$date = UtilController::getDataRangeTimePickerToCarbon($request::get('data'));
 
-                $query->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)));
-            }
+				$dateBegin = $date['de'];
+				$dateEnd = $date['ate'];
 
-            if( !empty( $request::get('clinica_id') ) ) {                
-                $query->whereExists(function ($query) use ($request) {
-                    $query->select(DB::raw(1))
-                      ->from('agendamento_atendimento')
-                      ->join('atendimentos', function ($query) use ($request) {
-                          $query->on('agendamento_atendimento.atendimento_id', '=', 'atendimentos.id')
-                          ->where( 'atendimentos.clinica_id', $request::get('clinica_id') );
-                      })
-                      ->whereRaw('agendamento_atendimento.agendamento_id = agendamentos.id');
-                });
-            }
+				$query->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)));
+			}
 
-            if( !empty( $request::get('nm_paciente') ) ) {
-                $query->whereExists(function ($query) use ($request) {
-                    $nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
+			if (!empty($request::get('clinica_id'))) {
+				$query->whereExists(function ($query) use ($request) {
+					$query->select(DB::raw(1))
+						->from('agendamento_atendimento')
+						->join('atendimentos', function ($query) use ($request) {
+							$query->on('agendamento_atendimento.atendimento_id', '=', 'atendimentos.id')
+								->where('atendimentos.clinica_id', $request::get('clinica_id'));
+						})
+						->whereRaw('agendamento_atendimento.agendamento_id = agendamentos.id');
+				});
+			}
 
-                    $query->select(DB::raw(1) )
-                      ->from('pacientes')
-                      ->whereRaw('agendamentos.paciente_id = pacientes.id')
-                      ->where(function ($query) use ($nmPaciente) {
-                          $query->where( DB::raw('to_str(pacientes.nm_primario)'), 'like', '%'.$nmPaciente.'%' )
-                          ->orWhere( DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%'.$nmPaciente.'%' )
-                          ->orWhere( DB::raw("concat(to_str(pacientes.nm_primario), ' ',to_str(pacientes.nm_secundario))"), 'like', '%'.$nmPaciente.'%' );
-                      });
-                });
-            }
-        })
-        ->whereHas('atendimentos', function ($query) {
-            $query->whereNull('deleted_at');
-        })
-        ->orderBy( DB::raw('  CASE  WHEN agendamentos.cs_status::int = 10  THEN 1 
+			if (!empty($request::get('nm_paciente'))) {
+				$query->whereExists(function ($query) use ($request) {
+					$nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
+
+					$query->select(DB::raw(1))
+						->from('pacientes')
+						->whereRaw('agendamentos.paciente_id = pacientes.id')
+						->where(function ($query) use ($nmPaciente) {
+							$query->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%' . $nmPaciente . '%')
+								->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%' . $nmPaciente . '%')
+								->orWhere(DB::raw("concat(to_str(pacientes.nm_primario), ' ',to_str(pacientes.nm_secundario))"), 'like', '%' . $nmPaciente . '%');
+						});
+				});
+			}
+		})
+			->whereHas('atendimentos', function ($query) {
+				$query->whereNull('deleted_at');
+			})
+			->orderBy(DB::raw('  CASE  WHEN agendamentos.cs_status::int = 10  THEN 1
                                     WHEN agendamentos.cs_status::int = 20  THEN 2
                                     WHEN agendamentos.cs_status::int = 80  THEN 3
                                     WHEN agendamentos.cs_status::int = 70  THEN 4
@@ -109,9 +109,9 @@ class AgendamentoController extends Controller
                                     WHEN agendamentos.cs_status::int = 50  THEN 7
                                     WHEN agendamentos.cs_status::int = 60  THEN 8
                                     WHEN agendamentos.cs_status::int = 90  THEN 9
-                                    WHEN agendamentos.cs_status::int = 100 THEN 10 END') ,'asc')
-        ->orderBy( 'agendamentos.dt_atendimento')
-        ->paginate(20);
+                                    WHEN agendamentos.cs_status::int = 100 THEN 10 END'), 'asc')
+			->orderBy('agendamentos.dt_atendimento')
+			->paginate(20);
 
         // dd( DB::getQueryLog() );
 
@@ -143,7 +143,7 @@ class AgendamentoController extends Controller
         
         return Response()->json($arJson);
     }
-    
+
     /**
      * Consulta para alimentar autocomplete
      * 
@@ -263,18 +263,31 @@ class AgendamentoController extends Controller
      * @param string $teTicket
      */
     public function addCancelamento($teTicket, $dtAtendimento, $obsCancelamento=null) {
-        $agendamento = Agendamento::where('te_ticket', '=', $teTicket)->where('dt_atendimento', Carbon::createFromFormat("Y-m-d H:i:s", $dtAtendimento));
-        
-        $agendamento->update(array('cs_status' => Agendamento::CANCELADO, 'obs_cancelamento' => $obsCancelamento));
-        
+        $agendamento = Agendamento::where('te_ticket', '=', $teTicket)
+			->where(function($query) use ($dtAtendimento) {
+				$query->whereNull('dt_atendimento')
+					->orWhere('dt_atendimento', Carbon::createFromFormat("Y-m-d H:i:s", $dtAtendimento));
+			})
+			->first();
+
+        $agendamento->update([
+			'cs_status' => Agendamento::CANCELADO,
+			'obs_cancelamento' => $obsCancelamento
+		]);
+
         ####################################### registra log> #######################################
         $agendamento_obj    = $agendamento->toJson();
-        
+
         //--busca o usuario do registro anterior--------
-        $reg_anterior = RegistroLog::with('user')->where('tipolog_id', 3)->where('tipolog_id', 4)->where('ativo', '=', true)->where(DB::raw('to_str(descricao)'), 'LIKE', '%'.'"agendamento":{"id":'.$agendamento->id.'%' )->orderby('created_at', 'desc')->limit(1)->get();
-        
+        $reg_anterior = RegistroLog::with('user')
+			->where('tipolog_id', 3)->where('tipolog_id', 4)
+			->where('ativo', '=', true)
+			->where(DB::raw('to_str(descricao)'), 'LIKE', '%'.'"agendamento":{"id":'.$agendamento->id.'%' )
+			->orderby('created_at', 'desc')
+			->limit(1)->get();
+
         $titulo_log = 'Realizar Cancelamento de Consulta';
-        $ct_log   = '"reg_anterior":'.'{"user":'.$reg_anterior->user.'}';
+        $ct_log   = '"reg_anterior":'.'{"user":'.$reg_anterior.'}';
         $new_log  = '"reg_novo":'.'{"agendamento":'.$agendamento_obj.'}';
         $tipo_log = 3;
         
