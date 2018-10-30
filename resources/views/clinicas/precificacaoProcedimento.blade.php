@@ -332,7 +332,7 @@
                 data: {
                     '_method': 'delete',
                     'atendimento_id': atendimento_id,
-                    '_token': laravel_token
+					"_token": "{{ csrf_token() }}"
                 },
                 success: function (result) {
                     
