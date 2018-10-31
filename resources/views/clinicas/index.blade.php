@@ -58,7 +58,8 @@
     						<th>@sortablelink('id', 'Cód.')</th>
     						<th>@sortablelink('nm_razao_social', 'Razão Social')</th>
     						<th>@sortablelink('nm_fantasia', 'Nome Fantasia')</th>
-    						<th>@sortablelink('nm_primario', 'Responsável')</th>
+    						<th>@sortablelink('responsavel_id', 'Responsável')</th>
+    						<th>UF</th>
     						<th>Contato</th>
     						<th>Ações</th>
     					</tr>
@@ -68,6 +69,7 @@
     						<td>{{$prestador->nm_razao_social}}</td>
     						<td>{{$prestador->nm_fantasia}}</td>
     						<td>{{ $prestador->responsavel->user->name }}</td>
+    						<td>@if(sizeof($prestador->enderecos) > 0 && isset($prestador->enderecos->first()->cidade)){{ $prestador->enderecos->first()->cidade->sg_estado }} @endif</td>
                 	 		<td>
                 	 			@foreach($prestador->contatos as $contato)
                 	 				{{$contato->ds_contato}}
