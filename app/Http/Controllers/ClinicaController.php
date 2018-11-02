@@ -325,9 +325,9 @@ class ClinicaController extends Controller
     {
         $prestador = Clinica::findOrFail($idClinica);
         $ct_clinica_obj        = $prestador->toJson();
-
+        
         $prestador->update($request->all());
-
+        
         //--atualizar usuário-----------------
         $usuario_id         = CVXRequest::post('responsavel_user_id');
         $usuario            = User::findorfail($usuario_id);
