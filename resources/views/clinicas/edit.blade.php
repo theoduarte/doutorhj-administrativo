@@ -117,6 +117,9 @@
 			 $('.modal').find('select.form-control').prop('selectedIndex',0);
 			 $('#edit-profisisonal-title-modal').html('Adicionar Profissional');
 			 $('#profisisonal-type-operation').val('add');
+			 $('#especialidade_profissional').val('').change();
+			 $('#filial_profissional').val('').change();
+			 $('#area_atuacao_profissional').val('').change(); 
 		});
 		
 		$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
@@ -196,6 +199,11 @@
 			$('#filial_profissional :selected').each(function(i, selected) {
 				filial_profissional[i] = $(selected).val();
 			});
+
+			var area_atuacao_profissional = new Array();
+			$('#area_atuacao_profissional :selected').each(function(i, selected) {
+				area_atuacao_profissional[i] = $(selected).val();
+			});
 			
 			var tp_profissional = $('#tp_profissional').val();
 			var profissional_id = $('#profissional_id').val();
@@ -223,6 +231,7 @@
 					'cs_status': cs_status,
 					'especialidade_profissional': especialidade_profissional,
 					'filial_profissional': filial_profissional,
+					'area_atuacao_profissional': area_atuacao_profissional,
 					'tp_profissional': tp_profissional,
 					'profissional_id': profissional_id,
 					'tp_documento': tp_documento_profissional,
@@ -375,6 +384,19 @@
 		            }
 
 		            $('#con-close-modal').find("#filial_profissional").trigger('change.select2');
+
+		          //--realiza o carregamento das areas de atuacao do profissional-------------
+		            $('#con-close-modal').find("#area_atuacao_profissional option:selected").prop("selected", false);
+		            for(var i = 0; i < profissional.area_atuacaos.length > 0; i++) {
+
+		            	$('#con-close-modal').find("#area_atuacao_profissional option").each(function(){
+			            	if($(this).val() == profissional.area_atuacaos[i].id) {
+				            	$(this).prop("selected", true);
+			            	}
+			            });
+		            }
+
+		            $('#con-close-modal').find("#area_atuacao_profissional").trigger('change.select2');
 		            
 	            }
             },

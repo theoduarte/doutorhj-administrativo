@@ -4,12 +4,21 @@ namespace App;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Especialidade extends Model
 {	  
-	 public $fillable   = ['cd_especialidade', 'ds_especialidade'];
-
+    use Sortable;
+    
+    public $fillable   = ['cd_especialidade', 'ds_especialidade'];
+    public $sortable   = ['id', 'cd_especialidade', 'ds_especialidade'];
+    
+    public function titulacao(){
+        return $this->belongsTo('App\Titulacao');
+    }
+    
     public function getActive(){
+        
         return DB::select(" SELECT DISTINCT e.*
                               FROM especialidades e
                               JOIN consultas c ON (e.id = c.especialidade_id)

@@ -31,6 +31,7 @@ use App\RegistroLog;
 use Illuminate\Support\Facades\Auth;
 use App\Consulta;
 use App\Filial;
+use App\AreaAtuacao;
 
 class ClinicaController extends Controller
 {
@@ -308,10 +309,12 @@ class ClinicaController extends Controller
 
         //$list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->pluck('ds_especialidade', 'cd_especialidade', 'id');
         $list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->get();
+        
+        $list_area_atuacaos = AreaAtuacao::where('cs_status', '=', 'A')->orderBy('titulo', 'asc')->get();
 
         return view('clinicas.edit', compact('estados', 'cargos', 'prestador', 'user', 'planos',
             'documentoprofissional', 'precoprocedimentos',
-            'precoconsultas', 'documentosclinica', 'list_profissionals', 'list_especialidades', 'list_filials'));
+            'precoconsultas', 'documentosclinica', 'list_profissionals', 'list_especialidades', 'list_filials', 'list_area_atuacaos'));
     }
 
     /**
@@ -595,10 +598,11 @@ class ClinicaController extends Controller
      * @param  \App\Profissional  $profissional
      * @return \Illuminate\Http\Response
      */
-    private function setProfissionalRelations(Profissional $profissional, array $documento_ids, array $contatos_ids, array $especialidade_ids, array $filial_ids, Clinica $clinica)
+    private function setProfissionalRelations(Profissional $profissional, array $documento_ids, array $contatos_ids, array $especialidade_ids, array $filial_ids, array $area_atuacao_ids, Clinica $clinica)
     {
         $profissional->documentos()->sync($documento_ids);
         $profissional->especialidades()->sync($especialidade_ids);
+        $profissional->area_atuacaos()->sync($area_atuacao_ids);
 
         if( in_array('all', $filial_ids) ) {
             $obj = [];
@@ -690,6 +694,8 @@ class ClinicaController extends Controller
         //$profissional->especialidade_id = CVXRequest::post('especialidade_id');
         $especialidade_ids = CVXRequest::post('especialidade_profissional');
         $filial_ids = CVXRequest::post('filial_profissional');
+        $area_atuacao_ids = CVXRequest::post('area_atuacao_profissional');
+        
         $profissional->tp_profissional = CVXRequest::post('tp_profissional');
         $profissional->cs_status = CVXRequest::post('cs_status');
 
@@ -715,7 +721,7 @@ class ClinicaController extends Controller
             return response()->json(['status' => false, 'mensagem' => 'O Profissional não foi salvo. Por favor, tente novamente.']);
         }
 
-        $profissional = $this->setProfissionalRelations($profissional, $documento_ids, $contatos_ids, $especialidade_ids, $filial_ids, $clinica);
+        $profissional = $this->setProfissionalRelations($profissional, $documento_ids, $contatos_ids, $especialidade_ids, $filial_ids, $area_atuacao_ids, $clinica);
         $profissional->save();
 
         $profissional->load('especialidades');
@@ -736,6 +742,7 @@ class ClinicaController extends Controller
         $profissional->load('documentos');
         $profissional->load('especialidades');
         $profissional->load('filials');
+        $profissional->load('area_atuacaos');
 
         return response()->json(['status' => true, 'mensagem' => '', 'profissional' => $profissional->toJson()]);
     }

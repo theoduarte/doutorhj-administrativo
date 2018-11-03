@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAreaatuacaoProfissionalTable extends Migration
+class CreateAreaAtuacaoProfissionalTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateAreaatuacaoProfissionalTable extends Migration
      */
     public function up()
     {
-        Schema::create('areaatuacao_profissional', function (Blueprint $table) {
+        Schema::create('area_atuacao_profissional', function (Blueprint $table) {
             
-        	$table->integer('areaatuacao_id')->unsigned()->nullable();
-        	$table->foreign('areaatuacao_id')->references('id')->on('area_atuacaos')->onDelete('cascade');
+        	$table->integer('area_atuacao_id')->unsigned()->nullable();
+        	$table->foreign('area_atuacao_id')->references('id')->on('area_atuacaos')->onDelete('cascade');
         	 
         	$table->integer('profissional_id')->unsigned()->nullable();
         	$table->foreign('profissional_id')->references('id')->on('profissionals')->onDelete('cascade');
@@ -31,6 +31,6 @@ class CreateAreaatuacaoProfissionalTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('areaatuacao_profissional');
+        Schema::dropIfExists('area_atuacao_profissional');
     }
 }
