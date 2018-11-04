@@ -42,7 +42,7 @@
             
             <div class="row">
                 <div class="col-sm-5 col-md-5">
-    		        <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
+    		        <div class="form-group {{ $errors->has('te_documento') ? ' has-error' : '' }}">
     		        	 @foreach( $documentosclinica as $documento )
     		                <label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
     		                <div class="col-12">

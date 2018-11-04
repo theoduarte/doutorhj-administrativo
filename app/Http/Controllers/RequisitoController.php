@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\RequisitosRequest;
 
 class RequisitoController extends Controller
 {
@@ -56,7 +57,7 @@ class RequisitoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequisitosRequest $request)
     {
         $requisito = Requisito::create($request->all());
         
@@ -75,7 +76,7 @@ class RequisitoController extends Controller
     {
         $requisito = Requisito::findOrFail($id);
         
-        return view('requisitos.show', compact('especialidade'));
+        return view('requisitos.show', compact('requisito'));
     }
 
     /**
@@ -88,7 +89,7 @@ class RequisitoController extends Controller
     {
         $requisito = Requisito::findOrFail($id);
         
-        return view('requisitos.edit', compact('especialidade'));
+        return view('requisitos.edit', compact('requisito'));
     }
 
     /**
@@ -98,7 +99,7 @@ class RequisitoController extends Controller
      * @param  \App\Requisito  $areaAtuacao
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RequisitosRequest $request, $id)
     {
         $requisito = Requisito::findOrFail($id);
         
@@ -122,5 +123,27 @@ class RequisitoController extends Controller
         //$requisito->save();
         
         return redirect()->route('requisitos.index')->with('success', 'Registro Excluído com sucesso!');
+    }
+    
+    /**
+     * Consulta para alimentar autocomplete
+     *
+     * @param string $termo
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRequisitos(){
+        
+        $termo = CVXRequest::post('titulo');
+        $arResultado = array();
+        //DB::enableQueryLog();
+        $requisitos = Requisito::where(DB::raw('to_str(titulo)'), 'like', '%'.UtilController::toStr($termo).'%')->orderBy('titulo')->get();
+        //dd( DB::getQueryLog() );
+        
+        foreach ($requisitos as $query)
+        {
+            $arResultado[] = [ 'id' => $query->id, 'value' => $query->titulo ];
+        }
+        
+        return Response()->json($arResultado);
     }
 }

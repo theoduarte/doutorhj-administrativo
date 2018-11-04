@@ -73,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('add-profissional', 'ClinicaController@addProfissionalStore')->name('adicionar-profissional');
     Route::post('view-profissional', 'ClinicaController@viewProfissionalShow')->name('mostrar-profissional');
     Route::post('delete-profissional', 'ClinicaController@deleteProfissionalDestroy')->name('excluir-profissional');
+    Route::post('get-requisitos', 'RequisitoController@getRequisitos')->name('listar-requisitos');
 
     Route::post('add-filial', 'FilialController@addFilialStore')->name('adicionar-filial');
     Route::post('delete-filial', 'FilialController@deleteFilialDestroy')->name('excluir-filial');

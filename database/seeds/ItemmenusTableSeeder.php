@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ItemmenusTableSeeder extends Seeder
 {
@@ -15,9 +14,9 @@ class ItemmenusTableSeeder extends Seeder
     {
         
 
-        DB::table('itemmenus')->delete();
+        \DB::table('itemmenus')->delete();
         
-        DB::table('itemmenus')->insert(array (
+        \DB::table('itemmenus')->insert(array (
             0 => 
             array (
                 'id' => 1,
@@ -280,6 +279,39 @@ class ItemmenusTableSeeder extends Seeder
                 'ordemexibicao' => 5,
                 'created_at' => '2018-11-03 10:28:35',
                 'updated_at' => '2018-11-03 10:28:35',
+                'menu_id' => 4,
+            ),
+            24 => 
+            array (
+                'id' => 26,
+                'titulo' => 'Especialidades',
+                'url' => 'especialidades',
+                'ic_item_class' => NULL,
+                'ordemexibicao' => 6,
+                'created_at' => '2018-11-03 12:02:12',
+                'updated_at' => '2018-11-03 12:02:12',
+                'menu_id' => 4,
+            ),
+            25 => 
+            array (
+                'id' => 27,
+                'titulo' => 'Reqt. de Titulação',
+                'url' => 'requisitos',
+                'ic_item_class' => NULL,
+                'ordemexibicao' => 7,
+                'created_at' => '2018-11-03 12:29:58',
+                'updated_at' => '2018-11-03 12:29:58',
+                'menu_id' => 4,
+            ),
+            26 => 
+            array (
+                'id' => 28,
+                'titulo' => 'Titulações',
+                'url' => 'titulacaos',
+                'ic_item_class' => NULL,
+                'ordemexibicao' => 8,
+                'created_at' => '2018-11-03 12:30:21',
+                'updated_at' => '2018-11-03 12:30:21',
                 'menu_id' => 4,
             ),
         ));
