@@ -35,5 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoCartaosTableSeeder::class);
         $this->call(TipoEmpresasTableSeeder::class);
 		$this->call(PlanosTableSeeder::class);
+        $this->call(RequisitosTableSeeder::class);
     }
 }

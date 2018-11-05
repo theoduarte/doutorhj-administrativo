@@ -2130,7 +2130,70 @@ class PermissaosTableSeeder extends Seeder
                     'url_action' => 'tipo_logs.show',
                     'url_model' => 'tipo_logs',
                     'descricao' => 'Exibe os dados do tipo de log.'
-                )
+                ),
+                235 => array(
+                    'id' => '236',
+                    'titulo' => 'AreaAtuacao[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011101100',
+                    'url_action' => 'area_atuacaos.create',
+                    'url_model' => 'area_atuacaos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de área de atuação.'
+                ),
+                236 => array(
+                    'id' => '237',
+                    'titulo' => 'AreaAtuacao[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011101101',
+                    'url_action' => 'area_atuacaos.store',
+                    'url_model' => 'area_atuacaos',
+                    'descricao' => 'Salva o área de atuação.'
+                ),
+                237 => array(
+                    'id' => '238',
+                    'titulo' => 'AreaAtuacao[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011101110',
+                    'url_action' => 'area_atuacaos.destroy',
+                    'url_model' => 'area_atuacaos',
+                    'descricao' => 'Exclui o área de atuação.'
+                ),
+                238 => array(
+                    'id' => '239',
+                    'titulo' => 'AreaAtuacao[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011101111',
+                    'url_action' => 'area_atuacaos.edit',
+                    'url_model' => 'area_atuacaos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                239 => array(
+                    'id' => '240',
+                    'titulo' => 'AreaAtuacao[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011110000',
+                    'url_action' => 'area_atuacaos.update',
+                    'url_model' => 'area_atuacaos',
+                    'descricao' => 'Atualiza os dados da área de atuação.'
+                ),
+                240 => array(
+                    'id' => '241',
+                    'titulo' => 'AreaAtuacao[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011110001',
+                    'url_action' => 'area_atuacaos.index',
+                    'url_model' => 'area_atuacaos',
+                    'descricao' => 'Lista todas as áreas de atuação'
+                ),
+                241 => array(
+                    'id' => '242',
+                    'titulo' => 'AreaAtuacao[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011110010',
+                    'url_action' => 'area_atuacaos.show',
+                    'url_model' => 'area_atuacaos',
+                    'descricao' => 'Exibe os dados da área de atuação.'
+                ),
                 
             )
         );

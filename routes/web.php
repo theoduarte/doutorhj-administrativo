@@ -10,11 +10,13 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
+    Route::resource('area_atuacaos', 'AreaAtuacaoController');
     Route::resource('clinicas','ClinicaController');
     Route::resource('profissionals','ProfissionalController');
     Route::resource('clientes', 'ClienteController');
     Route::resource('cargos','CargoController');
     Route::resource('enderecos', 'EnderecoController');
+    Route::resource('especialidades', 'EspecialidadeController');
     Route::resource('grupo_procedimentos','GrupoProcedimentoController');
     Route::resource('logradouros', 'LogradouroController');
     Route::resource('procedimentos','ProcedimentoController');
@@ -28,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('agenda','AgendamentoController')->only(['index']);
     Route::resource('registro_logs','RegistroLogController');
     Route::resource('tipo_logs','TipoLogController');
+    Route::resource('titulacaos','TitulacaoController');
     Route::resource('cupom_descontos','CupomDescontoController');
     Route::resource('checkups','CheckupsController');
     Route::resource('termos-condicoes','TermosCondicoesController');
@@ -37,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
 	Route::resource('planos', 'PlanoController');
 	Route::resource('empresas', 'EmpresaController');
 	Route::resource('representantes', 'RepresentanteController');
+	Route::resource('requisitos', 'RequisitoController');
 
 	Route::get('documentos/getUserByCpf/{cpf}', 'DocumentoController@getUserByCpf')->name('documentos.get-user-by-cpf');
 
@@ -69,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('add-profissional', 'ClinicaController@addProfissionalStore')->name('adicionar-profissional');
     Route::post('view-profissional', 'ClinicaController@viewProfissionalShow')->name('mostrar-profissional');
     Route::post('delete-profissional', 'ClinicaController@deleteProfissionalDestroy')->name('excluir-profissional');
+    Route::post('get-requisitos', 'RequisitoController@getRequisitos')->name('listar-requisitos');
 
     Route::post('add-filial', 'FilialController@addFilialStore')->name('adicionar-filial');
     Route::post('delete-filial', 'FilialController@deleteFilialDestroy')->name('excluir-filial');

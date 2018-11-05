@@ -60,7 +60,7 @@ class CargoController extends Controller
     {
     	$cargo = Cargo::create($request->all());
     	
-    	//$cargo->save();
+    	$cargo->save();
     	
     	return redirect()->route('cargos.index')->with('success', 'O Cargo foi cadastrado com sucesso!');
     }

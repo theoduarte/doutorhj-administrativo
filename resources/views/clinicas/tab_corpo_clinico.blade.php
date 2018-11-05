@@ -36,6 +36,7 @@
 					<th>Nome</th>
 					<th class="text-left" style="width: 500px;">Especialidade(s)</th>
 					<th class="text-left" style="width: 400px;">Locais de Atuação</th>
+					<th class="text-left" style="width: 400px;">Áreas de Atuação</th>
 					<th>Data/hora</th>
 					<th>Ações</th>
 				</tr>
@@ -46,6 +47,7 @@
 					<td>{{$profissional->nm_primario}} {{$profissional->nm_secundario}}</td>
 					<td>@if( isset($profissional->especialidades) && sizeof($profissional->especialidades) > 0 ) <ul class="list-profissional-especialidade">@foreach($profissional->especialidades as $especialidade) <li><i class="mdi mdi-check"></i> {{ $especialidade->ds_especialidade }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA ESPECILIDADE SELECIONADA</span>  @endif</td>
 					<td>@if( isset($profissional->filials) && sizeof($profissional->filials) > 0 ) <ul class="list-profissional-especialidade">@foreach($profissional->filials as $filial) <li><i class="mdi mdi-check"></i> @if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA FILIAL SELECIONADA</span>  @endif</td>
+					<td>@if( isset($profissional->area_atuacaos) && sizeof($profissional->area_atuacaos) > 0 ) <ul class="list-profissional-especialidade">@foreach($profissional->area_atuacaos as $atuacao) <li><i class="mdi mdi-check"></i> {{ $atuacao->titulo }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA INDICADA</span>  @endif</td>
 					<td>{{date('d-m-Y H:i', strtotime($profissional->updated_at))}}</td>
 					<td>
 						<a href="#" onclick="openModal({{ $profissional->id }})" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-pencil"></i></a>
@@ -167,6 +169,19 @@
                                 <option value="all"><strong>-- Todos os Locais --</strong></option>
                             	@foreach($list_filials as $filial)
 								<option value="{{ $filial->id }}">@if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</option>
+								@endforeach  
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group no-margin">
+                            <label for="area_atuacao_profissional" class="control-label">Locais de Atendimento</label>
+                            <select id="area_atuacao_profissional" class="select2 select2-multiple" name="area_atuacao_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
+                                <option value="all"><strong>-- Todos os Locais --</strong></option>
+                            	@foreach($list_area_atuacaos as $atuacao)
+								<option value="{{ $atuacao->id }}">{{ $atuacao->titulo }}</option>
 								@endforeach  
                             </select>
                         </div>

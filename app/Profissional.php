@@ -55,6 +55,11 @@ class Profissional extends Model
 	    return $this->belongsToMany('App\Filial');
 	}
 	
+	public function area_atuacaos()
+	{
+	    return $this->belongsToMany('App\AreaAtuacao');
+	}
+	
 	/*
 	 * Getters and Setters
 	 */
