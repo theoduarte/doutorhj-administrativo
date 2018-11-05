@@ -10,8 +10,8 @@ class Especialidade extends Model
 {	  
     use Sortable;
     
-    public $fillable   = ['cd_especialidade', 'ds_especialidade'];
-    public $sortable   = ['id', 'cd_especialidade', 'ds_especialidade'];
+    public $fillable   = ['cd_especialidade', 'ds_especialidade', 'titulacao_id'];
+    public $sortable   = ['id', 'cd_especialidade', 'ds_especialidade', 'titulacao_id'];
     
     public function titulacao(){
         return $this->belongsTo('App\Titulacao');

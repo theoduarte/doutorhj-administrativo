@@ -37,6 +37,16 @@
 						<input type="text" id="ds_especialidade" class="form-control" name="ds_especialidade" value="{{ $especialidade->ds_especialidade }}" required placeholder="Descrição do Especialidade" >
 					</div>
 					
+					<div class="form-group">
+						<label for="titulacao_id">Titulação da Especialidade Médica</label>
+						<select id="titulacao_id"  class="form-control" name="titulacao_id">
+							<option>Selecione</option>
+							@foreach($list_titulacaos as $titulacao)
+							<option value="{{ $titulacao->id }}" @if($especialidade->titulacao_id == $titulacao->id) selected="selected" @endif>{{ $titulacao->titulo }} ({{ $titulacao->tempo_formacao }} meses)</option>
+							@endforeach
+						</select>
+					</div>
+					
 					<div class="form-group text-right m-b-0">
 						<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>
 						<a href="{{ route('especialidades.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>

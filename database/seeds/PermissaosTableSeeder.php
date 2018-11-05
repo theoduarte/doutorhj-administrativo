@@ -2138,7 +2138,7 @@ class PermissaosTableSeeder extends Seeder
                     'codigo_permissao' => '0011101100',
                     'url_action' => 'area_atuacaos.create',
                     'url_model' => 'area_atuacaos',
-                    'descricao' => 'Realiza a exibição do formulário de cadastro de área de atuação.'
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de titulação.'
                 ),
                 236 => array(
                     'id' => '237',
@@ -2147,7 +2147,7 @@ class PermissaosTableSeeder extends Seeder
                     'codigo_permissao' => '0011101101',
                     'url_action' => 'area_atuacaos.store',
                     'url_model' => 'area_atuacaos',
-                    'descricao' => 'Salva o área de atuação.'
+                    'descricao' => 'Salva o titulação.'
                 ),
                 237 => array(
                     'id' => '238',
@@ -2156,7 +2156,7 @@ class PermissaosTableSeeder extends Seeder
                     'codigo_permissao' => '0011101110',
                     'url_action' => 'area_atuacaos.destroy',
                     'url_model' => 'area_atuacaos',
-                    'descricao' => 'Exclui o área de atuação.'
+                    'descricao' => 'Exclui o titulação.'
                 ),
                 238 => array(
                     'id' => '239',
@@ -2174,7 +2174,7 @@ class PermissaosTableSeeder extends Seeder
                     'codigo_permissao' => '0011110000',
                     'url_action' => 'area_atuacaos.update',
                     'url_model' => 'area_atuacaos',
-                    'descricao' => 'Atualiza os dados da área de atuação.'
+                    'descricao' => 'Atualiza os dados da titulação.'
                 ),
                 240 => array(
                     'id' => '241',
@@ -2192,8 +2192,71 @@ class PermissaosTableSeeder extends Seeder
                     'codigo_permissao' => '0011110010',
                     'url_action' => 'area_atuacaos.show',
                     'url_model' => 'area_atuacaos',
-                    'descricao' => 'Exibe os dados da área de atuação.'
+                    'descricao' => 'Exibe os dados da titulação.'
                 ),
+                242 => array(
+                    'id' => '243',
+                    'titulo' => 'Titulacao[Criar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011110011',
+                    'url_action' => 'titulacaos.create',
+                    'url_model' => 'titulacaos',
+                    'descricao' => 'Realiza a exibição do formulário de cadastro de titulação.'
+                ),
+                243 => array(
+                    'id' => '244',
+                    'titulo' => 'Titulacao[Adicionar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011110100',
+                    'url_action' => 'titulacaos.store',
+                    'url_model' => 'titulacaos',
+                    'descricao' => 'Salva o titulação.'
+                ),
+                244 => array(
+                    'id' => '245',
+                    'titulo' => 'Titulacao[Excluir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011110101',
+                    'url_action' => 'titulacaos.destroy',
+                    'url_model' => 'titulacaos',
+                    'descricao' => 'Exclui o titulação.'
+                ),
+                245 => array(
+                    'id' => '246',
+                    'titulo' => 'Titulacao[Editar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011110110',
+                    'url_action' => 'titulacaos.edit',
+                    'url_model' => 'titulacaos',
+                    'descricao' => 'Realiza a exibição do formulário de edição.'
+                ),
+                246 => array(
+                    'id' => '247',
+                    'titulo' => 'Titulacao[Atualizar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011110111',
+                    'url_action' => 'titulacaos.update',
+                    'url_model' => 'titulacaos',
+                    'descricao' => 'Atualiza os dados da titulação.'
+                ),
+                247 => array(
+                    'id' => '248',
+                    'titulo' => 'Titulacao[Listar]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011111000',
+                    'url_action' => 'titulacaos.index',
+                    'url_model' => 'titulacaos',
+                    'descricao' => 'Lista todas as titulações'
+                ),
+                248 => array(
+                    'id' => '249',
+                    'titulo' => 'Titulacao[Exibir]',
+                    'acesso_privado' => 'FALSE',
+                    'codigo_permissao' => '0011111001',
+                    'url_action' => 'titulacaos.show',
+                    'url_model' => 'titulacaos',
+                    'descricao' => 'Exibe os dados da titulação.'
+                )
                 
             )
         );

@@ -33,6 +33,10 @@
 							<td>Descrição:</td>
 							<td>{{ $especialidade->ds_especialidade }}</td>
 						</tr>
+						<tr>
+							<td>Titulação:</td>
+							<td>@if( $especialidade->titulacao_id != null ) Título de especialista em <strong>{{ $especialidade->titulacao->titulo }}</strong> @else -------- @endif</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
