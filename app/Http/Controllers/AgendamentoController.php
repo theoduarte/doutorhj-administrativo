@@ -923,12 +923,9 @@ HEREDOC;
      */
     public function createNewAgendamentoAtendimento(Request $request)
     {
-        DB::beginTransaction();
-
         try {
             $agendamento = Agendamento::find( $request::get('agendamento_id') );
-            $agendamento->filial_id = $request::get('filial_id');
-            $agendamento->save();
+			$oldAgendamento = $agendamento;
 
 			$paciente = new Paciente();
 			$plano_id = $paciente->getPlanoAtivo($agendamento->paciente_id);
@@ -943,27 +940,31 @@ HEREDOC;
 					$query->where('plano_id', '=', $plano_id);
 				})->first();
 
-            $itemPedido = Itempedido::where('agendamento_id', $agendamento->id)->first();
-            $itemPedido->valor = $atendimento->precoAtivo->vl_comercial;
-            $itemPedido->save();
+			$filial = Filial::findorfail($request::get('filial_id'));
 
-            $oldAtendimento = $agendamento->atendimentos()->whereNull('deleted_at')->first();
-            if ( !empty($oldAtendimento) ) {
-              $agendamento->atendimentos()->updateExistingPivot( $oldAtendimento->id, ['deleted_at' => date('Y-m-d H:i:s') ] );  
-            }
-            
-            $agendamento->atendimentos()->attach( $atendimento->id, ['created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ] );
-            
-            $filial = Filial::findorfail($request::get('filial_id'));
-            
+            $oldAtendimentos = $agendamento->atendimentos()->get();
+			foreach($oldAtendimentos as $oldAtendimento) {
+				$agendamento->atendimentos()->updateExistingPivot( $oldAtendimento->id, ['deleted_at' => date('Y-m-d H:i:s') ] );
+			}
+
+			$agendamento->filial_id 		= $filial->id;
+			$agendamento->atendimento_id	= $atendimento->id;
+			$agendamento->clinica_id		= $atendimento->clinica_id;
+			$agendamento->profissional_id	= $atendimento->profissional_id;
+			$agendamento->save();
+
+			$itemPedido 					= Itempedido::where('agendamento_id', $agendamento->id)->first();
+			$itemPedido->save();
+
+            $agendamento->atendimentos()->syncWithoutDetaching([$atendimento->id => ['created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s'), 'deleted_at' => null]]);
+
             ####################################### registra log> #######################################
-            $paciente_obj       = $paciente->toJson();
-            $filial_obj         = $filial->toJson();
             $agendamento_obj    = $agendamento->toJson();
+			$oldAgendamento_obj	= $oldAgendamento->toJson();
             
             $titulo_log = 'Realizar Agendamento';
-            $ct_log   = '"reg_anterior":'.'{}';
-            $new_log  = '"reg_novo":'.'{"paciente":'.$paciente_obj.', "filial":'.$filial_obj.', "agendamento":'.$agendamento_obj.'}';
+            $ct_log   = '"reg_anterior":'.'{"agendamento":'.$oldAgendamento_obj.'}';
+            $new_log  = '"reg_novo":'.'{"agendamento":'.$agendamento_obj.'}';
             $tipo_log = 1;
             
             $log = "{".$ct_log.",".$new_log."}";
@@ -971,11 +972,18 @@ HEREDOC;
             $reglog = new RegistroLogController();
             $reglog->registrarLog($titulo_log, $log, $tipo_log);
             ####################################### </registra log #######################################
-            
-        } catch (\Exception $e) {
-            DB::rollback();
+        } catch(\Exception $e) {
+			DB::rollback();
+			return response()->json([
+				'status' => false,
+				'message' => 'Erro ao atualizar o agendamento!'.$e->getMessage()
+			], 500);
         }
 
         DB::commit();
+		return response()->json([
+			'status' => true,
+			'message' => 'Agendamento atualizado com sucesso!'
+		], 200);
     }
 }
