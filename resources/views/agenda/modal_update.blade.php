@@ -347,30 +347,50 @@
             $.ajax({
                 type: 'POST',
                 url: '/create-new-agendamento-atendimento',
-                data: $('#formUpdate').serialize()+'&_token='+laravel_token
-            }).done(function(msg){
-                swal({
-                	title : 'Solicitação Concluída!',
-                    text  : '',
-                    type  : 'success',
-                    showCancelButton: false,
-                    confirmButtonClass: 'btn btn-confirm mt-2',
-                    cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
-                    confirmButtonText: 'OK',
-                }).then(function () {
-                    $("#dialog-update .btn-secondary").trigger('click');
-                	location.reload();
-                });
-                
-            }).fail(function(jqXHR, textStatus, msg){
-                swal(
-                    {
-                        title: 'Um erro inesperado ocorreu!',
-                        text: '',
-                        type: 'error',
-                        confirmButtonClass: 'btn btn-confirm mt-2'
-                    }
-                );
+                data: $('#formUpdate').serialize()+'&_token='+laravel_token,
+				success: function (data) {
+
+					if(data.status) {
+						swal({
+							title : 'Solicitação Concluída!',
+							text  : '',
+							type  : 'success',
+							showCancelButton: false,
+							confirmButtonClass: 'btn btn-confirm mt-2',
+							cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
+							confirmButtonText: 'OK',
+						}).then(function () {
+							$("#dialog-update .btn-secondary").trigger('click');
+                			location.reload();
+						});
+					} else {
+						swal({
+							title: data.message,
+							text: '',
+							type: 'error',
+							confirmButtonClass: 'btn btn-confirm mt-2'
+						});
+					}
+				},
+				error: function(data) {
+					data = data.responseJSON;
+
+					if(data.status != null) {
+						swal({
+							title: data.message,
+							text: '',
+							type: 'error',
+							confirmButtonClass: 'btn btn-confirm mt-2'
+						});
+					} else {
+						swal({
+							title: 'Um erro inesperado ocorreu!',
+							text: '',
+							type: 'error',
+							confirmButtonClass: 'btn btn-confirm mt-2'
+						});
+					}
+				}
             });
 
             return true;
