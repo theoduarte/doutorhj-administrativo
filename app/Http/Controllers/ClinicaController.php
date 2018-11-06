@@ -694,7 +694,7 @@ class ClinicaController extends Controller
         //$profissional->especialidade_id = CVXRequest::post('especialidade_id');
         $especialidade_ids = CVXRequest::post('especialidade_profissional');
         $filial_ids = CVXRequest::post('filial_profissional');
-        $area_atuacao_ids = CVXRequest::post('area_atuacao_profissional');
+        $area_atuacao_ids =  is_null(CVXRequest::post('area_atuacao_profissional')) ? [] : CVXRequest::post('area_atuacao_profissional');
         
         $profissional->tp_profissional = CVXRequest::post('tp_profissional');
         $profissional->cs_status = CVXRequest::post('cs_status');

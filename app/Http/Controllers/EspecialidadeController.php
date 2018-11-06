@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use Illuminate\Support\Facades\DB;
 use App\Especialidade;
+use App\Titulacao;
 
 class EspecialidadeController extends Controller
 {
@@ -47,7 +48,9 @@ class EspecialidadeController extends Controller
      */
     public function create()
     {
-        return view('especialidades.create');
+    	$list_titulacaos = Titulacao::orderBy('titulo', 'asc')->get();
+    	
+    	return view('especialidades.create', compact('list_titulacaos'));
     }
 
     /**
@@ -87,8 +90,9 @@ class EspecialidadeController extends Controller
     public function edit($id)
     {
         $especialidade = Especialidade::findOrFail($id);
+        $list_titulacaos = Titulacao::orderBy('titulo', 'asc')->get();
         
-        return view('especialidades.edit', compact('especialidade'));
+        return view('especialidades.edit', compact('especialidade', 'list_titulacaos'));
     }
 
     /**
