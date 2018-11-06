@@ -82,9 +82,9 @@
             $('#dialog-agendar #especialidade_id').val( $(this).attr('id-especialidade') );
             $('#dialog-agendar #tp_prestador').val( $(this).attr('tp-prestador') );
             
-            $('#confPaciente') .html("<b>" + $(this).attr('nm-paciente') + "</b>");
-            $('#confClinica') .html("<b>" + $(this).attr('nm-clinica') + "</b>");
-            $('#confDtHora')   .html("<b>" + $(this).attr('data-hora')   + "</b>");
+            $('#confPaciente').html("<b>" + $(this).attr('nm-paciente') + "</b>");
+            $('#confClinica').html("<b>" + $(this).attr('nm-clinica') + "</b>");
+            $('#confDtHora').html("<b>" + $(this).attr('data-hora')   + "</b>");
             $('#confPrestador').html("<b>" + $(this).attr('prestador')   + "</b>");
             $('#confEspecialidade').html("<b>" + $(this).attr('especialidade')   + "</b>");
             $('#confValorAtendimento').html("<b>" + $(this).attr('valor-consulta')   + "</b>");

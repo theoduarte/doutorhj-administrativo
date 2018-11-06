@@ -55,7 +55,7 @@ class Agendamento extends Model
 
     public function atendimentos()
     {
-        return $this->belongsToMany('App\Atendimento');
+        return $this->belongsToMany('App\Atendimento')->whereNull('deleted_at');
     }
         
     public function paciente()
