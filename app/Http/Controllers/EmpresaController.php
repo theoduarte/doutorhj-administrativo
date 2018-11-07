@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Anuidade;
 use App\Cidade;
 use App\Contato;
 use App\Empresa;
 use App\Endereco;
 use App\Estado;
 use App\Http\Requests\EmpresaRequest;
+use App\Plano;
 use App\Repositories\FileRepository;
 use App\TipoEmpresa;
 use Doctrine\DBAL\Query\QueryException;
@@ -157,8 +159,16 @@ class EmpresaController extends Controller
 		$tipoEmpresas = TipoEmpresa::pluck('descricao', 'id');
 		$estados = Estado::orderBy('ds_estado')->get();
 		$representantes = $model->representantes()->orderBy('nm_primario')->get();
+		$planos = Plano::pluck('ds_plano', 'id');
 
-		return view('empresas.edit', compact('model', 'tipoEmpresas', 'estados', 'representantes'));
+		if($model->anuidades()->count() == Plano::count())
+			$anuidade_conf = null;
+		elseif($model->anuidades()->count() == 0)
+			$anuidade_conf = 'danger';
+		else
+			$anuidade_conf = 'warning';
+
+		return view('empresas.edit', compact('model', 'tipoEmpresas', 'estados', 'representantes', 'planos', 'anuidade_conf'));
 	}
 
 	/**
@@ -196,6 +206,39 @@ class EmpresaController extends Controller
 			$contato2->ds_contato = $request->input('contato_financeiro');
 			$contato2->save();
 
+			$anuidades = $request->post('anuidades');
+			if(count($anuidades) > 0) {
+				foreach($anuidades as $planoId=>$anuidade) {
+					$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($anuidade['data_vigencia']);
+					$anuidade['data_inicio'] = $data_vigencia['de'];
+					$anuidade['data_fim'] = $data_vigencia['ate'];
+					$anuidade['empresa_id'] = $model->id;
+					$anuidade['plano_id'] = $planoId;
+
+					$oldAnuidade = Anuidade::where([
+							'empresa_id' => $anuidade['empresa_id'],
+							'plano_id' => $anuidade['plano_id'],
+							'vl_anuidade_ano' => UtilController::removeMaskMoney($anuidade['vl_anuidade_ano']),
+							'vl_anuidade_mes' => UtilController::removeMaskMoney($anuidade['vl_anuidade_mes']),
+							'cs_status' => $anuidade['cs_status'],
+						])
+						->whereDate('data_inicio', $anuidade['data_inicio']->format('Y-m-d'))
+						->whereDate('data_fim', $anuidade['data_fim']->format('Y-m-d'))
+						->whereNull('deleted_at')
+						->get();
+
+					if($oldAnuidade->count() == 0) {
+						Anuidade::where([
+							'empresa_id' => $anuidade['empresa_id'],
+							'plano_id' => $anuidade['plano_id'],
+						])->update(['deleted_at' => date('Y/m/d H:i:s')]);
+
+						$modelAnuidade = new Anuidade($anuidade);
+						$modelAnuidade->save();
+					}
+				}
+			}
+
 			if($request->hasFile('logomarca')) {
 				$logo_path = $repo->saveFile($request->logomarca, $model->id, 'empresas');
 				$dados['logomarca_path'] = URL::to("/storage/{$logo_path}");
@@ -204,10 +247,10 @@ class EmpresaController extends Controller
 			$model->update($dados);
 		} catch (\Exception $e) {
 			DB::rollback();
-			return redirect()->route('clinicas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
+			return redirect()->route('empresas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
 		} catch(QueryException $e) {
 			DB::rollback();
-			return redirect()->route('clinicas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
+			return redirect()->route('empresas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
 		}
 
 		DB::commit();

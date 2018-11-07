@@ -41,6 +41,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::resource('empresas', 'EmpresaController');
 	Route::resource('representantes', 'RepresentanteController');
 	Route::resource('requisitos', 'RequisitoController');
+	Route::resource('anuidades', 'AnuidadeController')->only(['store']);
+
 
 	Route::get('documentos/getUserByCpf/{cpf}', 'DocumentoController@getUserByCpf')->name('documentos.get-user-by-cpf');
 
