@@ -93,6 +93,14 @@ class Empresa extends Model
 	}
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function anuidades()
+	{
+		return $this->hasMany('App\Anuidade')->whereNull('deleted_at');
+	}
+
+	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
 	public function contatos()

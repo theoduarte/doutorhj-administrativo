@@ -37,6 +37,11 @@
 									Representantes
 								</a>
 							</li>
+							<li class="nav-item">
+								<a href="#anuidades" id="anuidades-tab" data-toggle="tab" aria-expanded="false" class="nav-link {{!is_null($anuidade_conf) ? "btn-$anuidade_conf" : ''}}">
+									Planos
+								</a>
+							</li>
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane fade active show" id="dadosEmpresa">
@@ -44,6 +49,9 @@
 							</div>
 							<div class="tab-pane fade" id="representantes">
 								@include('empresas/_representantes', compact('model', 'representantes'))
+							</div>
+							<div class="tab-pane fade" id="anuidades">
+								@include('empresas/_anuidades', compact('model', 'model', 'planos', 'anuidade_conf'))
 							</div>
 						</div>
 					</div>

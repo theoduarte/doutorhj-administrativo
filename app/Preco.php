@@ -90,7 +90,7 @@ class Preco extends Model
 		return number_format( $this->attributes['vl_net'],  2, ',', '.');
 	}
 
-	public function getVlComercialAttribute($val)
+	public function getVlComercialAttribute()
 	{
 		return number_format( $this->attributes['vl_comercial'],  2, ',', '.');
 	}
