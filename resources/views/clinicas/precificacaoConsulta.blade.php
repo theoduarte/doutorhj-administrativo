@@ -20,7 +20,7 @@
 				<label for="nm_profissional" class="control-label">Profissional<span class="text-danger">*</span></label>
 				<select id="list_profissional_consulta" class="select2 select2-multiple" name="list_profissional_consulta[]" multiple="multiple" multiple data-placeholder="Selecione ...">
 					@foreach($list_profissionals as $profissional)
-						<option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.' ('.$profissional->documentos->first()->tp_documento.': '.$profissional->documentos->first()->te_documento.')' }}</option>
+						<option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.$profissional->ds_documento }}</option>
 					@endforeach
 				</select>
 			</div>
@@ -155,7 +155,7 @@
                                 <select id="profissional_id_edit" class="form-control" name="profissional_id" required>
                                 	<option value="">--- NENHUM PROFISSIONAL SELECIONADO ----</option>
             			            @foreach($list_profissionals as $profissional)
-            			            <option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.' ('.$profissional->documentos->first()->tp_documento.': '.$profissional->documentos->first()->te_documento.')' }}</option>
+            			            <option value="{{ $profissional->id }}">{{ $profissional->nm_primario.' '.$profissional->nm_secundario.$profissional->ds_documento }}</option>
             			            @endforeach
             		            </select>
                             </div>

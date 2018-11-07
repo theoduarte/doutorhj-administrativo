@@ -262,7 +262,7 @@ class ClinicaController extends Controller
     {
         $estados = Estado::orderBy('ds_estado')->get();
         $cargos  = Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-        
+
         $get_term = CVXRequest::get('search_term');
         $search_term = UtilController::toStr($get_term);
 
@@ -306,6 +306,16 @@ class ClinicaController extends Controller
         }
 
         $list_profissionals->load('documentos');
+        
+        //--formata e trata situacoes onde o documento do profissional nao foi informado----------------------------------------------------
+        for($i = 0; $i < sizeof($list_profissionals); $i++) {
+        	
+        	if(sizeof($list_profissionals[$i]->documentos) > 0) {
+        		$list_profissionals[$i]->ds_documento = ' ('.$list_profissionals[$i]->documentos->first()->tp_documento.': '.$list_profissionals[$i]->documentos->first()->te_documento.')';
+        	} else {
+        		$list_profissionals[$i]->ds_documento = ' (DOCUMENTO NÃO INFORMADO)';
+        	}
+        }
 
         //$list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->pluck('ds_especialidade', 'cd_especialidade', 'id');
         $list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->get();
