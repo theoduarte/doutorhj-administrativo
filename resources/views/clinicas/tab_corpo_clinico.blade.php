@@ -177,7 +177,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group no-margin">
-                            <label for="area_atuacao_profissional" class="control-label">Locais de Atendimento</label>
+                            <label for="area_atuacao_profissional" class="control-label">Áreas de Atuação</label>
                             <select id="area_atuacao_profissional" class="select2 select2-multiple" name="area_atuacao_profissional" multiple="multiple" multiple data-placeholder="Selecione ...">
                                 <option value="all"><strong>-- Todos os Locais --</strong></option>
                             	@foreach($list_area_atuacaos as $atuacao)

@@ -262,10 +262,11 @@ class ClinicaController extends Controller
     {
         $estados = Estado::orderBy('ds_estado')->get();
         $cargos  = Cargo::orderBy('ds_cargo')->get(['id', 'ds_cargo']);
-
+        
         $get_term = CVXRequest::get('search_term');
         $search_term = UtilController::toStr($get_term);
 
+        dd($idClinica);
         $prestador = Clinica::findorfail($idClinica);
         $prestador->load('enderecos');
         $prestador->load('contatos');
