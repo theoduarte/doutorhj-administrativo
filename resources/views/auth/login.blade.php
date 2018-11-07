@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="text-center">
-	<a href="/" class="logo-lg"><img src="/img/logo-padrao-doutorhj.png" alt="Logo DoutorHJ" style="width: 250px;"> <!-- <span class="doutorhj-color1">Doutor</span><span class="doutorhj-color2">Hoje</span> --> </a>
+	<a href="/" class="logo-lg"><img src="/img/logo-doutorhj.png" alt="Logo DoutorHJ" style="width: 250px;"> <!-- <span class="doutorhj-color1">Doutor</span><span class="doutorhj-color2">Hoje</span> --> </a>
 </div>
 
 <form class="form-horizontal m-t-20" action="{{ route('login') }}" method="post">
