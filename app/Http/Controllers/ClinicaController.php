@@ -265,7 +265,7 @@ class ClinicaController extends Controller
         
         $get_term = CVXRequest::get('search_term');
         $search_term = UtilController::toStr($get_term);
-        
+
         $prestador = Clinica::findorfail($idClinica);
         $prestador->load('enderecos');
         $prestador->load('contatos');
