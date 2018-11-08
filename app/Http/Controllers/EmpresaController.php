@@ -159,9 +159,9 @@ class EmpresaController extends Controller
 		$tipoEmpresas = TipoEmpresa::pluck('descricao', 'id');
 		$estados = Estado::orderBy('ds_estado')->get();
 		$representantes = $model->representantes()->orderBy('nm_primario')->get();
-		$planos = Plano::pluck('ds_plano', 'id');
+		$planos = Plano::where('id', '<>', Plano::OPEN)->pluck('ds_plano', 'id');
 
-		if($model->anuidades()->count() == Plano::count())
+		if($model->anuidades()->count() == Plano::where('id', '<>', Plano::OPEN)->count())
 			$anuidade_conf = null;
 		elseif($model->anuidades()->count() == 0)
 			$anuidade_conf = 'danger';
