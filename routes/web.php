@@ -113,6 +113,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get-active-filials-by-clinica-profissional-consulta','AgendamentoController@getFilialsByClinicaProfissionalConsulta')->name('get-active-filials-by-clinica-profissional-consulta');
     Route::get('get-active-filials-by-clinica-procedimento','AgendamentoController@getFilialsByClinicaProcedimento')->name('get-active-filials-by-clinica-procedimento');
     Route::post('create-new-agendamento-atendimento','AgendamentoController@createNewAgendamentoAtendimento')->name('create-new-agendamento-atendimento');
+    
+    Route::get('update-precos', 'AtendimentoController@updatePrecos')->name('atualizar-precos');
+    Route::post('update-preco-consultas', 'AtendimentoController@updatePrecoConsultas')->name('atualizar-preco-consultas');
+    Route::post('update-preco-procedimentos', 'AtendimentoController@updatePrecoProcedimentos')->name('atualizar-preco-procedimentos');
 });
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');

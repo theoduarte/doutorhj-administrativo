@@ -381,6 +381,36 @@ class UtilController extends Controller
 	}
 	
 	/**
+	 * csvToArray method
+	 *
+	 * //--realiza a leitura de um arquivo csv e separa o mesmo num array de acordo com suas colunas
+	 * 
+	 * @param string $filename eh o caminho que arquivo.
+	 * @param string $delimiter eh o caractere separador
+	 */
+	public static function csvToArray($filename = '', $delimiter = ',')
+	{
+		if (!file_exists($filename) || !is_readable($filename))
+			return false;
+	
+			$header = null;
+			$data = array();
+			if (($handle = fopen($filename, 'r')) !== false)
+			{
+				while (($row = fgetcsv($handle, 1000, $delimiter)) !== false)
+				{
+					if (!$header)
+						$header = $row;
+						else
+							$data[] = array_combine($header, $row);
+				}
+				fclose($handle);
+			}
+	
+			return $data;
+	}
+	
+	/**
 	 * sendSms method
 	 *
 	 * @param string $number Destinatários que receberam a mensagem. DDD+Número, separados por vírgula caso possua mais de um.
