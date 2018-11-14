@@ -205,7 +205,7 @@ class AtendimentoController extends Controller
     			########### FINISHIING TRANSACTION ##########
     			DB::rollback();
     			#############################################
-    			//return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços das Consultas não foram atualizados. Por favor, tente novamente.');
+    			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços das Consultas não foram atualizados. Por favor, tente novamente.');
     		}
     		
     		########### FINISHIING TRANSACTION ##########
