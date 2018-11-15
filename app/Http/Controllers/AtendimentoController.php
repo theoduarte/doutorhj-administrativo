@@ -101,7 +101,7 @@ class AtendimentoController extends Controller
 	    			
 	    			if(is_null($ct_atendimento)) {
 	    				$ct_atendimento = new Atendimento();
-	    				$ct_atendimento->clinica_id = $atendimento["clinicaid"];
+	    				$ct_atendimento->clinica_id = $atendimento["clinica_id"];
 	    				$ct_atendimento->consulta_id = $consulta_id;
 	    				$ct_atendimento->ds_preco =  $atendimento["atendimentos"];
 	    				$ct_atendimento->cs_status = 'A';
@@ -253,7 +253,7 @@ class AtendimentoController extends Controller
     	
     				if(is_null($ct_atendimento)) {
     					$ct_atendimento = new Atendimento();
-    					$ct_atendimento->clinica_id = $atendimento["clinicaid"];
+    					$ct_atendimento->clinica_id = $atendimento["clinica_id"];
     					$ct_atendimento->consulta_id = $procedimento_id;
     					$ct_atendimento->ds_preco =  $atendimento["atendimentos"];
     					$ct_atendimento->cs_status = 'A';
