@@ -88,12 +88,12 @@ class AtendimentoController extends Controller
     		try {
     		
 	    		foreach ($data as $atendimento) {
-	    			
-	    			$vigencia = $atendimento['data_inicio'].' - '.$atendimento['data_fim'];
+	    		    $vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
 	    			$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-	     			//dd($consulta);
+	     			
+	    			//dd($atendimento["id"]);
+	    			$atendimento_id = $atendimento["id"];
 	    			
-	    			$atendimento_id = $atendimento['﻿id'];
 	    			//$atendimento = Atendimento::where(['clinica_id' => $atendimento['clinicaid'], 'consulta_id' => $consulta_id, 'cs_status' => 'A'])->first();
 	    			$ct_atendimento = Atendimento::findorfail($atendimento_id);
 	    			
@@ -101,14 +101,14 @@ class AtendimentoController extends Controller
 	    			
 	    			if(is_null($ct_atendimento)) {
 	    				$ct_atendimento = new Atendimento();
-	    				$ct_atendimento->clinica_id = $atendimento['clinicaid'];
+	    				$ct_atendimento->clinica_id = $atendimento["clinica_id"];
 	    				$ct_atendimento->consulta_id = $consulta_id;
-	    				$ct_atendimento->ds_preco =  $atendimento['atendimentos'];
+	    				$ct_atendimento->ds_preco =  $atendimento["atendimentos"];
 	    				$ct_atendimento->cs_status = 'A';
 	    				$ct_atendimento->save();
 	    			}
 	    			//dd($atendimento);
-	    			if($atendimento['comercial'] != '' & $atendimento['net'] != '') {
+	    			if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
 	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A']);
 	    				
 	    				//--preco open-------------------------------
@@ -121,8 +121,8 @@ class AtendimentoController extends Controller
 	    					$preco->cs_status = 'A';
 	    					$preco->data_inicio = $data_vigencia['de'];
 	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento['comercial'];
-	    					$preco->vl_net = $atendimento['net'];
+	    					$preco->vl_comercial = $atendimento["comercial"];
+	    					$preco->vl_net = $atendimento["net"];
 	    				
 	    					$preco->save();
 	    				}
@@ -139,8 +139,8 @@ class AtendimentoController extends Controller
 	    					$preco->cs_status = 'A';
 	    					$preco->data_inicio = $data_vigencia['de'];
 	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento['premium'];
-	    					$preco->vl_net = $atendimento['net'];
+	    					$preco->vl_comercial = $atendimento["premium"];
+	    					$preco->vl_net = $atendimento["net"];
 	    					
 	    					$preco->save();
 	    				}
@@ -157,8 +157,8 @@ class AtendimentoController extends Controller
 	    					$preco->cs_status = 'A';
 	    					$preco->data_inicio = $data_vigencia['de'];
 	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento['blue'];
-	    					$preco->vl_net = $atendimento['net'];
+	    					$preco->vl_comercial = $atendimento["blue"];
+	    					$preco->vl_net = $atendimento["net"];
 	    				
 	    					$preco->save();
 	    				}
@@ -175,8 +175,8 @@ class AtendimentoController extends Controller
 	    					$preco->cs_status = 'A';
 	    					$preco->data_inicio = $data_vigencia['de'];
 	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento['black'];
-	    					$preco->vl_net = $atendimento['net'];
+	    					$preco->vl_comercial = $atendimento["black"];
+	    					$preco->vl_net = $atendimento["net"];
 	    				
 	    					$preco->save();
 	    				}
@@ -193,8 +193,8 @@ class AtendimentoController extends Controller
 	    					$preco->cs_status = 'A';
 	    					$preco->data_inicio = $data_vigencia['de'];
 	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento['plus'];
-	    					$preco->vl_net = $atendimento['net'];
+	    					$preco->vl_comercial = $atendimento["plus"];
+	    					$preco->vl_net = $atendimento["net"];
 	    				
 	    					$preco->save();
 	    				}
@@ -242,10 +242,10 @@ class AtendimentoController extends Controller
     	
     			foreach ($data as $atendimento) {
     	
-    				$vigencia = $atendimento['data_inicio'].' - '.$atendimento['data_fim'];
+    				$vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
     				$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
     	
-    				$atendimento_id = $atendimento['﻿id'];
+    				$atendimento_id = $atendimento["id"];
     				//$atendimento = Atendimento::where(['clinica_id' => $atendimento['clinicaid'], 'consulta_id' => $consulta_id, 'cs_status' => 'A'])->first();
     				$ct_atendimento = Atendimento::findorfail($atendimento_id);
     	
@@ -253,14 +253,14 @@ class AtendimentoController extends Controller
     	
     				if(is_null($ct_atendimento)) {
     					$ct_atendimento = new Atendimento();
-    					$ct_atendimento->clinica_id = $atendimento['clinicaid'];
+    					$ct_atendimento->clinica_id = $atendimento["clinica_id"];
     					$ct_atendimento->consulta_id = $procedimento_id;
-    					$ct_atendimento->ds_preco =  $atendimento['atendimentos'];
+    					$ct_atendimento->ds_preco =  $atendimento["atendimentos"];
     					$ct_atendimento->cs_status = 'A';
     					$ct_atendimento->save();
     				}
     				//dd($atendimento);
-    				if($atendimento['comercial'] != '' & $atendimento['net'] != '') {
+    				if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
     					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A']);
     		    
     					//--preco open-------------------------------
@@ -273,8 +273,8 @@ class AtendimentoController extends Controller
     						$preco->cs_status = 'A';
     						$preco->data_inicio = $data_vigencia['de'];
     						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento['comercial'];
-    						$preco->vl_net = $atendimento['net'];
+    						$preco->vl_comercial = $atendimento["comercial"];
+    						$preco->vl_net = $atendimento["net"];
     						 
     						$preco->save();
     					}
@@ -291,8 +291,8 @@ class AtendimentoController extends Controller
     						$preco->cs_status = 'A';
     						$preco->data_inicio = $data_vigencia['de'];
     						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento['premium'];
-    						$preco->vl_net = $atendimento['net'];
+    						$preco->vl_comercial = $atendimento["premium"];
+    						$preco->vl_net = $atendimento["net"];
     	
     						$preco->save();
     					}
@@ -309,8 +309,8 @@ class AtendimentoController extends Controller
     						$preco->cs_status = 'A';
     						$preco->data_inicio = $data_vigencia['de'];
     						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento['blue'];
-    						$preco->vl_net = $atendimento['net'];
+    						$preco->vl_comercial = $atendimento["blue"];
+    						$preco->vl_net = $atendimento["net"];
     						 
     						$preco->save();
     					}
@@ -327,8 +327,8 @@ class AtendimentoController extends Controller
     						$preco->cs_status = 'A';
     						$preco->data_inicio = $data_vigencia['de'];
     						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento['black'];
-    						$preco->vl_net = $atendimento['net'];
+    						$preco->vl_comercial = $atendimento["black"];
+    						$preco->vl_net = $atendimento["net"];
     						 
     						$preco->save();
     					}
@@ -345,8 +345,8 @@ class AtendimentoController extends Controller
     						$preco->cs_status = 'A';
     						$preco->data_inicio = $data_vigencia['de'];
     						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento['plus'];
-    						$preco->vl_net = $atendimento['net'];
+    						$preco->vl_comercial = $atendimento["plus"];
+    						$preco->vl_net = $atendimento["net"];
     						 
     						$preco->save();
     					}
