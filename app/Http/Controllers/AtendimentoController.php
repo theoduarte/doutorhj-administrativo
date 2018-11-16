@@ -113,7 +113,7 @@ class AtendimentoController extends Controller
 	    				//--preco open-------------------------------
 	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
 	    				$preco = [];
-	    				if(!$ct_preco->exists()) {
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
 	    				} else {
 	    					dd($ct_preco);
