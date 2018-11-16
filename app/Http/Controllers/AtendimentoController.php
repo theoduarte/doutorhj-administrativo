@@ -111,12 +111,13 @@ class AtendimentoController extends Controller
 	    			if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
 	    				
 	    				//--preco open-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
-	    				dd($preco);
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if(!$ct_preco->exists()) {
 	    					$preco = new Preco();
 	    				} else {
-	    					dd($preco);
+	    					dd($ct_preco);
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
 	    				$preco->cd_preco = $ct_atendimento->id;
