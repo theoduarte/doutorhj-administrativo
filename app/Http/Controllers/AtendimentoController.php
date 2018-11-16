@@ -117,7 +117,6 @@ class AtendimentoController extends Controller
 	    					$preco = new Preco();
 	    				} else {
 	    					$preco = $ct_preco->first();
-	    					dd($preco);
 	    				}
 	    				
 	    				$preco->cd_preco = $ct_atendimento->id;
@@ -132,9 +131,12 @@ class AtendimentoController extends Controller
 	    				$preco->save();
 	    				
 	    				//--preco premium-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A'])->get();
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
 	    				$preco->cd_preco = $ct_atendimento->id;
@@ -149,9 +151,12 @@ class AtendimentoController extends Controller
 	    				$preco->save();
 	    				
 	    				//--preco blue-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A'])->get();
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
 	    				$preco->cd_preco = $ct_atendimento->id;
@@ -166,9 +171,12 @@ class AtendimentoController extends Controller
 	    				$preco->save();
 	    				
 	    				//--preco black-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A'])->get();
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
 	    				$preco->cd_preco = $ct_atendimento->id;
@@ -183,9 +191,12 @@ class AtendimentoController extends Controller
 	    				$preco->save();
 	    				
 	    				//--preco plus-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A'])->get();
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
 	    				$preco->cd_preco = $ct_atendimento->id;
@@ -261,12 +272,15 @@ class AtendimentoController extends Controller
     				}
     				//dd($atendimento);
     				if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A']);
-    		    
+    					
     					//--preco open-------------------------------
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A']);
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    					}
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
     					
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
@@ -280,10 +294,13 @@ class AtendimentoController extends Controller
     					$preco->save();
     					
     					//--preco premium-------------------------------
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A']);
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A']);
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    					}
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
     					
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
@@ -297,10 +314,13 @@ class AtendimentoController extends Controller
     					$preco->save();
     					
     					//--preco blue-------------------------------
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A']);
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A']);
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    					}
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
     					
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
@@ -314,10 +334,13 @@ class AtendimentoController extends Controller
     					$preco->save();		
     		    
     					//--preco black-------------------------------
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A']);
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A']);
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    					}
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
     					
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
@@ -331,10 +354,13 @@ class AtendimentoController extends Controller
     					$preco->save();
     					
     					//--preco plus-------------------------------
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A']);
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A']);
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    					}
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
     					
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
