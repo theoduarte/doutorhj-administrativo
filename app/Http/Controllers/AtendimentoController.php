@@ -199,7 +199,7 @@ class AtendimentoController extends Controller
 	    		
 //     		} catch (\Exception $e) {
 //     			########### FINISHIING TRANSACTION ##########
-//     			DB::rollback();
+    			DB::rollback();
 //     			#############################################
 //     			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços das Consultas não foram atualizados. Por favor, tente novamente.');
 //     		}
