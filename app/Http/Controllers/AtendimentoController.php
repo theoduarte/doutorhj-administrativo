@@ -116,8 +116,8 @@ class AtendimentoController extends Controller
 	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
 	    				} else {
-	    					dd($ct_preco);
 	    					$preco = $ct_preco->first();
+	    					dd($preco);
 	    				}
 	    				
 	    				$preco->cd_preco = $ct_atendimento->id;
