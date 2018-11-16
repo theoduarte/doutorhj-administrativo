@@ -238,7 +238,7 @@ class AtendimentoController extends Controller
     		DB::beginTransaction();
     		#############################################
     	
-    		try {
+//     		try {
     	
     			foreach ($data as $atendimento) {
     	
@@ -353,15 +353,15 @@ class AtendimentoController extends Controller
     				}
     			}
     			 
-    		} catch (\Exception $e) {
+//     		} catch (\Exception $e) {
     			########### FINISHIING TRANSACTION ##########
-    			DB::rollback();
+//     			DB::rollback();
     			#############################################
-    			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços dos Procedimentos não foram atualizados. Por favor, tente novamente.');
-    		}
+//     			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços dos Procedimentos não foram atualizados. Por favor, tente novamente.');
+//     		}
     	
     		########### FINISHIING TRANSACTION ##########
-    		DB::commit();
+//     		DB::commit();
     		#############################################
     	}
     
