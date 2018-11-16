@@ -90,9 +90,9 @@ class AtendimentoController extends Controller
 	    		foreach ($data as $atendimento) {
 	    		    $vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
 	    			$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-	     			dd($atendimento);
+	     			//dd($atendimento);
 	    			//dd($atendimento["id"]);
-	    			$atendimento_id = $atendimento["id"];
+	    			$atendimento_id = $atendimento["﻿id"];
 	    			
 	    			//$atendimento = Atendimento::where(['clinica_id' => $atendimento['clinicaid'], 'consulta_id' => $consulta_id, 'cs_status' => 'A'])->first();
 	    			$ct_atendimento = Atendimento::findorfail($atendimento_id);
