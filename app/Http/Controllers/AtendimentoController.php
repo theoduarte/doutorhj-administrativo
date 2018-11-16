@@ -111,7 +111,7 @@ class AtendimentoController extends Controller
 	    			if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
 	    				
 	    				//--preco open-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A']);
+	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
 	    				if(!$preco->exists()) {
 	    					$preco = new Preco();
 	    				} else {
@@ -130,7 +130,7 @@ class AtendimentoController extends Controller
 	    				$preco->save();
 	    				
 	    				//--preco premium-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A']);
+	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A'])->get();
 	    				if(!$preco->exists()) {
 	    					$preco = new Preco();
 	    				}
@@ -147,7 +147,7 @@ class AtendimentoController extends Controller
 	    				$preco->save();
 	    				
 	    				//--preco blue-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A']);
+	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A'])->get();
 	    				if(!$preco->exists()) {
 	    					$preco = new Preco();
 	    				}
@@ -164,7 +164,7 @@ class AtendimentoController extends Controller
 	    				$preco->save();
 	    				
 	    				//--preco black-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A']);
+	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A'])->get();
 	    				if(!$preco->exists()) {
 	    					$preco = new Preco();
 	    				}
@@ -181,7 +181,7 @@ class AtendimentoController extends Controller
 	    				$preco->save();
 	    				
 	    				//--preco plus-------------------------------
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A']);
+	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A'])->get();
 	    				if(!$preco->exists()) {
 	    					$preco = new Preco();
 	    				}
