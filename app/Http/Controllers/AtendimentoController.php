@@ -90,7 +90,7 @@ class AtendimentoController extends Controller
 	    		foreach ($data as $atendimento) {
 	    		    $vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
 	    			$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-	     			//dd($atendimento);
+	     			dd($atendimento);
 	    			//dd($atendimento["id"]);
 	    			$atendimento_id = $atendimento["﻿id"];
 	    			
