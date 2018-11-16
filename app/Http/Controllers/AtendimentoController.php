@@ -85,7 +85,7 @@ class AtendimentoController extends Controller
     		DB::beginTransaction();
     		#############################################
     		
-    		try {
+//     		try {
     		
 	    		foreach ($data as $atendimento) {
 	    		    $vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
@@ -101,7 +101,7 @@ class AtendimentoController extends Controller
 	    			
 	    			if(is_null($ct_atendimento)) {
 	    				$ct_atendimento = new Atendimento();
-	    				$ct_atendimento->clinica_id = $atendimento["clinica_id"];
+	    				$ct_atendimento->clinica_id = $atendimento["clinicaid"];
 	    				$ct_atendimento->consulta_id = $consulta_id;
 	    				$ct_atendimento->ds_preco =  $atendimento["atendimentos"];
 	    				$ct_atendimento->cs_status = 'A';
@@ -201,15 +201,15 @@ class AtendimentoController extends Controller
 	    			}
 	    		}
 	    		
-    		} catch (\Exception $e) {
+//     		} catch (\Exception $e) {
     			########### FINISHIING TRANSACTION ##########
     			DB::rollback();
     			#############################################
-    			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços das Consultas não foram atualizados. Por favor, tente novamente.');
-    		}
+//     			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços das Consultas não foram atualizados. Por favor, tente novamente.');
+//     		}
     		
     		########### FINISHIING TRANSACTION ##########
-    		DB::commit();
+//     		DB::commit();
     		#############################################
     	}
     	 
@@ -253,7 +253,7 @@ class AtendimentoController extends Controller
     	
     				if(is_null($ct_atendimento)) {
     					$ct_atendimento = new Atendimento();
-    					$ct_atendimento->clinica_id = $atendimento["clinica_id"];
+    					$ct_atendimento->clinica_id = $atendimento["clinicaid"];
     					$ct_atendimento->consulta_id = $procedimento_id;
     					$ct_atendimento->ds_preco =  $atendimento["atendimentos"];
     					$ct_atendimento->cs_status = 'A';
