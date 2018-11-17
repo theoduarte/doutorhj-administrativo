@@ -43,6 +43,11 @@ class Anuidade extends Model
     {
         return $this->belongsTo('App\Plano');
     }
+    
+    public function vigencia_pacientes()
+    {
+        return $this->hasMany('App\VigenciaPaciente');
+    }
 
 	public function setVlAnuidadeAnoAttribute($value)
 	{
