@@ -90,9 +90,9 @@ class AtendimentoController extends Controller
 	    		foreach ($data as $atendimento) {
 	    		    $vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
 	    			$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-	     			
+	     			//dd($atendimento);
 	    			//dd($atendimento["id"]);
-	    			$atendimento_id = $atendimento["id"];
+	    			$atendimento_id = $atendimento["﻿id"];
 	    			
 	    			//$atendimento = Atendimento::where(['clinica_id' => $atendimento['clinicaid'], 'consulta_id' => $consulta_id, 'cs_status' => 'A'])->first();
 	    			$ct_atendimento = Atendimento::findorfail($atendimento_id);
@@ -109,106 +109,117 @@ class AtendimentoController extends Controller
 	    			}
 	    			//dd($atendimento);
 	    			if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A']);
 	    				
 	    				//--preco open-------------------------------
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
-	    					$preco->cd_preco = $ct_atendimento->id;
-	    					$preco->atendimento_id = $ct_atendimento->id;
-	    					$preco->plano_id = 1;
-	    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-	    					$preco->cs_status = 'A';
-	    					$preco->data_inicio = $data_vigencia['de'];
-	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento["comercial"];
-	    					$preco->vl_net = $atendimento["net"];
-	    				
-	    					$preco->save();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A']);
+	    				$preco->cd_preco = $ct_atendimento->id;
+	    				$preco->atendimento_id = $ct_atendimento->id;
+	    				$preco->plano_id = 1;
+	    				$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+	    				$preco->cs_status = 'A';
+	    				$preco->data_inicio = $data_vigencia['de'];
+	    				$preco->data_fim = $data_vigencia['ate'];
+	    				$preco->vl_comercial = $atendimento["comercial"];
+	    				$preco->vl_net = $atendimento["net"];
+	    				$preco->save();
 	    				
 	    				//--preco premium-------------------------------
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
-	    					$preco->cd_preco = $ct_atendimento->id;
-	    					$preco->atendimento_id = $ct_atendimento->id;
-	    					$preco->plano_id = 2;
-	    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-	    					$preco->cs_status = 'A';
-	    					$preco->data_inicio = $data_vigencia['de'];
-	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento["premium"];
-	    					$preco->vl_net = $atendimento["net"];
-	    					
-	    					$preco->save();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A']);
+	    				$preco->cd_preco = $ct_atendimento->id;
+	    				$preco->atendimento_id = $ct_atendimento->id;
+	    				$preco->plano_id = 2;
+	    				$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+	    				$preco->cs_status = 'A';
+	    				$preco->data_inicio = $data_vigencia['de'];
+	    				$preco->data_fim = $data_vigencia['ate'];
+	    				$preco->vl_comercial = $atendimento["premium"];
+	    				$preco->vl_net = $atendimento["net"];
+	    				$preco->save();
 	    				
 	    				//--preco blue-------------------------------
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
-	    					$preco->cd_preco = $ct_atendimento->id;
-	    					$preco->atendimento_id = $ct_atendimento->id;
-	    					$preco->plano_id = 3;
-	    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-	    					$preco->cs_status = 'A';
-	    					$preco->data_inicio = $data_vigencia['de'];
-	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento["blue"];
-	    					$preco->vl_net = $atendimento["net"];
-	    				
-	    					$preco->save();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A']);
+	    				$preco->cd_preco = $ct_atendimento->id;
+	    				$preco->atendimento_id = $ct_atendimento->id;
+	    				$preco->plano_id = 3;
+	    				$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+	    				$preco->cs_status = 'A';
+	    				$preco->data_inicio = $data_vigencia['de'];
+	    				$preco->data_fim = $data_vigencia['ate'];
+	    				$preco->vl_comercial = $atendimento["blue"];
+	    				$preco->vl_net = $atendimento["net"];
+	    				$preco->save();
 	    				
 	    				//--preco black-------------------------------
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
-	    					$preco->cd_preco = $ct_atendimento->id;
-	    					$preco->atendimento_id = $ct_atendimento->id;
-	    					$preco->plano_id = 4;
-	    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-	    					$preco->cs_status = 'A';
-	    					$preco->data_inicio = $data_vigencia['de'];
-	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento["black"];
-	    					$preco->vl_net = $atendimento["net"];
-	    				
-	    					$preco->save();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
 	    				
-	    				$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A']);
+	    				$preco->cd_preco = $ct_atendimento->id;
+	    				$preco->atendimento_id = $ct_atendimento->id;
+	    				$preco->plano_id = 4;
+	    				$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+	    				$preco->cs_status = 'A';
+	    				$preco->data_inicio = $data_vigencia['de'];
+	    				$preco->data_fim = $data_vigencia['ate'];
+	    				$preco->vl_comercial = $atendimento["black"];
+	    				$preco->vl_net = $atendimento["net"]; 
+	    				$preco->save();
 	    				
 	    				//--preco plus-------------------------------
-	    				if(!$preco->exists()) {
+	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A'])->get();
+	    				$preco = [];
+	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
-	    					$preco->cd_preco = $ct_atendimento->id;
-	    					$preco->atendimento_id = $ct_atendimento->id;
-	    					$preco->plano_id = 5;
-	    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-	    					$preco->cs_status = 'A';
-	    					$preco->data_inicio = $data_vigencia['de'];
-	    					$preco->data_fim = $data_vigencia['ate'];
-	    					$preco->vl_comercial = $atendimento["plus"];
-	    					$preco->vl_net = $atendimento["net"];
-	    				
-	    					$preco->save();
+	    				} else {
+	    					$preco = $ct_preco->first();
 	    				}
+	    				
+	    				$preco->cd_preco = $ct_atendimento->id;
+	    				$preco->atendimento_id = $ct_atendimento->id;
+	    				$preco->plano_id = 5;
+	    				$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+	    				$preco->cs_status = 'A';
+	    				$preco->data_inicio = $data_vigencia['de'];
+	    				$preco->data_fim = $data_vigencia['ate'];
+	    				$preco->vl_comercial = $atendimento["plus"];
+	    				$preco->vl_net = $atendimento["net"]; 
+	    				$preco->save();
 	    			}
 	    		}
 	    		
     		} catch (\Exception $e) {
-    			########### FINISHIING TRANSACTION ##########
+//     			########### FINISHIING TRANSACTION ##########
     			DB::rollback();
-    			#############################################
+//     			#############################################
     			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços das Consultas não foram atualizados. Por favor, tente novamente.');
     		}
     		
-    		########### FINISHIING TRANSACTION ##########
+     		########### FINISHIING TRANSACTION ##########
     		DB::commit();
     		#############################################
     	}
@@ -244,8 +255,8 @@ class AtendimentoController extends Controller
     	
     				$vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
     				$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-    	
-    				$atendimento_id = $atendimento["id"];
+    				//dd($atendimento);
+    				$atendimento_id = $atendimento["﻿id"];
     				//$atendimento = Atendimento::where(['clinica_id' => $atendimento['clinicaid'], 'consulta_id' => $consulta_id, 'cs_status' => 'A'])->first();
     				$ct_atendimento = Atendimento::findorfail($atendimento_id);
     	
@@ -255,101 +266,112 @@ class AtendimentoController extends Controller
     					$ct_atendimento = new Atendimento();
     					$ct_atendimento->clinica_id = $atendimento["clinica_id"];
     					$ct_atendimento->consulta_id = $procedimento_id;
-    					$ct_atendimento->ds_preco =  $atendimento["atendimentos"];
+    					$ct_atendimento->ds_preco =  $atendimento["exames"];
     					$ct_atendimento->cs_status = 'A';
     					$ct_atendimento->save();
     				}
     				//dd($atendimento);
     				if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A']);
-    		    
+    					
     					//--preco open-------------------------------
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    						$preco->cd_preco = $ct_atendimento->id;
-    						$preco->atendimento_id = $ct_atendimento->id;
-    						$preco->plano_id = 1;
-    						$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-    						$preco->cs_status = 'A';
-    						$preco->data_inicio = $data_vigencia['de'];
-    						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento["comercial"];
-    						$preco->vl_net = $atendimento["net"];
-    						 
-    						$preco->save();
-    					}
-    		    
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A']);
-    		    
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
+    					
+    					$preco->cd_preco = $ct_atendimento->id;
+    					$preco->atendimento_id = $ct_atendimento->id;
+    					$preco->plano_id = 1;
+    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+    					$preco->cs_status = 'A';
+    					$preco->data_inicio = $data_vigencia['de'];
+    					$preco->data_fim = $data_vigencia['ate'];
+    					$preco->vl_comercial = $atendimento["comercial"];
+    					$preco->vl_net = $atendimento["net"];
+    					$preco->save();
+    					
     					//--preco premium-------------------------------
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A'])->get();
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    						$preco->cd_preco = $ct_atendimento->id;
-    						$preco->atendimento_id = $ct_atendimento->id;
-    						$preco->plano_id = 2;
-    						$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-    						$preco->cs_status = 'A';
-    						$preco->data_inicio = $data_vigencia['de'];
-    						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento["premium"];
-    						$preco->vl_net = $atendimento["net"];
-    	
-    						$preco->save();
-    					}
-    		    
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A']);
-    		    
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
+    					
+    					$preco->cd_preco = $ct_atendimento->id;
+    					$preco->atendimento_id = $ct_atendimento->id;
+    					$preco->plano_id = 2;
+    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+    					$preco->cs_status = 'A';
+    					$preco->data_inicio = $data_vigencia['de'];
+    					$preco->data_fim = $data_vigencia['ate'];
+    					$preco->vl_comercial = $atendimento["premium"];
+    					$preco->vl_net = $atendimento["net"];    					 
+    					$preco->save();
+    					
     					//--preco blue-------------------------------
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A'])->get();
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    						$preco->cd_preco = $ct_atendimento->id;
-    						$preco->atendimento_id = $ct_atendimento->id;
-    						$preco->plano_id = 3;
-    						$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-    						$preco->cs_status = 'A';
-    						$preco->data_inicio = $data_vigencia['de'];
-    						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento["blue"];
-    						$preco->vl_net = $atendimento["net"];
-    						 
-    						$preco->save();
-    					}
-    		    
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A']);
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
+    					
+    					$preco->cd_preco = $ct_atendimento->id;
+    					$preco->atendimento_id = $ct_atendimento->id;
+    					$preco->plano_id = 3;
+    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+    					$preco->cs_status = 'A';
+    					$preco->data_inicio = $data_vigencia['de'];
+    					$preco->data_fim = $data_vigencia['ate'];
+    					$preco->vl_comercial = $atendimento["blue"];
+    					$preco->vl_net = $atendimento["net"];
+    					$preco->save();		
     		    
     					//--preco black-------------------------------
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A'])->get();
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    						$preco->cd_preco = $ct_atendimento->id;
-    						$preco->atendimento_id = $ct_atendimento->id;
-    						$preco->plano_id = 4;
-    						$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-    						$preco->cs_status = 'A';
-    						$preco->data_inicio = $data_vigencia['de'];
-    						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento["black"];
-    						$preco->vl_net = $atendimento["net"];
-    						 
-    						$preco->save();
-    					}
-    		    
-    					$preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A']);
-    		    
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
+    					
+    					$preco->cd_preco = $ct_atendimento->id;
+    					$preco->atendimento_id = $ct_atendimento->id;
+    					$preco->plano_id = 4;
+    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+    					$preco->cs_status = 'A';
+    					$preco->data_inicio = $data_vigencia['de'];
+    					$preco->data_fim = $data_vigencia['ate'];
+    					$preco->vl_comercial = $atendimento["black"];
+    					$preco->vl_net = $atendimento["net"];
+    					$preco->save();
+    					
     					//--preco plus-------------------------------
-    					if(!$preco->exists()) {
+    					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A'])->get();
+    					$preco = [];
+    					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
-    						$preco->cd_preco = $ct_atendimento->id;
-    						$preco->atendimento_id = $ct_atendimento->id;
-    						$preco->plano_id = 5;
-    						$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
-    						$preco->cs_status = 'A';
-    						$preco->data_inicio = $data_vigencia['de'];
-    						$preco->data_fim = $data_vigencia['ate'];
-    						$preco->vl_comercial = $atendimento["plus"];
-    						$preco->vl_net = $atendimento["net"];
-    						 
-    						$preco->save();
-    					}
+    					} else {
+	    					$preco = $ct_preco->first();
+	    				}
+    					
+    					$preco->cd_preco = $ct_atendimento->id;
+    					$preco->atendimento_id = $ct_atendimento->id;
+    					$preco->plano_id = 5;
+    					$preco->tp_preco_id = TipoPreco::INDIVIDUAL;
+    					$preco->cs_status = 'A';
+    					$preco->data_inicio = $data_vigencia['de'];
+    					$preco->data_fim = $data_vigencia['ate'];
+    					$preco->vl_comercial = $atendimento["plus"];
+    					$preco->vl_net = $atendimento["net"];    						
+    					$preco->save();
     				}
     			}
     			 

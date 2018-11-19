@@ -21,14 +21,19 @@ class VigenciaPaciente extends Model
     /**
      * @var array
      */
-    protected $fillable = ['plano_id', 'paciente_id', 'data_inicio', 'data_fim', 'cobertura', 'created_at', 'updated_at'];
+    protected $fillable = ['anuidade_id', 'paciente_id', 'data_inicio', 'data_fim', 'cobertura', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function plano()
+//     public function plano()
+//     {
+//         return $this->belongsTo('App\Plano');
+//     }
+
+    public function anuidade()
     {
-        return $this->belongsTo('App\Plano');
+        return $this->belongsTo('App\Anuidade');
     }
 
     /**
