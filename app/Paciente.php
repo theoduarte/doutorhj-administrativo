@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -149,23 +150,27 @@ class Paciente extends Model
 		return Plano::findOrFail($this->getPlanoAtivo($this->attributes['id'])); //some logic to return numbers
 	}
 
-	public static function getPlanoAtivo($paciente_id = null)
+	public static function getPlanoAtivo($paciente_id)
 	{
-		if(is_null($paciente_id)) {
+		$vigenciaPac = self::getVigenciaAtiva($paciente_id);
+
+		if(is_null($vigenciaPac)) {
 			return Plano::OPEN;
-		}
-
-		$vigenciaPac = VigenciaPaciente::with('anuidade')->where('paciente_id', '=', $paciente_id)
-    		->where(function($query) {
-    		    $query->where('cobertura_ativa', '=', true)->orWhere(function($query2) {
-    		        $query2->where('data_inicio', '<=', date('Y-m-d H:i:s'))->where('data_fim', '>=', date('Y-m-d H:i:s'));
-    		    });
-		})->first();
-
-		if(is_null($vigenciaPac->anuidade)) {
-		    return Plano::OPEN;
 		} else {
-		    return $vigenciaPac->anuidade->plano_id;
+			return $vigenciaPac->anuidade->plano_id;
 		}
+	}
+
+	public static function getVigenciaAtiva($paciente_id)
+	{
+		$vigenciaPac = VigenciaPaciente::where(['paciente_id' => $paciente_id])
+			->where(function($query) {
+				$query->whereDate('data_inicio', '<=', date('Y-m-d H:i:s'))
+					->whereDate('data_fim', '>=', date('Y-m-d H:i:s'))
+					->orWhere(DB::raw('cobertura_ativa'), '=', true);
+			})
+			->first();
+
+		return $vigenciaPac;
 	}
 }
