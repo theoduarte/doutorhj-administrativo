@@ -15,8 +15,18 @@
             if( !clinica_id ) return false;
 
             if( type == 'Consulta' ) {
-                if( !profissional_id ) return false;
-                if( !filial_id ) return false;
+                if( !profissional_id ) {return false;}
+                if( !filial_id ) {
+                	swal(
+                	        {
+                	            title: 'Solicitação Falhou!',
+                	            text: 'O Agendamento em questão não possui nenhuma filial informada!',
+                	            type: 'error',
+                	            confirmButtonClass: 'btn btn-confirm mt-2'
+                	        }
+                	    );
+                    return false;
+                }
                 if( !data ) return false;
                 if( !hora ) return false;
             }
@@ -186,118 +196,115 @@
 
 
 <div class="modal" id="dialog-agendar">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="formConsulta" name="formConsulta">
-            {{ csrf_field() }}
-            <input type="hidden" name="ticket" id="ticket" value="">
-            <input type="hidden" name="agendamento_id" id="agendamento_id" value="">
-            <input type="hidden" name="clinica_id" id="clinica_id" value="">
-            <input type="hidden" name="profissional_id" id="profissional_id" value="">
-            <input type="hidden" name="especialidade_id" id="especialidade_id" value="">
-            <input type="hidden" name="tp_prestador" id="tp_prestador" value="">
-            <input type="hidden" name="data" id="data" value="">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Modal title</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="formConsulta" name="formConsulta">
+					{{ csrf_field() }} <input type="hidden" name="ticket" id="ticket"
+						value=""> <input type="hidden" name="agendamento_id"
+						id="agendamento_id" value=""> <input type="hidden"
+						name="clinica_id" id="clinica_id" value=""> <input type="hidden"
+						name="profissional_id" id="profissional_id" value=""> <input
+						type="hidden" name="especialidade_id" id="especialidade_id"
+						value=""> <input type="hidden" name="tp_prestador"
+						id="tp_prestador" value=""> <input type="hidden" name="data"
+						id="data" value="">
 
-            <div class="row">
-                <div class="col-6">
-                    <label for="confPaciente">
-                        Paciente:
-                        <div id="confPaciente"></div>
-                    </label>
-                </div>
-                <div class="col-6">
-                    <label for="confClinica">Clínica:
-                        <div id="confClinica"></div>
-                    </label>
-                </div>
-            
-                <div class="col-6">
-                    <label for="confProfissional">Profissional:
-                        <div id="confProfissional"></div>
-                    </label>
-                </div>
-                <div class="col-6">
-                    <label for="confTicket">Ticket:
-                        <div id="confTicket"></div>
-                    </label>
-                </div>
-                
-                <div class="col-12">
-                    <label for="confDtHora">
-                        Especialidade:
-                        <div id="confEspecialidade"></div>
-                    </label>
-                </div>
+					<div class="row">
+						<div class="col-6">
+							<label for="confPaciente"> Paciente:
+								<div id="confPaciente"></div>
+							</label>
+						</div>
+						<div class="col-6">
+							<label for="confClinica">Clínica:
+								<div id="confClinica"></div>
+							</label>
+						</div>
 
-                <div class="col-12">
-                    <label for="confAtendimento">
-                        <span class="spanConsulta">Consulta/Exame:</span>
-                        <div id="confAtendimento"></div>
-                    </label>
-                </div>
-            
-                <div class="col-3">
-                    <label for="confDtHora">
-                        Data/Hora:
-                        <div id="confDtHora"></div>
-                    </label>
-                </div>
+						<div class="col-6">
+							<label for="confProfissional">Profissional:
+								<div id="confProfissional"></div>
+							</label>
+						</div>
+						<div class="col-6">
+							<label for="confTicket">Ticket:
+								<div id="confTicket"></div>
+							</label>
+						</div>
 
-                <div class="col-3">
-                    <label for="confValorAtendimento">
-                        Valor Atend. (R$):
-                        <div id="confValorAtendimento"></div>
-                    </label>
-                </div>
+						<div class="col-12">
+							<label for="confDtHora"> Especialidade:
+								<div id="confEspecialidade"></div>
+							</label>
+						</div>
 
-                <div class="col-3">
-                    <label for="confValorPago">
-                        Valor Pago (R$):
-                        <div id="confValorPago"></div>
-                    </label>
-                </div>
+						<div class="col-12">
+							<label for="confAtendimento"> <span class="spanConsulta">Consulta/Exame:</span>
+								<div id="confAtendimento"></div>
+							</label>
+						</div>
 
-                <div class="col-3">
-                    <label for="confFilial">
-                        Filial:
-                        <div id="confFilial"></div>
-                    </label>
-                </div>
-            </div>
-            
-            <div style="height:10px;"></div>
+						<div class="col-3">
+							<label for="confDtHora"> Data/Hora:
+								<div id="confDtHora"></div>
+							</label>
+						</div>
 
-            <div class="row fill">
-                <div class="col-4">
-                    <label>Agendar para:</label>
-                    <input type="text" class="form-control mascaraData input-datepicker" placeholder="dd/mm/yyyy" id="datepicker-agenda">
-                </div>
-                <div class="col-4">
-                    <label>Hora:</label>
-                    <select class="form-control" id="time" name="time">
-                        <option value=""></option>
-                    </select>
-                </div>
+						<div class="col-3">
+							<label for="confValorAtendimento"> Valor Atend. (R$):
+								<div id="confValorAtendimento"></div>
+							</label>
+						</div>
 
-                <div class="col-4">
-                    <label for="filial_id">Filial</label>
-                    <select id="filial_id" class="form-control select2" name="filial_id"></select>
-                </div>
-            </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#dialog-update">Alterar os dados do agendamento</button>
-        <button type="button" class="btn btn-primary">Agendar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
+						<div class="col-3">
+							<label for="confValorPago"> Valor Pago (R$):
+								<div id="confValorPago"></div>
+							</label>
+						</div>
+
+						<div class="col-3">
+							<label for="confFilial"> Filial:
+								<div id="confFilial"></div>
+							</label>
+						</div>
+					</div>
+
+					<div style="height: 10px;"></div>
+
+					<div class="row fill">
+						<div class="col-4">
+							<label>Agendar para:</label> <input type="text"
+								class="form-control mascaraData input-datepicker"
+								placeholder="dd/mm/yyyy" id="datepicker-agenda">
+						</div>
+						<div class="col-4">
+							<label>Hora:</label> <select class="form-control" id="time"
+								name="time">
+								<option value=""></option>
+							</select>
+						</div>
+
+						<div class="col-4">
+							<label for="filial_id">Filial</label>
+							<select id="filial_id" class="form-control select2" name="filial_id"></select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-toggle="modal"
+					data-target="#dialog-update">Alterar os dados do agendamento</button>
+				<button type="button" class="btn btn-primary">Agendar</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
 </div>
