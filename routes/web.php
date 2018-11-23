@@ -117,6 +117,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('update-precos', 'AtendimentoController@updatePrecos')->name('atualizar-precos');
     Route::post('update-preco-consultas', 'AtendimentoController@updatePrecoConsultas')->name('atualizar-preco-consultas');
     Route::post('update-preco-procedimentos', 'AtendimentoController@updatePrecoProcedimentos')->name('atualizar-preco-procedimentos');
+    
+    Route::post('lista-consultas-xls', 'AtendimentoController@geraXls')->name('consultas-xls');
+    Route::post('lista-exames-xls', 'AtendimentoController@geraXls')->name('exames-xls');
 });
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');

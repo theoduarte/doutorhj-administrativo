@@ -8,6 +8,8 @@ use App\Atendimento;
 use Illuminate\Support\Facades\DB;
 use App\Preco;
 use App\TipoPreco;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Consulta;
 
 class AtendimentoController extends Controller
 {
@@ -388,5 +390,91 @@ class AtendimentoController extends Controller
     	}
     
     	return redirect()->route('atualizar-precos')->with('success', 'Os Preços dos Procedimentos foram atualizados com sucesso!');
+    }
+    
+    /**
+     * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico.
+     *
+     */
+    public function geraXls()
+    {
+    	Excel::create('DRHJ_RELATORIO_CONSULTAS_' . date('d-m-Y~H_i_s'), function ($excel) {
+    		$excel->sheet('Doutorhj', function ($sheet) {
+    			$cabecalho = array('Data' => date('d-m-Y H:i'));
+    
+    			// Font family
+    			$sheet->setFontFamily('Comic Sans MS');
+    
+    			// Set font with ->setStyle()`
+    			$sheet->setStyle(array(
+    					'font' => array(
+    							'name' => 'Calibri',
+    							'size' => 12,
+    							'bold' => false
+    					)
+    			));
+    
+    			/* $list_consultas = ItemPedido::whereHas('agendamento', function ($query) use($status) {
+    				if (!empty(Request::get('de')) && !empty(Request::get('ate'))) {
+    					$query->whereBetween('dt_atendimento', array(
+    							Carbon::createFromFormat('d/m/Y H:i:s', Request::get('de') . ' 00:00:00'),
+    							Carbon::createFromFormat('d/m/Y H:i:s', Request::get('ate') . ' 23:59:59')
+    					));
+    				}
+    
+    				$query->whereIn('cs_status', $status);
+    				$query->orderBy('dt_atendimento', 'desc');
+    			})
+    			->whereHas('agendamento.atendimento', function ($query) {
+    				$query->whereNotNull('procedimento_id');
+    			})
+    			->with([
+    					'pedido',
+    					'agendamento.profissional',
+    					'agendamento.atendimento',
+    					'agendamento.atendimento.clinica',
+    					'agendamento.paciente',
+    					'agendamento.paciente.documentos',
+    					'agendamento.atendimento.procedimento'
+    			])->get();
+    
+    			$professionals = Profissional::whereHas('agendamentos.atendimento', function($query) {
+    				$query->whereNotNull('consulta_id');
+    			})
+    			->with([
+    					'agendamentos' => function($query) use($status) {
+    					if (!empty(Request::get('de')) && !empty(Request::get('ate'))) {
+    						$query->whereBetween('dt_atendimento', array(
+    								Carbon::createFromFormat('d/m/Y H:i:s', Request::get('de') . ' 00:00:00'),
+    								Carbon::createFromFormat('d/m/Y H:i:s', Request::get('ate') . ' 23:59:59')
+    						));
+    					}
+    
+    					$query->whereIn('cs_status', $status);
+    					},
+    					'agendamentos.atendimento'
+    							])
+    							->get();
+    
+    			$clinica = Clinica::first(); */
+    			
+    			$list_consultas = DB::table('atendimentos as at')
+    			->distinct()
+    			->join('clinicas', 			function($join1) { $join1->on('at.clinica_id', '=', 'clinicas.id');})
+    			->join('clinica_documento',	function($join2) { $join2->on('clinica_documento.clinica_id', '=', 'clinicas.id');})
+    			->join('documentos',		function($join3) { $join3->on('documentos.id', '=', 'clinica_documento.documento_id');})
+    			->join('consultas',			function($join4) { $join4->on('consultas.id', '=', 'at.consulta_id');})
+    			->join('especialidades',	function($join5) { $join5->on('especialidades.id', '=', 'consultas.especialidade_id');})
+    			->select('at.id', 'at.ds_preco', 'at.clinica_id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'documentos.te_documento', 'clinicas.tp_prestador', 'especialidades.ds_especialidade')
+    			->where(['at.procedimento_id' => null])
+    			->limit(10)
+    			->orderby('at.ds_preco', 'asc')
+    			->orderby('at.id', 'asc')
+    			->get();
+    			dd($list_consultas);
+    
+    			$sheet->loadView('financeiro.excel', compact('atendimentoExame', 'professionals', 'cabecalho', 'clinica', 'status'));
+    		});
+    	})->export('xls');
     }
 }
