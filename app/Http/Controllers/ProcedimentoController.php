@@ -37,7 +37,7 @@ class ProcedimentoController extends Controller
         $get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	
-    	$procedimentos = Procedimento::with('tag_populars')->where(DB::raw('to_str(cd_procedimento)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(ds_procedimento)'), 'LIKE', '%'.$search_term.'%')->orderby('ds_procedimento', 'asc')->sortable()->paginate(10);
+    	$procedimentos = Procedimento::with('tag_populars')->where(DB::raw('to_str(cd_procedimento)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(ds_procedimento)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
     	
     	return view('procedimentos.index', compact('procedimentos'));
     }

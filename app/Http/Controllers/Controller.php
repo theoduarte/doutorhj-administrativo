@@ -25,8 +25,8 @@ class Controller extends BaseController
             $nrCep = ltrim($nrCep, '0');
             $nrCep = sprintf("%08d", $nrCep);
             
-            # busca na api doctorhoje---------------------------------------------
-            $token = 'o2z554dpxadq0db137gw25ud5ahrlt1j'; // token doctorhoje api
+            # busca na api doutorhoje---------------------------------------------
+            $token = 'o2z554dpxadq0db137gw25ud5ahrlt1j'; // token doutorhoje api
 			$url = 'https://api.doutorhoje.com.br/api/v1/consultar-cep/'.$nrCep;
             
             $ch = curl_init();
