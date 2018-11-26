@@ -18,6 +18,7 @@
     		<tr style="background-color: #eeeeee;">
     			<th>id</th>
                 <th>ds_preco</th>
+                <th>codigo</th>
                 <th>clinica_id</th>
                 <th>nm_razao_social</th>
                 <th>nm_fantasia</th>
@@ -54,6 +55,7 @@
 				<tr>
 					<td>{{$item_consulta->id}}</td>
                     <td>{{$item_consulta->ds_preco}}</td>
+                    <td>{{$item_consulta->codigo}}</td>
                     <td>{{$item_consulta->clinica_id}}</td>
                     <td>{{$item_consulta->nm_razao_social}}</td>
                     <td>{{$item_consulta->nm_fantasia}}</td>

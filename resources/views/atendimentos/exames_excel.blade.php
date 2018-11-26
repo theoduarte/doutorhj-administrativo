@@ -19,6 +19,7 @@
     			<th>id</th>
                 <th>exames</th>
                 <th>ds_atendimento</th>
+                <th>codigo</th>
                 <th>preco_id</th>
                 <th>nm_razao_social</th>
                 <th>nm_fantasia</th>
@@ -50,6 +51,7 @@
 					<td>{{$item_exame->id}}</td>
                     <td>{{$item_exame->exames}}</td>
                     <td>{{$item_exame->tipo_atendimento}}</td>
+                    <td>{{$item_exame->codigo}}</td>
                     <td>
                     	@if(sizeof($item_exame->precos) > 0)
                     		{{$item_exame->precos->first()->tp_preco_id}}

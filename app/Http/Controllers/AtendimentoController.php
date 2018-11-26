@@ -430,7 +430,7 @@ class AtendimentoController extends Controller
         			->join('cidades',	        function($join9) { $join9->on('cidades.id', '=', 'enderecos.cidade_id');})
         			->join('profissionals',	    function($join10) { $join10->on('profissionals.id', '=', 'atendimentos.profissional_id')->on('profissionals.cs_status', '=', DB::raw("'A'"));})
         			//     			->select('atendimentos.*')
-        			->select('atendimentos.id', 'atendimentos.ds_preco', 'atendimentos.clinica_id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'documentos.te_documento', 'clinicas.tp_prestador',
+        			->select('atendimentos.id', 'atendimentos.ds_preco', 'consultas.cd_consulta as codigo', 'atendimentos.clinica_id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'documentos.te_documento', 'clinicas.tp_prestador',
         			    'especialidades.ds_especialidade as especialidade', 'tipoatendimentos.ds_atendimento as tipo_atendimento', 'enderecos.te_bairro', 'enderecos.te_endereco',
         			    'enderecos.te_complemento', 'cidades.nm_cidade', 'cidades.sg_estado', 'atendimentos.profissional_id', 'profissionals.nm_primario', 'profissionals.nm_secundario',
         			    'profissionals.cs_sexo as genero')
@@ -490,7 +490,7 @@ class AtendimentoController extends Controller
                 ->join('cidades',	        function($join9) { $join9->on('cidades.id', '=', 'enderecos.cidade_id');})
 //                 ->join('profissionals',	    function($join10) { $join10->on('profissionals.id', '=', 'atendimentos.profissional_id')->on('profissionals.cs_status', '=', DB::raw("'A'"));})
                 //     			->select('atendimentos.*')
-                ->select('atendimentos.id', 'procedimentos.ds_procedimento as exames', 'tipoatendimentos.ds_atendimento as tipo_atendimento', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'atendimentos.clinica_id', 'documentos.te_documento as cnpj', 'clinicas.tp_prestador',
+                ->select('atendimentos.id', 'procedimentos.ds_procedimento as exames', 'procedimentos.cd_procedimento as codigo', 'tipoatendimentos.ds_atendimento as tipo_atendimento', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'atendimentos.clinica_id', 'documentos.te_documento as cnpj', 'clinicas.tp_prestador',
                     'enderecos.te_bairro', 'enderecos.te_endereco', 'enderecos.te_complemento', 'cidades.nm_cidade', 'cidades.sg_estado')
                     //      			 ->selectRaw("at.id, at.ds_preco, (SELECT precos.id FROM precos WHERE precos.atendimento_id = at.id AND precos.plano_id = 1 AND precos.cs_status = 'A' LIMIT 1) as preco_id")
                 //, function($query) {  $query->select('precos.id')->from('precos')->where('precos.atendimento_id','=','at.id')->where('precos.tp_preco_id', '=', 1);}
