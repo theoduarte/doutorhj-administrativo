@@ -156,8 +156,8 @@ class PacienteController extends Controller
     			 
     			$list_pacientes = Paciente::distinct()
     			->join('users',					function($join1) { $join1->on('pacientes.user_id', '=', 'users.id');})
-    			->join('documento_paciente',	function($join2) { $join2->on('documento_paciente.paciente_id', '=', 'pacientes.id');})
-    			->join('documentos',			function($join3) { $join3->on('documentos.id', '=', 'documento_paciente.documento_id');})
+    			->leftJoin('documento_paciente',	function($join2) { $join2->on('documento_paciente.paciente_id', '=', 'pacientes.id');})
+    			->leftJoin('documentos',			function($join3) { $join3->on('documentos.id', '=', 'documento_paciente.documento_id');})
     			->join('contato_paciente',		function($join4) { $join4->on('contato_paciente.paciente_id', '=', 'pacientes.id');})
     			->join('contatos',				function($join5) { $join5->on('contatos.id', '=', 'contato_paciente.contato_id');})
     			->select('pacientes.id', 'pacientes.nm_primario as nome', 'pacientes.nm_secundario as sobrenome', 'pacientes.cs_sexo as genero', 'pacientes.dt_nascimento as data_nascimento', 'documentos.tp_documento as tipo_documento',
