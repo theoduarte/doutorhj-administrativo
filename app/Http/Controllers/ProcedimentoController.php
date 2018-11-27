@@ -67,7 +67,7 @@ class ProcedimentoController extends Controller
     	
     	$procedimento->save();
     	
-    	return redirect()->route('procedimentos.index', ['sort' => 'id', 'direction' => 'asc'])->with('success', 'O Procedimento foi cadastrado com sucesso!');
+    	return redirect()->route('procedimentos.index', ['sort' => 'id', 'direction' => 'desc'])->with('success', 'O Procedimento foi cadastrado com sucesso!');
     }
 
     /**
