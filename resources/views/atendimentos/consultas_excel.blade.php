@@ -64,7 +64,7 @@
                     <td>{{$item_consulta->tp_prestador}}</td>
                     <td>{{$item_consulta->especialidade}}</td>
                     <td>{{$item_consulta->tipo_atendimento}}</td>
-                    <td>{{$item_consulta->cep}}</td>
+                    <td>{{intval($item_consulta->cep)}}</td>
                     <td>{{$item_consulta->te_bairro}}</td>
                     <td>{{$item_consulta->te_endereco}}</td>
                     <td>{{$item_consulta->te_complemento}}</td>
