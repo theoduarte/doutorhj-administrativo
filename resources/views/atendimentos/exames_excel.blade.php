@@ -26,6 +26,7 @@
                 <th>clinica_id</th>
                 <th>cnpj</th>
                 <th>tp_prestador</th>
+                <th>cep</th>
                 <th>te_bairro</th>
                 <th>te_endereco</th>
                 <th>te_complemento</th>
@@ -64,6 +65,7 @@
                     <td>{{$item_exame->clinica_id}}</td>
                     <td>{{ intval($item_exame->cnpj) }}</td>
                     <td>{{$item_exame->tp_prestador}}</td>
+                    <td>{{$item_exame->cep}}</td>
                     <td>{{$item_exame->te_bairro}}</td>
                     <td>{{$item_exame->te_endereco}}</td>
                     <td>{{$item_exame->te_complemento}}</td>

@@ -26,6 +26,7 @@
                 <th>tp_prestador</th>
                 <th>especialidade</th>
                 <th>tipo_atendimento</th>
+                <th>cep</th>
                 <th>te_bairro</th>
                 <th>te_endereco</th>
                 <th>te_complemento</th>
@@ -63,6 +64,7 @@
                     <td>{{$item_consulta->tp_prestador}}</td>
                     <td>{{$item_consulta->especialidade}}</td>
                     <td>{{$item_consulta->tipo_atendimento}}</td>
+                    <td>{{$item_consulta->cep}}</td>
                     <td>{{$item_consulta->te_bairro}}</td>
                     <td>{{$item_consulta->te_endereco}}</td>
                     <td>{{$item_consulta->te_complemento}}</td>
