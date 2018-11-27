@@ -155,7 +155,7 @@ class PacienteController extends Controller
     			$cabecalho = array('Data' => date('d-m-Y H:i'));
     			 
     			$list_pacientes = Paciente::distinct()
-    			->join('users',					function($join1) { $join1->on('pacientes.user_id', '=', 'users.id');})
+    			->leftJoin('users',					function($join1) { $join1->on('pacientes.user_id', '=', 'users.id');})
     			->leftJoin('documento_paciente',	function($join2) { $join2->on('documento_paciente.paciente_id', '=', 'pacientes.id');})
     			->leftJoin('documentos',			function($join3) { $join3->on('documentos.id', '=', 'documento_paciente.documento_id');})
     			->leftJoin('contato_paciente',		function($join4) { $join4->on('contato_paciente.paciente_id', '=', 'pacientes.id');})
