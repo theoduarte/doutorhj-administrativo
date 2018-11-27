@@ -67,7 +67,7 @@ class ConsultaController extends Controller
 
     	$consulta->save();
 
-    	return redirect()->route('consultas.index')->with('success', 'O Consulta foi cadastrado com sucesso!');
+    	return redirect()->route('consultas.index', ['sort' => 'id', 'direction' => 'asc'])->with('success', 'O Consulta foi cadastrado com sucesso!');
     }
 
     /**
