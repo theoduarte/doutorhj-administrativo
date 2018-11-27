@@ -444,7 +444,7 @@ class AtendimentoController extends Controller
 //         			dd($list_consultas);
 
         	   $sheet->setColumnFormat(array(
-        	       'F6:F'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
+        	       'G6:G'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
         			));
     
     			$sheet->loadView('atendimentos.consultas_excel', compact('list_consultas', 'cabecalho'));
@@ -508,7 +508,7 @@ class AtendimentoController extends Controller
 //                 }
                 
                 $sheet->setColumnFormat(array(
-                    'H6:H'.(sizeof($list_exames)+6) => '""00"." 000"."000"/"0000-00'
+                    'I6:I'.(sizeof($list_exames)+6) => '""00"." 000"."000"/"0000-00'
                 ));
                 
                 $sheet->loadView('atendimentos.exames_excel', compact('list_exames', 'cabecalho'));
