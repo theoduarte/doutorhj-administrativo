@@ -512,7 +512,7 @@ class AtendimentoController extends Controller
                 ));
                 
                 $sheet->loadView('atendimentos.exames_excel', compact('list_exames', 'cabecalho'));
-        });
-    })->export('xls');
-}
+	        });
+	    })->export('xls');
+	}
 }

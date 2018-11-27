@@ -66,7 +66,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-sm-6">
 			<div class="widget-simple-chart text-left card-box">
 				<form action="{{ route('consultas-xls') }}" method="post" enctype="multipart/form-data">
@@ -91,6 +91,6 @@
 				</form>
 			</div>
 		</div>
-	</div>
+	</div> -->
 </div>
 @endsection

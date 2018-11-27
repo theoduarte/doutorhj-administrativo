@@ -118,8 +118,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('update-preco-consultas', 'AtendimentoController@updatePrecoConsultas')->name('atualizar-preco-consultas');
     Route::post('update-preco-procedimentos', 'AtendimentoController@updatePrecoProcedimentos')->name('atualizar-preco-procedimentos');
     
+    Route::get('lista-pacientes-ativos', 'PacienteController@listarPacientesAtivos')->name('pacientes-ativos');
     Route::post('lista-consultas-xls', 'AtendimentoController@geraListaConsultasXls')->name('consultas-xls');
     Route::post('lista-exames-xls', 'AtendimentoController@geraListaExamesXls')->name('exames-xls');
+    Route::post('lista-pacientes-ativos-xls', 'PacienteController@geraListaPacientesAtivosXls')->name('pacientes-ativos-xls');
 });
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
