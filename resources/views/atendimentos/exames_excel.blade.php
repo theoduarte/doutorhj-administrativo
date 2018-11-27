@@ -56,8 +56,6 @@
                     <td>
                     	@if(sizeof($item_exame->precos) > 0)
                     		{{$item_exame->precos->first()->tp_preco_id}}
-                    	@else
-                    		<span style="color: #ef5350;">PREÇO NÃO CADASTRADO</span>
                     	@endif
                     </td>
                     <td>{{$item_exame->nm_razao_social}}</td>
@@ -84,8 +82,6 @@
                         	@if(!is_null($item_exame->precos->get(1)))
                         		{{ $item_exame->precos->get(1)->vl_comercial }}
                         	@endif
-                        @else
-                    		<span style="color: #ef5350;">PREÇO NÃO CADASTRADO</span>
                     	@endif
                     </td>
                     <td>
@@ -93,8 +89,6 @@
                         	@if(!is_null($item_exame->precos->get(2)))
                         		{{ $item_exame->precos->get(2)->vl_comercial }}
                         	@endif
-                        @else
-                    		<span style="color: #ef5350;">PREÇO NÃO CADASTRADO</span>
                     	@endif
                     </td>
                     <td>
@@ -102,8 +96,6 @@
                         	@if(!is_null($item_exame->precos->get(3)))
                         		{{ $item_exame->precos->get(3)->vl_comercial }}
                         	@endif
-                        @else
-                    		<span style="color: #ef5350;">PREÇO NÃO CADASTRADO</span>
                     	@endif
                     </td>
                     <td>
@@ -111,8 +103,6 @@
                         	@if(!is_null($item_exame->precos->get(4)))
                         		{{ $item_exame->precos->get(4)->vl_comercial }}
                         	@endif
-                        @else
-                    		<span style="color: #ef5350;">PREÇO NÃO CADASTRADO</span>
                     	@endif
                     </td>
 				</tr>

@@ -488,12 +488,8 @@ class AtendimentoController extends Controller
                 ->join('clinica_endereco',	function($join7) { $join7->on('clinica_endereco.clinica_id', '=', 'clinicas.id');})
                 ->join('enderecos',	        function($join8) { $join8->on('enderecos.id', '=', 'clinica_endereco.endereco_id');})
                 ->join('cidades',	        function($join9) { $join9->on('cidades.id', '=', 'enderecos.cidade_id');})
-//                 ->join('profissionals',	    function($join10) { $join10->on('profissionals.id', '=', 'atendimentos.profissional_id')->on('profissionals.cs_status', '=', DB::raw("'A'"));})
-                //     			->select('atendimentos.*')
                 ->select('atendimentos.id', 'procedimentos.ds_procedimento as exames', 'procedimentos.cd_procedimento as codigo', 'tipoatendimentos.ds_atendimento as tipo_atendimento', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'atendimentos.clinica_id', 'documentos.te_documento as cnpj', 'clinicas.tp_prestador',
                     'enderecos.nr_cep as cep', 'enderecos.te_bairro', 'enderecos.te_endereco', 'enderecos.te_complemento', 'cidades.nm_cidade', 'cidades.sg_estado')
-                    //      			 ->selectRaw("at.id, at.ds_preco, (SELECT precos.id FROM precos WHERE precos.atendimento_id = at.id AND precos.plano_id = 1 AND precos.cs_status = 'A' LIMIT 1) as preco_id")
-                //, function($query) {  $query->select('precos.id')->from('precos')->where('precos.atendimento_id','=','at.id')->where('precos.tp_preco_id', '=', 1);}
                 ->where(['atendimentos.consulta_id' => null, 'atendimentos.cs_status' => 'A'])
 //                 ->limit(10)
                 ->orderby('procedimentos.ds_procedimento', 'asc')
