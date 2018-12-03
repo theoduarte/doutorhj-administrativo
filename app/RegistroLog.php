@@ -9,7 +9,15 @@ use Illuminate\Support\Carbon;
 class RegistroLog extends Model
 {
     use Sortable;
-    
+
+	const INSERT 	= 1;
+	const READ 		= 2;
+	const UPDATE 	= 3;
+	const DELETE	= 4;
+	const EXCEPTION	= 5;
+	const LOGIN		= 6;
+	const LOGOUT	= 7;
+
     protected $fillable = ['titulo', 'descricao', 'ativo'];
     public $sortable = ['id', 'titulo', 'descricao', 'ativo'];
     
