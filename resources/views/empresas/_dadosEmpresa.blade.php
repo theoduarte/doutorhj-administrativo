@@ -160,11 +160,6 @@
 
 <h4 class="header-title m-t-0 m-b-30" style="padding-top: 30px;">Dados Financeiros</h4>
 <div class="form-row">
-	<div class="col-md-3 form-group{{ $errors->has('anuidade') ? ' has-error' : '' }}">
-		<label for="anuidade" class="control-label">Anuidade</label>
-		<input type="text" id="anuidade" placeholder="" class="form-control mascaraMonetaria" name="anuidade" maxlength="15" value="{{ $model->anuidade ?? old('anuidade') }}">
-	</div>
-
 	<div class="col-md-3 form-group{{ $errors->has('desconto') ? ' has-error' : '' }}">
 		<label for="desconto" class="control-label">Desconto na Tabela</label>
 		<input type="text" id="desconto" placeholder="" class="form-control mascaraMonetaria" name="desconto" maxlength="15" value="{{$model->desconto ?? old('desconto')}}">
@@ -172,12 +167,12 @@
 
 	<div class="col-md-3 form-group{{ $errors->has('vl_max_empresa') ? ' has-error' : '' }}">
 		<label for="vl_max_empresa" class="control-label">Limite da Empresa<span class="text-danger">*</span></label>
-		<input type="text" id="vl_max_empresa" placeholder="" class="form-control mascaraMonetaria" name="vl_max_empresa" maxlength="15" value="{{ $model->vl_max_empresa ?? old('vl_max_empresa') }}">
+		<input type="text" id="vl_max_empresa" placeholder="" class="form-control mascaraMonetariaZero" name="vl_max_empresa" maxlength="15" value="{{ $model->vl_max_empresa ?? old('vl_max_empresa') }}">
 	</div>
 
 	<div class="col-md-3 form-group{{ $errors->has('vl_max_funcionario') ? ' has-error' : '' }}">
 		<label for="vl_max_funcionario" class="control-label">Limite por Funcionário<span class="text-danger">*</span></label>
-		<input type="text" id="vl_max_funcionario" placeholder="" class="form-control mascaraMonetaria" name="vl_max_funcionario" maxlength="15" value="{{ $model->vl_max_funcionario ?? old('vl_max_funcionario') }}">
+		<input type="text" id="vl_max_funcionario" placeholder="" class="form-control mascaraMonetariaZero" name="vl_max_funcionario" maxlength="15" value="{{ $model->vl_max_funcionario ?? old('vl_max_funcionario') }}">
 	</div>
 </div>
 

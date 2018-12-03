@@ -63,6 +63,9 @@ class RepresentanteController extends Controller
 		try {
 			$documento_obj = new DocumentoController();
 			$user = $documento_obj->getUserByCpf($dados['cpf'])->getData();
+
+			$empresa = Empresa::findOrFail($dados['empresa_id']);
+
 			if(!$user->status) {
 				if(User::where('email', 'ilike', $dados['email'])->where('cs_status', 'A')->first()) {
 					DB::rollback();
@@ -71,13 +74,12 @@ class RepresentanteController extends Controller
 					], 403);
 				}
 
-				$empresa = Empresa::findOrFail($dados['empresa_id']);
 				$cnpj = UtilController::retiraMascara($empresa->cnpj);
 
 				$user = new User();
 				$user->name = strtoupper($dados['nm_primario'].' '.$dados['nm_secundario']);
 				$user->email = $dados['email'];
-				$user->password = bcrypt("senha@{$cnpj}");
+				$user->password = bcrypt($cnpj);
 				$user->tp_user = 'RES';
 				$user->cs_status = 'A';
 				$user->avatar = 'users/default.png';
@@ -124,6 +126,9 @@ class RepresentanteController extends Controller
 			if(!$model->documentos->contains($documento->id)) $model->documentos()->attach($documento->id);
 			if(!$model->contatos->contains($contato->id)) $model->contatos()->attach($contato->id);
 			$model->empresas()->attach($dados['empresa_id']);
+
+			$empresa->resp_financeiro_id = $model->id;
+			$empresa->save();
 		} catch (\Exception $e) {
 			DB::rollback();
 			report($e);

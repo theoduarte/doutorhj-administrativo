@@ -6,6 +6,8 @@ $(document).ready(function() {
 		
 	$(".mascaraMonetaria").maskMoney({prefix:'', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
 
+	$(".mascaraMonetariaZero").maskMoney({prefix:'', allowNegative: false, thousands:'.', decimal:',', affixesStay: false, allowZero: true});
+
 	$(".maskAnuidade").maskMoney({prefix:'', allowNegative: false, thousands:'.', decimal:',', affixesStay: false, allowZero: true});
 	
 	$(".mascaraTelefone").inputmask({
