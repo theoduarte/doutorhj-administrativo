@@ -205,7 +205,7 @@ class AgendamentoController extends Controller
             }
         }
 
-     //   $agendamento->save();
+        $agendamento->save();
         
         //--carrega os dados do paciente para configurar a mensagem-----
         $paciente = Paciente::findorfail($agendamento->paciente_id);
