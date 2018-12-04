@@ -45,7 +45,6 @@
 
                 },
                 success: function(response){
-
                 }
             }).done(function(msg){
                 swal({
