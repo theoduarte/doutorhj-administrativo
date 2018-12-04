@@ -1,374 +1,183 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
-	<title>DoutorHoje</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>DoctorHoje</title>
 </head>
-<body style='margin: 0;'>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color:#fff;'>
-		<td width='480' style='text-align:left'>&nbsp;</td>
-		<td width='120' style='text-align:right'>&nbsp;</td>
+<body>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr style="background-color:#fff;">
+		<td width="600" style="text-align:left">&nbsp;</td>
 	</tr>
 </table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color:#fff;'>
-		<td width='480' style='text-align:left'><span style='font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#434342;'>DoutorHoje - Confirmação de agendamento</span></td>
-		<td width='120' style='text-align:right'><a href='#' target='_blank' style='font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#434342;'>Abrir no navegador</a></td>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr style="background-color:#fff;">
+		<td width="600" style="text-align:center"><span style="font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#bbb;">Doutor Hoje - Agendamento confirmado</span></td>
 	</tr>
 </table>
 <br>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
-		<td><img src='https://doutorhoje.com.br/libs/home-template/img/email/h1.png' width='600' height='113' alt='DoutorHoje'/></td>
+		<td width="184" style="background-color: #fff;">&nbsp;</td>
+		<td width="233"><img src="{{ Request::root() }}/img/header.png" width="233" height="50" alt=""/></td>
+		<td width="183" style="background-color: #fff;">&nbsp;</td>
 	</tr>
 </table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
-		<td style='background: #1d70b7; font-family:Arial, Helvetica, sans-serif; text-align: center; color: #ffffff; font-size: 28px; line-height: 80px;'><strong>Confirmação de agendamento</strong></td>
+		<td><img src="{{ Request::root() }}/img/banner-top.png" width="600" height="475" alt=""/></td>
 	</tr>
 </table>
 <br>
 <br>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
-		<td width='540' style='font-family:Arial, Helvetica, sans-serif; font-size: 28px; line-height: 50px; color: #434342; background-color: #fff; text-align: center;'>
-			Olá, <strong style='color: #1d70b7;'>{{$nm_primario}}</strong>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
+		<td width="540" style="font-family:Arial, Helvetica, sans-serif; font-size: 18px; line-height: 18px; color: #000; background-color: #fff; text-align: center;">
+			<strong>Olá,</strong> <strong style="color: #1d70b7;">{{$nm_primario}}</strong>
 		</td>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
 	</tr>
 </table>
 <br>
 <br>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
-		<td width='540' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; background-color: #fff;'>
-			Temos uma boa notícia! Sua solicitação de agendamento foi
-			efetuada com sucesso. Atenção ao horário e data do serviço
-			escolhido.
-		</td>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
+		<td width="540" style="font-family:Arial, Helvetica, sans-serif; font-size: 20px; line-height: 30px; color: #434342; background-color: #fff; text-align: center;">Muito obrigado por utilizar o Doutor Hoje!</td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
 	</tr>
 </table>
 <br>
-<br>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='30'></td>
-		<td width='34'><img src='https://doutorhoje.com.br/libs/home-template/img/email/numero-pedido.png' width='34' height='30' alt=''/></td>
-		<td width='10'>&nbsp;</td>
-		<td width='496' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342;'>Nº do pedido: <span>{{$nr_pedido}}</span></td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='30'></td>
-		<td width='34'><img src='https://doutorhoje.com.br/libs/home-template/img/email/especialidade.png' width='34' height='30' alt=''/></td>
-		<td width='10'>&nbsp;</td>
-		<td width='496' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342;'>Especialidade/exame: <span>{{$nome_especialidade}}</span></td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='30'></td>
-		<td width='34'><img src='https://doutorhoje.com.br/libs/home-template/img/email/especialidade.png' width='34' height='30' alt=''/></td>
-		<td width='10'>&nbsp;</td>
-		<td width='496' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342;'>Dr(a): <span>{{$nome_profissional}}</span></td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='30'></td>
-		<td width='34'><img src='https://doutorhoje.com.br/libs/home-template/img/email/data.png' width='34' height='30' alt=''/></td>
-		<td width='10'>&nbsp;</td>
-		<td width='496' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342;'><span>{{$data_agendamento}}</span></td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='30'></td>
-		<td width='34'><img src='https://doutorhoje.com.br/libs/home-template/img/email/hora.png' width='34' height='30' alt=''/></td>
-		<td width='10'>&nbsp;</td>
-		<td width='496' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342;'><span>{{$hora_agendamento}}</span></td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='30'></td>
-		<td width='34'><img src='https://doutorhoje.com.br/libs/home-template/img/email/local.png' width='34' height='30' alt=''/></td>
-		<td width='10'>&nbsp;</td>
-		<td width='496' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342;'><span>{{$endereco_agendamento}}</span>
-		</td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='30'></td>
-		<td width='34'><img src='https://doutorhoje.com.br/libs/home-template/img/email/status.png' width='34' height='30' alt=''/></td>
-		<td width='10'>&nbsp;</td>
-		<td width='496' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342;'>Status: <span>{{$agendamento_status}}</span></td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<br>
-<br>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
-		<td width='540' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;'>
-			Apresente esse código à secretária do médico ou clínica:
-		</td>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
-	</tr>
-</table>
-<br>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr>
-		<td width='130' style='background-color: #fff;'>&nbsp;</td>
-		<td width='340' style='background: #1d70b7; font-family:Arial, Helvetica, sans-serif; font-size: 14px; line-height: 50px; color: #434342; text-align: center; color: #ffffff;'>
-			TOKEN PARA ATENDIMENTO: <strong style='color: #ffffff;'><span style='color: #ffffff;'>{{$token_atendimento}}</span></strong>
-		</td>
-		<td width='130' style='background-color: #fff;'>&nbsp;</td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
+		<td width="540" style="font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 30px; color: #434342; background-color: #fff; text-align: center;"><strong>Seu agendamento foi confirmado com sucesso.</strong></td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
 	</tr>
 </table>
 <br>
 <br>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
-		<td width='540' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; background-color: #fff;'>
-			Evite transtornos! Caso ocorra algum imprevisto, impossibilitando
-			o comparecimento ao serviço contratado ou reagendamento, nos
-			informe com até 24 horas de antecedência, evitando prejuízo e
-			aplicação de multa.
-		</td>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
+		<td width="540" style="font-family:Arial, Helvetica, sans-serif; font-size: 24px; line-height: 30px; color: #434342; background-color: #fff; text-align: center;">Senha de atendimento:</td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
 	</tr>
 </table>
 <br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="230" style="background-color: #1d70b7;">&nbsp;</td>
+		<td width="140" style="font-family:Arial, Helvetica, sans-serif; font-size: 22px; line-height: 60px; background-color: #1d70b7; text-align: center; color: #fff;">{{$token_atendimento}}
+		</td>
+		<td width="230" style="background-color: #1d70b7;">&nbsp;</td>
+	</tr>
+</table>
 <br>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
-		<td width='540' style='background: #1d70b7; font-family:Arial, Helvetica, sans-serif; font-size: 14px; line-height: 50px; color: #434342; text-align: center;'>
-			<strong style='color: #ffffff;'>REGRAS DE CANCELAMENTO E REAGENDAMENTO</strong>
-		</td>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr>
-		<td width='30'></td>
-		<td width='180' style='background-color: #307ec1; font-family:Arial, Helvetica, sans-serif; font-size: 12px; line-height: 50px; color: #ffffff; text-align: center;'><strong style='color: #ffffff;'>SOLICITAÇÃO/PERÍODO</strong></td>
-		<td width='180' style='background-color: #307ec1; font-family:Arial, Helvetica, sans-serif; font-size: 12px; line-height: 50px; color: #ffffff; text-align: center;'><strong style='color: #ffffff;'>ATÉ 24 HORAS</strong></td>
-		<td width='180' style='background-color: #307ec1; font-family:Arial, Helvetica, sans-serif; font-size: 12px; line-height: 50px; color: #ffffff; text-align: center;'><strong style='color: #ffffff;'>INFERIOR A 24 HORAS</strong></td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr>
-		<td width='30'></td>
-		<td width='180' style='background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr>
-		<td width='30'></td>
-		<td width='180' style='background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>Cancelamento</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>Reembolso de 50%<br>
-			do valor pago em até<br>
-			5 dias úteis.
-		</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>Sem direito a<br>
-			reembolso.
-		</td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr>
-		<td width='30'></td>
-		<td width='180' style='background-color: #f9f9f9; border-bottom:1px solid #ddd; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='179' style='border-left:1px solid #ddd; border-bottom:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='179' style='border-left:1px solid #ddd; border-bottom:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr>
-		<td width='30'></td>
-		<td width='180' style='background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr>
-		<td width='30'></td>
-		<td width='180' style='background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>Reagendamento</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>Direito a 1 (um)
-			reagendamento em
-			no máximo 30 dias.
-		</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>Perda do direito de
-			reagendamento.
-		</td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr>
-		<td width='30'></td>
-		<td width='180' style='background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='179' style='border-left:1px solid #ddd; background-color: #f9f9f9; font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; text-align: center;'>&nbsp;</td>
-		<td width='30'></td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
+		<td width="540" style="font-family:Arial, Helvetica, sans-serif; font-size: 14px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;">Este código deve ser apresentada na clínica no dia do seu atendimento, juntamente com um documento pessoal com foto.<br>Desejamos que o atendimento atenda as suas expectativas!</td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
 	</tr>
 </table>
 <br>
 <br>
 <br>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
-		<td width='540' style='font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;'>
-			Abraços,<br>
-			Equipe Doutor Hoje
-		</td>
-		<td width='30' style='background-color: #fff;'>&nbsp;</td>
+		<td width="122">&nbsp;</td>
+		<td width="68"><img src="{{ Request::root() }}/img/cliente.png" width="68" height="65" alt=""/></td>
+		<td width="220">&nbsp;</td>
+		<td width="68"><img src="{{ Request::root() }}/img/lista.png" width="68" height="65" alt=""/></td>
+		<td width="122">&nbsp;</td>
+	</tr>
+</table>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="30">&nbsp;</td>
+		<td width="250" style="font-family:Arial, Helvetica, sans-serif; font-size: 14px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;">Para quem é: {{$nm_primario}}</td>
+		<td width="40">&nbsp;</td>
+		<td width="250" style="font-family:Arial, Helvetica, sans-serif; font-size: 14px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;">{{$nome_especialidade}} {{$preco_ativo}}</td>
+		<td width="30">&nbsp;</td>
+	</tr>
+</table>
+<br>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="122">&nbsp;</td>
+		<td width="68"><img src="{{ Request::root() }}/img/local.png" width="68" height="65" alt=""/></td>
+		<td width="220">&nbsp;</td>
+		<td width="68"><img src="{{ Request::root() }}/img/pagamento.png" width="68" height="65" alt=""/></td>
+		<td width="122">&nbsp;</td>
+	</tr>
+</table>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="30">&nbsp;</td>
+		<td width="250" style="font-family:Arial, Helvetica, sans-serif; font-size: 14px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;">Endereço do atendimento: {{$endereco_agendamento}}, {{$nome_profissional}}</td>
+		<td width="40">&nbsp;</td>
+		<td width="250" style="font-family:Arial, Helvetica, sans-serif; font-size: 14px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;">Forma de pagamento {{$tipo_pagamento}}</td>
+		<td width="30">&nbsp;</td>
+	</tr>
+</table>
+<br>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="266">&nbsp;</td>
+		<td width="68"><img src="{{ Request::root() }}/img/calendario.png" width="68" height="65" alt=""/></td>
+		<td width="266">&nbsp;</td>
+	</tr>
+</table>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="30">&nbsp;</td>
+		<td width="540" style="font-family:Arial, Helvetica, sans-serif; font-size: 14px; line-height: 22px; color: #434342; background-color: #fff; text-align: center;">Dia {{$data_agendamento}} às {{$hora_agendamento}}</td>
+		<td width="30">&nbsp;</td>
 	</tr>
 </table>
 <br>
 <br>
 <br>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
+		<td width="540" style="font-family:Arial, Helvetica, sans-serif; font-size: 18px; line-height: 18px; color: #1d70b7; background-color: #fff; text-align: center;"><strong>Se tratando de saúde, conte sempre com o Doutor Hoje!</strong></td>
+		<td width="30" style="background-color: #fff;">&nbsp;</td>
 	</tr>
 </table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='209'></td>
-		<td width='27'><a href='#'><img src='https://doutorhoje.com.br/libs/home-template/img/email/facebook.png' width='27' height='24' alt=''/></a></td>
-		<td width='27'><a href='#'><img src='https://doutorhoje.com.br/libs/home-template/img/email/youtube.png' width='27' height='24' alt=''/></a></td>
-		<td width='27'><a href='#'><img src='https://doutorhoje.com.br/libs/home-template/img/email/instagram.png' width='27' height='24' alt=''/></a></td>
-		<td width='210'></td>
+<br>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="120" style="background-color: #1d70b7;">&nbsp;</td>
+		<td width="360" style="font-family:Arial, Helvetica, sans-serif; font-size: 16px; line-height: 46px; background-color: #1d70b7; text-align: center;"><a href="https://doutorhoje.com.br" style="color: #ffffff; text-decoration: none;">WWW.DOUTORHOJE.COM.BR</a></td>
+		<td width="120" style="background-color: #1d70b7;">&nbsp;</td>
 	</tr>
 </table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
+<br>
+<br>
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+		<td width="225">&nbsp;</td>
+		<td width="30"><a href="https://www.instagram.com/doutor_hoje/"><img src="{{ Request::root() }}/img/instagram.png" alt="" width="30" height="31" border="0"/></a></td>
+		<td width="30">&nbsp;</td>
+		<td width="30"><img src="{{ Request::root() }}/img/facebook.png" width="30" height="30" alt=""/></td>
+		<td width="30">&nbsp;</td>
+		<td width="30"><a href="https://wa.me/5561986792680"><img src="{{ Request::root() }}/img/whatsapp.png" width="30" height="30" alt=""/></a></td>
+		<td width="225">&nbsp;</td>
 	</tr>
 </table>
-<table width='600' border='0' cellspacing='0' cellpadding='0' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='30'></td>
-		<td width='540' style='line-height:16px; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#434342; text-align: center;'>
-			Em caso de qualquer dúvida, fique à vontade <br>
-			para responder esse e-mail ou
-			nos contatar no <br><br>
-			<a href='mailto:cliente@doutorhoje.com.br' style='color:#1d70b7; text-decoration: none;'>cliente@doutorhoje.com.br</a>
-			<br><br>
-			Ou ligue para (61) 3221-5350, o atendimento é de<br>
-			segunda à sexta-feira
-			das 8h00 às 18h00. <br><br>
-			<strong>Doutor Hoje</strong> 2018
-		</td>
-		<td width='30'></td>
-	</tr>
-</table>
-<table width='600' border='0' cellspacing='0' cellpadding='10' align='center'>
-	<tr style='background-color: #f9f9f9;'>
-		<td width='513'>
-			&nbsp;
-		</td>
-	</tr>
-</table>
+<br>
+<br>
 </body>
 </html>
