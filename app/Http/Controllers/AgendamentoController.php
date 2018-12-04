@@ -205,7 +205,7 @@ class AgendamentoController extends Controller
             }
         }
 
-        $agendamento->save();
+        //$agendamento->save();
         
         //--carrega os dados do paciente para configurar a mensagem-----
         $paciente = Paciente::findorfail($agendamento->paciente_id);
@@ -423,7 +423,7 @@ class AgendamentoController extends Controller
 
 		$nm_primario 			= $paciente->nm_primario;
 		$nr_pedido 				= sprintf("%010d", $pedido->id);
-		$nome_especialidade 	= "Consulta: <span>".$agendamento->nome_especialidade;
+		$nome_especialidade 	= "Especialidade/Exame: ".$agendamento->nome_especialidade;
 
 
 		$tipo_atendimento		= "";
@@ -443,7 +443,7 @@ class AgendamentoController extends Controller
 		$tipo_pagamento = '--------';
 		$pedido_obj = Pedido::findorfail($pedido->id);
 		if(!empty($pedido_obj)) {
-			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito') {
+			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito'  |$pedido_obj->tp_pagamento == 'INDIVIDUAL' |$pedido_obj->tp_pagamento == 'individual') {
 				$pedido_obj->load('pagamentos');
 				$tipo_pagamento = 'CRÉDITO';
 
@@ -535,7 +535,7 @@ class AgendamentoController extends Controller
 		$tipo_pagamento = '--------';
 		$pedido_obj = Pedido::findorfail($pedido->id);
 		if(!empty($pedido_obj)) {
-			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito') {
+			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito' |$pedido_obj->tp_pagamento == 'INDIVIDUAL' |$pedido_obj->tp_pagamento == 'individual') {
 				$pedido_obj->load('pagamentos');
 				$tipo_pagamento = 'CRÉDITO';
 
