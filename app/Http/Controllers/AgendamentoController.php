@@ -256,17 +256,11 @@ class AgendamentoController extends Controller
 		if($agendamento->atendimento->clinica->tp_prestador !="CLI"){
 			try {
 				$this->enviarEmailAgendamentoLaboratorio($paciente,$pedido, $ct_agendamento, $token_atendimento );
-			} catch (\Exception $e) {
-				echo $e;
-				die;
-			}
+			} catch (\Exception $e) {}
 		}else{
 			try {
 				 $this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento, $filial);
-			} catch (\Exception $e) {
-				echo $e;
-				die;
-			}
+			} catch (\Exception $e) {}
 		}
 
     }
