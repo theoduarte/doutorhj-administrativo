@@ -253,9 +253,16 @@ class AgendamentoController extends Controller
         ####################################### </registra log #######################################
         
         //--enviar mensagem informando o pre agendamento da solicitacao----------------
-        try {
-            $this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento, $filial);
-        } catch (\Exception $e) {}
+		if($agendamento->atendimento->clinica->tp_prestador !="CLI"){
+			try {
+				$this->enviarEmailAgendamentoLaboratorio($paciente,$pedido, $ct_agendamento, $token_atendimento );
+			} catch (\Exception $e) {}
+		}else{
+			try {
+				$this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento, $filial);
+			} catch (\Exception $e) {}
+		}
+
     }
     
     /**
@@ -391,7 +398,98 @@ class AgendamentoController extends Controller
         $reglog->registrarLog($titulo_log, $log, $tipo_log);
         ####################################### </registra log #######################################
     }
-    
+
+
+
+    public function enviarEmailAgendamentoLaboratorio($paciente,$pedido, $agendamento, $token_atendimento ) {
+		setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+		date_default_timezone_set('America/Sao_Paulo');
+
+		$nome = $paciente->nm_primario.' '.$paciente->nm_secundario;
+
+		/*
+		 * se o paciente é um dependente então ele não tem um email,
+		 * utiliza o email do titular.
+		 */
+		if( !is_null($paciente->responsavel_id) ){
+			$paciente = Paciente::findorfail($paciente->responsavel_id);
+			$paciente->load('user');
+			$paciente->load('documentos');
+			$paciente->load('contatos');
+		}
+
+		$email 		= $paciente->user->email;
+		$telefone 	= $paciente->contatos->first()->ds_contato;
+
+		$nm_primario 			= $paciente->nm_primario;
+		$nr_pedido 				= sprintf("%010d", $pedido->id);
+		$nome_especialidade 	= "Consulta: <span>".$agendamento->nome_especialidade;
+
+
+		$tipo_atendimento		= "";
+
+		$paciente_id = $paciente->id;
+		$plano_ativo_id = Paciente::getPlanoAtivo($paciente_id);
+		$preco_ativo = 'R$ 0,00';
+
+		if (!empty($agendamento->atendimento)) {
+
+			$atendimento_id = $agendamento->atendimento->id;
+			$atend_temp = new Atendimento();
+			$preco_ativo = $atend_temp->getPrecoByPlano($plano_ativo_id, $atendimento_id);
+			$preco_ativo = 'R$ '.$preco_ativo->vl_comercial;
+		}
+
+		$tipo_pagamento = '--------';
+		$pedido_obj = Pedido::findorfail($pedido);
+		if(!empty($pedido_obj)) {
+			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito') {
+				$pedido_obj->load('pagamentos');
+				$tipo_pagamento = 'CRÉDITO';
+
+				try {
+					$crc_brand = $paciente->credit_card_brand;
+					$tipo_pagamento = $tipo_pagamento.' - '.strtoupper($crc_brand);
+				} catch (\Exception $e) {}
+
+			} else {
+				$tipo_pagamento = strtoupper($pedido_obj->tp_pagamento);
+			}
+
+		}
+
+
+		$agendamento_status = 'Agendado';
+
+		#dados da mensagem para o cliente
+		$mensagem_cliente            		= new Mensagem();
+
+		$mensagem_cliente->rma_nome     	= 'Contato DoutorHoje';
+		$mensagem_cliente->rma_email       	= 'contato@doutorhoje.com.br';
+		$mensagem_cliente->assunto     		= 'Pré-Agendamento Solicitado';
+		$mensagem_cliente->conteudo     	= "<h4>Seu Agendamento Foi Realizado:</h4><br><ul><li>Nº do Pedido: $nr_pedido</li><li>$nome_especialidade</li></ul>";
+		$mensagem_cliente->save();
+
+		$destinatario                      = new MensagemDestinatario();
+		$destinatario->tipo_destinatario   = 'PC';
+		$destinatario->mensagem_id         = $mensagem_cliente->id;
+		$destinatario->destinatario_id     = $paciente->user->id;
+		$destinatario->save();
+
+		$from = 'contato@doutorhoje.com.br';
+		$to = $email;
+		$subject = 'Agendamento Realizado';
+
+		$html_message = view('agenda.email_agendamento_lab', compact('nm_primario','tipo_pagamento', 'nr_pedido', 'nome_especialidade', 'preco_ativo', 'token_atendimento'));
+
+
+		$html_message = str_replace(array("\r", "\n", "\t"), '', $html_message->render());
+
+		$send_message = UtilController::sendMail($to, $from, $subject, $html_message);
+
+		return $send_message;
+	}
+
     /**
      * enviarEmailPreAgendamento a newly external user created resource in storage.
      *
@@ -416,12 +514,48 @@ class AgendamentoController extends Controller
             $paciente->load('contatos');
         }
 
+		$paciente_id = $paciente->id;
+		$plano_ativo_id = Paciente::getPlanoAtivo($paciente_id);
+		$preco_ativo = 'R$ 0,00';
+
+		if (!empty($agendamento->atendimento)) {
+			if(!is_null($agendamento->atendimento->consulta_id)) {
+				$tipo_atendimento = "Consulta";
+			}
+
+			if(!is_null($agendamento->atendimento->procedimento_id)) {
+				$tipo_atendimento = "Exame";
+			}
+
+			$atendimento_id = $agendamento->atendimento->id;
+			$atend_temp = new Atendimento();
+			$preco_ativo = $atend_temp->getPrecoByPlano($plano_ativo_id, $atendimento_id);
+			$preco_ativo = 'R$ '.$preco_ativo->vl_comercial;
+		}
+		$tipo_pagamento = '--------';
+		$pedido_obj = Pedido::findorfail($pedido);
+		if(!empty($pedido_obj)) {
+			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito') {
+				$pedido_obj->load('pagamentos');
+				$tipo_pagamento = 'CRÉDITO';
+
+				try {
+					$crc_brand = $paciente->credit_card_brand;
+					$tipo_pagamento = $tipo_pagamento.' - '.strtoupper($crc_brand);
+				} catch (\Exception $e) {}
+
+			} else {
+				$tipo_pagamento = strtoupper($pedido_obj->tp_pagamento);
+			}
+
+		}
+
         $email 		= $paciente->user->email;
         $telefone 	= $paciente->contatos->first()->ds_contato;
 
         $nm_primario 			= $paciente->nm_primario;
         $nr_pedido 				= sprintf("%010d", $pedido->id);
-        $nome_especialidade 	= $agendamento->nome_especialidade;
+        $nome_especialidade 	= "Especialidade: ".$agendamento->nome_especialidade;
         $nome_profissional		= $agendamento->profissional->nm_primario.' '.$agendamento->profissional->nm_secundario;
         $data_agendamento		= date('d', strtotime($agendamento->getRawDtAtendimentoAttribute())).' de '.strftime('%B', strtotime($agendamento->getRawDtAtendimentoAttribute())).' / '.strftime('%A', strtotime($agendamento->getRawDtAtendimentoAttribute())) ;
         $hora_agendamento		= date('H:i', strtotime($agendamento->getRawDtAtendimentoAttribute())).' (por ordem de chegada)';
@@ -437,7 +571,7 @@ class AgendamentoController extends Controller
         $mensagem_cliente->rma_nome     	= 'Contato DoutorHoje';
         $mensagem_cliente->rma_email       	= 'contato@doutorhoje.com.br';
         $mensagem_cliente->assunto     		= 'Pré-Agendamento Solicitado';
-        $mensagem_cliente->conteudo     	= "<h4>Seu Agendamento Foi Realizado:</h4><br><ul><li>Nº do Pedido: $nr_pedido</li><li>Especialidade/exame: $nome_especialidade</li><li>Dr(a): $nome_profissional</li><li>Data: $data_agendamento</li><li>Horário: $hora_agendamento (por ordem de chegada)</li><li>Endereço: $endereco_agendamento</li></ul>";
+        $mensagem_cliente->conteudo     	= "<h4>Seu Agendamento Foi Realizado:</h4><br><ul><li>Nº do Pedido: $nr_pedido</li><li>Especialidade/consulta: $nome_especialidade</li><li>Dr(a): $nome_profissional</li><li>Data: $data_agendamento</li><li>Horário: $hora_agendamento (por ordem de chegada)</li><li>Endereço: $endereco_agendamento</li></ul>";
         $mensagem_cliente->save();
         
         $destinatario                      = new MensagemDestinatario();
@@ -450,8 +584,8 @@ class AgendamentoController extends Controller
         $to = $email;
         $subject = 'Agendamento Realizado';
 
-        $html_message = view('agenda.email_agendamento', compact('nm_primario', 'nr_pedido', 'nome_especialidade', 'nome_profissional', 'data_agendamento', 'hora_agendamento', 'endereco_agendamento',
-			'agendamento_status', 'token_atendimento'));
+        $html_message = view('agenda.email_agendamento', compact('nm_primario', 'nr_pedido', 'nome_especialidade', 'nome_profissional','preco_ativo', 'data_agendamento', 'hora_agendamento', 'endereco_agendamento',
+			'agendamento_status', 'token_atendimento','tipo_pagamento'));
 
         $html_message = str_replace(array("\r", "\n", "\t"), '', $html_message->render());
 
