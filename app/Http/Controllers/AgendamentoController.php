@@ -205,7 +205,7 @@ class AgendamentoController extends Controller
             }
         }
 
-        $agendamento->save();
+     //   $agendamento->save();
         
         //--carrega os dados do paciente para configurar a mensagem-----
         $paciente = Paciente::findorfail($agendamento->paciente_id);
@@ -256,11 +256,17 @@ class AgendamentoController extends Controller
 		if($agendamento->atendimento->clinica->tp_prestador !="CLI"){
 			try {
 				$this->enviarEmailAgendamentoLaboratorio($paciente,$pedido, $ct_agendamento, $token_atendimento );
-			} catch (\Exception $e) {}
+			} catch (\Exception $e) {
+				echo $e;
+				die;
+			}
 		}else{
 			try {
-				$this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento, $filial);
-			} catch (\Exception $e) {}
+				 $this->enviarEmailAgendamento($paciente, $pedido, $ct_agendamento, $token_atendimento, $filial);
+			} catch (\Exception $e) {
+				echo $e;
+				die;
+			}
 		}
 
     }
@@ -441,7 +447,7 @@ class AgendamentoController extends Controller
 		}
 
 		$tipo_pagamento = '--------';
-		$pedido_obj = Pedido::findorfail($pedido);
+		$pedido_obj = Pedido::findorfail($pedido->id);
 		if(!empty($pedido_obj)) {
 			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito') {
 				$pedido_obj->load('pagamentos');
@@ -485,7 +491,7 @@ class AgendamentoController extends Controller
 
 		$html_message = str_replace(array("\r", "\n", "\t"), '', $html_message->render());
 
-		$send_message = UtilController::sendMail($to, $from, $subject, $html_message);
+		 $send_message = UtilController::sendMail($to, $from, $subject, $html_message);
 
 		return $send_message;
 	}
@@ -533,7 +539,7 @@ class AgendamentoController extends Controller
 			$preco_ativo = 'R$ '.$preco_ativo->vl_comercial;
 		}
 		$tipo_pagamento = '--------';
-		$pedido_obj = Pedido::findorfail($pedido);
+		$pedido_obj = Pedido::findorfail($pedido->id);
 		if(!empty($pedido_obj)) {
 			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito') {
 				$pedido_obj->load('pagamentos');
@@ -591,8 +597,8 @@ class AgendamentoController extends Controller
 
         $send_message = UtilController::sendMail($to, $from, $subject, $html_message);
         
-//         echo "<script>console.log( 'Debug Objects: " . $send_message . "' );</script>";
-        //     	return redirect()->route('provisorio')->with('success', 'A Sua mensagem foi enviada com sucesso!');
+         //echo "<script>console.log( 'Debug Objects: " . $send_message . "' );</script>";
+           //	return redirect()->route('provisorio')->with('success', 'A Sua mensagem foi enviada com sucesso!');
         
         return $send_message;
     }
