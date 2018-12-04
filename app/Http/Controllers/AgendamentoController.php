@@ -364,8 +364,8 @@ class AgendamentoController extends Controller
         $agendamento->update($arDados);
         
         ####################################### registra log> #######################################
-        $ct_agendamento_obj = $ct_agendamento->toJson();
-        $agendamento_obj    = $agendamento->toJson();
+        $ct_agendamento_obj = $ct_agendamento->get()->toJson();
+        $agendamento_obj    = $agendamento->get()->toJson();
         
         $titulo_log = 'Editar Status de Agendamento';
         $ct_log   = '"reg_anterior":'.'{"agendamento":'.$ct_agendamento_obj.'}';

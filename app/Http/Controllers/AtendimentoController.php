@@ -8,6 +8,8 @@ use App\Atendimento;
 use Illuminate\Support\Facades\DB;
 use App\Preco;
 use App\TipoPreco;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Consulta;
 
 class AtendimentoController extends Controller
 {
@@ -389,4 +391,124 @@ class AtendimentoController extends Controller
     
     	return redirect()->route('atualizar-precos')->with('success', 'Os Preços dos Procedimentos foram atualizados com sucesso!');
     }
+    
+    /**
+     * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico.
+     *
+     */
+    public function geraListaConsultasXls()
+    {
+        
+        
+    	Excel::create('DRHJ_RELATORIO_CONSULTAS_' . date('d-m-Y~H_i_s'), function ($excel) {
+    		$excel->sheet('Consultas', function ($sheet) {
+    
+    			// Font family
+    			$sheet->setFontFamily('Comic Sans MS');
+    
+    			// Set font with ->setStyle()`
+    			$sheet->setStyle(array(
+    					'font' => array(
+    							'name' => 'Calibri',
+    							'size' => 12,
+    							'bold' => false
+    					)
+    			));
+    			
+    			$cabecalho = array('Data' => date('d-m-Y H:i'));
+    			
+    			$list_consultas = Atendimento::with(['precos', 'precos.plano'])
+        			->distinct()
+        			->join('clinicas', 			function($join1) { $join1->on('atendimentos.clinica_id', '=', 'clinicas.id')->on('clinicas.cs_status', '=', DB::raw("'A'"));})
+        			->join('clinica_documento',	function($join2) { $join2->on('clinica_documento.clinica_id', '=', 'clinicas.id');})
+        			->join('documentos',		function($join3) { $join3->on('documentos.id', '=', 'clinica_documento.documento_id');})
+        			->join('consultas',			function($join4) { $join4->on('consultas.id', '=', 'atendimentos.consulta_id');})
+        			->join('especialidades',	function($join5) { $join5->on('especialidades.id', '=', 'consultas.especialidade_id');})
+        			->join('tipoatendimentos',	function($join6) { $join6->on('tipoatendimentos.id', '=', 'consultas.tipoatendimento_id');})
+        			->join('clinica_endereco',	function($join7) { $join7->on('clinica_endereco.clinica_id', '=', 'clinicas.id');})
+        			->join('enderecos',	        function($join8) { $join8->on('enderecos.id', '=', 'clinica_endereco.endereco_id');})
+        			->join('cidades',	        function($join9) { $join9->on('cidades.id', '=', 'enderecos.cidade_id');})
+        			->join('profissionals',	    function($join10) { $join10->on('profissionals.id', '=', 'atendimentos.profissional_id')->on('profissionals.cs_status', '=', DB::raw("'A'"));})
+        			//     			->select('atendimentos.*')
+        			->select('atendimentos.id', 'atendimentos.ds_preco', 'consultas.cd_consulta as codigo', 'atendimentos.clinica_id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'documentos.te_documento', 'clinicas.tp_prestador',
+        			    'especialidades.ds_especialidade as especialidade', 'tipoatendimentos.ds_atendimento as tipo_atendimento', 'enderecos.nr_cep as cep', 'enderecos.te_bairro', 'enderecos.te_endereco',
+        			    'enderecos.te_complemento', 'cidades.nm_cidade', 'cidades.sg_estado', 'atendimentos.profissional_id', 'profissionals.nm_primario', 'profissionals.nm_secundario',
+        			    'profissionals.cs_sexo as genero')
+        			    //      			 ->selectRaw("at.id, at.ds_preco, (SELECT precos.id FROM precos WHERE precos.atendimento_id = at.id AND precos.plano_id = 1 AND precos.cs_status = 'A' LIMIT 1) as preco_id")
+        			//, function($query) {  $query->select('precos.id')->from('precos')->where('precos.atendimento_id','=','at.id')->where('precos.tp_preco_id', '=', 1);}
+        			->where(['atendimentos.procedimento_id' => null, 'atendimentos.cs_status' => 'A'])
+//         			->limit(10)
+        			->orderby('atendimentos.ds_preco', 'asc')
+        			->orderby('atendimentos.id', 'asc')
+        			->get();
+//         			dd($list_consultas);
+
+        	   $sheet->setColumnFormat(array(
+        	       'G6:G'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
+        			));
+    
+    			$sheet->loadView('atendimentos.consultas_excel', compact('list_consultas', 'cabecalho'));
+    		});
+    	})->export('xls');
+    }
+    
+    /**
+     * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico.
+     *
+     */
+    public function geraListaExamesXls()
+    {
+        
+        
+        Excel::create('DRHJ_RELATORIO_EXAMES_' . date('d-m-Y~H_i_s'), function ($excel) {
+            $excel->sheet('Procedimentos', function ($sheet) {
+                
+                // Font family
+                $sheet->setFontFamily('Comic Sans MS');
+                
+                // Set font with ->setStyle()`
+                $sheet->setStyle(array(
+                    'font' => array(
+                        'name' => 'Calibri',
+                        'size' => 12,
+                        'bold' => false
+                    )
+                ));
+                
+                $cabecalho = array('Data' => date('d-m-Y H:i'));
+                
+                $list_exames = Atendimento::with(['precos', 'precos.plano'])
+                ->distinct()
+                ->join('clinicas', 			function($join1) { $join1->on('atendimentos.clinica_id', '=', 'clinicas.id')->on('clinicas.cs_status', '=', DB::raw("'A'"));})
+                ->join('clinica_documento',	function($join2) { $join2->on('clinica_documento.clinica_id', '=', 'clinicas.id');})
+                ->join('documentos',		function($join3) { $join3->on('documentos.id', '=', 'clinica_documento.documento_id');})
+                ->join('procedimentos',		function($join4) { $join4->on('procedimentos.id', '=', 'atendimentos.procedimento_id');})
+//                 ->join('especialidades',	function($join5) { $join5->on('especialidades.id', '=', 'consultas.especialidade_id');})
+                ->join('tipoatendimentos',	function($join6) { $join6->on('tipoatendimentos.id', '=', 'procedimentos.tipoatendimento_id');})
+                ->join('clinica_endereco',	function($join7) { $join7->on('clinica_endereco.clinica_id', '=', 'clinicas.id');})
+                ->join('enderecos',	        function($join8) { $join8->on('enderecos.id', '=', 'clinica_endereco.endereco_id');})
+                ->join('cidades',	        function($join9) { $join9->on('cidades.id', '=', 'enderecos.cidade_id');})
+                ->select('atendimentos.id', 'procedimentos.ds_procedimento as exames', 'procedimentos.cd_procedimento as codigo', 'tipoatendimentos.ds_atendimento as tipo_atendimento', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'atendimentos.clinica_id', 'documentos.te_documento as cnpj', 'clinicas.tp_prestador',
+                    'enderecos.nr_cep as cep', 'enderecos.te_bairro', 'enderecos.te_endereco', 'enderecos.te_complemento', 'cidades.nm_cidade', 'cidades.sg_estado')
+                ->where(['atendimentos.consulta_id' => null, 'atendimentos.cs_status' => 'A'])
+//                 ->limit(10)
+                ->orderby('procedimentos.ds_procedimento', 'asc')
+                ->orderby('atendimentos.id', 'asc')
+                ->get();
+//                 dd($list_exames);
+
+//                 foreach($list_exames as $item) {
+//                     if(sizeof($item->precos) == 0) {
+//                         dd($item);
+//                     }
+//                 }
+                
+                $sheet->setColumnFormat(array(
+                    'I6:I'.(sizeof($list_exames)+6) => '""00"." 000"."000"/"0000-00'
+                ));
+                
+                $sheet->loadView('atendimentos.exames_excel', compact('list_exames', 'cabecalho'));
+	        });
+	    })->export('xls');
+	}
 }

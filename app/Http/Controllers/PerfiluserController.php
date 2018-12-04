@@ -55,9 +55,21 @@ class PerfiluserController extends Controller
     {
         $list_permissaos = Permissao::orderBy('titulo', 'asc')->pluck('titulo', 'id');
         
+        $list_permissaos_temp = Permissao::orderBy('titulo', 'asc')->get()->toArray();
+        
+        for($i = 0; $i < sizeof($list_permissaos_temp); $i++) {
+            $titulo = $list_permissaos_temp[$i]['titulo'];
+            $url_model = substr_replace($list_permissaos_temp[$i]['url_model'], "", -1);
+            $titulo_novo = strstr($titulo, '[');
+            $list_permissaos_temp[$i]['titulo_novo'] = $titulo_novo;
+        }
+        
+        //dd($list_permissaos_temp);
+        $list_permissaos_grouped = UtilController::array_group_by( $list_permissaos_temp, "url_model");
+        
         $list_menus = Menu::orderBy('titulo', 'asc')->pluck('titulo', 'id');
         
-        return view('perfilusers.create', compact('list_permissaos', 'list_menus'));
+        return view('perfilusers.create', compact('list_permissaos', 'list_menus', 'list_permissaos_grouped'));
     }
 
     /**
