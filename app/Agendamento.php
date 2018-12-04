@@ -16,34 +16,35 @@ class Agendamento extends Model
     public $sortable  = ['id', 'te_ticket', 'dt_atendimento', 'cs_status'];
     public $dates 	  = ['dt_atendimento'];
 	protected $appends = ['vl_pedido', ];
-    
-    /*
-     * Constants
-     */
-    const PRE_AGENDADO   = 10;
-    const CONFIRMADO     = 20;
-    const NAO_CONFIRMADO = 30;
-    const FINALIZADO     = 40;
-    const AUSENTE        = 50;
-    const CANCELADO      = 60;
-    const AGENDADO       = 70;
-    const RETORNO        = 80;
-    const FATURADO       = 90;
-    const PAGO           = 100;
-    
-    
-    protected static $cs_status = array(
-        self::AGENDADO       => 'Agendado',
-        self::AUSENTE        => 'Ausente',
-        self::CANCELADO      => 'Cancelado',
-        self::CONFIRMADO     => 'Confirmado',
-        self::FATURADO       => 'Faturado',
-        self::FINALIZADO     => 'Finalizado',
-        self::NAO_CONFIRMADO => 'Não Confirmado',
-        self::PAGO           => 'Pago',
-        self::PRE_AGENDADO   => 'Pré-Agendado',
-        self::RETORNO        => 'Retorno',
-    );
+
+	/*
+	 * Constants
+	 */
+	const PRE_AUTORIZAR  = 0;
+	const PRE_AGENDADO   = 10;
+	const CONFIRMADO     = 20;
+	const NAO_CONFIRMADO = 30;
+	const FINALIZADO     = 40;
+	const AUSENTE        = 50;
+	const CANCELADO      = 60;
+	const AGENDADO       = 70;
+	const RETORNO        = 80;
+	const FATURADO       = 90;
+	const PAGO           = 100;
+
+	protected static $cs_status = array(
+		self::PRE_AUTORIZAR  => 'Pre-Autorizar',
+		self::PRE_AGENDADO   => 'Pré-Agendado',
+		self::CONFIRMADO     => 'Confirmado',
+		self::NAO_CONFIRMADO => 'Não Confirmado',
+		self::FINALIZADO     => 'Finalizado',
+		self::AUSENTE        => 'Ausente',
+		self::CANCELADO      => 'Cancelado',
+		self::AGENDADO       => 'Agendado',
+		self::RETORNO        => 'Retorno',
+		self::FATURADO       => 'Faturado',
+		self::PAGO           => 'Pago'
+	);
     
     /*
      * Relationship
