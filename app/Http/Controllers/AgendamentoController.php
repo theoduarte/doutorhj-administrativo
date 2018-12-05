@@ -21,6 +21,7 @@ use App\Filial;
 use App\Atendimento;
 use App\ItemPedido;
 use App\RegistroLog;
+use App\Especialidade;
 
 class AgendamentoController extends Controller
 {
@@ -205,7 +206,7 @@ class AgendamentoController extends Controller
             }
         }
 
-        //$agendamento->save();
+        $agendamento->save();
         
         //--carrega os dados do paciente para configurar a mensagem-----
         $paciente = Paciente::findorfail($agendamento->paciente_id);
@@ -226,7 +227,14 @@ class AgendamentoController extends Controller
         foreach ($ct_agendamento->profissional->especialidades as $especialidade) {
 			$nome_especialidade[] = $especialidade->ds_especialidade;
         }
-        $ct_agendamento->nome_especialidade = implode(' | ', $nome_especialidade);
+        if(empty($nome_especialidade)){
+			$especialidade_obj = new Especialidade();
+			$especialidade = $especialidade_obj->getNomeEspecialidade($ct_agendamento->id);
+			$ct_agendamento->nome_especialidade = $especialidade['nome_especialidades'];
+        }else{
+			$ct_agendamento->nome_especialidade = implode(' | ', $nome_especialidade);
+		}
+
 
         //--carrega os dados do pedido para configurar a mensagem-----
         $pedido_id = $ct_agendamento->itempedidos->first()->pedido_id;
@@ -420,12 +428,11 @@ class AgendamentoController extends Controller
 
 		$email 		= $paciente->user->email;
 		$telefone 	= $paciente->contatos->first()->ds_contato;
-
 		$nm_primario 			= $paciente->nm_primario;
 		$nr_pedido 				= sprintf("%010d", $pedido->id);
+
+
 		$nome_especialidade 	= "Especialidade/Exame: ".$agendamento->nome_especialidade;
-
-
 		$tipo_atendimento		= "";
 
 		$paciente_id = $paciente->id;
@@ -438,14 +445,19 @@ class AgendamentoController extends Controller
 			$atend_temp = new Atendimento();
 			$preco_ativo = $atend_temp->getPrecoByPlano($plano_ativo_id, $atendimento_id);
 			$preco_ativo = 'R$ '.$preco_ativo->vl_comercial;
+
 		}
 
 		$tipo_pagamento = '--------';
 		$pedido_obj = Pedido::findorfail($pedido->id);
 		if(!empty($pedido_obj)) {
-			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito'  |$pedido_obj->tp_pagamento == 'INDIVIDUAL' |$pedido_obj->tp_pagamento == 'individual') {
+			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito' |$pedido_obj->tp_pagamento == 'INDIVIDUAL' |$pedido_obj->tp_pagamento == 'individual' | $pedido_obj->tp_pagamento == 'EMPRESARIAL' | $pedido_obj->tp_pagamento == 'empresarial') {
 				$pedido_obj->load('pagamentos');
-				$tipo_pagamento = 'CRÉDITO';
+				if($pedido_obj->tp_pagamento == 'INDIVIDUAL' |$pedido_obj->tp_pagamento == 'individual'){
+					$tipo_pagamento = 'CRÉDITO';
+				}else if($pedido_obj->tp_pagamento == 'EMPRESARIAL' | $pedido_obj->tp_pagamento == 'empresarial'){
+					$tipo_pagamento = 'CRÉDITO EMPRESARIAL';
+				}
 
 				try {
 					$crc_brand = $paciente->credit_card_brand;
@@ -535,9 +547,14 @@ class AgendamentoController extends Controller
 		$tipo_pagamento = '--------';
 		$pedido_obj = Pedido::findorfail($pedido->id);
 		if(!empty($pedido_obj)) {
-			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito' |$pedido_obj->tp_pagamento == 'INDIVIDUAL' |$pedido_obj->tp_pagamento == 'individual') {
+			if($pedido_obj->tp_pagamento == 'Crédito' | $pedido_obj->tp_pagamento == 'credito' |$pedido_obj->tp_pagamento == 'INDIVIDUAL' |$pedido_obj->tp_pagamento == 'individual' | $pedido_obj->tp_pagamento == 'EMPRESARIAL' | $pedido_obj->tp_pagamento == 'empresarial') {
 				$pedido_obj->load('pagamentos');
-				$tipo_pagamento = 'CRÉDITO';
+				if($pedido_obj->tp_pagamento == 'INDIVIDUAL' |$pedido_obj->tp_pagamento == 'individual'){
+					$tipo_pagamento = 'CRÉDITO';
+				}else if($pedido_obj->tp_pagamento == 'EMPRESARIAL' | $pedido_obj->tp_pagamento == 'empresarial'){
+					$tipo_pagamento = 'CRÉDITO EMPRESARIAL';
+				}
+
 
 				try {
 					$crc_brand = $paciente->credit_card_brand;

@@ -468,7 +468,7 @@ class UtilController extends Controller
 	    $payload = '{"personalizations": [{"to": [{"email": "'.$to.'"}]}],"from": {"email": "'.$from.'"},"subject": "'.$subject.'","content": [{"type": "text/html", "value": "'.$html_message.'"}]}';
 	    //$payload = '{"personalizations": [{"to": [{"email": "teocomp@gmail.com"}]}],"from": {"email": "contato@doutorhoje.com.br"},"subject": "Hello, World!","content": [{"type": "text/html", "value": "<h1>teste3 DoutorHoje</h1>"}]}';
 	    
-	   dd($payload);
+
 	    
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
@@ -478,11 +478,10 @@ class UtilController extends Controller
 	    $output = curl_exec($ch);
 
 	    if ($output == "") {
-	        //return true;
+	        return true;
 	    }
-	print_r($output);
-	    die;
-	   // return $output;
+
+	    return $output;
 
 	}
 }
