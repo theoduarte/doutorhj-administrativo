@@ -142,8 +142,8 @@
 								<tr>
 									<th>@sortablelink('te_ticket', 'Ticket')</th>
 									<th>@sortablelink('clinica.nm_razao_social', 'Prestador')</th>
-									<th>Profissional</th>
-									<th>Paciente</th>
+									<th>@sortablelink('profissional.nm_primario', 'Profissional')</th>
+									<th>@sortablelink('paciente.nm_primario', 'Paciente')</th>
 									<th>Dt.Pagamento</th>
 									<th>@sortablelink('dt_atendimento', 'Dt.Atendimento')</th>
 									<th>@sortablelink('cs_status', 'Situação')</th>
@@ -164,7 +164,7 @@
 											@endif
 											<td style="text-align: left !important;">{{ $agendamento->paciente->nm_primario . ' ' . $agendamento->paciente->nm_secundario  }}</td>
 											<td>{{ !empty( $agendamento->itempedidos->first()->pedido ) ? $agendamento->itempedidos->first()->pedido->dt_pagamento : null}}</td>
-											<td>{{ $agendamento->dt_atendimento }}</td>
+											<td><span class="@if(empty($agendamento->getRawDtAtendimentoAttribute()))  text-danger  @endif">{{ $agendamento->dt_atendimento }}</span></td>
 											<td>{{ $agendamento->cs_status }}</td>
 											<td style="width:100px;">
 												<!-- botao agendar/remarcar -->

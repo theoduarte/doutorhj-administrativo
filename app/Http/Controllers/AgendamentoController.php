@@ -54,7 +54,7 @@ class AgendamentoController extends Controller
 		$nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
 		$data = Request::get('data') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data')) : '';
 
-		// DB::enableQueryLog();
+// 		DB::enableQueryLog();
 		$agendamentos = Agendamento::
 		where(function ($query) use ($request) {
 			if (!empty($request::get('cs_status'))) {
@@ -100,20 +100,21 @@ class AgendamentoController extends Controller
 			->whereHas('atendimentos', function ($query) {
 				$query->whereNull('deleted_at');
 			})
-			->orderBy(DB::raw('  CASE  WHEN agendamentos.cs_status::int = 10  THEN 1
-                                    WHEN agendamentos.cs_status::int = 20  THEN 2
-                                    WHEN agendamentos.cs_status::int = 80  THEN 3
-                                    WHEN agendamentos.cs_status::int = 70  THEN 4
-                                    WHEN agendamentos.cs_status::int = 30  THEN 5
-                                    WHEN agendamentos.cs_status::int = 40  THEN 6
-                                    WHEN agendamentos.cs_status::int = 50  THEN 7
-                                    WHEN agendamentos.cs_status::int = 60  THEN 8
-                                    WHEN agendamentos.cs_status::int = 90  THEN 9
-                                    WHEN agendamentos.cs_status::int = 100 THEN 10 END'), 'asc')
-			->orderBy('agendamentos.dt_atendimento')
+// 			->orderBy(DB::raw('  CASE  WHEN agendamentos.cs_status::int = 10  THEN 1
+//                                     WHEN agendamentos.cs_status::int = 20  THEN 2
+//                                     WHEN agendamentos.cs_status::int = 80  THEN 3
+//                                     WHEN agendamentos.cs_status::int = 70  THEN 4
+//                                     WHEN agendamentos.cs_status::int = 30  THEN 5
+//                                     WHEN agendamentos.cs_status::int = 40  THEN 6
+//                                     WHEN agendamentos.cs_status::int = 50  THEN 7
+//                                     WHEN agendamentos.cs_status::int = 60  THEN 8
+//                                     WHEN agendamentos.cs_status::int = 90  THEN 9
+//                                     WHEN agendamentos.cs_status::int = 100 THEN 10 END'), 'asc')
+// 			->orderBy('agendamentos.dt_atendimento')
+			->sortable(['dt_atendimento' => 'desc'])
 			->paginate(20);
 
-        // dd( DB::getQueryLog() );
+//         dd( DB::getQueryLog() );
 
         $tipoAtendimentos = Tipoatendimento::where('cs_status','A')->whereNotNull('tag_value')->orderBy('id')->get();
         $checkup = Checkup::where('cs_status','A')->count();
