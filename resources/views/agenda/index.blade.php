@@ -147,7 +147,7 @@
 								</colgroup>
 								<tr>
 									<th>@sortablelink('te_ticket', 'Ticket')</th>
-									<th>@sortablelink('nm_razao_social', 'Prestador')</th>
+									<th>@sortablelink('clinica.nm_razao_social', 'Prestador')</th>
 									<th>@sortablelink('profissional.nm_primario', 'Profissional')</th>
 									<th>@sortablelink('paciente.nm_primario', 'Paciente')</th>
 									<th>Dt.Pagamento</th>
@@ -323,6 +323,6 @@
 
 	@include('agenda/modal_pagamento')
 
-	@include('agenda/modal_update')
+<!-- 	@include('agenda/modal_update') -->
 
 @endsection

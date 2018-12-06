@@ -76,7 +76,7 @@ class AgendamentoController extends Controller
 	 	
 	 	//-- filtra pelo status do agendamento----------------------------------------------------------------------------------
  		if (!empty($request::get('cs_status'))) {
- 			$agendamentos->whereIn('cs_status', $request::get('cs_status'));
+ 			$agendamentos->whereIn('agendamentos.cs_status', $request::get('cs_status'));
  		}
 	 	
 	 	//-- filtra por data de atendimento do agendamento----------------------------------------------------------------------------------
