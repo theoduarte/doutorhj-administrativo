@@ -262,6 +262,7 @@
 		});
 		
     	var ds_consulta = $(element).parent().parent().find('td:nth-child(3)').html();
+    	ds_consulta = ds_consulta.split('<span class="text-primary">').pop().split('</span>')[0];
     	var nm_profissional = $(element).parent().parent().find('td:nth-child(4)').html();
 
     	$('#profissional-consulta-modal').find('input.form-control').val('');

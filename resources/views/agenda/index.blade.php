@@ -103,13 +103,18 @@
 										<input type="text" class="form-control input-daterange" id="data" name="data" value="{{ old('data') }}" autocomplete="off">
 									</div>
 
-									<div class="col-6">
+									<div class="col-3">
 										<label for="localAtendimento">Status:</label>
 										<select name="cs_status[]" id="cs_status" class="form-control select2" placeholder="selecione o status do agendamento" multiple="multiple">
 											@foreach( $status as $key => $value )
 												<option value="{{ $key }}" {{ !empty(old('cs_status')) && in_array($key, old('cs_status')) ? 'selected' : null }}>{{ $value }}</option>
 											@endforeach
 										</select>
+									</div>
+									
+									<div class="col-3">
+										<label for="data">Data de Pagamento:<span class="text-danger"></span></label>
+										<input type="text" class="form-control input-daterange" id="data_pagamento" name="data_pagamento" value="{{ old('data_pagamento') }}" autocomplete="off">
 									</div>
 
 									<div class="col-3">
@@ -142,8 +147,8 @@
 								<tr>
 									<th>@sortablelink('te_ticket', 'Ticket')</th>
 									<th>@sortablelink('clinica.nm_razao_social', 'Prestador')</th>
-									<th>Profissional</th>
-									<th>Paciente</th>
+									<th>@sortablelink('profissional.nm_primario', 'Profissional')</th>
+									<th>@sortablelink('paciente.nm_primario', 'Paciente')</th>
 									<th>Dt.Pagamento</th>
 									<th>@sortablelink('dt_atendimento', 'Dt.Atendimento')</th>
 									<th>@sortablelink('cs_status', 'Situação')</th>
@@ -164,7 +169,7 @@
 											@endif
 											<td style="text-align: left !important;">{{ $agendamento->paciente->nm_primario . ' ' . $agendamento->paciente->nm_secundario  }}</td>
 											<td>{{ !empty( $agendamento->itempedidos->first()->pedido ) ? $agendamento->itempedidos->first()->pedido->dt_pagamento : null}}</td>
-											<td>{{ $agendamento->dt_atendimento }}</td>
+											<td><span class="@if(empty($agendamento->getRawDtAtendimentoAttribute()))  text-danger  @endif">{{ $agendamento->dt_atendimento }}</span></td>
 											<td>{{ $agendamento->cs_status }}</td>
 											<td style="width:100px;">
 												<!-- botao agendar/remarcar -->
