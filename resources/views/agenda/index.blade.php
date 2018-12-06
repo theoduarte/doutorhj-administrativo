@@ -103,13 +103,18 @@
 										<input type="text" class="form-control input-daterange" id="data" name="data" value="{{ old('data') }}" autocomplete="off">
 									</div>
 
-									<div class="col-6">
+									<div class="col-3">
 										<label for="localAtendimento">Status:</label>
 										<select name="cs_status[]" id="cs_status" class="form-control select2" placeholder="selecione o status do agendamento" multiple="multiple">
 											@foreach( $status as $key => $value )
 												<option value="{{ $key }}" {{ !empty(old('cs_status')) && in_array($key, old('cs_status')) ? 'selected' : null }}>{{ $value }}</option>
 											@endforeach
 										</select>
+									</div>
+									
+									<div class="col-3">
+										<label for="data">Data de Pagamento:<span class="text-danger"></span></label>
+										<input type="text" class="form-control input-daterange" id="data_pagamento" name="data_pagamento" value="{{ old('data_pagamento') }}" autocomplete="off">
 									</div>
 
 									<div class="col-3">
