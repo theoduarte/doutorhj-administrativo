@@ -56,56 +56,81 @@ class AgendamentoController extends Controller
 		$data_pagamento = Request::get('data_pagamento') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data_pagamento')) : '';
 
 //  		DB::enableQueryLog();
-		$agendamentos = Agendamento::with('itempedidos')->where(function ($query) use ($request) {
-			if (!empty($request::get('cs_status'))) {
-				$query->whereIn('cs_status', $request::get('cs_status'));
-			}
+ 		##################################################################################################################
+ 		$agendamentos = Agendamento::with(['itempedidos', 'itempedidos.pedido', 'atendimento'])
+	 		->join('itempedidos', function ($query) {$query->on('itempedidos.agendamento_id', '=', 'agendamentos.id');})
+	 		->join('pedidos', function ($query) use($data_pagamento) {
+	 				
+	 			if (!is_null($data_pagamento) && $data_pagamento != '') {
+	 				$dateBegin = $data_pagamento['de'];
+	 				$dateEnd = $data_pagamento['ate'];
+	 			} else {
+	 				$dateBegin = date('Y-m-d H:i:s', strtotime('2017-01-01 00:00:00'));
+	 				$dateEnd = date('Y-m-d H:i:s');
+	 			}
+	 		
+	 			$query->on('pedidos.id', '=', 'itempedidos.pedido_id')->whereDate('pedidos.dt_pagamento', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('pedidos.dt_pagamento', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)));
+	 		
+	 		})
+	 		->join('clinicas', 		function ($query) {$query->on('clinicas.id', '=', 'agendamentos.clinica_id');});
+	 	
+	 	//-- filtra pelo status do agendamento----------------------------------------------------------------------------------
+ 		if (!empty($request::get('cs_status'))) {
+ 			$agendamentos->whereIn('cs_status', $request::get('cs_status'));
+ 		}
+	 	
+	 	//-- filtra por data de atendimento do agendamento----------------------------------------------------------------------------------
+	 	if (!empty($request::get('data'))) {
+	 		$date = UtilController::getDataRangeTimePickerToCarbon($request::get('data'));
+	 		
+	 		$dateBegin = $date['de'];
+	 		$dateEnd = $date['ate'];
+	 		
+	 		$agendamentos->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)));
+	 	}
+	 	
+	 	//-- filtra pelo prestador que realizou o agendamento----------------------------------------------------------------------------------
+	 	if (!empty($request::get('clinica_id'))) {
+	 		$agendamentos->whereExists(function ($query) use ($request) { $query->select(DB::raw(1))->from('agendamento_atendimento')
+	 			->join('atendimentos', function ($query) use ($request) { $query->on('agendamento_atendimento.atendimento_id', '=', 'atendimentos.id')->where('atendimentos.clinica_id', $request::get('clinica_id')); })
+	 			->whereRaw('agendamento_atendimento.agendamento_id = agendamentos.id');
+	 		});
+	 	}
+	 	
+	 	//-- filtra pelo nome do paciente que realizou o agendamento----------------------------------------------------------------------------------
+	 	if (!empty($request::get('nm_paciente'))) {
+	 		$agendamentos->whereExists(function ($query) use ($request) {
+	 			$nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
+	 	
+	 			$query->select(DB::raw(1))->from('pacientes')
+	 			->whereRaw('agendamentos.paciente_id = pacientes.id')
+	 			->where(function ($query) use ($nmPaciente) {
+	 				$query->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%' . $nmPaciente . '%')
+	 				->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%' . $nmPaciente . '%')
+	 				->orWhere(DB::raw("concat(to_str(pacientes.nm_primario), ' ',to_str(pacientes.nm_secundario))"), 'like', '%' . $nmPaciente . '%');
+	 			});
+	 		});
+	 	}
+	 	
+// 	 	$agendamentos->whereHas('atendimentos', function ($query) { $query->whereNull('deleted_at'); });
 
-			if (!empty($request::get('data'))) {
-				$date = UtilController::getDataRangeTimePickerToCarbon($request::get('data'));
+	 	if (!is_null($data_pagamento) && $data_pagamento != '') {
+	 		$agendamentos->orderBy('dt_pagamento', 'desc');
+	 	}
 
-				$dateBegin = $date['de'];
-				$dateEnd = $date['ate'];
-
-				$query->whereDate('agendamentos.dt_atendimento', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('agendamentos.dt_atendimento', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)));
-			}
-
-			if (!empty($request::get('clinica_id'))) {
-				$query->whereExists(function ($query) use ($request) {
-					$query->select(DB::raw(1))
-						->from('agendamento_atendimento')
-						->join('atendimentos', function ($query) use ($request) {
-							$query->on('agendamento_atendimento.atendimento_id', '=', 'atendimentos.id')
-								->where('atendimentos.clinica_id', $request::get('clinica_id'));
-						})
-						->whereRaw('agendamento_atendimento.agendamento_id = agendamentos.id');
-				});
-			}
-
-			if (!empty($request::get('nm_paciente'))) {
-				$query->whereExists(function ($query) use ($request) {
-					$nmPaciente = UtilController::toStr(Request::get('nm_paciente'));
-
-					$query->select(DB::raw(1))
-						->from('pacientes')
-						->whereRaw('agendamentos.paciente_id = pacientes.id')
-						->where(function ($query) use ($nmPaciente) {
-							$query->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%' . $nmPaciente . '%')
-								->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%' . $nmPaciente . '%')
-								->orWhere(DB::raw("concat(to_str(pacientes.nm_primario), ' ',to_str(pacientes.nm_secundario))"), 'like', '%' . $nmPaciente . '%');
-						});
-				});
-			}
-		})
-		->join('itempedidos', function ($query) {$query->on('itempedidos.agendamento_id', '=', 'agendamentos.id');})
-		->join('pedidos', function ($query) use($data_pagamento) {
-		        $dateBegin = $data_pagamento['de'];
-		        $dateEnd = $data_pagamento['ate'];
-		        $query->on('pedidos.id', '=', 'itempedidos.pedido_id')->whereDate('pedidos.dt_pagamento', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('pedidos.dt_pagamento', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)));}
-		)
-	    ->whereHas('atendimentos', function ($query) {
-				$query->whereNull('deleted_at');
-			})
+	 	$agendamentos->select('agendamentos.id', 'agendamentos.te_ticket', 'agendamentos.dt_atendimento', 'agendamentos.obs_agendamento', 'agendamentos.obs_cancelamento', 'agendamentos.cs_status',
+	 			'agendamentos.bo_remarcacao', 'agendamentos.clinica_id', 'agendamentos.paciente_id', 'agendamentos.atendimento_id', 'agendamentos.profissional_id', 'agendamentos.convenio_id',
+	 			'agendamentos.bo_retorno', 'agendamentos.cupom_id', 'agendamentos.filial_id', 'agendamentos.checkup_id', 'clinicas.nm_razao_social', 'pedidos.dt_pagamento');
+	 	$agendamentos = $agendamentos->sortable(['dt_atendimento' => 'desc'])
+// 			->orderBy('agendamentos.dt_atendimento')
+			->paginate(20);
+	 	
+	 	
+//  		dd( DB::getQueryLog() );
+// 		dd($agendamentos);
+ 		##################################################################################################################
+ 		
+// 		->orderby('dt_pagamento', 'desc')
 // 			->orderBy(DB::raw('  CASE  WHEN agendamentos.cs_status::int = 10  THEN 1
 //                                     WHEN agendamentos.cs_status::int = 20  THEN 2
 //                                     WHEN agendamentos.cs_status::int = 80  THEN 3
@@ -116,16 +141,10 @@ class AgendamentoController extends Controller
 //                                     WHEN agendamentos.cs_status::int = 60  THEN 8
 //                                     WHEN agendamentos.cs_status::int = 90  THEN 9
 //                                     WHEN agendamentos.cs_status::int = 100 THEN 10 END'), 'asc')
-// 			->orderBy('agendamentos.dt_atendimento')
-			->sortable(['dt_atendimento' => 'desc'])
-			->paginate(20);
-
-//          dd( DB::getQueryLog() );
 
         $tipoAtendimentos = Tipoatendimento::where('cs_status','A')->whereNotNull('tag_value')->orderBy('id')->get();
         $checkup = Checkup::where('cs_status','A')->count();
         $hasActiveCheckup = $checkup > 0 ? true : false;
-        
         Request::flash();
         
         return view('agenda.index', compact('agendamentos', 'clinicas', 'tipoAtendimentos', 'hasActiveCheckup','status'));

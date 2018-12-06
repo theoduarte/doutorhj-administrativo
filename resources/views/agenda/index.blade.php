@@ -133,6 +133,7 @@
 					<div style="height: 20px !important;"></div>
 					<div class="row">
 						<div class="col-12">
+							
 							<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
 								<colgroup>
 									<col width="100">
@@ -146,7 +147,7 @@
 								</colgroup>
 								<tr>
 									<th>@sortablelink('te_ticket', 'Ticket')</th>
-									<th>@sortablelink('clinica.nm_razao_social', 'Prestador')</th>
+									<th>@sortablelink('nm_razao_social', 'Prestador')</th>
 									<th>@sortablelink('profissional.nm_primario', 'Profissional')</th>
 									<th>@sortablelink('paciente.nm_primario', 'Paciente')</th>
 									<th>Dt.Pagamento</th>
@@ -155,28 +156,28 @@
 									<th>Ações</th>
 								</tr>
 								@foreach($agendamentos as $agendamento)
-									@foreach( $agendamento->atendimentos()->whereNull('deleted_at')->get() as $atendimento )
+									{{-- @foreach( $agendamento->atendimentos()->whereNull('deleted_at')->get() as $atendimento ) --}}
 										@php
-											$type = !empty( $atendimento->procedimento ) ? 'Exame' : 'Consulta';
+											$type = !empty( $agendamento->atendimento->procedimento ) ? 'Exame' : 'Consulta';
 										@endphp
 										<tr>
 											<td>{{ $agendamento->te_ticket }}</td>
 											<td>{{ $agendamento->clinica->nm_razao_social ?? 'Não Informado' }}</td>
-											@if( !empty($atendimento->consulta_id) )
-												<td style="text-align: left !important;">{{ $atendimento->profissional->nm_primario . ' ' . $atendimento->profissional->nm_secundario  }}</td>
+											@if( !empty($agendamento->atendimento->consulta_id) )
+												<td style="text-align: left !important;">{{ $agendamento->atendimento->profissional->nm_primario . ' ' . $agendamento->atendimento->profissional->nm_secundario  }}</td>
 											@else
 												<td style="text-align: left !important;"></td>
 											@endif
 											<td style="text-align: left !important;">{{ $agendamento->paciente->nm_primario . ' ' . $agendamento->paciente->nm_secundario  }}</td>
-											<td>{{ !empty( $agendamento->itempedidos->first()->pedido ) ? $agendamento->itempedidos->first()->pedido->dt_pagamento : null}}</td>
+											<td>@if(!empty( $agendamento->itempedidos->first()->pedido )) {{ $agendamento->itempedidos->first()->pedido->dt_pagamento }} @endif</td>
 											<td><span class="@if(empty($agendamento->getRawDtAtendimentoAttribute()))  text-danger  @endif">{{ $agendamento->dt_atendimento }}</span></td>
 											<td>{{ $agendamento->cs_status }}</td>
 											<td style="width:100px;">
 												<!-- botao agendar/remarcar -->
 												@if( $agendamento->cs_status == 'Pré-Agendado' || $agendamento->cs_status == 'Agendado' && $agendamento->cs_status != 'Cancelado' &&
 													$agendamento->cs_status != 'Finalizado' && $agendamento->cs_status != 'Confirmado' && $agendamento->bo_remarcacao == 'N')
-													<a especialidade="{{ !empty( $atendimento->procedimento ) ? $atendimento->procedimento->grupoprocedimento->ds_grupo : $atendimento->consulta->especialidade->ds_especialidade }}"
-														id-especialidade="{{ !empty( $atendimento->procedimento ) ? $atendimento->procedimento->id : $atendimento->consulta->id }}"
+													<a especialidade="{{ !empty( $agendamento->atendimento->procedimento ) ? $agendamento->atendimento->procedimento->grupoprocedimento->ds_grupo : $agendamento->atendimento->consulta->especialidade->ds_especialidade }}"
+														id-especialidade="{{ !empty( $agendamento->atendimento->procedimento ) ? $agendamento->atendimento->procedimento->id : $agendamento->atendimento->consulta->id }}"
 														tp-prestador="{{ $agendamento->clinica->tp_prestador ?? 'Não Informado' }}"
 														data-hora="{{ $agendamento->dt_atendimento }}"
 														prestador="{{ $agendamento->clinica->nm_razao_social ?? 'Não Informado' }}"
@@ -184,7 +185,7 @@
 														valor-consulta="{{ number_format( $agendamento->vl_pedido,  2, ',', '.') }}"
 														valor-pagamento="{{ number_format( $agendamento->vl_pedido,  2, ',', '.') }}"
 														id-agendamento="{{ $agendamento->id }}"
-														id-profissional="{{ $atendimento->profissional->id }}"
+														id-profissional="{{ $agendamento->atendimento->profissional->id }}"
 														id-clinica="{{ $agendamento->clinica->id ?? 'Não Informado' }}"
 														nm-clinica="{{ $agendamento->clinica->nm_fantasia ?? 'Não Informado' }}"
 														id-paciente="{{ $agendamento->paciente->id }}"
@@ -192,7 +193,7 @@
 														nm-filial="{{ $agendamento->filial->eh_matriz ? 'Matriz - ' : 'Filial - ' }} {{ $agendamento->filial->nm_nome_fantasia }}"
 														ticket="{{ $agendamento->te_ticket }}"
 														type="{{ $type }}"
-														atendimento="{{!empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+														atendimento="{{!empty( $agendamento->atendimento->procedimento ) ? ($agendamento->atendimento->procedimento->cd_procedimento . ' - ' . $agendamento->atendimento->procedimento->ds_procedimento) : ($agendamento->atendimento->consulta->cd_consulta . ' - ' . $agendamento->atendimento->consulta->ds_consulta) }}"
 														data-toggle="modal"
 														data-target="#dialog-agendar"
 														class="btn btn-icon waves-effect btn-agenda-remarcar btn-sm m-b-5 agendamento"
@@ -207,7 +208,7 @@
 
 												<!-- botao confirmar -->
 												@if( $agendamento->cs_status != 'Cancelado' && $agendamento->cs_status == 'Agendado' )
-													<a especialidade="{{ !empty( $atendimento->procedimento ) ? $atendimento->procedimento->grupoprocedimento->ds_grupo : $atendimento->consulta->especialidade->ds_especialidade }}"
+													<a especialidade="{{ !empty( $agendamento->atendimento->procedimento ) ? $agendamento->atendimento->procedimento->grupoprocedimento->ds_grupo : $agendamento->atendimento->consulta->especialidade->ds_especialidade }}"
 													   	nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 													   	data-hora="{{ $agendamento->dt_atendimento }}"
 													   	prestador="{{ $agendamento->clinica->nm_razao_social ?? 'Não Informado' }}"
@@ -219,7 +220,7 @@
 													   	id-paciente="{{ $agendamento->paciente->id }}"
 													   	ticket="{{ $agendamento->te_ticket }}"
 													   	type="{{ $type }}"
-													   	atendimento="{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+													   	atendimento="{{ !empty( $agendamento->atendimento->procedimento ) ? ($agendamento->atendimento->procedimento->cd_procedimento . ' - ' . $agendamento->atendimento->procedimento->ds_procedimento) : ($agendamento->atendimento->consulta->cd_consulta . ' - ' . $agendamento->atendimento->consulta->ds_consulta) }}"
 													   	class="btn btn-icon waves-effect btn-agenda-confirmar btn-sm m-b-5 confirmacao"
 													   	title="Confirmar {{ $type }}" id="confirmacao">
 														<i class="mdi mdi-check"></i>
@@ -228,7 +229,7 @@
 
 												<!-- botao faturar -->
 												@if( $agendamento->cs_status == 'Finalizado' )
-													<a especialidade="{{ !empty( $atendimento->procedimento ) ? $atendimento->procedimento->grupoprocedimento->ds_grupo : $atendimento->consulta->especialidade->ds_especialidade }}"
+													<a especialidade="{{ !empty( $agendamento->atendimento->procedimento ) ? $agendamento->atendimento->procedimento->grupoprocedimento->ds_grupo : $agendamento->atendimento->consulta->especialidade->ds_especialidade }}"
 													   	nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 													   	data-hora="{{ $agendamento->dt_atendimento }}"
 													   	prestador="{{ $agendamento->clinica->nm_razao_social ?? 'Não Informado' }}"
@@ -240,7 +241,7 @@
 													   	id-paciente="{{ $agendamento->paciente->id }}"
 													   	ticket="{{ $agendamento->te_ticket }}"
 													   	type="{{ $type }}"
-													   	atendimento="{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+													   	atendimento="{{ !empty( $agendamento->atendimento->procedimento ) ? ($agendamento->atendimento->procedimento->cd_procedimento . ' - ' . $agendamento->atendimento->procedimento->ds_procedimento) : ($agendamento->atendimento->consulta->cd_consulta . ' - ' . $agendamento->atendimento->consulta->ds_consulta) }}"
 													   	class="btn btn-icon waves-effect btn-agenda-faturar btn-sm m-b-5 faturamento"
 													   	title="Faturar {{ $type }}" id="faturamento">
 														<i class="mdi mdi-file-chart"></i>
@@ -249,7 +250,7 @@
 
 												<!-- botao pagar -->
 												@if( $agendamento->cs_status == 'Faturado' )
-													<a especialidade="{{ !empty( $atendimento->procedimento ) ? $atendimento->procedimento->grupoprocedimento->ds_grupo : $atendimento->consulta->especialidade->ds_especialidade }}"
+													<a especialidade="{{ !empty( $agendamento->atendimento->procedimento ) ? $agendamento->atendimento->procedimento->grupoprocedimento->ds_grupo : $agendamento->atendimento->consulta->especialidade->ds_especialidade }}"
 													   	nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 													   	data-hora="{{ $agendamento->dt_atendimento }}"
 													   	prestador="{{ $agendamento->clinica->nm_razao_social ?? 'Não Informado' }}"
@@ -261,7 +262,7 @@
 													   	id-paciente="{{ $agendamento->paciente->id }}"
 													   	ticket="{{ $agendamento->te_ticket }}"
 													   	type="{{ $type }}"
-													   	atendimento="{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+													   	atendimento="{{ !empty( $agendamento->atendimento->procedimento ) ? ($agendamento->atendimento->procedimento->cd_procedimento . ' - ' . $agendamento->atendimento->procedimento->ds_procedimento) : ($agendamento->atendimento->consulta->cd_consulta . ' - ' . $agendamento->atendimento->consulta->ds_consulta) }}"
 													   	class="btn btn-icon waves-effect btn-agenda-pagar btn-sm m-b-5 pagamento"
 													   	title="Pagar {{ $type }}" id="pagamento">
 														<i class="fa fa-dollar"></i>
@@ -273,7 +274,7 @@
 													$agendamento->cs_status !='Faturado' &&
 													$agendamento->cs_status !='Pago' &&
 													$agendamento->cs_status !='Retorno')
-													<a especialidade="{{ !empty( $atendimento->procedimento ) ? $atendimento->procedimento->grupoprocedimento->ds_grupo : $atendimento->consulta->especialidade->ds_especialidade }}"
+													<a especialidade="{{ !empty( $agendamento->atendimento->procedimento ) ? $agendamento->atendimento->procedimento->grupoprocedimento->ds_grupo : $agendamento->atendimento->consulta->especialidade->ds_especialidade }}"
 														nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 														data-hora="{{ $agendamento->dt_atendimento }}"
 														prestador="{{ $agendamento->clinica->nm_razao_social ?? 'Não Informado' }}"
@@ -285,7 +286,7 @@
 														id-paciente="{{ $agendamento->paciente->id }}"
 														ticket="{{ $agendamento->te_ticket }}"
 														type="{{ $type }}"
-														atendimento="{{ !empty( $atendimento->procedimento ) ? ($atendimento->procedimento->cd_procedimento . ' - ' . $atendimento->procedimento->ds_procedimento) : ($atendimento->consulta->cd_consulta . ' - ' . $atendimento->consulta->ds_consulta) }}"
+														atendimento="{{ !empty( $agendamento->atendimento->procedimento ) ? ($agendamento->atendimento->procedimento->cd_procedimento . ' - ' . $agendamento->atendimento->procedimento->ds_procedimento) : ($agendamento->atendimento->consulta->cd_consulta . ' - ' . $agendamento->atendimento->consulta->ds_consulta) }}"
 														class="btn btn-icon waves-effect btn-agenda-cancelar btn-sm m-b-5 cancelamento"
 														title="Cancelar {{ $type }}" id="cancelamento">
 														<i class="mdi mdi-close"></i>
@@ -293,7 +294,7 @@
 												@endif
 											</td>
 										</tr>
-									@endforeach
+									{{-- @endforeach --}}
 								@endforeach
 							</table>
 							<tfoot>
