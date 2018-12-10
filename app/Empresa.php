@@ -34,6 +34,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @property CartaoPaciente[] $cartaoPacientes
  * @property Contato[] $contatos
  * @property Paciente[] $pacientes
+ * @property Anuidades[] $anuidades
  */
 class Empresa extends Model
 {
