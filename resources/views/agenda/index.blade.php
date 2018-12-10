@@ -44,11 +44,13 @@
 				minLength: 5,
 				select: function (event, ui) {
 					$('input[name="clinica_id"]').val(parseInt(ui.item.id));
+					$('#id_prestador_xls').val(parseInt(ui.item.id));
 				}
 			}).change(function () {
 				if ($(this).val().length == 0) {
 					$('#datepicker-agenda').val(null);
 					$('input[name="clinica_id"]').val(null);
+					$('#id_prestador_xls').val(null);
 				}
 			});
 		});
@@ -87,20 +89,20 @@
 								<div class="row">
 									<div class="col-6">
 										<label for="localAtendimento">Razão Social do Prestador:</label>
-										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}">
+										<input type="text" class="form-control" name="localAtendimento" id="localAtendimento" value="{{old('localAtendimento')}}" onblur="$('#razao_social_prestador_xls').val($(this).val());">
 										<input type="hidden" id="clinica_id" name="clinica_id" value="{{old('clinica_id')}}">
 									</div>
 
 									<div class="col-6">
 										<label for="localAtendimento">Nome do Paciente:</label>
-										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}">
+										<input type="text" class="form-control" name="nm_paciente" id="nm_paciente" value="{{old('nm_paciente')}}" onblur="$('#nome_paciente_xls').val($(this).val());">
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="col-3">
 										<label for="data">Data de Atendimento:<span class="text-danger"></span></label>
-										<input type="text" class="form-control input-daterange" id="data" name="data" value="{{ old('data') }}" autocomplete="off">
+										<input type="text" class="form-control input-daterange-agenda" id="data" name="data" value="{{ old('data') }}" autocomplete="off">
 									</div>
 
 									<div class="col-3">
@@ -112,21 +114,40 @@
 										</select>
 									</div>
 									
-									<div class="col-3">
+									<div class="col-2">
 										<label for="data">Data de Pagamento:<span class="text-danger"></span></label>
-										<input type="text" class="form-control input-daterange" id="data_pagamento" name="data_pagamento" value="{{ old('data_pagamento') }}" autocomplete="off">
+										<input type="text" class="form-control input-daterange-agenda" id="data_pagamento" name="data_pagamento" value="{{ old('data_pagamento') }}" autocomplete="off" >
 									</div>
 
-									<div class="col-3">
+									<div class="col-2">
 										<div style="height: 30px;"></div>
 										<button type="submit" class="btn btn-primary" id="submit" style="margin-right: 10px;"><i class="fa fa-search"></i> Pesquisar
 										</button>
-										<a href="{{ route('agenda.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca" style="margin-bottom: 0px; ">
+										<a href="{{ route('agenda.index') }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca" style="margin-right: 10px; margin-bottom: 0px; ">
 											<i class="ion-close"></i> Limpar Busca
 										</a>
 									</div>
+									</form>
+									<div class="col-2">
+										<div style="height: 30px;"></div>
+										<form action="{{ route('agenda-xls') }}" method="post" enctype="multipart/form-data">
+				
+                        					{!! csrf_field() !!}
+                        					
+                        					<div class="form-group text-center m-b-0">
+                        						<input type="hidden" id="razao_social_prestador_xls" name="razao_social_prestador_xls" value="{{old('localAtendimento')}}">
+                        						<input type="hidden" id="id_prestador_xls" name="id_prestador_xls" value="{{old('clinica_id')}}">
+                        						<input type="hidden" id="nome_paciente_xls" name="nome_paciente_xls" value="{{old('nm_paciente')}}">
+                        						<input type="hidden" id="startdate_atendimento_xls" name="startdate_atendimento_xls" value="@if(!is_null(old('data'))){{trim(explode('-',old('data'))[0])}}@endif">
+                        						<input type="hidden" id="enddate_atendimento_xls" name="enddate_atendimento_xls" value="@if(!is_null(old('data'))){{trim(explode('-',old('data'))[1])}}@endif">
+                        						<input type="hidden" id="status_atendimento_ids" name="status_atendimento_ids">
+                        						<input type="hidden" id="startdate_pagamento_xls" name="startdate_pagamento_xls" value="@if(!is_null(old('data_pagamento'))){{explode('-',old('data_pagamento'))[0]}}@endif">
+                        						<input type="hidden" id="enddate_pagamento_xls" name="enddate_pagamento_xls" value="@if(!is_null(old('data_pagamento'))){{ explode('-',old('data_pagamento'))[1] }}@endif">
+                        						<button type="submit" class="btn btn-icon waves-effect waves-light btn-success m-b-5" ><i class="mdi mdi-file-excel"></i> Gerar Relatório</button>
+                        					</div>
+                        				</form>
+									</div>
 								</div>
-							</form>
 						</div>
 					</div>
 
@@ -324,5 +345,37 @@
 	@include('agenda/modal_pagamento')
 
 <!-- 	@include('agenda/modal_update') -->
+	<script type="text/javascript">
+        jQuery(document).ready(function($) {
+        	$('#cs_status').on("select2:select", function(e) { 
+        	    $('#status_atendimento_ids').val($(this).val());
+        	});
 
+        	$('.input-daterange-agenda').daterangepicker({
+        	    format: 'DD/MM/YYYY',
+        	    timePickerIncrement: 30,
+        	    buttonClasses: ['btn', 'btn-sm'],
+        	    applyClass: 'btn-secondary',
+        	    cancelClass: 'btn-primary',
+        	    autoUpdateInput: false,
+        	    locale: {
+        			cancelLabel: 'Limpar',
+        			applyLabel: 'Aplicar'
+        	    }
+        	});
+        	
+        	$('#data').on('apply.daterangepicker', function(ev, picker) {
+        		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        		$('#startdate_atendimento_xls').val(picker.startDate.format('DD/MM/YYYY HH:mm:SS'));
+        		$('#enddate_atendimento_xls').val(picker.endDate.format('DD/MM/YYYY HH:mm:SS'));
+        	});
+
+        	$('#data_pagamento').on('apply.daterangepicker', function(ev, picker) {
+        		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        		$('#startdate_pagamento_xls').val(picker.startDate.format('DD/MM/YYYY HH:mm:SS'));
+        		$('#enddate_pagamento_xls').val(picker.endDate.format('DD/MM/YYYY HH:mm:SS'));
+        		
+        	});
+        });
+	</script>
 @endsection

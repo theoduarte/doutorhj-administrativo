@@ -21,6 +21,7 @@ use App\Filial;
 use App\Atendimento;
 use App\ItemPedido;
 use App\RegistroLog;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AgendamentoController extends Controller
 {
@@ -772,5 +773,120 @@ class AgendamentoController extends Controller
 			'status' => true,
 			'message' => 'Agendamento atualizado com sucesso!'
 		], 200);
+    }
+    
+    /**
+     * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico.
+     *
+     */
+    public function geraListaAgendaXls(Request $request)
+    {
+        
+        Excel::create('DRHJ_RELATORIO_AGENDAMENTOS_' . date('d-m-Y~H_i_s'), function ($excel) {
+            $excel->sheet('Agendamentos', function ($sheet) {
+                
+                // Font family
+                $sheet->setFontFamily('Comic Sans MS');
+                
+                // Set font with ->setStyle()`
+                $sheet->setStyle(array(
+                    'font' => array(
+                        'name' => 'Calibri',
+                        'size' => 12,
+                        'bold' => false
+                    )
+                ));
+                
+                $cabecalho = array('Data' => date('d-m-Y H:i'));
+                
+                $razao_social_prestador_xls     = Request::get('razao_social_prestador_xls');
+                $clinica_id                     = Request::get('id_prestador_xls');
+                $nome_paciente_xls              = Request::get('nome_paciente_xls');
+                $startdate_atendimento_xls      = Request::get('startdate_atendimento_xls');
+                $enddate_atendimento_xls        = Request::get('enddate_atendimento_xls');
+                $status_atendimento_ids         = Request::get('status_atendimento_ids');
+                $startdate_pagamento_xls        = Request::get('startdate_pagamento_xls');
+                $enddate_pagamento_xls          = Request::get('enddate_pagamento_xls');
+                
+                DB::enableQueryLog();
+                ##################################################################################################################
+                $list_agendamentos = Agendamento::with(['itempedidos', 'itempedidos.pedido', 'atendimento'])
+                    ->join('itempedidos', function ($query) {$query->on('itempedidos.agendamento_id', '=', 'agendamentos.id');})
+                    ->join('pedidos', function ($query) use($startdate_pagamento_xls, $enddate_pagamento_xls) {
+                        
+                        if (!is_null($startdate_pagamento_xls) && !is_null($enddate_pagamento_xls) && $startdate_pagamento_xls != '' && $enddate_pagamento_xls != '') {
+                            $dateBegin = date('Y-m-d H:i:s', strtotime(preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", $startdate_pagamento_xls)));
+                            $dateEnd = date('Y-m-d H:i:s', strtotime(preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", $enddate_pagamento_xls).' 23:59:59'));
+                        } else {
+                            $dateBegin = date('Y-m-d H:i:s', strtotime('2017-01-01 00:00:00'));
+                            $dateEnd = date('Y-m-d H:i:s');
+                        }
+                        
+                        $query->on('pedidos.id', '=', 'itempedidos.pedido_id')->whereDate('pedidos.dt_pagamento', '>=', $dateBegin)->whereDate('pedidos.dt_pagamento', '<=', $dateEnd);
+                        
+                    })
+                    ->join('clinicas', 		function ($query) {$query->on('clinicas.id', '=', 'agendamentos.clinica_id');});
+                
+                //-- filtra pelo status do agendamento----------------------------------------------------------------------------------
+                if (!empty($status_atendimento_ids)) {
+                    $list_agendamentos->whereIn('agendamentos.cs_status', $status_atendimento_ids);
+                }
+                
+                //-- filtra por data de atendimento do agendamento----------------------------------------------------------------------------------
+                if (!is_null($startdate_atendimento_xls) && !is_null($enddate_atendimento_xls) && $startdate_atendimento_xls != '' && $enddate_atendimento_xls != '') {
+                    
+                    $data_inicio = explode(' ', $startdate_atendimento_xls);
+                    $hora_inicio = sizeof($data_inicio) > 1 ? $data_inicio[1] : '00:00:00';
+                    
+                    $data_fim = explode(' ', $enddate_atendimento_xls);
+                    $hora_fim = sizeof($data_fim) > 1 ? $data_fim[1] : '23:59:59';
+                    
+                    $dateBegin = date('Y-m-d H:i:s', strtotime(preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", $data_inicio[0]).' '.$hora_inicio));
+                    $dateEnd = date('Y-m-d H:i:s', strtotime(preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1", $data_fim[0]).' '.$hora_fim));
+                    
+                    $list_agendamentos->whereDate('agendamentos.dt_atendimento', '>=', $dateBegin)->whereDate('agendamentos.dt_atendimento', '<=', $dateEnd);
+                }
+                
+                //-- filtra pelo prestador que realizou o agendamento----------------------------------------------------------------------------------
+                if (!empty($clinica_id) && !is_null($clinica_id)) {
+                    $list_agendamentos->whereExists(function ($query) use ($request) { $query->select(DB::raw(1))->from('agendamento_atendimento')
+                        ->join('atendimentos', function ($query) use ($request) { $query->on('agendamento_atendimento.atendimento_id', '=', 'atendimentos.id')->where('atendimentos.clinica_id', $clinica_id); })
+                        ->whereRaw('agendamento_atendimento.agendamento_id = agendamentos.id');
+                    });
+                }
+                
+                //-- filtra pelo nome do paciente que realizou o agendamento----------------------------------------------------------------------------------
+                if (!empty($nome_paciente_xls)) {
+                    $list_agendamentos->whereExists(function ($query) use ($nome_paciente_xls) {
+                        $nmPaciente = UtilController::toStr($nome_paciente_xls);
+                        
+                        $query->select(DB::raw(1))->from('pacientes')
+                        ->whereRaw('agendamentos.paciente_id = pacientes.id')
+                        ->where(function ($query) use ($nmPaciente) {
+                            $query->where(DB::raw('to_str(pacientes.nm_primario)'), 'like', '%' . $nmPaciente . '%')
+                            ->orWhere(DB::raw('to_str(pacientes.nm_secundario)'), 'like', '%' . $nmPaciente . '%')
+                            ->orWhere(DB::raw("concat(to_str(pacientes.nm_primario), ' ',to_str(pacientes.nm_secundario))"), 'like', '%' . $nmPaciente . '%');
+                        });
+                    });
+                }
+                
+                if (!is_null($startdate_pagamento_xls) && !is_null($enddate_pagamento_xls) && $startdate_pagamento_xls != '' && $enddate_pagamento_xls != '') {
+                    $list_agendamentos->orderBy('dt_pagamento', 'desc');
+                }
+                
+                $list_agendamentos->select('agendamentos.id', 'agendamentos.te_ticket', 'agendamentos.dt_atendimento', 'agendamentos.obs_agendamento', 'agendamentos.obs_cancelamento', 'agendamentos.cs_status',
+                    'agendamentos.bo_remarcacao', 'agendamentos.clinica_id', 'agendamentos.paciente_id', 'agendamentos.atendimento_id', 'agendamentos.profissional_id', 'agendamentos.convenio_id',
+                    'agendamentos.bo_retorno', 'agendamentos.cupom_id', 'agendamentos.filial_id', 'agendamentos.checkup_id', 'clinicas.nm_razao_social', 'pedidos.dt_pagamento');
+                $list_agendamentos = $list_agendamentos->get();
+                
+//                 dd( DB::getQueryLog() );
+                
+                $sheet->setColumnFormat(array(
+                    'I6:I'.(sizeof($list_agendamentos)+6) => '""00"." 000"."000"/"0000-00'
+                ));
+                
+                $sheet->loadView('agenda.agendamentos_excel', compact('list_agendamentos', 'cabecalho'));
+            });
+        })->export('xls');
     }
 }
