@@ -807,7 +807,6 @@ class AgendamentoController extends Controller
                 $status_atendimento_ids         = Request::get('status_atendimento_ids');
                 $startdate_pagamento_xls        = Request::get('startdate_pagamento_xls');
                 $enddate_pagamento_xls          = Request::get('enddate_pagamento_xls');
-                
                 DB::enableQueryLog();
                 ##################################################################################################################
                 $list_agendamentos = Agendamento::with(['itempedidos', 'itempedidos.pedido', 'atendimento'])
@@ -829,7 +828,14 @@ class AgendamentoController extends Controller
                 
                 //-- filtra pelo status do agendamento----------------------------------------------------------------------------------
                 if (!empty($status_atendimento_ids)) {
-                    $list_agendamentos->whereIn('agendamentos.cs_status', $status_atendimento_ids);
+                	$status_atendimento = explode(',', str_replace(' ', '', $status_atendimento_ids));
+                	foreach ($status_atendimento as $key => $value) {
+                		if ($value == '') {
+                			unset($status_atendimento[$key]);
+                		}
+                	}
+//                 	dd($status_atendimento);
+                    $list_agendamentos->whereIn('agendamentos.cs_status', $status_atendimento);
                 }
                 
                 //-- filtra por data de atendimento do agendamento----------------------------------------------------------------------------------
@@ -849,8 +855,8 @@ class AgendamentoController extends Controller
                 
                 //-- filtra pelo prestador que realizou o agendamento----------------------------------------------------------------------------------
                 if (!empty($clinica_id) && !is_null($clinica_id)) {
-                    $list_agendamentos->whereExists(function ($query) use ($request) { $query->select(DB::raw(1))->from('agendamento_atendimento')
-                        ->join('atendimentos', function ($query) use ($request) { $query->on('agendamento_atendimento.atendimento_id', '=', 'atendimentos.id')->where('atendimentos.clinica_id', $clinica_id); })
+                    $list_agendamentos->whereExists(function ($query) use ($clinica_id) { $query->select(DB::raw(1))->from('agendamento_atendimento')
+                        ->join('atendimentos', function ($query) use ($clinica_id) { $query->on('agendamento_atendimento.atendimento_id', '=', 'atendimentos.id')->where('atendimentos.clinica_id', $clinica_id); })
                         ->whereRaw('agendamento_atendimento.agendamento_id = agendamentos.id');
                     });
                 }
