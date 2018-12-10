@@ -40,7 +40,7 @@
 					<div class="form-group">
 						<label for="titulacao_id">Titulação da Especialidade Médica</label>
 						<select id="titulacao_id"  class="form-control" name="titulacao_id">
-							<option>Selecione</option>
+							<option value="">Selecione</option>
 							@foreach($list_titulacaos as $titulacao)
 							<option value="{{ $titulacao->id }}" @if($especialidade->titulacao_id == $titulacao->id) selected="selected" @endif>{{ $titulacao->titulo }} ({{ $titulacao->tempo_formacao }} meses)</option>
 							@endforeach

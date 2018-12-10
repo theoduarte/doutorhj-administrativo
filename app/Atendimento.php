@@ -207,6 +207,17 @@ class Atendimento extends Model
 		return $atendimentos;
 	}
 
+	public function getPrecoByPlano($plano_id, $atendimento_id = null)
+	{
+		$atendimento_id = $atendimento_id ?? $this->attributes['id'];
+
+		$preco = Preco::where(['atendimento_id' => $atendimento_id, 'plano_id' => $plano_id, 'cs_status' => 'A'])
+			->where('data_inicio', '<=', date('Y-m-d H:i:s'))
+			->where('data_fim', '>=', date('Y-m-d H:i:s'))->first();
+
+		return $preco;
+	}
+
     public function getAtendsProcedimentoByCheckup($data){
         return DB::select(" SELECT at.*
                               FROM atendimentos at

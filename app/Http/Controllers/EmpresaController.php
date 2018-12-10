@@ -161,7 +161,11 @@ class EmpresaController extends Controller
 		$representantes = $model->representantes()->orderBy('nm_primario')->get();
 		$planos = Plano::where('id', '<>', Plano::OPEN)->pluck('ds_plano', 'id');
 
-		if($model->anuidades()->count() == Plano::where('id', '<>', Plano::OPEN)->count())
+		$anuidades = $model->anuidades()
+			->whereDate('data_inicio', '<=', date('Y-m-d'))
+			->whereDate('data_fim', '>=', date('Y-m-d'));
+
+		if($anuidades->count() == Plano::where('id', '<>', Plano::OPEN)->count())
 			$anuidade_conf = null;
 		elseif($model->anuidades()->count() == 0)
 			$anuidade_conf = 'danger';
@@ -215,26 +219,28 @@ class EmpresaController extends Controller
 					$anuidade['empresa_id'] = $model->id;
 					$anuidade['plano_id'] = $planoId;
 
-					$oldAnuidade = Anuidade::where([
+					$modelAnuidade = Anuidade::where([
 							'empresa_id' => $anuidade['empresa_id'],
 							'plano_id' => $anuidade['plano_id'],
-							'vl_anuidade_ano' => UtilController::removeMaskMoney($anuidade['vl_anuidade_ano']),
-							'vl_anuidade_mes' => UtilController::removeMaskMoney($anuidade['vl_anuidade_mes']),
-							'cs_status' => $anuidade['cs_status'],
 						])
-						->whereDate('data_inicio', $anuidade['data_inicio']->format('Y-m-d'))
-						->whereDate('data_fim', $anuidade['data_fim']->format('Y-m-d'))
-						->whereNull('deleted_at')
-						->get();
+						->whereNull('deleted_at');
 
-					if($oldAnuidade->count() == 0) {
-						Anuidade::where([
-							'empresa_id' => $anuidade['empresa_id'],
-							'plano_id' => $anuidade['plano_id'],
-						])->update(['deleted_at' => date('Y/m/d H:i:s')]);
+					if($modelAnuidade->count() > 1) {
+						$oldAnuidade = $modelAnuidade->orderBy('id', 'DESC')->first();
+						$modelAnuidade->update(['deleted_at' => date('Y/m/d H:i:s')]);
+						$oldAnuidade = $oldAnuidade->orderBy('id', 'DESC')->first();
+					} elseif($modelAnuidade->count() == 1) {
+						$oldAnuidade = $modelAnuidade->first();
+					} else {
+						$oldAnuidade = null;
+						$newAnuidade = new Anuidade($anuidade);
+						$newAnuidade->save();
+					}
 
-						$modelAnuidade = new Anuidade($anuidade);
-						$modelAnuidade->save();
+					if(!is_null($oldAnuidade)) {
+						$newAnuidade = $oldAnuidade->replicate();
+						$newAnuidade->save();
+						$newAnuidade->update($anuidade);
 					}
 				}
 			}
