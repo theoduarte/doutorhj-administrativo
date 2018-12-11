@@ -154,7 +154,7 @@ class Paciente extends Model
 	{
 		$vigenciaPac = self::getVigenciaAtiva($paciente_id);
 
-		if(is_null($vigenciaPac)) {
+		if(is_null($vigenciaPac) || is_null($vigenciaPac->anuidade)) {
 			return Plano::OPEN;
 		} else {
 			return $vigenciaPac->anuidade->plano_id;
