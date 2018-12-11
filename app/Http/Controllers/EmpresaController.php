@@ -225,12 +225,10 @@ class EmpresaController extends Controller
 						])
 						->whereNull('deleted_at');
 
-					if($modelAnuidade->count() > 1) {
+					if($modelAnuidade->count() > 0) {
 						$oldAnuidade = $modelAnuidade->orderBy('id', 'DESC')->first();
 						$modelAnuidade->update(['deleted_at' => date('Y/m/d H:i:s')]);
 						$oldAnuidade = $oldAnuidade->orderBy('id', 'DESC')->first();
-					} elseif($modelAnuidade->count() == 1) {
-						$oldAnuidade = $modelAnuidade->first();
 					} else {
 						$oldAnuidade = null;
 						$newAnuidade = new Anuidade($anuidade);
