@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Doutor HJ: Agenda')
+@section('title', 'DoutorHoje: Agenda')
 @section('container')
 
 	<style>
@@ -344,7 +344,8 @@
 
 	@include('agenda/modal_pagamento')
 
-<!-- 	@include('agenda/modal_update') -->
+	@include('agenda/modal_update')
+	
 	<script type="text/javascript">
         jQuery(document).ready(function($) {
         	$('#cs_status').on("select2:select", function(e) { 

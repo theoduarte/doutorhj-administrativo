@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function(){
-        $(".select2").select2({
+        $(".select2-update").select2({
             language: 'pt-BR',
             dropdownParent: $('#dialog-update')
         });
@@ -446,22 +446,22 @@
 
             <div class="form-group col-12">
                 <label for="especialidade">Especialidade ou exame</label>
-                <select id="especialidade" class="form-control select2" name="especialidade"></select>
+                <select id="especialidade" class="form-control select2 select2-update" name="especialidade"></select>
             </div>
 
             <div class="form-group col-12">
                 <label for="clinica_id">Clínica</label>
-                <select id="clinica_id" class="form-control select2" name="clinica_id"></select>
+                <select id="clinica_id" class="form-control select2 select2-update" name="clinica_id"></select>
             </div>
 
             <div class="form-group col-12">
                 <label for="profissional_id">Profissional</label>
-                <select id="profissional_id" class="form-control select2" name="profissional_id"></select>
+                <select id="profissional_id" class="form-control select2 select2-update" name="profissional_id"></select>
             </div>
 
             <div class="form-group col-12">
                 <label for="filial_id">Filial</label>
-                <select id="filial_id" class="form-control select2" name="filial_id"></select>
+                <select id="filial_id" class="form-control select2 select2-update" name="filial_id"></select>
             </div>
 
             <div class="form-group col-3">
