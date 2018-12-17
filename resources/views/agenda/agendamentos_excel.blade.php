@@ -24,6 +24,8 @@
                 <th>Data Pagamento</th>
                 <th>Data Atendimento</th>
                 <th>Situação</th>
+                <th>Vl. Net</th>
+                <th>Vl. Comercial</th>
     		</tr>
 
     		@foreach( $list_agendamentos as $item_agendamento )
@@ -37,6 +39,8 @@
                     <td>@if(!empty( $item_agendamento->itempedidos->first()->pedido )) {{ $item_agendamento->itempedidos->first()->pedido->dt_pagamento }} @endif</td>
                     <td><span class="@if(empty($item_agendamento->getRawDtAtendimentoAttribute()))  text-danger  @endif">{{ $item_agendamento->dt_atendimento }}</span></td>
                     <td>{{ $item_agendamento->cs_status }}</td>
+                    <td>{{ $item_agendamento->vl_net }}</td>
+                    <td>{{ $item_agendamento->vl_com }}</td>
 				</tr>
                 
     		@endforeach

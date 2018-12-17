@@ -885,11 +885,22 @@ class AgendamentoController extends Controller
                     'agendamentos.bo_retorno', 'agendamentos.cupom_id', 'agendamentos.filial_id', 'agendamentos.checkup_id', 'clinicas.nm_razao_social', 'pedidos.dt_pagamento');
                 $list_agendamentos = $list_agendamentos->get();
                 
+                foreach ($list_agendamentos as $item) {
+                	$atend_temp = new Atendimento();
+                	$plano_ativo_id = Paciente::getPlanoAtivo($item->paciente_id);
+                	$preco_temp = $atend_temp->getPrecoByAgendamento($plano_ativo_id, $item->atendimento_id, $item->getRawDtAtendimentoAttribute());
+                	
+                	$item->vl_net = !is_null($preco_temp) ? $preco_temp->vl_net : 0;
+                	$item->vl_com = !is_null($preco_temp) ? $preco_temp->vl_comercial : 0;
+                }
+                
+//                 dd($list_agendamentos);
+                
 //                 dd( DB::getQueryLog() );
                 
-                $sheet->setColumnFormat(array(
-                    'I6:I'.(sizeof($list_agendamentos)+6) => '""00"." 000"."000"/"0000-00'
-                ));
+//                 $sheet->setColumnFormat(array(
+//                     'I6:I'.(sizeof($list_agendamentos)+6) => '""00"." 000"."000"/"0000-00'
+//                 ));
                 
                 $sheet->loadView('agenda.agendamentos_excel', compact('list_agendamentos', 'cabecalho'));
             });
