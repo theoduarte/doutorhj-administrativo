@@ -153,9 +153,9 @@
                     $.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
                 },
                 complete: function(){
-                    $( ".select2" ).select2({
-                        width: null
-                    });
+                	$(".select2").select2({
+                		language: 'pt-BR'
+                	});
                 }
             });
         });
@@ -299,8 +299,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-toggle="modal"
-					data-target="#dialog-update">Alterar os dados do agendamento</button>
+				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#dialog-update">Alterar os dados do agendamento</button>
 				<button type="button" class="btn btn-primary">Agendar</button>
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 			</div>
