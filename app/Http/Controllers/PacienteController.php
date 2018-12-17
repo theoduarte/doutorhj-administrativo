@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Anuidade;
+use App\Contato;
+use App\Documento;
+use App\Empresa;
+use App\Http\Requests\ColaboradorRequest;
 use App\Http\Requests\PacientesRequest;
+use App\User;
+use App\VigenciaPaciente;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
@@ -45,8 +52,126 @@ class PacienteController extends Controller
                                  'arCargos'=> $arCargos, 
                                  'arEspecialidade'=>$arEspecialidade]);
     }
-    
-     
+
+	/**
+	 * Show the form for modal creating the specified resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function createColaboradorModal($idEmpresa)
+	{
+		$modelEmpresa = Empresa::findOrFail($idEmpresa);
+
+		$model = new Paciente();
+		$model->empresa_id = $modelEmpresa->id;
+
+		$anuidades = $modelEmpresa->anuidades()->where('cs_status', 'A')->whereNull('deleted_at')->get();
+
+		return view('pacientes.modalCreateColaborador', compact('model', 'anuidades'));
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(ColaboradorRequest $request)
+	{
+		$empresa_id = session('empresa_id');
+		$access_token = UtilController::getAccessToken();
+		$time_to_live = date('Y-m-d H:i:s');
+		$dados = $request->all();
+
+		########### STARTING TRANSACTION ############
+		DB::beginTransaction();
+		#############################################
+
+		try {
+			$validaPessoa = Paciente::validaPessoa($dados['email'], Documento::TP_CPF, $dados['cpf'], Contato::TP_CEL_PESSOAL, $dados['telefone']);
+
+			/** Pessoa não cadastrada no sistema */
+			if($validaPessoa['status']) {
+				//Cria um pessoa
+				$user 					= new User();
+				$user->name 			= strtoupper($dados['nm_primario'].' '.$dados['nm_secundario']);
+				$user->email 			= $dados['email'];
+				$user->password 		= bcrypt(uniqid('empresa@newSenha'));
+				$user->tp_user 			= 'COL';
+				$user->cs_status 		= 'A';
+				$user->avatar 			= 'users/default.png';
+				$user->save();
+
+				$paciente = new Paciente();
+				$paciente->user_id 		= $user->id;
+				$paciente->nm_primario 	= $dados['nm_primario'];
+				$paciente->nm_secundario = $dados['nm_secundario'];
+				$paciente->cs_sexo 		= $dados['cs_sexo'];
+				$paciente->setDtNascimentoAttribute("{$dados['ano']}-{$dados['mes']}-{$dados['dia']}");
+				$paciente->access_token = $access_token;
+				$paciente->time_to_live = date('Y-m-d H:i:s', strtotime($time_to_live . '+2 hour'));
+
+				$documento = new Documento();
+				$documento->tp_documento = $dados['tp_documento'];
+				$cpf 					= UtilController::retiraMascara($dados['te_documento']);
+				$documento->te_documento = $cpf;
+				$documento->save();
+
+				$contato = new Contato();
+				$contato->tp_contato 	= 'CP';
+				$contato->ds_contato 	= $dados['ds_contato'];
+				$contato->save();
+
+				if(!$paciente->documentos->contains($documento->id)) $paciente->documentos()->attach($documento->id);
+				if(!$paciente->contatos->contains($contato->id)) $paciente->contatos()->attach($contato->id);
+			} else {
+				$documento_obj = new DocumentoController();
+				$user = $documento_obj->getUserByCpf($dados['cpf'])->getData();
+				$user = User::findOrFail($user->pessoa->user_id);
+				$paciente = Paciente::getPacienteByUserId($user->id);
+
+				if(!is_null($paciente->empresa_id)) {
+					DB::rollback();
+					return response()->json([
+						'message' => 'Paciente ja vinculado a empresa '.$paciente->empresa->razao_social,
+					], 403);
+				}
+
+				$paciente->empresa_id = $dados['empresa_id'];
+				$paciente->save();
+			}
+
+			/** Desativa todas as vigencias do paciente */
+			VigenciaPaciente::where('paciente_id', $paciente->id)->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i:s')]);
+
+			# dados do vigencia do paciente
+			$vigencia           		= new VigenciaPaciente();
+			$vigencia->paciente_id 		= $paciente->id;
+			$vigencia->cobertura_ativa  = true;
+			$vigencia->vl_max_consumo   = 0;
+			$vigencia->anuidade_id     	= $dados['anuidade_id'];
+			$vigencia->data_inicio 		= date('Y-m-d H:i:s');
+			$vigencia->periodicidade 	= $dados['pediodicidade'];
+			$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
+			$vigencia->save();
+		} catch (\Exception $e) {
+			########### FINISHIING TRANSACTION ##########
+			DB::rollback();
+			#############################################
+			return response()->json([
+				'message' => 'O Colaborador não foi cadastrado. Por favor, tente novamente.',
+			], 500);
+		}
+
+		########### FINISHIING TRANSACTION ##########
+		DB::commit();
+		#############################################
+
+		return response()->json([
+			'status' => true
+		], 201);
+	}
+
     /**
      * 
      * @param PacientesRequest $request
@@ -129,7 +254,40 @@ class PacienteController extends Controller
     {
     	return view('pacientes.pacientes_ativos');
     }
-    
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id)
+	{
+		$paciente = Paciente::with(['contatos', 'documentos', 'user'])->findorfail($id);
+
+		DB::beginTransaction();
+
+		$paciente->empresa_id = null;
+		if (!$paciente->save()) {
+			DB::rollBack();
+			return redirect()->back()->withErrors('O Colaborador não foi excluído. Por favor, tente novamente.');
+		}
+
+		$vigencia = $paciente->vigencia_ativa;
+		if(!is_null($vigencia)) {
+			$vigencia->cobertura_ativa = false;
+			$vigencia->data_fim = date('Y-m-d H:i:s');
+			if(!$vigencia->save()) {
+				DB::rollBack();
+				return redirect()->back()->withErrors('O Colaborador não foi excluído. Por favor, tente novamente.');
+			}
+		}
+
+		DB::commit();
+
+		return redirect()->route('pacientes.index')->with('success', 'O Colaborador excluído com sucesso!');
+	}
+
     /**
      * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico.
      *

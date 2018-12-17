@@ -18,6 +18,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Contato extends Model
 {
+	const TP_CEL_PESSOAL 		= 'CP';
+	const TP_CEL_COMERCIAL		= 'CC';
+	const TP_FIXO_RESIDENCIAL	= 'FR';
+	const TP_FIXO_COMERCIAL		= 'FC';
+	const TP_FAX				= 'FX';
+
     /**
      * @var array
      */
@@ -62,4 +68,24 @@ class Contato extends Model
     {
         return $this->belongsToMany('App\Representante');
     }
+
+	public static function validaContato($tp_contato, $ds_contato)
+	{
+		$contato = Contato::where('tp_contato', $tp_contato)->where('ds_contato', $ds_contato)->get();
+
+		if($contato->count() > 0) {
+			$contato = $contato->first();
+
+			$conPacientes = $contato->pacientes()->where('cs_status', 'A')->get();
+			$conProfissionals = $contato->profissionals()->where('cs_status', 'A')->get();
+			$conRepresentantes = $contato->representantes()->get();
+			$conClinicas = $contato->clinicas()->get();
+
+			if($conPacientes->count() > 0 || $conProfissionals->count() > 0 || $conRepresentantes->count() > 0 || $conClinicas->count() > 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

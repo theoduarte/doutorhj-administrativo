@@ -1,7 +1,11 @@
+@php
+	use App\Documento;
+	use App\Contato;
+@endphp
 <div class="form-group">
 	<div class="row">
 		<div class="col-lg-3 pull-right">
-			<a class="btn btn-success btn-create" href="{{route('representantes.createModal', $model->id)}}"><i class="fa fa-plus-circle"></i> Novo Representante</a>
+			<a class="btn btn-success btn-create" href="{{route('pacientes.createColaboradorModal', $model->id)}}"><i class="fa fa-plus-circle"></i> Novo Colaborador</a>
 		</div>
 	</div>
 </div>
@@ -14,19 +18,21 @@
 				<th>Nome</th>
 				<th>CPF</th>
 				<th>Telefone</th>
-				<th>Data de Nascimento</th>
+				<th>Plano</th>
+				<th>Anuidade</th>
 				<th width="10">Ação</th>
 			</tr>
-			@foreach($representantes as $representante)
+			@foreach($colaboradores as $colaborador)
 				<tr>
-					<td>{{$representante->id}}</td>
-					<td>{{$representante->nome}}</td>
-					<td>{{$representante->cpf}}</td>
-					<td>{{$representante->telefone}}</td>
-					<td>{{$representante->dt_nascimento}}</td>
+					<td>{{$colaborador->id}}</td>
+					<td>{{$colaborador->nm_primario}} {{$colaborador->nm_secundario}}</td>
+					<td>{{$colaborador->documentos()->where('tp_documento', Documento::TP_CPF)->first()->te_documento}}</td>
+					<td>{{$colaborador->contatos()->where('tp_contato', Contato::TP_CEL_PESSOAL)->first()->ds_contato}}</td>
+					<td>{{$colaborador->plano_ativo->ds_plano}}</td>
+					<td>{{$colaborador->vigencia_ativa->periodicidade}}</td>
 					<td>
-						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-edit" title="Editar Representante" href="{{route('representantes.editModal', $representante->id)}}"><i class="mdi mdi-lead-pencil"></i> Editar</a>
-						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Representante" href="{{route('representantes.destroy', $representante->id)}}"><i class="ti-trash"></i> Excluir</a>
+						{{--<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-edit" title="Editar Colaborador" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-lead-pencil"></i> Editar</a>--}}
+						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Colaborador" href="{{route('pacientes.destroy', $colaborador	->id)}}"><i class="ti-trash"></i> Excluir</a>
 					</td>
 				</tr>
 			@endforeach
@@ -35,8 +41,8 @@
 </div>
 
 @include('includes.modal', [
-		'entryName' => 'Representante',
-		'modalId' => 'modalRepresentante',
+		'entryName' => 'Colaborador',
+		'modalId' => 'modalColaborador',
 		'close' => true,
 		'backdrop' => false,
 		'keyboard' => false,
@@ -46,25 +52,25 @@
 @push('scripts')
 <script>
 	$(function() {
-		$('#representantes .btn-create').on('click', function(e) {
+		$('#colaboradores .btn-create').on('click', function(e) {
 			e.preventDefault();
-			$('#modalRepresentante .modal-body').html('');
+			$('#modalColaborador .modal-body').html('');
 			var url = $(this).attr('href');
 
-			$('#modalRepresentante .modal-body').load(url);
-			$('#modalRepresentante').modal('show');
+			$('#modalColaborador .modal-body').load(url);
+			$('#modalColaborador').modal('show');
 		});
 
-		$('#representantes .btn-edit').on('click', function(e) {
+		$('#colaboradores .btn-edit').on('click', function(e) {
 			e.preventDefault();
-			$('#modalRepresentante .modal-body').html('');
+			$('#modalColaborador .modal-body').html('');
 			var url = $(this).attr('href');
 
-			$('#modalRepresentante .modal-body').load(url);
-			$('#modalRepresentante').modal('show');
+			$('#modalColaborador .modal-body').load(url);
+			$('#modalColaborador').modal('show');
 		});
 
-		$('#representantes .btn-delete').on('click', function(e) {
+		$('#colaboradores .btn-delete').on('click', function(e) {
 			e.preventDefault();
 			var url = $(this).attr('href');
 			var mensagem = 'DrHoje';
@@ -98,7 +104,7 @@
 			});
 		});
 
-		$('#modalRepresentante').on('hidden.bs.modal', function () {
+		$('#modalColaborador').on('hidden.bs.modal', function () {
 			reloadShowTab();
 		});
 
@@ -111,7 +117,7 @@
 			var reloading = sessionStorage.getItem("reloading");
 			if (reloading) {
 				sessionStorage.removeItem("reloading");
-				$('#representantes-tab').tab('show');
+				$('#colaboradores-tab').tab('show');
 			}
 		}
 	});

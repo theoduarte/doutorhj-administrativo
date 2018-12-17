@@ -37,7 +37,7 @@ class User extends Authenticatable
     public function paciente(){
         return $this->hasOne(Paciente::class);
     }
-    
+
     public function profissional(){
         return $this->hasOne(Profissional::class);
     }
@@ -81,5 +81,16 @@ class User extends Authenticatable
 		}
 
 		return null;
+	}
+
+	public static function validaUsuario($email)
+	{
+		$user = User::where('email', $email)->where('cs_status', 'A')->get();
+
+		if($user->count() != 0) {
+			return false;
+		}
+
+		return true;
 	}
 }

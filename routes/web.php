@@ -42,13 +42,17 @@ Route::middleware(['auth'])->group(function () {
 	Route::resource('representantes', 'RepresentanteController');
 	Route::resource('requisitos', 'RequisitoController');
 	Route::resource('anuidades', 'AnuidadeController')->only(['store']);
-
+	Route::resource('pacientes', 'PacienteController');
 
 	Route::get('documentos/getUserByCpf/{cpf}', 'DocumentoController@getUserByCpf')->name('documentos.get-user-by-cpf');
 
 	Route::get('representantes/{id}/showModal', 'RepresentanteController@showModal')->name('representantes.showModal');
 	Route::get('representantes/createModal/{idEmpresa}', 'RepresentanteController@createModal')->name('representantes.createModal');
 	Route::get('representantes/{id}/editModal', 'RepresentanteController@editModal')->name('representantes.editModal');
+
+	Route::get('pacientes/{id}/showColaboradorModal', 'PacienteController@showColaboradorModal')->name('pacientes.showColaboradorModal');
+	Route::get('pacientes/createColaboradorModal/{idEmpresa}', 'PacienteController@createColaboradorModal')->name('pacientes.createColaboradorModal');
+	Route::get('pacientes/{id}/editColaboradorModal', 'PacienteController@editColaboradorModal')->name('pacientes.editColaboradorModal');
 
     Route::get('checkups-configure/{checkup}','CheckupsController@configure')->name('checkups.configure');
     Route::get('get-active-clinicas-by-especialidade','CheckupsController@getClinicasByEspecidalide')->name('get-active-clinicas-by-especialidade');

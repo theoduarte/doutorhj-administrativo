@@ -409,7 +409,17 @@ class UtilController extends Controller
 	
 			return $data;
 	}
-	
+
+	/**
+	 * gera token de acesso para o paciente
+	 * Ex.: 602154
+	 *
+	 */
+	public static function getAccessToken()
+	{
+		return sprintf('%06d', rand(0, 999999));
+	}
+
 	/**
 	 * sendSms method
 	 *

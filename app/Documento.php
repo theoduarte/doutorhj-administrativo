@@ -25,6 +25,11 @@ class Documento extends Model
 {
 	use Sortable;
 
+	const TP_CPF 		= 'CPF';
+	const TP_RG			= 'RG';
+	const TP_CNASC		= 'CNASC';
+	const TP_CTPS		= 'CTPS';
+
 	/**
 	 * @var array
 	 */
@@ -81,5 +86,25 @@ class Documento extends Model
 		}else{
 			return $nrDocumento;
 		}
+	}
+
+	public static function validaDocumento($tp_documento, $te_documento)
+	{
+		$documento = Documento::where('tp_documento', $tp_documento)->where('te_documento', $te_documento)->get();
+
+		if($documento->count() > 0) {
+			$documento = $documento->first();
+
+			$docPacientes = $documento->pacientes()->where('cs_status', 'A')->get();
+			$docProfissionals = $documento->profissionals()->where('cs_status', 'A')->get();
+			$docRepresentantes = $documento->representantes()->get();
+			$docClinicas = $documento->clinicas()->where('cs_status', 'A')->get();
+
+			if($docPacientes->count() > 0 || $docProfissionals->count() > 0 || $docRepresentantes->count() > 0  || $docClinicas->count() > 0) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
