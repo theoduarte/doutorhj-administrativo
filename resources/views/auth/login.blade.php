@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'DoutorHJ: Login')
+@section('title', 'DoutorHoje: Login')
 
 @push('scripts')
 

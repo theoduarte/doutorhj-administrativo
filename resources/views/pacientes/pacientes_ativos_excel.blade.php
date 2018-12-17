@@ -27,7 +27,9 @@
                 <th>celular</th>
                 <th>data_criacao_registro</th>
                 <th>data_ultimo_acesso</th>
-                <th>responsavel_id</th>
+                <th>dependente</th>
+                <th>plano</th>
+                <th>empresa</th>
     		</tr>
 
     		@foreach( $list_pacientes as $item_paciente )
@@ -45,6 +47,8 @@
                     <td>{{ date('d/m/Y H:i', strtotime($item_paciente->data_criacao_registro)) }}</td>
                     <td>{{ date('d/m/Y H:i', strtotime($item_paciente->data_ultimo_acesso)) }}</td>
                     <td>{{$item_paciente->responsavel_id}}</td>
+                    <td>{{$item_paciente->nome_plano}}</td>
+                    <td>@if(!is_null($item_paciente->nome_fantasia)){{$item_paciente->nome_fantasia}}@else <span style="color: #dc3545;">não informado</span> @endif</td>
 				</tr>
                 
     		@endforeach
