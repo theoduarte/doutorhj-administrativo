@@ -327,7 +327,7 @@
 	<script type="text/javascript" src="/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 	<script type="text/javascript" src="/libs/jquery-quicksearch/jquery.quicksearch.js"></script>
 	<script type="text/javascript" src="/libs/select2/js/select2.min.js"></script>
-	<script src="/libs/select2/js/i18n/pt-BR.js"></script>
+	<script type="text/javascript" src="/libs/select2/js/i18n/pt-BR.js"></script>
 	<script type="text/javascript" src="/libs/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
 	<script type="text/javascript" src="/libs/moment/moment.js"></script>
 	<script type="text/javascript" src="/libs/moment/src/locale/pt-br.js"></script>

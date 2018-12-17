@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Doutor HJ: Agenda')
+@section('title', 'DoutorHoje: Agenda')
 @section('container')
 
 	<style>
@@ -140,7 +140,7 @@
                         						<input type="hidden" id="nome_paciente_xls" name="nome_paciente_xls" value="{{old('nm_paciente')}}">
                         						<input type="hidden" id="startdate_atendimento_xls" name="startdate_atendimento_xls" value="@if(!is_null(old('data'))){{trim(explode('-',old('data'))[0])}}@endif">
                         						<input type="hidden" id="enddate_atendimento_xls" name="enddate_atendimento_xls" value="@if(!is_null(old('data'))){{trim(explode('-',old('data'))[1])}}@endif">
-                        						<input type="hidden" id="status_atendimento_ids" name="status_atendimento_ids">
+                        						<input type="hidden" id="status_atendimento_ids" name="status_atendimento_ids" value="@foreach( $status as $key => $value )@if(!empty(old('cs_status')) && in_array($key, old('cs_status'))){{$key.','}}@endif @endforeach">
                         						<input type="hidden" id="startdate_pagamento_xls" name="startdate_pagamento_xls" value="@if(!is_null(old('data_pagamento'))){{explode('-',old('data_pagamento'))[0]}}@endif">
                         						<input type="hidden" id="enddate_pagamento_xls" name="enddate_pagamento_xls" value="@if(!is_null(old('data_pagamento'))){{ explode('-',old('data_pagamento'))[1] }}@endif">
                         						<button type="submit" class="btn btn-icon waves-effect waves-light btn-success m-b-5" ><i class="mdi mdi-file-excel"></i> Gerar Relatório</button>
@@ -344,7 +344,8 @@
 
 	@include('agenda/modal_pagamento')
 
-<!-- 	@include('agenda/modal_update') -->
+	@include('agenda/modal_update')
+	
 	<script type="text/javascript">
         jQuery(document).ready(function($) {
         	$('#cs_status').on("select2:select", function(e) { 

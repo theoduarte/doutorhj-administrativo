@@ -41,7 +41,13 @@ class UserController extends Controller
     	$get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	
-    	$usuarios = User::where(DB::raw('to_str(name)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(email)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    	$usuarios = User::where('cs_status', 'A')
+			->where(function($query) use($search_term) {
+				$query->where(DB::raw('to_str(name)'), 'LIKE', '%'.$search_term.'%')
+					->orWhere(DB::raw('to_str(email)'), 'LIKE', '%'.$search_term.'%');
+			})
+			->sortable()
+			->paginate(10);
     	 
     	return view('users.index', compact('usuarios'));
     }
