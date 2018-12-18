@@ -29,7 +29,7 @@
 					<td>{{$colaborador->documentos()->where('tp_documento', Documento::TP_CPF)->first()->te_documento}}</td>
 					<td>{{$colaborador->contatos()->where('tp_contato', Contato::TP_CEL_PESSOAL)->first()->ds_contato}}</td>
 					<td>{{$colaborador->plano_ativo->ds_plano}}</td>
-					<td>{{$colaborador->vigencia_ativa->periodicidade}}</td>
+					<td>{{$colaborador->vigencia_ativa->vl_anuidade}}/{{$colaborador->vigencia_ativa->periodicidade}}</td>
 					<td>
 						{{--<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-edit" title="Editar Colaborador" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-lead-pencil"></i> Editar</a>--}}
 						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Colaborador" href="{{route('pacientes.destroy', $colaborador	->id)}}"><i class="ti-trash"></i> Excluir</a>
