@@ -42,7 +42,7 @@
                     <td>{{ date('d/m/Y', strtotime($item_paciente->data_nascimento)) }}</td>
                     <td>{{$item_paciente->tipo_documento}}</td>
                     <td>{{ intval($item_paciente->nr_documento) }}</td>
-                    <td>{{$item_paciente->email}}</td>
+                    <td>{{$item_paciente->email_paciente}}</td>
                     <td>{{$item_paciente->celular}}</td>
                     <td>{{ date('d/m/Y H:i', strtotime($item_paciente->data_criacao_registro)) }}</td>
                     <td>{{ date('d/m/Y H:i', strtotime($item_paciente->data_ultimo_acesso)) }}</td>
