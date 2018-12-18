@@ -160,6 +160,7 @@ class EmpresaController extends Controller
 		$estados = Estado::orderBy('ds_estado')->get();
 		$representantes = $model->representantes()->orderBy('nm_primario')->get();
 		$planos = Plano::where('id', '<>', Plano::OPEN)->pluck('ds_plano', 'id');
+		$colaboradores = $model->pacientes()->where('cs_status', 'A')->whereNull('responsavel_id')->get();
 
 		$anuidades = $model->anuidades()
 			->whereDate('data_inicio', '<=', date('Y-m-d'))
@@ -172,7 +173,7 @@ class EmpresaController extends Controller
 		else
 			$anuidade_conf = 'warning';
 
-		return view('empresas.edit', compact('model', 'tipoEmpresas', 'estados', 'representantes', 'planos', 'anuidade_conf'));
+		return view('empresas.edit', compact('model', 'tipoEmpresas', 'estados', 'representantes', 'planos', 'anuidade_conf', 'colaboradores'));
 	}
 
 	/**

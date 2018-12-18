@@ -21,6 +21,7 @@
 		<form action="{{ route('empresas.update', $model->id) }}" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="_method" value="PUT">
 			{!! csrf_field() !!}
+			<input type="hidden" id="empresa_id" name="empresa_id" value="{{$model->id}}">
 
 			<div class="row">
 				<div class="col-12">
@@ -42,6 +43,11 @@
 									Planos
 								</a>
 							</li>
+							<li class="nav-item">
+								<a href="#colaboradores" id="colaboradores-tab" data-toggle="tab" aria-expanded="false" class="nav-link">
+									Colaboradores
+								</a>
+							</li>
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane fade active show" id="dadosEmpresa">
@@ -52,6 +58,9 @@
 							</div>
 							<div class="tab-pane fade" id="anuidades">
 								@include('empresas/_anuidades', compact('model', 'model', 'planos', 'anuidade_conf'))
+							</div>
+							<div class="tab-pane fade" id="colaboradores">
+								@include('empresas/_colaboradores', compact('model', 'model', 'colaboradores'))
 							</div>
 						</div>
 					</div>

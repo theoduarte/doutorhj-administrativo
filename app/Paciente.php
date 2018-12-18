@@ -53,7 +53,7 @@ class Paciente extends Model
 	public $dates 	      = ['dt_nascimento'];
 
 	protected $hidden = ['access_token', 'time_to_live', 'mundipagg_token'];
-	protected $appends = ['plano_ativo', ];
+	protected $appends = ['plano_ativo', 'vigencia_ativa'];
 
 	/*
 	 * Constants
@@ -126,28 +126,45 @@ class Paciente extends Model
 	 */
 	public function setDtNascimentoAttribute($data)
 	{
-	    $this->attributes['dt_nascimento'] = Carbon::createFromFormat('d/m/Y', $data);
+		$this->attributes['dt_nascimento'] = Carbon::createFromFormat('d/m/Y', $data);
 	}
     
 	public function getDtNascimentoAttribute()
 	{
-	    $date = new Carbon($this->attributes['dt_nascimento']);
-	    return $date->format('d/m/Y');
+		if(isset($this->attributes['dt_nascimento']) && !is_null($this->attributes['dt_nascimento'])) {
+			$date = new Carbon($this->attributes['dt_nascimento']);
+			return $date->format('d/m/Y');
+		} else {
+			return null;
+		}
 	}
 	
 	public function getNmPrimarioAttribute()
 	{
-	    return mb_strtoupper($this->attributes['nm_primario']);
+		if(isset($this->attributes['nm_primario']) && !is_null($this->attributes['nm_primario'])) {
+			return mb_strtoupper($this->attributes['nm_primario']);
+		} else {
+			return null;
+		}
 	}
 	
 	public function getNmSecundarioAttribute()
 	{
-	    return mb_strtoupper($this->attributes['nm_secundario']);
+		if(isset($this->attributes['nm_secundario']) && !is_null($this->attributes['nm_secundario'])) {
+	    	return mb_strtoupper($this->attributes['nm_secundario']);
+		} else {
+			return null;
+		}
 	}
 
 	public function getPlanoAtivoAttribute()
 	{
 		return Plano::findOrFail($this->getPlanoAtivo($this->attributes['id'])); //some logic to return numbers
+	}
+
+	public function getVigenciaAtivaAttribute()
+	{
+		return $this->getVigenciaAtiva($this->attributes['id']);
 	}
 
 	public static function getPlanoAtivo($paciente_id)
@@ -173,5 +190,40 @@ class Paciente extends Model
 			->first();
 
 		return $vigenciaPac;
+	}
+
+	public static function validaPessoa($email, $tp_documento, $te_documento, $tp_contato, $ds_contato)
+	{
+		$vUser = User::validaUsuario($email);
+		$vDoc = Documento::validaDocumento($tp_documento, $te_documento);
+		$vCon = Contato::validaContato($tp_contato, $ds_contato);
+
+		$error = [];
+		if(!$vUser) $error[] = 'Email';
+		if(!$vDoc) $error[] = 'Documento';
+		if(!$vCon) $error[] = 'Contato';
+
+		$status = $vUser && $vDoc && $vCon;
+
+		$mensagem = $status ? '' : implode(', ', $error).' já cadastrado(s) no sistema.';
+
+		return [
+			'status' => $status,
+			'mensagem' => $mensagem,
+		];
+	}
+
+	public static function getPacienteByUserId($user_id)
+	{
+		$user = User::where('id', $user_id)->where('cs_status', 'A')->first();
+
+		if(!is_null($user)) {
+			$paciente = $user->paciente()->where('cs_status', 'A')->whereNull('responsavel_id')->first();
+			if(!is_null($paciente)) {
+				return $paciente;
+			}
+		}
+
+		return false;
 	}
 }

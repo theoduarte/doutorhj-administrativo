@@ -98,7 +98,7 @@ class Empresa extends Model
 	 */
 	public function anuidades()
 	{
-		return $this->hasMany('App\Anuidade')->whereNull('deleted_at');
+		return $this->hasMany('App\Anuidade')->whereNull('deleted_at')->orderBy('plano_id', 'asc');
 	}
 
 	/**
