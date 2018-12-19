@@ -128,6 +128,13 @@ class PacienteController extends Controller
 				$documento_obj = new DocumentoController();
 				$dadosPaciente = $documento_obj->getUserByCpf($dados['cpf'])->getData();
 
+				if(!$dadosPaciente->status) {
+					DB::rollback();
+					return response()->json([
+						'message' => $validaPessoa['mensagem'],
+					], 403);
+				}
+
 				$user = User::findOrFail($dadosPaciente->pessoa->user_id);
 				$paciente = Paciente::getPacienteByUserId($user->id);
 				$documento = Documento::findOrFail($dadosPaciente->pessoa->documento_id);
@@ -143,7 +150,7 @@ class PacienteController extends Controller
 					$paciente->access_token = $access_token;
 					$paciente->time_to_live = date('Y-m-d H:i:s', strtotime($time_to_live . '+2 hour'));
 				}
-				
+
 				if(!is_null($paciente->empresa_id)) {
 					DB::rollback();
 					return response()->json([
