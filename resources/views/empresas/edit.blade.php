@@ -27,7 +27,7 @@
 				<div class="col-12">
 					<div class="card-box col-12">
 						<h4 class="header-title m-t-0 m-b-30">Empresa</h4>
-						<ul id="cvx-tab" class="nav nav-tabs">
+						<ul id="cvx-tab-empresa" class="nav nav-tabs">
 							<li class="nav-item">
 								<a href="#dadosEmpresa" id="dadosEmpresa-tab" data-toggle="tab" aria-expanded="true" class="nav-link active">
 									Dados Gerais
@@ -73,6 +73,16 @@
 @push('scripts')
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
+
+		$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+	        localStorage.setItem('activeTab', $(e.target).attr('href'));
+	    });
+	    
+	    var activeTab = localStorage.getItem('activeTab');
+	    if(activeTab){
+	        $('#cvx-tab-empresa a[href="' + activeTab + '"]').tab('show');
+	    }
+		
 		$( "#nr_cep" ).on('blur', function() {
 			$('#cvx-input-loading').removeClass('cvx-no-loading');
 			jQuery.ajax({
