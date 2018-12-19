@@ -126,10 +126,24 @@ class PacienteController extends Controller
 				if(!$paciente->contatos->contains($contato->id)) $paciente->contatos()->attach($contato->id);
 			} else {
 				$documento_obj = new DocumentoController();
-				$user = $documento_obj->getUserByCpf($dados['cpf'])->getData();
-				$user = User::findOrFail($user->pessoa->user_id);
-				$paciente = Paciente::getPacienteByUserId($user->id);
+				$dadosPaciente = $documento_obj->getUserByCpf($dados['cpf'])->getData();
 
+				$user = User::findOrFail($dadosPaciente->pessoa->user_id);
+				$paciente = Paciente::getPacienteByUserId($user->id);
+				$documento = Documento::findOrFail($dadosPaciente->pessoa->documento_id);
+				$contato = Contato::findOrFail($dadosPaciente->pessoa->contato_id);
+
+				if(!$paciente) {
+					$paciente = new Paciente();
+					$paciente->user_id 		= $user->id;
+					$paciente->nm_primario 	= $dadosPaciente->pessoa->nm_primario;
+					$paciente->nm_secundario = $dadosPaciente->pessoa->nm_secundario;
+					$paciente->cs_sexo 		= $dadosPaciente->pessoa->cs_sexo;
+					$paciente->dt_nascimento = $dadosPaciente->pessoa->dt_nascimento;
+					$paciente->access_token = $access_token;
+					$paciente->time_to_live = date('Y-m-d H:i:s', strtotime($time_to_live . '+2 hour'));
+				}
+				
 				if(!is_null($paciente->empresa_id)) {
 					DB::rollback();
 					return response()->json([
@@ -139,6 +153,9 @@ class PacienteController extends Controller
 
 				$paciente->empresa_id = $dados['empresa_id'];
 				$paciente->save();
+
+				if(!$paciente->documentos->contains($documento->id)) $paciente->documentos()->attach($documento->id);
+				if(!$paciente->contatos->contains($contato->id)) $paciente->contatos()->attach($contato->id);
 			}
 
 			/** Desativa todas as vigencias do paciente */
@@ -158,6 +175,7 @@ class PacienteController extends Controller
 			########### FINISHIING TRANSACTION ##########
 			DB::rollback();
 			#############################################
+			dd($e->getMessage(), $e->getLine());
 			return response()->json([
 				'message' => 'O Colaborador não foi cadastrado. Por favor, tente novamente.',
 			], 500);
@@ -170,6 +188,87 @@ class PacienteController extends Controller
 		return response()->json([
 			'status' => true
 		], 201);
+	}
+
+	/**
+	 * Display the specified resource on modal.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function showColaboradorModal($id)
+	{
+		$model = Representante::findOrFail($id);
+		return view('pacientes.modalColaboradorShow', compact('model'));
+	}
+
+	/**
+	 * Show the form for modal editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function editColaboradorModal($id)
+	{
+		$model = Paciente::findOrFail($id);
+
+		$modelEmpresa = Empresa::findOrFail($model->empresa_id);
+		$anuidades = $modelEmpresa->anuidades()
+			->where('cs_status', 'A')
+			->whereNull('deleted_at')
+			->where('plano_id', '>=', $model->plano_ativo->id)
+			->get();
+
+		return view('pacientes.modalEditColaborador', compact('model', 'anuidades'));
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(ColaboradorRequest $request, $id)
+	{
+		$paciente = Paciente::findOrFail($id);
+		$dados = $request->all();
+
+		########### STARTING TRANSACTION ############
+		DB::beginTransaction();
+		#############################################
+
+		try {
+			if($paciente->vigencia_ativa->anuidade_id != $dados['anuidade_id']) {
+				/** Desativa todas as vigencias do paciente */
+				VigenciaPaciente::where('paciente_id', $paciente->id)->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i:s')]);
+
+				# dados do vigencia do paciente
+				$vigencia           		= new VigenciaPaciente();
+				$vigencia->paciente_id 		= $paciente->id;
+				$vigencia->cobertura_ativa  = true;
+				$vigencia->vl_max_consumo   = 0;
+				$vigencia->anuidade_id     	= $dados['anuidade_id'];
+				$vigencia->data_inicio 		= date('Y-m-d H:i:s');
+				$vigencia->periodicidade 	= $dados['pediodicidade'];
+				$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
+				$vigencia->save();
+			}
+		} catch (\Exception $e) {
+			########### FINISHIING TRANSACTION ##########
+			DB::rollback();
+			#############################################
+			return response()->json([
+				'message' => 'O Colaborador não foi cadastrado. Por favor, tente novamente.',
+			], 500);
+		}
+
+		########### FINISHIING TRANSACTION ##########
+		DB::commit();
+		#############################################
+
+		return response()->json([
+			'message' => 'O Colaborador foi editado com sucesso!',
+		], 200);
 	}
 
     /**
@@ -320,7 +419,7 @@ class PacienteController extends Controller
     			->leftJoin('contatos',				function($join5) { $join5->on('contatos.id', '=', 'contato_paciente.contato_id');})
     			->leftJoin('empresas',				function($join6) { $join6->on('empresas.id', '=', 'pacientes.empresa_id');})
     			->select('pacientes.id', 'pacientes.nm_primario as nome', 'pacientes.nm_secundario as sobrenome', 'pacientes.cs_sexo as genero', 'pacientes.dt_nascimento as data_nascimento', 'documentos.tp_documento as tipo_documento',
-    					'documentos.te_documento as nr_documento', 'users.email', 'contatos.ds_contato as celular', 'pacientes.created_at as data_criacao_registro', 'pacientes.updated_at as data_ultimo_acesso', 'pacientes.responsavel_id',
+    					'documentos.te_documento as nr_documento', 'users.email as email_paciente', 'contatos.ds_contato as celular', 'pacientes.created_at as data_criacao_registro', 'pacientes.updated_at as data_ultimo_acesso', 'pacientes.responsavel_id',
     			         'empresas.nome_fantasia')
     			->where(['pacientes.cs_status' => 'A'])
 //     			->limit(10)

@@ -2,7 +2,7 @@
 	$modal = !isset($modal) || $modal == false ? false : true;
 @endphp
 
-<div id="errors-paciente">
+<div id="errors-colaborador">
 @if ($errors->any())
 	<div class="alert alert-danger alert-dismissible fade show">
 		<ul>
@@ -125,13 +125,13 @@
 						$('#cvx-cpf-loading').addClass('cvx-no-loading');
 						var errors = '<div class="alert alert-danger alert-dismissible fade show"><ul>';
 
-						$('#errors-paciente').html('');
+						$('#errors-colaborador').html('');
 						$.each(data.responseJSON.errors, function (key, value) {
 							errors = errors + '<li>' + value + '</li>';
 						});
 						errors = errors + '</ul><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
-						$('#errors-paciente').append(errors);
+						$('#errors-colaborador').append(errors);
 					}
 				});
 			}

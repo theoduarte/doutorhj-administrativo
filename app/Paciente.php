@@ -94,7 +94,7 @@ class Paciente extends Model
 	}
 	
 	public function documentos() {
-	    return $this->belongsToMany('App\Documento'); 
+	    return $this->belongsToMany('App\Documento');
 	}
 	
 	public function user() {
@@ -155,6 +155,24 @@ class Paciente extends Model
 		} else {
 			return null;
 		}
+	}
+
+	public function getTelefoneAttribute()
+	{
+		$contato = $this->contatos()->where('tp_contato', 'CP')->first();
+		if(!is_null($contato)) return $contato->ds_contato;
+	}
+
+	public function getEmailAttribute()
+	{
+		$user = $this->user;
+		if(!is_null($user)) return $user->email;
+	}
+
+	public function getCpfAttribute()
+	{
+		$documento = $this->documentos()->where('tp_documento', 'CPF')->first();
+		if(!is_null($documento)) return $documento->te_documento;
 	}
 
 	public function getPlanoAtivoAttribute()
