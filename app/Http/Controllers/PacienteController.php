@@ -126,10 +126,24 @@ class PacienteController extends Controller
 				if(!$paciente->contatos->contains($contato->id)) $paciente->contatos()->attach($contato->id);
 			} else {
 				$documento_obj = new DocumentoController();
-				$user = $documento_obj->getUserByCpf($dados['cpf'])->getData();
-				$user = User::findOrFail($user->pessoa->user_id);
-				$paciente = Paciente::getPacienteByUserId($user->id);
+				$dadosPaciente = $documento_obj->getUserByCpf($dados['cpf'])->getData();
 
+				$user = User::findOrFail($dadosPaciente->pessoa->user_id);
+				$paciente = Paciente::getPacienteByUserId($user->id);
+				$documento = Documento::findOrFail($dadosPaciente->pessoa->documento_id);
+				$contato = Contato::findOrFail($dadosPaciente->pessoa->contato_id);
+
+				if(!$paciente) {
+					$paciente = new Paciente();
+					$paciente->user_id 		= $user->id;
+					$paciente->nm_primario 	= $dadosPaciente->pessoa->nm_primario;
+					$paciente->nm_secundario = $dadosPaciente->pessoa->nm_secundario;
+					$paciente->cs_sexo 		= $dadosPaciente->pessoa->cs_sexo;
+					$paciente->dt_nascimento = $dadosPaciente->pessoa->dt_nascimento;
+					$paciente->access_token = $access_token;
+					$paciente->time_to_live = date('Y-m-d H:i:s', strtotime($time_to_live . '+2 hour'));
+				}
+				
 				if(!is_null($paciente->empresa_id)) {
 					DB::rollback();
 					return response()->json([
@@ -139,6 +153,9 @@ class PacienteController extends Controller
 
 				$paciente->empresa_id = $dados['empresa_id'];
 				$paciente->save();
+
+				if(!$paciente->documentos->contains($documento->id)) $paciente->documentos()->attach($documento->id);
+				if(!$paciente->contatos->contains($contato->id)) $paciente->contatos()->attach($contato->id);
 			}
 
 			/** Desativa todas as vigencias do paciente */
@@ -158,6 +175,7 @@ class PacienteController extends Controller
 			########### FINISHIING TRANSACTION ##########
 			DB::rollback();
 			#############################################
+			dd($e->getMessage(), $e->getLine());
 			return response()->json([
 				'message' => 'O Colaborador não foi cadastrado. Por favor, tente novamente.',
 			], 500);

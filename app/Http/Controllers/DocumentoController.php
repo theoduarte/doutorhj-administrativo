@@ -46,6 +46,8 @@ class DocumentoController extends Controller
 						'cs_sexo' => $representante->cs_sexo,
 						'dt_nascimento' => $representante->dt_nascimento,
 						'telefone' => $contato->ds_contato,
+						'documento_id' => $model->id,
+						'contato_id' => $contato->id,
 						'user_id' => $representante->user_id,
 					];
 
@@ -64,6 +66,8 @@ class DocumentoController extends Controller
 						'cs_sexo' => $paciente->cs_sexo,
 						'dt_nascimento' => $paciente->dt_nascimento,
 						'telefone' => $contato->ds_contato,
+						'documento_id' => $model->id,
+						'contato_id' => $contato->id,
 						'user_id' => $paciente->user_id,
 					];
 
@@ -82,6 +86,8 @@ class DocumentoController extends Controller
 						'cs_sexo' => $profissional->cs_sexo,
 						'dt_nascimento' => $profissional->dt_nascimento,
 						'telefone' => $contato->ds_contato,
+						'documento_id' => $model->id,
+						'contato_id' => $contato->id,
 						'user_id' => $profissional->user_id,
 					];
 

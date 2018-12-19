@@ -17,7 +17,7 @@
 			<select id="anuidade_id" class="form-control" name="anuidade_id" required autofocus onchange="changeVlAnuidade(this)">
 				@foreach($anuidades as $anuidade)
 					<option value="{{$anuidade->id}}" isento="{{$anuidade->isento}}" anuidadeAno="{{$anuidade->vl_anuidade_ano_db}}" anuidadeMes="{{$anuidade->vl_anuidade_mes_db}}"
-							{{$model->vigencia_ativa->anuidade_id == $anuidade->id ? 'selected' : ''}}
+						{{$model->vigencia_ativa->anuidade_id == $anuidade->id ? 'selected' : ''}}
 					>
 						{{$anuidade->plano->ds_plano}}
 					</option>
