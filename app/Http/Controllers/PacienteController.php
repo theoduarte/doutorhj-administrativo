@@ -168,6 +168,9 @@ class PacienteController extends Controller
 			/** Desativa todas as vigencias do paciente */
 			VigenciaPaciente::where('paciente_id', $paciente->id)->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i:s')]);
 
+			/** Seta a empresa nos dependentes ativos do paciente */
+			Paciente::where(['responsavel_id' => $paciente->id, 'cs_status' => 'A'])->update(['empresa_id' => $paciente->empresa_id]);
+
 			# dados do vigencia do paciente
 			$vigencia           		= new VigenciaPaciente();
 			$vigencia->paciente_id 		= $paciente->id;
@@ -378,6 +381,9 @@ class PacienteController extends Controller
 			DB::rollBack();
 			return redirect()->back()->withErrors('O Colaborador não foi excluído. Por favor, tente novamente.');
 		}
+
+		# Remove a empresa_id dos dependentes ativos
+		Paciente::where(['responsavel_id' => $paciente->id, 'cs_status' => 'A'])->update(['empresa_id' => null]);
 
 		$vigencia = $paciente->vigencia_ativa;
 		if(!is_null($vigencia)) {
