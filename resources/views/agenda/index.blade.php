@@ -178,9 +178,9 @@
 								</tr>
 								@foreach($agendamentos as $agendamento)
 									{{-- @foreach( $agendamento->atendimentos()->whereNull('deleted_at')->get() as $atendimento ) --}}
-										@php
-											$type = !empty( $agendamento->atendimento->procedimento ) ? 'Exame' : 'Consulta';
-										@endphp
+										
+										@if(is_null($agendamento->atendimento->procedimento_id)) @php $type = 'Consulta'; @endphp @else @php $type = 'Exame'; @endphp @endif
+										
 										<tr>
 											<td>{{ $agendamento->te_ticket }}</td>
 											<td>{{ $agendamento->clinica->nm_razao_social ?? 'Não Informado' }}</td>
@@ -213,7 +213,7 @@
 														nm-paciente="{{ $agendamento->paciente->nm_primario }} {{ $agendamento->paciente->nm_secundario }}"
 														nm-filial="{{ $agendamento->filial->eh_matriz ? 'Matriz - ' : 'Filial - ' }} {{ $agendamento->filial->nm_nome_fantasia }}"
 														ticket="{{ $agendamento->te_ticket }}"
-														type="{{ $type }}"
+														type="{{$type}}"
 														atendimento="{{!empty( $agendamento->atendimento->procedimento ) ? ($agendamento->atendimento->procedimento->cd_procedimento . ' - ' . $agendamento->atendimento->procedimento->ds_procedimento) : ($agendamento->atendimento->consulta->cd_consulta . ' - ' . $agendamento->atendimento->consulta->ds_consulta) }}"
 														data-toggle="modal"
 														data-target="#dialog-agendar"

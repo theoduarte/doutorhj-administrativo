@@ -46,10 +46,11 @@ class Filial extends Model
                               JOIN PROFISSIONALS PF ON (FLPF.PROFISSIONAL_ID = PF.ID)
                               JOIN ATENDIMENTOS AT ON (PF.ID = AT.PROFISSIONAL_ID AND FL.CLINICA_ID = AT.CLINICA_ID)
                              WHERE PF.CS_STATUS = 'A'
-                               AND AT.CS_STATUS = 'A'
                                AND AT.PROFISSIONAL_ID = :profissional
                                AND AT.CONSULTA_ID = :consulta
                                AND AT.CLINICA_ID = :clinica", ['clinica' => $clinica, 'profissional' => $profissional, 'consulta' => $consulta]);
+        
+        //-- AND AT.CS_STATUS = 'A', foi removido pra o caso onde eh feita a tentativa de agendar com um atendimento q foi excluido
     }
 
     public function getActiveByClinicaProcedimento($clinica, $procedimento) {
@@ -58,7 +59,8 @@ class Filial extends Model
                               JOIN ATENDIMENTO_FILIAL ATFL ON (FL.ID = ATFL.FILIAL_ID)
                               JOIN ATENDIMENTOS AT ON (ATFL.ATENDIMENTO_ID = AT.ID)
                              WHERE AT.PROCEDIMENTO_ID = :procedimento
-                               AND AT.CLINICA_ID = :clinica
-                               AND AT.CS_STATUS = 'A'", ['clinica' => $clinica, 'procedimento' => $procedimento]);
+                               AND AT.CLINICA_ID = :clinica", ['clinica' => $clinica, 'procedimento' => $procedimento]);
+        
+        //-- AND AT.CS_STATUS = 'A', foi removido pra o caso onde eh feita a tentativa de agendar com um atendimento q foi excluido
     }
 }

@@ -698,7 +698,7 @@ class AgendamentoController extends Controller
     {
         $filial = new Filial();
         $filials = $filial->getActiveByClinicaProcedimento( $request::get('clinica_id'), $request::get('especialidade_id') );
-
+        
         echo json_encode($filials);
         exit;
     }

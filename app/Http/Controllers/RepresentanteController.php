@@ -108,7 +108,7 @@ class RepresentanteController extends Controller
 				$model->save();
 			}
 
-			$contato = Contato::where(['tp_contato' => 'CP', 'ds_contato' => $dados['telefone']])->first();
+			$contato = Contato::where(['ds_contato' => $dados['telefone']])->first();
 			if(is_null($contato)) {
 				$contato = new Contato();
 				$contato->tp_contato = 'CP';
