@@ -450,7 +450,7 @@ class ClinicaController extends Controller
     
             foreach ($contatos as $contato) {
                 $contato->ds_contato = '(61) 00000-0000';
-                $contato->save();
+//                 $contato->save();
             }
     
             //--desabilita todos os enderecos desse prestador----
@@ -460,7 +460,7 @@ class ClinicaController extends Controller
     
             foreach ($enderecos as $endereco) {
                 $endereco->te_endereco = 'CANCELADO';
-                $endereco->save();
+//                 $endereco->save();
             }
     
             //--desabilita todos os documentos desse prestador----
@@ -470,7 +470,7 @@ class ClinicaController extends Controller
     
             foreach ($documentos as $documento) {
                 $documento->te_documento = '11111111111';
-                $documento->save();
+//                 $documento->save();
             }
     
             //--desabilita o responsavel por este prestador e o usuario tambem----
@@ -480,7 +480,7 @@ class ClinicaController extends Controller
             if (!empty($responsavel)) {
                 $responsavel->telefone 	= '(61) 00000-0000';
                 $responsavel->cpf 		= '11111111111';
-                $responsavel->save();
+//                 $responsavel->save();
     
                 $responsavel->load('user');
                 $user_responsavel = $responsavel->user;
