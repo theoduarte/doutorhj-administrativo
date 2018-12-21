@@ -71,7 +71,7 @@ class Contato extends Model
 
 	public static function validaContato($tp_contato, $ds_contato)
 	{
-		$contato = Contato::where('tp_contato', $tp_contato)->where('ds_contato', $ds_contato)->get();
+		$contato = Contato::where('ds_contato', $ds_contato)->get();
 
 		if($contato->count() > 0) {
 			$contato = $contato->first();
