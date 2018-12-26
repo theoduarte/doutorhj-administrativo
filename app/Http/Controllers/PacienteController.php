@@ -107,19 +107,20 @@ class PacienteController extends Controller
 				$paciente->nm_primario 	= $dados['nm_primario'];
 				$paciente->nm_secundario = $dados['nm_secundario'];
 				$paciente->cs_sexo 		= $dados['cs_sexo'];
-				$paciente->setDtNascimentoAttribute("{$dados['ano']}-{$dados['mes']}-{$dados['dia']}");
+				$paciente->dt_nascimento = $dados['dt_nascimento'];
 				$paciente->access_token = $access_token;
 				$paciente->time_to_live = date('Y-m-d H:i:s', strtotime($time_to_live . '+2 hour'));
+				$paciente->save();
 
 				$documento = new Documento();
-				$documento->tp_documento = $dados['tp_documento'];
-				$cpf 					= UtilController::retiraMascara($dados['te_documento']);
+				$documento->tp_documento = Documento::TP_CPF;
+				$cpf 					= UtilController::retiraMascara($dados['cpf']);
 				$documento->te_documento = $cpf;
 				$documento->save();
 
 				$contato = new Contato();
-				$contato->tp_contato 	= 'CP';
-				$contato->ds_contato 	= $dados['ds_contato'];
+				$contato->tp_contato 	= Contato::TP_CEL_PESSOAL;
+				$contato->ds_contato 	= $dados['telefone'];
 				$contato->save();
 
 				if(!$paciente->documentos->contains($documento->id)) $paciente->documentos()->attach($documento->id);
@@ -151,19 +152,19 @@ class PacienteController extends Controller
 					$paciente->time_to_live = date('Y-m-d H:i:s', strtotime($time_to_live . '+2 hour'));
 				}
 
-				if(!is_null($paciente->empresa_id)) {
-					DB::rollback();
-					return response()->json([
-						'message' => 'Paciente ja vinculado a empresa '.$paciente->empresa->razao_social,
-					], 403);
-				}
-
-				$paciente->empresa_id = $dados['empresa_id'];
-				$paciente->save();
-
 				if(!$paciente->documentos->contains($documento->id)) $paciente->documentos()->attach($documento->id);
 				if(!$paciente->contatos->contains($contato->id)) $paciente->contatos()->attach($contato->id);
 			}
+
+			if(!is_null($paciente->empresa_id)) {
+				DB::rollback();
+				return response()->json([
+					'message' => 'Paciente ja vinculado a empresa '.$paciente->empresa->razao_social,
+				], 403);
+			}
+
+			$paciente->empresa_id = $dados['empresa_id'];
+			$paciente->save();
 
 			/** Desativa todas as vigencias do paciente */
 			VigenciaPaciente::where('paciente_id', $paciente->id)->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i:s')]);
