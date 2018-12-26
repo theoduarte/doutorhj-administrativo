@@ -133,7 +133,7 @@ class PacienteController extends Controller
 					DB::rollback();
 					return response()->json([
 						'message' => $validaPessoa['mensagem'],
-					], 403);
+					], 500);
 				}
 
 				$user = User::findOrFail($dadosPaciente->pessoa->user_id);
@@ -160,7 +160,7 @@ class PacienteController extends Controller
 				DB::rollback();
 				return response()->json([
 					'message' => 'Paciente ja vinculado a empresa '.$paciente->empresa->razao_social,
-				], 403);
+				], 500);
 			}
 
 			$paciente->empresa_id = $dados['empresa_id'];
@@ -186,7 +186,6 @@ class PacienteController extends Controller
 			########### FINISHIING TRANSACTION ##########
 			DB::rollback();
 			#############################################
-			dd($e->getMessage(), $e->getLine());
 			return response()->json([
 				'message' => 'O Colaborador não foi cadastrado. Por favor, tente novamente.',
 			], 500);
