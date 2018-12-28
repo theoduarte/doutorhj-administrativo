@@ -21,7 +21,6 @@ $(document).ready(function () {
 @if ($message = Session::get('warning'))
 <script type="text/javascript">
 $(document).ready(function () {
-
 	$.Notification.notify('warning','top right', 'Atenção!', '{{ $message }}');
 });
 </script>

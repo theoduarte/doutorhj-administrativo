@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Paciente;
+use App\Representante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use Illuminate\Filesystem\Filesystem;
@@ -235,14 +237,17 @@ class UserController extends Controller
 //     	if($usuario->avatar != 'users/default.png') {
 //     		File::deleteDirectory(public_path().'/files/users/'.$usuario->id);
 //     	}
-    	 
-//     	$usuario->delete();
+
+		if($usuario->profissional()->count() != 0 || $usuario->responsavel()->count() != 0 || $usuario->representante()->count() != 0) {
+			return redirect()->route('users.index')->with('error', 'Só podem ser exluidos usuários vinculados a um paciente.');
+		}
+
     	$usuario->cs_status = 'I';
     	$usuario->save();
-    	
-    	
+
+		Paciente::where(['user_id' => $usuario->id])->update(['cs_status' => 'I']);
+
     	# registra log
-    	
     	$user_obj      = $usuario->toJson();
     	$titulo_log = 'Excluir Usuário';
     	$tipo_log   = 4;

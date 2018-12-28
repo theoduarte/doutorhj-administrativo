@@ -46,7 +46,15 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Responsavel');
     }
-    
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function representante()
+	{
+		return $this->hasOne('App\Representante');
+	}
+
     public function registro_logs()
     {
         return $this->hasMany('App\RegistroLog');
