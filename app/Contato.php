@@ -23,6 +23,8 @@ class Contato extends Model
 	const TP_FIXO_RESIDENCIAL	= 'FR';
 	const TP_FIXO_COMERCIAL		= 'FC';
 	const TP_FAX				= 'FX';
+	const TP_ADMINISTRATIVO		= 'CA';
+	const TP_FINANCEIRO			= 'CF';
 
     /**
      * @var array
