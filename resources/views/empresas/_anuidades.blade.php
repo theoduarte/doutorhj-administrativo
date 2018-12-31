@@ -21,7 +21,7 @@
 				<input type="text" id="anuidades-{{$id}}-vl_anuidade_mes" class="form-control maskAnuidade" name="anuidades[{{$id}}][vl_anuidade_mes]" placeholder="" required value="{{$anuidade->vl_anuidade_mes ?? old("anuidades[$id][vl_anuidade_mes]") ?? '0,00'}}">
 			</td>
 			<td>
-				<input type="text" class="form-control input-daterange" id="anuidades-{{$id}}-data_vigencia" name="anuidades[{{$id}}][data_vigencia]" required value="{{$anuidade->data_vigencia ?? old("anuidades[$id][data_vigencia]") ?? ''}}" autocomplete="off">
+				<input type="text" class="form-control input-daterange" id="anuidades-{{$id}}-data_vigencia" name="anuidades[{{$id}}][data_vigencia]" value="{{$anuidade->data_vigencia ?? old("anuidades[$id][data_vigencia]") ?? ''}}" autocomplete="off">
 			</td>
 			<td>
 				<select class="form-control" id="anuidades-{{$id}}-cs_status" name="anuidades[{{$id}}][cs_status]" required>

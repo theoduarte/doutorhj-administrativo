@@ -27,6 +27,18 @@
 				<div class="col-12">
 					<div class="card-box col-12">
 						<h4 class="header-title m-t-0 m-b-30">Empresa</h4>
+
+						@if ($errors->any())
+							<div class="alert alert-danger fade show">
+								<span class="close" data-dismiss="alert">×</span>
+								<ul>
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
+
 						<ul id="cvx-tab-empresa" class="nav nav-tabs">
 							<li class="nav-item">
 								<a href="#dadosEmpresa" id="dadosEmpresa-tab" data-toggle="tab" aria-expanded="true" class="nav-link active">
