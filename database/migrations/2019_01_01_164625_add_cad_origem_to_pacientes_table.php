@@ -14,7 +14,7 @@ class AddCadOrigemToPacientesTable extends Migration
     public function up()
     {
         Schema::table('pacientes', function (Blueprint $table) {
-            $table->string('cad_origem', 10)->after('time_to_live')->comment('WEB => cadastro autônomo feito no site pelo usuário MOB => cadastro autônomo feito no aplicativo pelo usuário EMP => cadastro realizado na aplicação empresarial');
+            $table->string('cad_origem', 10)->after('time_to_live')->nullable()->comment('WEB => cadastro autônomo feito no site pelo usuário MOB => cadastro autônomo feito no aplicativo pelo usuário EMP => cadastro realizado na aplicação empresarial');
         });
     }
 
