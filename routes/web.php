@@ -127,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('lista-exames-xls', 'AtendimentoController@geraListaExamesXls')->name('exames-xls');
     Route::post('lista-pacientes-ativos-xls', 'PacienteController@geraListaPacientesAtivosXls')->name('pacientes-ativos-xls');
     Route::post('lista-agenda-xls', 'AgendamentoController@geraListaAgendaXls')->name('agenda-xls');
+    Route::post('lista-prestadores-ativos-xls', 'ClinicaController@geraListaPrestadoresAtivosXls')->name('prestadores-ativos-xls');
 });
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');

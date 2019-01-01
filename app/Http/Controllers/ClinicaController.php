@@ -14,6 +14,7 @@ use App\Http\Requests\PrecificacaoConsultaRequest;
 use App\Http\Requests\PrecificacaoProcedimentoRequest;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use LaravelLegends\PtBrValidator\Validator as CVXValidador;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Clinica;
 use App\User;
 use App\Cargo;
@@ -1102,5 +1103,54 @@ class ClinicaController extends Controller
         }
         
         return response()->json(['status' => false, 'mensagem' => 'UF não informada.']);
+    }
+    
+    /**
+     * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico.
+     *
+     */
+    public function geraListaPrestadoresAtivosXls()
+    {
+        
+        Excel::create('DRHJ_RELATORIO_PRESTADORES_ATIVOS_' . date('d-m-Y~H_i_s'), function ($excel) {
+            $excel->sheet('Consultas', function ($sheet) {
+                
+                // Font family
+                $sheet->setFontFamily('Comic Sans MS');
+                
+                // Set font with ->setStyle()`
+                $sheet->setStyle(array(
+                    'font' => array(
+                        'name' => 'Calibri',
+                        'size' => 12,
+                        'bold' => false
+                    )
+                ));
+                
+                $cabecalho = array('Data' => date('d-m-Y H:i'));
+                DB::enableQueryLog();
+                
+                
+                $list_prestadores = Clinica::with(['contatos', 'documentos', 'responsavel', 'responsavel.user', 'enderecos.cidade'])
+                    ->distinct()
+                    ->leftJoin('responsavels',			function($join1) { $join1->on('clinicas.responsavel_id', '=', 'responsavels.id');})
+                    ->leftJoin('users',					function($join2) { $join2->on('responsavels.user_id', '=', 'users.id');})
+                    ->select('clinicas.id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.created_at', 'clinicas.updated_at', 'users.name As nome_responsavel')
+                    ->where(['clinicas.cs_status' => 'I'])
+                    ->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'))
+                    ->orderby('clinicas.nm_razao_social', 'asc')
+                    ->get();
+//                 $queries = DB::getQueryLog();
+//                 dd($queries);
+                
+//                 dd($list_prestadores);
+                
+                //     			$sheet->setColumnFormat(array(
+                //     					'F6:F'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
+                //     			));
+                
+                $sheet->loadView('clinicas.prestadores_ativos_excel', compact('list_prestadores', 'cabecalho'));
+            });
+        })->export('xls');
     }
 }
