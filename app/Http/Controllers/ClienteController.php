@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Paciente;
+use App\RegistroLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use App\Http\Requests\PacientesEditRequest;
@@ -54,13 +56,13 @@ class ClienteController extends Controller
             }
             
             $arFiltroStatusIn = array();
-            if( !empty(Request::input('tp_usuario_somente_ativos')) ) { 
+//            if( !empty(Request::input('tp_usuario_somente_ativos')) ) {
                 $arFiltroStatusIn[] = \App\User::ATIVO; 
-            }
+//            }
 
-            if( !empty(Request::input('tp_usuario_somente_inativos'))) { 
-                $arFiltroStatusIn[] = \App\User::INATIVO; 
-            }
+//            if( !empty(Request::input('tp_usuario_somente_inativos'))) {
+//                $arFiltroStatusIn[] = \App\User::INATIVO;
+//            }
 
             if( count($arFiltroStatusIn) > 0 ) { 
                 $query->whereExists(function ($query) use ($arFiltroStatusIn) {
@@ -210,9 +212,19 @@ class ClienteController extends Controller
      */
     public function destroy($idUser)
     {
-        $usuario = \App\User::findorfail($idUser);
-        $usuario->cs_status = \App\User::INATIVO;
+        $usuario = User::findorfail($idUser);
+
+		if($usuario->profissional()->count() != 0 || $usuario->responsavel()->count() != 0 || $usuario->representante()->count() != 0) {
+			return redirect()->route('users.index')->with('error', 'Só podem ser exluidos usuários vinculados a um paciente.');
+		}
+
+        $usuario->cs_status = User::INATIVO;
         $usuario->save();
+
+		# registra log
+		RegistroLog::saveLog('Editar Usuário e Paciente', RegistroLog::UPDATE, $usuario);
+
+		Paciente::where(['user_id' => $usuario->id])->update(['cs_status' => 'I']);
 
         return redirect()->route('clientes.index')->with('success', 'Usuário inativado com sucesso!');
     }
