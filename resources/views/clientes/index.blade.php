@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Doutor HJ: Gestão de Clientes')
+@section('title', 'DoutorHoje: Gestão de Clientes')
 
 @section('container')
 <div class="container-fluid">
@@ -10,7 +10,7 @@
 				<h4 class="page-title">Doutor HJ</h4>
 				<ol class="breadcrumb float-right">
 					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item"><a href="#">Cadastros</a></li>
+					<li class="breadcrumb-item"><a href="clientes">Lista de Clientes</a></li>
 					<li class="breadcrumb-item active">Gestão de Clientes</li>
 				</ol>
 				<div class="clearfix"></div>
