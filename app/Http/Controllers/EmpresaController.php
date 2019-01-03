@@ -220,7 +220,13 @@ class EmpresaController extends Controller
 			$anuidades = $request->post('anuidades');
 			if(count($anuidades) > 0) {
 				foreach($anuidades as $planoId=>$anuidade) {
-					$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($anuidade['data_vigencia']);
+					if($anuidade['cs_status'] == 'A') {
+						$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($anuidade['data_vigencia']);
+					} else {
+						$data_vigencia['de'] = date('Y-m-d');
+						$data_vigencia['ate'] = date('Y-m-d');
+					}
+
 					$anuidade['data_inicio'] = $data_vigencia['de'];
 					$anuidade['data_fim'] = $data_vigencia['ate'];
 					$anuidade['empresa_id'] = $model->id;
@@ -232,7 +238,7 @@ class EmpresaController extends Controller
 						])
 						->whereNull('deleted_at');
 
-					if($modelAnuidade->count() > 0) {
+					if ($modelAnuidade->count() > 0) {
 						$oldAnuidade = $modelAnuidade->orderBy('id', 'DESC')->first();
 						$modelAnuidade->update(['deleted_at' => date('Y/m/d H:i:s')]);
 						$oldAnuidade = $oldAnuidade->orderBy('id', 'DESC')->first();
@@ -242,7 +248,7 @@ class EmpresaController extends Controller
 						$newAnuidade->save();
 					}
 
-					if(!is_null($oldAnuidade)) {
+					if (!is_null($oldAnuidade)) {
 						$newAnuidade = $oldAnuidade->replicate();
 						$newAnuidade->save();
 						$newAnuidade->update($anuidade);
