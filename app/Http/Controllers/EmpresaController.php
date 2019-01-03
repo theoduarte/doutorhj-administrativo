@@ -47,13 +47,14 @@ class EmpresaController extends Controller
 			if(!empty(Request::input('nm_busca'))){
 				switch (Request::input('tp_filtro')){
 					case "cd_plano" :
-						$query->where('cd_plano', 'ilike', '%'.UtilController::toStr(Request::input('cd_plano')).'%');
+						$query->where('razao_social', 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
 						break;
 					case "ds_plano" :
-						$query->where(DB::raw('to_str(ds_plano)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+						$query->where(DB::raw('to_str(nome_fantasia)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
 						break;
 					default:
-						$query->where(DB::raw('to_str(ds_plano)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+						$query->where(DB::raw('to_str(razao_social)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%')
+							->orWhere(DB::raw('to_str(nome_fantasia)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
 				}
 			}
 		})->sortable(['nome_fantasia' => 'asc'])->paginate(10);
