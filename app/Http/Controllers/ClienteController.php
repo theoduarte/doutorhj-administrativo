@@ -71,9 +71,6 @@ class ClienteController extends Controller
         //dd($pacientes);
         //$queries = DB::getQueryLog();
 
-        // $pacientes->load('user');
-        // $pacientes->load('documentos');
-
         Request::flash();
         
         return view('clientes.index', compact('pacientes'));
