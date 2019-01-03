@@ -66,6 +66,14 @@ class Paciente extends Model
 	    self::FEMININO  => 'Feminino'
 	);
 
+	const ATIVO   = 'A';
+	const INATIVO = 'I';
+
+	protected static $cs_status = array(
+		self::ATIVO   => 'Ativo',
+		self::INATIVO => 'Inativo'
+	);
+
 	/*
 	 * Relationship
 	 */
