@@ -69,7 +69,8 @@
 						<th>Tipo Documento</th>
                         <th>Documento</th>
                         <th>Dt. Nasc.</th>
-                        <th>Situação</th>
+                        <th>Status Usuário</th>
+						<th>Status Paciente</th>
 						<th>Ações</th>
 					</tr>
 					@foreach ($pacientes as $paciente)
@@ -88,14 +89,14 @@
                    	 				@elseif( $paciente->user->cs_status == 'I' )
                    	 					Inativo
                    	 				@endif
-                                @else
-                                    @if( $paciente->cs_status == 'A' ) 
-                                        Ativo
-                                    @elseif( $paciente->cs_status == 'I' )
-                                        Inativo
-                                    @endif
                                 @endif
                 	 		</td>
+							<td>
+								@if( $paciente->cs_status == 'A' ) 
+                                    Ativo
+                                @elseif( $paciente->cs_status == 'I' )
+                                    Inativo
+                            	@endif</td>
     						<td>
                                 @if( !empty($paciente->user) )
     							<a href="{{ route('clientes.show', $paciente->user->id) }}" class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>

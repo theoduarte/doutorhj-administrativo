@@ -55,10 +55,16 @@ class ClienteController extends Controller
         }
 
         $arFiltroStatusIn = array();
-        $arFiltroStatusIn = User::ATIVO; 
+        if( !empty(Request::input('tp_usuario_somente_ativos')) ) {
+            $arFiltroStatusIn[] = User::ATIVO;
+        }
 
-        if( count($arFiltroStatusIn) > 0 ) {
-            $pacientes->where('pacientes.cs_status', '=', $arFiltroStatusIn);
+        if( !empty(Request::input('tp_usuario_somente_inativos'))) {
+            $arFiltroStatusIn[] = User::INATIVO;
+        }
+
+        if( count($arFiltroStatusIn) == 1 ) {
+            $pacientes->where('pacientes.cs_status', '=', $arFiltroStatusIn[0]);
         }
 
         $pacientes = $pacientes->sortable()->paginate(20);
