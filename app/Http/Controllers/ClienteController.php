@@ -36,50 +36,52 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $pacientes = \App\Paciente::where( function($query) {
-            if( !empty(Request::input('nm_busca')) ) {
-                switch (Request::input('tp_filtro')){
-                    case "nome" :
-                        $query->where(DB::raw('to_str(nm_primario)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                        break;
-                    case "email" :
-                        $query->whereExists(function ($query) {
-                            $query->select(DB::raw(1))
-                                ->from('users')
-                                ->whereRaw('pacientes.user_id = users.id')
-                                ->where(DB::raw('to_str(email)'), '=', UtilController::toStr(Request::input('nm_busca')));
-                        });
-                        break;
-                    default :
-                        $query->where(DB::raw('to_str(nm_primario)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                }
-            }
-            
-            $arFiltroStatusIn = array();
-//            if( !empty(Request::input('tp_usuario_somente_ativos')) ) {
-                $arFiltroStatusIn[] = \App\User::ATIVO; 
-//            }
+        $pacientes = Paciente::where('cs_status', Paciente::ATIVO)
+			->where( function($query) {
+				if( !empty(Request::input('nm_busca')) ) {
+					switch (Request::input('tp_filtro')){
+						case "nome" :
+							$query->where(DB::raw('to_str(nm_primario)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+							break;
+						case "email" :
+							$query->whereExists(function ($query) {
+								$query->select(DB::raw(1))
+									->from('users')
+									->whereRaw('pacientes.user_id = users.id')
+									->where(DB::raw('to_str(email)'), '=', UtilController::toStr(Request::input('nm_busca')));
+							});
+							break;
+						default :
+							$query->where(DB::raw('to_str(nm_primario)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+					}
+				}
 
-//            if( !empty(Request::input('tp_usuario_somente_inativos'))) {
-//                $arFiltroStatusIn[] = \App\User::INATIVO;
-//            }
+				$arFiltroStatusIn = array();
+				if( !empty(Request::input('tp_usuario_somente_ativos')) ) {
+					$arFiltroStatusIn[] = \App\User::ATIVO;
+				}
 
-            if( count($arFiltroStatusIn) > 0 ) { 
-                $query->whereExists(function ($query) use ($arFiltroStatusIn) {
-                    $query->select(DB::raw(1))
-                        ->from('users')
-                        ->whereRaw('pacientes.user_id = users.id')
-                        ->where('users.cs_status', $arFiltroStatusIn);
-                });
+				if( !empty(Request::input('tp_usuario_somente_inativos'))) {
+					$arFiltroStatusIn[] = \App\User::INATIVO;
+				}
 
-                // $query->whereHas( 'user', function($query){
-                //     $query->whereIn('user.cs_status', $arFiltroStatusIn); 
-                // });
-                
-            }
+				if( count($arFiltroStatusIn) > 0 ) {
+					$query->whereExists(function ($query) use ($arFiltroStatusIn) {
+						$query->select(DB::raw(1))
+							->from('users')
+							->whereRaw('pacientes.user_id = users.id')
+							->where('users.cs_status', $arFiltroStatusIn);
+					});
 
-        })->sortable()
-        ->paginate(20);
+					// $query->whereHas( 'user', function($query){
+					//     $query->whereIn('user.cs_status', $arFiltroStatusIn);
+					// });
+
+				}
+
+			})
+			->sortable()
+			->paginate(20);
 
         // $pacientes->load('user');
         // $pacientes->load('documentos');

@@ -807,9 +807,10 @@ class AgendamentoController extends Controller
                 $status_atendimento_ids         = Request::get('status_atendimento_ids');
                 $startdate_pagamento_xls        = Request::get('startdate_pagamento_xls');
                 $enddate_pagamento_xls          = Request::get('enddate_pagamento_xls');
-                DB::enableQueryLog();
+                
                 ##################################################################################################################
                 $list_agendamentos = Agendamento::with(['itempedidos', 'itempedidos.pedido', 'atendimento'])
+                    ->distinct()
                     ->join('itempedidos', function ($query) {$query->on('itempedidos.agendamento_id', '=', 'agendamentos.id');})
                     ->join('pedidos', function ($query) use($startdate_pagamento_xls, $enddate_pagamento_xls) {
                         
@@ -883,8 +884,9 @@ class AgendamentoController extends Controller
                 $list_agendamentos->select('agendamentos.id', 'agendamentos.te_ticket', 'agendamentos.dt_atendimento', 'agendamentos.obs_agendamento', 'agendamentos.obs_cancelamento', 'agendamentos.cs_status',
                     'agendamentos.bo_remarcacao', 'agendamentos.clinica_id', 'agendamentos.paciente_id', 'agendamentos.atendimento_id', 'agendamentos.profissional_id', 'agendamentos.convenio_id',
                     'agendamentos.bo_retorno', 'agendamentos.cupom_id', 'agendamentos.filial_id', 'agendamentos.checkup_id', 'clinicas.nm_razao_social', 'pedidos.dt_pagamento');
+//                 DB::enableQueryLog();
                 $list_agendamentos = $list_agendamentos->get();
-                
+//                 dd( DB::getQueryLog() );
                 foreach ($list_agendamentos as $item) {
                 	$atend_temp = new Atendimento();
                 	$plano_ativo_id = Paciente::getPlanoAtivo($item->paciente_id);
@@ -896,7 +898,7 @@ class AgendamentoController extends Controller
                 
 //                 dd($list_agendamentos);
                 
-//                 dd( DB::getQueryLog() );
+                 
                 
 //                 $sheet->setColumnFormat(array(
 //                     'I6:I'.(sizeof($list_agendamentos)+6) => '""00"." 000"."000"/"0000-00'

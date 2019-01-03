@@ -39,12 +39,12 @@
 		</div>
 		<div class="col-sm-6">
 			<div class="widget-simple-chart text-left card-box">
-				<form action="#" method="post" enctype="multipart/form-data">
+				<form action="{{ route('prestadores-ativos-xls') }}" method="post" enctype="multipart/form-data">
 				
 					{!! csrf_field() !!}
 					
 					<div class="form-group text-center m-b-0">
-						<button type="submit" class="btn btn-default btn-lg waves-effect waves-light" disabled="disabled"><i class="mdi mdi-file-excel"></i> Gerar Lista de transações</button>
+						<button type="submit" class="btn btn-primary btn-lg waves-effect waves-light" ><i class="mdi mdi-stethoscope"></i> Gerar Lista de Prestadores</button>
 					</div>
 				</form>
 			</div>

@@ -60,7 +60,7 @@
 
 	<div class="col-sm-9 col-md-3">
 		<div class="form-group{{ $errors->has('sg_logradouro') ? ' has-error' : '' }}">
-			<label for="sg_logradouro" class="control-label">Logradouro<span class="text-danger">*</span></label>
+			<label for="sg_logradouro" class="control-label">Tipo Logradouro<span class="text-danger">*</span></label>
 			<select id="sg_logradouro" name="sg_logradouro" class="form-control">
 				<option value="" selected="selected"></option>
 				<option value="Aeroporto" @if (($model->endereco->sg_logradouro ?? old('sg_logradouro'))  == 'Aeroporto') selected="selected" @endif>Aeroporto</option>
@@ -179,7 +179,7 @@
 <div class="form-row" style="padding-top: 30px;">
 	<div class="col-md-12">
 		<div class="form-group text-right m-b-0">
-			<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Alterar</button>
+			<button type="submit" class="btn btn-primary waves-effect waves-light" ><i class="mdi mdi-content-save"></i> Salvar</button>
 			<a href="{{ route('empresas.index') }}" class="btn btn-secondary waves-effect m-l-5"><i class="mdi mdi-cancel"></i> Cancelar</a>
 		</div>
 	</div>

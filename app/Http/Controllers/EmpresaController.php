@@ -56,7 +56,7 @@ class EmpresaController extends Controller
 						$query->where(DB::raw('to_str(ds_plano)'), 'ilike', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
 				}
 			}
-		})->sortable()->paginate(10);
+		})->sortable(['nome_fantasia' => 'asc'])->paginate(10);
 
 		Request::flash();
 
