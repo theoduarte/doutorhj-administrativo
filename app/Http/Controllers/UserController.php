@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Paciente;
+use App\RegistroLog;
 use App\Representante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as CVXRequest;
@@ -164,7 +165,6 @@ class UserController extends Controller
      */
     public function update(UsuariosRequest $request, $id)
     {
-    	
     	########### STARTING TRANSACTION ############
     	DB::beginTransaction();
     	#############################################
@@ -176,7 +176,7 @@ class UserController extends Controller
     	$usuario->name      		= $request->input('name');
     	$usuario->email     		= $request->input('email');
     	
-    	if ( (String)$request->input('change-password') === "1" ) {
+    	if((String)$request->input('change-password') === "1" ) {
     	    $usuario->password  = bcrypt($request->input('password'));
     	}
     	
@@ -188,7 +188,6 @@ class UserController extends Controller
     	$obj = new UtilController();
     	 
     	if($usuario->save()) {
-    	
     		$user_id = $usuario->id;
     		if(!empty($request->file('avatar'))) {
     			$image = $request->file('avatar');
@@ -242,24 +241,14 @@ class UserController extends Controller
 			return redirect()->route('users.index')->with('error', 'Só podem ser exluidos usuários vinculados a um paciente.');
 		}
 
-    	$usuario->cs_status = 'I';
+    	$usuario->cs_status = User::INATIVO;
     	$usuario->save();
+
+		# registra log
+		RegistroLog::saveLog('Editar Usuário e Paciente', RegistroLog::UPDATE, $usuario);
 
 		Paciente::where(['user_id' => $usuario->id])->update(['cs_status' => 'I']);
 
-    	# registra log
-    	$user_obj      = $usuario->toJson();
-    	$titulo_log = 'Excluir Usuário';
-    	$tipo_log   = 4;
-    	
-    	$ct_log   = '"reg_anterior":{"user":'.$ct_user_obj.'}';
-    	$new_log  = '"reg_novo":'.'{"user":'.$user_obj.'}';
-    	
-    	$log = "{".$ct_log.",".$new_log."}";
-    	
-    	$reglog = new RegistroLogController();
-    	$reglog->registrarLog($titulo_log, $log, $tipo_log);
-    	 
     	return redirect()->route('users.index')->with('success', 'Registro Excluído com sucesso!');
     }
 }

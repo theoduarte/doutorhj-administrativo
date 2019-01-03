@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Carbon;
 
@@ -33,4 +34,27 @@ class RegistroLog extends Model
         $obData = new Carbon($data);
         return $obData->format('d/m/Y H:i');
     }
+
+	/**
+	 * @param $titulo
+	 * @param $tipolog_id
+	 * @param $model Objeto model que foi dado o save
+	 */
+	public static function saveLog($titulo, $tipolog_id, $model)
+	{
+		$user = Auth::user();
+
+		$new_log = json_encode($model->getChanges());
+		$log = "{{$new_log}}";
+
+		$registroLog = new RegistroLog();
+		$registroLog->titulo = $titulo;
+		$registroLog->tipolog_id = $tipolog_id;
+		$registroLog->ativo = true;
+		$registroLog->user_id = $user->id;
+		$registroLog->table_name = $model->getTable();
+		$registroLog->field_id = $model->id;
+		$registroLog->descricao = $log;
+		$registroLog->save();
+	}
 }
