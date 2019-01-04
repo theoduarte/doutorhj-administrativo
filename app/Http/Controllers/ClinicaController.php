@@ -1136,12 +1136,23 @@ class ClinicaController extends Controller
                     ->leftJoin('responsavels',			function($join1) { $join1->on('clinicas.responsavel_id', '=', 'responsavels.id');})
                     ->leftJoin('users',					function($join2) { $join2->on('responsavels.user_id', '=', 'users.id');})
                     ->select('clinicas.id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.created_at', 'clinicas.updated_at', 'users.name As nome_responsavel')
-                    ->where(['clinicas.cs_status' => 'I'])
-                    ->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'))
-                    ->orderby('clinicas.nm_razao_social', 'asc')
-                    ->get();
-//                 $queries = DB::getQueryLog();
-//                 dd($queries);
+                    ->orderby('clinicas.nm_razao_social', 'asc');
+
+                if( !is_null(Request::input('inlineCheckboxNovos')) ) {
+                    $list_prestadores->where(['clinicas.cs_status' => 'I'])->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'));
+                }
+
+                if( !is_null(Request::input('inlineCheckboxAtivos')) ) {
+                    $list_prestadores->where(['clinicas.cs_status' => 'A']);
+                }
+
+                if( !is_null(Request::input('inlineCheckboxInativos')) ) {
+                    $list_prestadores->where(['clinicas.cs_status' => 'I'])->whereDate('clinicas.created_at', '<>', DB::raw('"clinicas"."updated_at"::date'));
+                }
+
+                $list_prestadores = $list_prestadores->get();
+                //$queries = DB::getQueryLog();
+                //dd($queries);
                 
 //                 dd($list_prestadores);
                 

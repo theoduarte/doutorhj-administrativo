@@ -35,10 +35,10 @@
 					<td>{{$item_prestador->id}}</td>
                     <td>{{$item_prestador->nm_razao_social}}</td>
                     <td>{{$item_prestador->nm_fantasia}}</td>
-                    <td>{{$item_prestador->documentos->first()->te_documento}}</td>
+                    <td>@if(sizeof($item_prestador->documentos) > 0) {{$item_prestador->documentos->first()->te_documento}} @endif</td>
                     <td>{{$item_prestador->nome_responsavel}}</td>
-                    <td>@if(!is_null($item_prestador->enderecos->first()->cidade)) {{$item_prestador->enderecos->first()->cidade->sg_estado}} @endif </td>
-                    <td> @if(!is_null($item_prestador->contatos)) {{$item_prestador->contatos->first()->ds_contato}} @endif</td>
+                    <td>@if(sizeof($item_prestador->enderecos) > 0 && !is_null($item_prestador->enderecos->first()->cidade)) {{$item_prestador->enderecos->first()->cidade->sg_estado}} @endif </td>
+                    <td> @if(sizeof($item_prestador->contatos) > 0 && !is_null($item_prestador->contatos)) {{$item_prestador->contatos->first()->ds_contato}} @endif</td>
                     <td>{{ date('d/m/Y H:i', strtotime($item_prestador->created_at)) }}</td>
 				</tr>
                 
