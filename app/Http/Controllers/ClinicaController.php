@@ -1135,7 +1135,7 @@ class ClinicaController extends Controller
                     ->distinct()
                     ->leftJoin('responsavels',			function($join1) { $join1->on('clinicas.responsavel_id', '=', 'responsavels.id');})
                     ->leftJoin('users',					function($join2) { $join2->on('responsavels.user_id', '=', 'users.id');})
-                    ->select('clinicas.id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.created_at', 'clinicas.updated_at', 'users.name As nome_responsavel')
+                    ->select('clinicas.id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.created_at', 'clinicas.updated_at', 'users.name As nome_responsavel', 'users.email As email_responsavel')
                     ->orderby('clinicas.nm_razao_social', 'asc');
 
                 if( !is_null(Request::input('inlineCheckboxNovos')) ) {
