@@ -1128,9 +1128,8 @@ class ClinicaController extends Controller
                 ));
                 
                 $cabecalho = array('Data' => date('d-m-Y H:i'));
+
                 DB::enableQueryLog();
-                
-                
                 $list_prestadores = Clinica::with(['contatos', 'documentos', 'responsavel', 'responsavel.user', 'enderecos.cidade'])
                     ->distinct()
                     ->leftJoin('responsavels',			function($join1) { $join1->on('clinicas.responsavel_id', '=', 'responsavels.id');})
@@ -1151,6 +1150,7 @@ class ClinicaController extends Controller
                 }
 
                 $list_prestadores = $list_prestadores->get();
+
                 //$queries = DB::getQueryLog();
                 //dd($queries);
                 
