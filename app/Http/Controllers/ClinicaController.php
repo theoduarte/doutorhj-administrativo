@@ -1156,9 +1156,9 @@ class ClinicaController extends Controller
                 
 //                 dd($list_prestadores);
                 
-                //     			$sheet->setColumnFormat(array(
-                //     					'F6:F'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
-                //     			));
+//                $sheet->setColumnFormat(array(
+//                    'F6:F'.(sizeof($list_prestadores)+6) => '""00"." 000"."000"/"0000-00'
+//                ));
                 
                 $sheet->loadView('clinicas.prestadores_ativos_excel', compact('list_prestadores', 'cabecalho'));
             });
