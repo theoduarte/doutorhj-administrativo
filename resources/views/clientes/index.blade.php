@@ -112,7 +112,7 @@
                 		<span class="text-primary">
                 			{{ sprintf("%02d", $pacientes->total()) }} Registro(s) encontrado(s) e {{ sprintf("%02d", $pacientes->count()) }} Registro(s) exibido(s)
                 		</span>
-                		{!! $pacientes->links() !!}
+						{!! $pacientes->appends(request()->input())->links() !!}
                 	</div>
                 </tfoot>
            </div>
