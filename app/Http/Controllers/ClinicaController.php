@@ -1128,26 +1128,37 @@ class ClinicaController extends Controller
                 ));
                 
                 $cabecalho = array('Data' => date('d-m-Y H:i'));
+
                 DB::enableQueryLog();
-                
-                
                 $list_prestadores = Clinica::with(['contatos', 'documentos', 'responsavel', 'responsavel.user', 'enderecos.cidade'])
                     ->distinct()
                     ->leftJoin('responsavels',			function($join1) { $join1->on('clinicas.responsavel_id', '=', 'responsavels.id');})
                     ->leftJoin('users',					function($join2) { $join2->on('responsavels.user_id', '=', 'users.id');})
-                    ->select('clinicas.id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.created_at', 'clinicas.updated_at', 'users.name As nome_responsavel')
-                    ->where(['clinicas.cs_status' => 'I'])
-                    ->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'))
-                    ->orderby('clinicas.nm_razao_social', 'asc')
-                    ->get();
-//                 $queries = DB::getQueryLog();
-//                 dd($queries);
+                    ->select('clinicas.id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.created_at', 'clinicas.updated_at', 'users.name As nome_responsavel', 'users.email As email_responsavel')
+                    ->orderby('clinicas.nm_razao_social', 'asc');
+
+                if( !is_null(Request::input('inlineCheckboxNovos')) ) {
+                    $list_prestadores->where(['clinicas.cs_status' => 'I'])->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'));
+                }
+
+                if( !is_null(Request::input('inlineCheckboxAtivos')) ) {
+                    $list_prestadores->where(['clinicas.cs_status' => 'A']);
+                }
+
+                if( !is_null(Request::input('inlineCheckboxInativos')) ) {
+                    $list_prestadores->where(['clinicas.cs_status' => 'I'])->whereDate('clinicas.created_at', '<>', DB::raw('"clinicas"."updated_at"::date'));
+                }
+
+                $list_prestadores = $list_prestadores->get();
+
+                //$queries = DB::getQueryLog();
+                //dd($queries);
                 
 //                 dd($list_prestadores);
                 
-                //     			$sheet->setColumnFormat(array(
-                //     					'F6:F'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
-                //     			));
+//                $sheet->setColumnFormat(array(
+//                    'F6:F'.(sizeof($list_prestadores)+6) => '""00"." 000"."000"/"0000-00'
+//                ));
                 
                 $sheet->loadView('clinicas.prestadores_ativos_excel', compact('list_prestadores', 'cabecalho'));
             });

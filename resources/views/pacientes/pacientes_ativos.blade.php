@@ -42,7 +42,24 @@
 				<form action="{{ route('prestadores-ativos-xls') }}" method="post" enctype="multipart/form-data">
 				
 					{!! csrf_field() !!}
-					
+					<div class="form-group text-center m-b-0">
+						<div class="checkbox checkbox-primary form-check-inline">
+							<input type="checkbox" id="inlineCheckboxTodos" name="inlineCheckboxTodos" value="todos" onclick="$('.inlineCheckbox').prop('checked', false)">
+							<label for="inlineCheckboxTodos" class="text-primary"> Todos </label>
+						</div>
+						<div class="checkbox checkbox-default form-check-inline">
+							<input type="checkbox" id="inlineCheckboxNovos" class="inlineCheckbox" name="inlineCheckboxNovos" value="novos">
+							<label for="inlineCheckboxNovos"> Novos </label>
+						</div>
+						<div class="checkbox checkbox-default form-check-inline">
+							<input type="checkbox" id="inlineCheckboxAtivos" class="inlineCheckbox" name="inlineCheckboxAtivos" value="ativos">
+							<label for="inlineCheckboxAtivos"> Ativos </label>
+						</div>
+						<div class="checkbox checkbox-default form-check-inline">
+							<input type="checkbox" id="inlineCheckboxInativos" class="inlineCheckbox" name="inlineCheckboxInativos" value="inativos">
+							<label for="inlineCheckboxInativos"> Inativos </label>
+						</div>
+					</div>
 					<div class="form-group text-center m-b-0">
 						<button type="submit" class="btn btn-primary btn-lg waves-effect waves-light" ><i class="mdi mdi-stethoscope"></i> Gerar Lista de Prestadores</button>
 					</div>
@@ -77,4 +94,15 @@
 		</div>
 	</div>
 </div>
+@push('scripts')
+    
+	<script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $('.inlineCheckbox').click(function(){
+				$('#inlineCheckboxTodos').prop('checked', false);
+			});
+        });
+	</script>
+@endpush
+@stack('scripts')
 @endsection
