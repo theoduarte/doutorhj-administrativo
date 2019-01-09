@@ -80,6 +80,7 @@
     		   				<select id="tp_prestador" name="tp_prestador" class="form-control">
     		   					<option value="CLI" @if ( $prestador->tp_prestador == 'CLI') selected="selected"  @endif>Clínica</option>
     		   					<option value="LAB" @if ( $prestador->tp_prestador == 'LAB') selected="selected"  @endif>Laboratório</option>
+								<option value="AUT" @if ( $prestador->tp_prestador == 'AUT') selected="selected"  @endif>Autônomo</option>
     		   				</select>
     		   				@if ($errors->has('tp_prestador'))
     		   					<span class="help-block text-danger">

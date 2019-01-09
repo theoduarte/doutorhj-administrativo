@@ -13,6 +13,10 @@
 							<td width="75%">{{$prestador->nm_fantasia}}</td>
 						</tr>
 						<tr>
+							<td width="25%">Tipo de Prestador</td>
+							<td width="75%">{{$prestador->tp_prestador_name}}</td>
+						</tr>
+						<tr>
 							<td width="25%">Obs. Exames/Procedimentos</td>
 							<td width="75%">@if($prestador->obs_procedimento != '') <em>{{$prestador->obs_procedimento}} </em> @else -------- @endif </td>
 						</tr>
@@ -37,7 +41,7 @@
 							<td width="75%"></td>
 						</tr>
 						<tr>
-							<td width="25%">CNPJ</td>
+							<td width="25%">{{$prestador->documentos->first()->tp_documento}}</td>
 							<td width="75%">{{$prestador->documentos->first()->te_documento}}</td>
 						</tr>
 						<tr>
