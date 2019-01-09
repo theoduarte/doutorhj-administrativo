@@ -12,7 +12,17 @@ class Clinica extends Model
 	
     public $fillable = ['nm_razao_social', 'nm_fantasia', 'tp_prestador', 'cs_status', 'obs_procedimento', 'responsavel_id'];
     public $sortable = ['id', 'nm_razao_social', 'nm_fantasia', 'tp_prestador', 'cs_status', 'obs_procedimento', 'responsavel_id'];
-	
+
+	const TP_CLINICA 		= 'CLI';
+	const TP_LABORATORIO	= 'LAB';
+	const TP_AUTONOMO		= 'AUT';
+
+	protected static $tp_prestador = [
+		self::TP_CLINICA   		=> 'Clinica',
+		self::TP_LABORATORIO 	=> 'Laboratório',
+		self::TP_AUTONOMO 		=> 'Autônomo',
+	];
+
     public function responsavel(){
         return $this->belongsTo('App\Responsavel');
     }
@@ -46,6 +56,13 @@ class Clinica extends Model
     {
         return $this->hasMany('App\Filial');
     }
+
+	/*
+     * Getters and Setters
+     */
+	public function getTpPrestadorNameAttribute() {
+		return  static::$tp_prestador[$this->attributes['tp_prestador']];
+	}
 
     public function getActiveByEspecialidade($especialidade) {
     	
