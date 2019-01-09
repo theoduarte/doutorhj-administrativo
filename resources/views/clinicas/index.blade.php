@@ -32,22 +32,33 @@
         						<a href="{{ route('clinicas.create') }}" id="demo-btn-addrow" class="btn btn-primary m-b-20"><i class="fa fa-plus m-r-5"></i> Adicionar</a>
         					</div>	
             				<div class="row">
-            					<div  style="width: 529px !important;">
+            					<div class="col-md-4"  style="width: 529px !important;">
         				            <label for="tp_filtro_razao_social">Filtrar por:</label><br>
-                                    <input type="radio" id="tp_filtro_razao_social" name="tp_filtro" value="nm_razao_social" @if(old('tp_filtro')=='nm_razao_social') checked @endif>
-                                    <label for="tp_filtro_razao_social" style="cursor: pointer;">Razão Social&nbsp;&nbsp;&nbsp;</label>
-                            
-                                    <input type="radio" id="tp_filtro_nm_fantasia" name="tp_filtro" value="nm_fantasia" @if(old('tp_filtro')=='nm_fantasia') checked @endif>
-                                    <label for="tp_filtro_nm_fantasia" style="cursor: pointer;">Nome Fantasia&nbsp;&nbsp;</label>
+        				            <div class="row">
+        				            	<div class="col-md-4">
+        				            		<input type="checkbox" id="tp_filtro_razao_social" name="tp_filtro" data-plugin="switchery" data-color="#00b19d" data-size="small" value="nm_razao_social" @if(old('tp_filtro')=='nm_razao_social') checked @endif />
+                                    		<label for="tp_filtro_razao_social" style="cursor: pointer; color: #00b19d;">Razão Social&nbsp;&nbsp;&nbsp;</label>
+        				            	</div>
+        				            	<div class="col-md-4">
+        				            		<input type="checkbox" id="tp_filtro_nm_fantasia" name="tp_filtro_nm_fantasia" data-plugin="switchery" data-color="#3bafda" data-size="small" value="nm_fantasia" @if(old('tp_filtro_nm_fantasia')=='nm_fantasia') checked @endif />                            
+                                    		<label for="tp_filtro_nm_fantasia" style="cursor: pointer; color: #3bafda;">Nome Fantasia&nbsp;&nbsp;</label>
+        				            	</div>
+        				            	<div class="col-md-4">
+        				            		<input type="checkbox" id="tp_filtro_pre_cadastro" name="tp_filtro_pre_cadastro" data-plugin="switchery" data-color="#f76397" data-size="small" value="pre_cadastro" @if(old('tp_filtro_pre_cadastro')=='pre_cadastro') checked @endif />                            
+                                    		<label for="tp_filtro_pre_cadastro" style="cursor: pointer; color: #f76397;">Pré-cadastro&nbsp;&nbsp;</label>
+        				            	</div>
+        				            </div>
                                 </div>
-            				</div>
-            				<div class="row">
-            					<div style="width: 510px !important;">
-            						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
-            					</div>
-                				<div class="col-1" >
-                					<button type="submit" class="btn btn-primary" id="btnPesquisar"><i class="fa fa-search"></i> Pesquisar</button>
-                				</div>				
+                                <div class="col-md-5">
+                                	<div class="row" style="padding-top: 15px;">
+                                		<div style="width: 510px !important;">
+                    						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
+                    					</div>
+                        				<div class="col-1" >
+                        					<button type="submit" class="btn btn-primary" id="btnPesquisar"><i class="fa fa-search"></i> Pesquisar</button>
+                        				</div>
+                                	</div>			
+                				</div>
             				</div>
                     	</form>
                     	<br>

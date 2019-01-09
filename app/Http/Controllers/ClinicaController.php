@@ -71,8 +71,15 @@ class ClinicaController extends Controller
                         $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
                 }
             }
-        })->where(DB::raw('cs_status'), '=', 'A')->sortable()->paginate(10);
-
+        });
+        
+        if(!empty(Request::input('tp_filtro_pre_cadastro')) && Request::input('tp_filtro_pre_cadastro') == 'pre_cadastro'){
+            $prestadores->where(['clinicas.cs_status' => 'I'])->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'))->orderby('clinicas.id', 'desc');
+        } else {
+            $prestadores->where(DB::raw('cs_status'), '=', 'A');
+        }
+        
+        $prestadores = $prestadores->sortable()->paginate(10);
         $prestadores->load('contatos');
         $prestadores->load('responsavel');
 
