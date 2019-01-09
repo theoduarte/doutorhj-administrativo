@@ -38,7 +38,7 @@
                 <div class="row">
             		<div class="col-sm-8 col-md-8">
 		                <div class="form-group{{ $errors->has('te_documento') ? ' has-error' : '' }}">
-		                    <label for="te_documento" class="control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
+		                    <label for="te_documento" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label>
 		                    <div class="">
 		                        <input type="text" id="te_documento" class="form-control mascaraCNPJCPF" value="{{ old('te_documento') }}" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" maxlength="30" >
 		                        <input type="hidden" id="te_documento_no_mask" name="te_documento" value="{{ preg_replace('/[^0-9]/', '', old('te_documento')) }}" maxlength="30" >
