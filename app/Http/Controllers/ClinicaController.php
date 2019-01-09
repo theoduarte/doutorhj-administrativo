@@ -255,9 +255,11 @@ class ClinicaController extends Controller
 
         $precoconsultas = Atendimento::where(['clinica_id'=> $idClinica, 'procedimento_id'=> null])->get();
         $precoconsultas->load('consulta');
+        
+        $list_area_atuacaos = AreaAtuacao::where('cs_status', '=', 'A')->orderBy('titulo', 'asc')->get();
 
 
-        return view('clinicas.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'list_filials', 'list_profissionals', 'list_especialidades', 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
+        return view('clinicas.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'list_filials', 'list_profissionals', 'list_especialidades', 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas', 'list_area_atuacaos'));
     }
 
     /**
