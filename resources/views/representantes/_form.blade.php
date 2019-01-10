@@ -26,9 +26,14 @@
 		<i id="cvx-cpf-loading" class="cvx-input-loading cvx-no-loading fa fa-spin fa-circle-o-notch"></i>
 	</div>
 
-	<div class="form-group col-md-9">
-		<label for="email">Email<span class="text-danger">*</span></label>
+	<div class="form-group col-md-5">
+		<label for="email">Email Corporativo<span class="text-danger">*</span></label>
 		<input type="email" id="email" name="email" class="form-control" value="{{$model->email ?? old('email')}}" placeholder="Email" required>
+	</div>
+
+	<div class="form-group col-md-4">
+		<label for="emailPessoal">Email Pessoal<span class="text-danger">*</span></label>
+		<input type="email" id="email_pessoal" name="email_pessoal" class="form-control" value="{{$model->email_pessoal ?? old('email_pessoal')}}" placeholder="Email" required>
 	</div>
 </div>
 
@@ -105,8 +110,11 @@
 					success: function (data) {
 						$('#cvx-cpf-loading').addClass('cvx-no-loading');
 
-						if(data.pessoa != undefined && data.pessoa.email != '') $('#email').val(data.pessoa.email).prop('readonly', true);
+						if(data.pessoa != undefined && data.pessoa.email_corporativo != '') $('#email').val(data.pessoa.email_corporativo).prop('readonly', true);
 						else $('#email').val('').prop('readonly', false);
+
+						if(data.pessoa != undefined && data.pessoa.email != '') $('#email_pessoal').val(data.pessoa.email).prop('readonly', true);
+						else $('#email_pessoal').val('').prop('readonly', false);
 
 						if(data.pessoa != undefined && data.pessoa.nm_primario != '') $('#nm_primario').val(data.pessoa.nm_primario).prop('readonly', true);
 						else $('#nm_primario').val('').prop('readonly', false);

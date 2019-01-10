@@ -103,16 +103,8 @@
 		});
 
 		function reloadShowTab() {
-			sessionStorage.setItem("reloading", "true");
+//			sessionStorage.setItem("reloading", "true");
 			document.location.reload();
-		}
-
-		window.onload = function() {
-			var reloading = sessionStorage.getItem("reloading");
-			if (reloading) {
-				sessionStorage.removeItem("reloading");
-				$('#representantes-tab').tab('show');
-			}
 		}
 	});
 </script>

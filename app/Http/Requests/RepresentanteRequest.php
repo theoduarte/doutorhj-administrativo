@@ -28,7 +28,8 @@ class RepresentanteRequest extends FormRequest
 			'perfiluser_id'		=> 'Perfil do Usuário',
 			'cpf'  				=> 'CPF',
 			'telefone'			=> 'Telefone',
-			'email'				=> 'Email',
+			'email_pessoal'		=> 'Email Pessoal',
+			'email'				=> 'Email Corporativo',
 		];
 	}
 
@@ -48,7 +49,8 @@ class RepresentanteRequest extends FormRequest
 			'perfiluser_id'		=> 'required|integer|exists:perfilusers,id',
 			'cpf'  				=> 'required|max:15|formato_cpf|cpf',
 			'telefone'			=> 'required|celular_com_ddd',
-			'email'				=> 'required|max:250|email'
+			'email_pessoal'		=> 'required|max:250|email',
+			'email'				=> 'required|max:250|email',
         ];
     }
 }

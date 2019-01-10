@@ -14,6 +14,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @property string $nm_secundario
  * @property string $cs_sexo
  * @property string $dt_nascimento
+ * @property string $email
  * @property string $created_at
  * @property string $updated_at
  * @property Perfiluser $perfiluser
@@ -40,7 +41,7 @@ class Representante extends Model
 	/**
 	 * @var array
 	 */
-	protected $fillable = ['perfiluser_id', 'user_id', 'nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'created_at', 'updated_at'];
+	protected $fillable = ['perfiluser_id', 'user_id', 'nm_primario', 'nm_secundario', 'cs_sexo', 'dt_nascimento', 'email', 'created_at', 'updated_at'];
 	public $dates		= ['dt_nascimento'];
 
     /**
@@ -117,15 +118,14 @@ class Representante extends Model
 		if(!is_null($contato)) return $contato->ds_contato;
 	}
 
-	public function getEmailAttribute()
-	{
-		$user = $this->user;
-		if(!is_null($user)) return $user->email;
-	}
-
 	public function getCpfAttribute()
 	{
 		$documento = $this->documentos()->where('tp_documento', 'CPF')->first();
 		if(!is_null($documento)) return $documento->te_documento;
+	}
+
+	public function getEmailPessoalAttribute()
+	{
+		if(!is_null($this->user)) return $this->user->email;
 	}
 }
