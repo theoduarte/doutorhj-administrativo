@@ -44,10 +44,10 @@
                 <div class="col-sm-5 col-md-5">
     		        <div class="form-group {{ $errors->has('te_documento') ? ' has-error' : '' }}">
     		        	 @foreach( $documentosclinica as $documento )
-    		                <label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
+    		                <label for="nr_cnpj" class="col-12 control-label">CPF / CNPJ<span class="text-danger">*</span></label>
     		                <div class="col-12">
     		                	<input type="hidden" name="tp_documento" value="{{ $prestador->documentos->first()->tp_documento }}">
-    		                    <input id="te_documento_{{$documento->id}}" type="text" class="form-control mascaraCNPJ" value="{{ $prestador->documentos->first()->te_documento }}" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required readonly >
+    		                    <input id="te_documento_{{$documento->id}}" type="text" class="form-control mascaraCNPJCPF" value="{{ $prestador->documentos->first()->te_documento }}" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required readonly >
     		                    <input type="hidden" id="te_documento_no_mask" name="te_documento" value="{{ preg_replace('/[^0-9]/', '', $prestador->documentos->first()->te_documento) }}" maxlength="30" >
     		                    <input type="hidden" id="cnpj_id" name="cnpj_id" value="{{ $documento->id }}">
     		                    @if ($errors->has('te_documento'))
@@ -58,7 +58,7 @@
     		                </div>
     		            @endforeach
     		            @if($documentosclinica->isEmpty())
-    		            	<label for="nr_cnpj" class="col-12 control-label">CNPJ / Inscrição Estadual<span class="text-danger">*</span></label>
+    		            	<label for="nr_cnpj" class="col-12 control-label">CPF / CNPJ<span class="text-danger">*</span></label>
     		                <div class="col-4">
     		                	<input type="hidden" name="tp_documento" value="CNPJ">
     		                    <input id="te_documento" type="text" class="form-control mascaraCNPJ" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required >
@@ -77,9 +77,10 @@
     		   		<div class="form-group{{ $errors->has('tp_prestador') ? ' has-error' : '' }}">
     		   			<label for="tp_prestador" class="control-label">Tipo Prestador<span class="text-danger">*</span></label>
     		   			<div class="col-12">
-    		   				<select id="tp_prestador" name="tp_prestador" class="form-control">
+    		   				<select id="tp_prestador" name="tp_prestador" class="form-control" readonly>
     		   					<option value="CLI" @if ( $prestador->tp_prestador == 'CLI') selected="selected"  @endif>Clínica</option>
     		   					<option value="LAB" @if ( $prestador->tp_prestador == 'LAB') selected="selected"  @endif>Laboratório</option>
+								<option value="AUT" @if ( $prestador->tp_prestador == 'AUT') selected="selected"  @endif>Autônomo</option>
     		   				</select>
     		   				@if ($errors->has('tp_prestador'))
     		   					<span class="help-block text-danger">

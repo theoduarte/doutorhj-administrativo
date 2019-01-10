@@ -25,11 +25,6 @@ class Documento extends Model
 {
 	use Sortable;
 
-	const TP_CPF 		= 'CPF';
-	const TP_RG			= 'RG';
-	const TP_CNASC		= 'CNASC';
-	const TP_CTPS		= 'CTPS';
-
 	/**
 	 * @var array
 	 */
@@ -37,6 +32,12 @@ class Documento extends Model
 	public $sortable = ['tp_documento', 'te_documento'];
 	public $dates 	 = ['dt_expedicao', 'dt_validade'];
 	public $timestamps = true;
+
+	const TP_CPF 		= 'CPF';
+	const TP_RG			= 'RG';
+	const TP_CNASC		= 'CNASC';
+	const TP_CTPS		= 'CTPS';
+	const TP_CNPJ		= 'CNPJ';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

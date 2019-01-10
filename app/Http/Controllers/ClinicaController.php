@@ -239,7 +239,7 @@ class ClinicaController extends Controller
         $prestador->load('contatos');
         $prestador->load('documentos');
         $prestador->load('profissionals');
-        
+
         $list_filials = Filial::with('endereco')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('eh_matriz','desc')->get();
 
         $list_profissionals = $prestador->profissionals;
@@ -254,7 +254,6 @@ class ClinicaController extends Controller
         
         $documentoprofissional = [];
 
-
         $precoprocedimentos = Atendimento::where(['clinica_id'=> $idClinica, 'consulta_id'=> null])->get();
         $precoprocedimentos->load('procedimento');
 
@@ -263,7 +262,8 @@ class ClinicaController extends Controller
         
         $list_area_atuacaos = AreaAtuacao::where('cs_status', '=', 'A')->orderBy('titulo', 'asc')->get();
 
-        return view('clinicas.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'list_filials', 'list_profissionals', 'list_especialidades', 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas', 'list_area_atuacaos'));
+        return view('clinicas.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'list_filials', 'list_profissionals', 'list_especialidades',
+			'list_area_atuacaos', 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas'));
     }
 
     /**
@@ -490,11 +490,12 @@ class ClinicaController extends Controller
             //--desabilita o responsavel por este prestador e o usuario tambem----
             $clinica->load('responsavel');
             $responsavel = $clinica->responsavel;
-    
+
             if (!empty($responsavel)) {
-                $responsavel->telefone 	= '(61) 00000-0000';
-                $responsavel->cpf 		= '11111111111';
-//                 $responsavel->save();
+//                $responsavel->telefone 	= '(61) 00000-0000';
+//                $responsavel->cpf 		= '11111111111';
+//                $responsavel->save();
+				$responsavel->delete();
     
                 $responsavel->load('user');
                 $user_responsavel = $responsavel->user;
