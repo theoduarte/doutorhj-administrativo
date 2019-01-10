@@ -79,7 +79,7 @@ class ClinicaController extends Controller
             $prestadores->where(DB::raw('cs_status'), '=', 'A');
         }
         
-        $prestadores = $prestadores->sortable()->paginate(10);
+        $prestadores = $prestadores->sortable(['id' => 'desc'])->paginate(10);
         $prestadores->load('contatos');
         $prestadores->load('responsavel');
 
@@ -335,7 +335,7 @@ class ClinicaController extends Controller
         $list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->get();
         
         $list_area_atuacaos = AreaAtuacao::where('cs_status', '=', 'A')->orderBy('titulo', 'asc')->get();
-
+        
         return view('clinicas.edit', compact('estados', 'cargos', 'prestador', 'user', 'planos',
             'documentoprofissional', 'precoprocedimentos',
             'precoconsultas', 'documentosclinica', 'list_profissionals', 'list_especialidades', 'list_filials', 'list_area_atuacaos'));
