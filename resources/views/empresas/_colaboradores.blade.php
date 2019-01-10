@@ -31,6 +31,7 @@
 					<td>{{$colaborador->plano_ativo->ds_plano}}</td>
 					<td>{{$colaborador->vigencia_ativa->vl_anuidade}}/{{$colaborador->vigencia_ativa->periodicidade}}</td>
 					<td>
+						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-plus" title="Adicionar Dependente" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-account-multiple-plus"></i> Dependente</a>
 						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-edit" title="Editar Colaborador" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-lead-pencil"></i> Editar</a>
 						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Colaborador" href="{{route('pacientes.destroy', $colaborador	->id)}}"><i class="ti-trash"></i> Excluir</a>
 					</td>
@@ -109,16 +110,8 @@
 		});
 
 		function reloadShowTab() {
-			sessionStorage.setItem("reloading", "true");
+//			sessionStorage.setItem("reloading", "true");
 			document.location.reload();
-		}
-
-		window.onload = function() {
-			var reloading = sessionStorage.getItem("reloading");
-			if (reloading) {
-				sessionStorage.removeItem("reloading");
-				$('#colaboradores-tab').tab('show');
-			}
 		}
 	});
 </script>
