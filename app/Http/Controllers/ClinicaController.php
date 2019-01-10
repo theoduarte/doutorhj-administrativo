@@ -246,7 +246,12 @@ class ClinicaController extends Controller
         $list_especialidades = Especialidade::orderBy('ds_especialidade', 'asc')->get();
 
         $user   = User::findorfail($prestador->responsavel->user_id);
-        $cidade = Cidade::findorfail($prestador->enderecos->first()->cidade_id);
+        $cidade = '-------';
+        
+        if(!is_null($prestador->enderecos->first()->cidade_id)) {
+            $cidade = Cidade::findorfail($prestador->enderecos->first()->cidade_id);
+        }
+        
         $documentoprofissional = [];
 
 
@@ -257,7 +262,6 @@ class ClinicaController extends Controller
         $precoconsultas->load('consulta');
         
         $list_area_atuacaos = AreaAtuacao::where('cs_status', '=', 'A')->orderBy('titulo', 'asc')->get();
-
 
         return view('clinicas.show', compact('estados', 'cargos', 'prestador', 'user', 'cargo', 'list_filials', 'list_profissionals', 'list_especialidades', 'cidade', 'documentoprofissional', 'precoprocedimentos', 'precoconsultas', 'list_area_atuacaos'));
     }

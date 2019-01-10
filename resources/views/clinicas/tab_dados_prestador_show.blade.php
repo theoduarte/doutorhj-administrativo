@@ -92,11 +92,11 @@
 						</tr>
 						<tr>
 							<td width="25%">Cidade</td>
-							<td width="75%">{{ $cidade->nm_cidade }}</td>
+							<td width="75%">@if($cidade != '-------' && !is_null($cidade->nm_cidade)){{ $cidade->nm_cidade }} @else {{ $cidade }} @endif</td>
 						</tr>
 						<tr>
 							<td width="25%">Estado</td>
-							<td width="75%">{{$cidade->sg_estado}}</td>
+							<td width="75%">@if($cidade != '-------' && !is_null($cidade->sg_estado)){{ $cidade->sg_estado }} @else {{ $cidade }} @endif</td>
 						</tr>
 						<tr>
 							<td width="25%"><h4>**** LISTA DE FILIAIS ****</h4></td>
