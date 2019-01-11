@@ -189,6 +189,7 @@ class RepresentanteController extends Controller
 		$dados = $request->all();
 
 		$model->perfiluser_id = $dados['perfiluser_id'];
+		$model->email = $dados['email'];
 		$model->save();
 
 		return response()->json([

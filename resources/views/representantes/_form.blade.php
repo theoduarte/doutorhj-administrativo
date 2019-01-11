@@ -110,8 +110,8 @@
 					success: function (data) {
 						$('#cvx-cpf-loading').addClass('cvx-no-loading');
 
-						if(data.pessoa != undefined && data.pessoa.email_corporativo != '') $('#email').val(data.pessoa.email_corporativo).prop('readonly', true);
-						else $('#email').val('').prop('readonly', false);
+						if(data.pessoa != undefined && data.pessoa.email_corporativo != '') $('#email').val(data.pessoa.email_corporativo);
+						else $('#email').val('');
 
 						if(data.pessoa != undefined && data.pessoa.email != '') $('#email_pessoal').val(data.pessoa.email).prop('readonly', true);
 						else $('#email_pessoal').val('').prop('readonly', false);
