@@ -491,7 +491,7 @@ class AtendimentoController extends Controller
                     'enderecos.nr_cep as cep', 'enderecos.te_bairro', 'enderecos.te_endereco', 'enderecos.te_complemento', 'cidades.nm_cidade', 'cidades.sg_estado')
                     ->where(['atendimentos.consulta_id' => null, 'atendimentos.cs_status' => 'A'])
                     ->limit(2000)
-                    ->offset($i)
+                    ->offset($i*2000)
                     ->orderby('procedimentos.ds_procedimento', 'asc')
                     ->orderby('atendimentos.id', 'asc')
                     ->get();

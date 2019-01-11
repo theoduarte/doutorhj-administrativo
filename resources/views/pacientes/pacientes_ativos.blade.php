@@ -91,7 +91,7 @@
                        		<label for="parte_lista" class="text-primary">Selecione a parte q dejesa emitir</label>
                             <select id="sg_estado" name="parte_lista" class="form-control" required>
                                 <option></option>
-                                @for ($i = 0; $i <= $num_arquivos; $i++)
+                                @for ($i = 0; $i < $num_arquivos; $i++)
                                     <option value="{{ $i }}" >Parte 0{{ ($i+1) }}</option>
                                 @endfor
                             </select>
