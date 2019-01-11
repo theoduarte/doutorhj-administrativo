@@ -56,7 +56,7 @@
 							<label for="inlineCheckboxAtivos"> Ativos </label>
 						</div>
 						<div class="checkbox checkbox-default form-check-inline">
-							<input type="checkbox" id="inlineCheckboxInativos" class="inlineCheckbox" name="inlineCheckboxInativos" value="inativos">
+							<input type="checkbox" id="inlineCheckboxInativos" class="inlineCheckbox" name="inlineCheckboxInativos" value="inativos" re>
 							<label for="inlineCheckboxInativos"> Inativos </label>
 						</div>
 					</div>
@@ -85,6 +85,18 @@
 				<form action="{{ route('exames-xls') }}" method="post" enctype="multipart/form-data">
 				
 					{!! csrf_field() !!}
+					
+					<div class="row">
+						<div class="form-group col-md-4 offset-md-4">
+                       		<label for="parte_lista" class="text-primary">Selecione a parte q dejesa emitir</label>
+                            <select id="sg_estado" name="parte_lista" class="form-control" required>
+                                <option></option>
+                                @for ($i = 0; $i < $num_arquivos; $i++)
+                                    <option value="{{ $i }}" >Parte 0{{ ($i+1) }}</option>
+                                @endfor
+                            </select>
+                        </div>
+					</div>
 					
 					<div class="form-group text-center m-b-0">
 						<button type="submit" class="btn btn-success btn-lg waves-effect waves-light" ><i class="mdi mdi-file-excel"></i> Gerar Lista de Exames</button>

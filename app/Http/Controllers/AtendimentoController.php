@@ -458,10 +458,10 @@ class AtendimentoController extends Controller
      */
     public function geraListaExamesXls()
     {
+        $i = CVXRequest::post('parte_lista');
         
-        
-        Excel::create('DRHJ_RELATORIO_EXAMES_' . date('d-m-Y~H_i_s'), function ($excel) {
-            $excel->sheet('Procedimentos', function ($sheet) {
+        Excel::create('DRHJ_RELATORIO_EXAMES_' . date('d-m-Y~H_i_s').'_parte_'.($i+1), function ($excel) use ($i) {
+            $excel->sheet('Procedimentos', function ($sheet) use ($i) {
                 
                 // Font family
                 $sheet->setFontFamily('Comic Sans MS');
@@ -476,39 +476,41 @@ class AtendimentoController extends Controller
                 ));
                 
                 $cabecalho = array('Data' => date('d-m-Y H:i'));
-                
-                $list_exames = Atendimento::with(['precos', 'precos.plano'])
-                ->distinct()
+                //DB::enableQueryLog();
+                $list_exames = Atendimento::distinct(['precos', 'precos.plano'])
                 ->join('clinicas', 			function($join1) { $join1->on('atendimentos.clinica_id', '=', 'clinicas.id')->on('clinicas.cs_status', '=', DB::raw("'A'"));})
                 ->join('clinica_documento',	function($join2) { $join2->on('clinica_documento.clinica_id', '=', 'clinicas.id');})
                 ->join('documentos',		function($join3) { $join3->on('documentos.id', '=', 'clinica_documento.documento_id');})
                 ->join('procedimentos',		function($join4) { $join4->on('procedimentos.id', '=', 'atendimentos.procedimento_id');})
-//                 ->join('especialidades',	function($join5) { $join5->on('especialidades.id', '=', 'consultas.especialidade_id');})
+                //                 ->join('especialidades',	function($join5) { $join5->on('especialidades.id', '=', 'consultas.especialidade_id');})
                 ->join('tipoatendimentos',	function($join6) { $join6->on('tipoatendimentos.id', '=', 'procedimentos.tipoatendimento_id');})
                 ->join('clinica_endereco',	function($join7) { $join7->on('clinica_endereco.clinica_id', '=', 'clinicas.id');})
                 ->join('enderecos',	        function($join8) { $join8->on('enderecos.id', '=', 'clinica_endereco.endereco_id');})
                 ->join('cidades',	        function($join9) { $join9->on('cidades.id', '=', 'enderecos.cidade_id');})
                 ->select('atendimentos.id', 'procedimentos.ds_procedimento as exames', 'procedimentos.cd_procedimento as codigo', 'tipoatendimentos.ds_atendimento as tipo_atendimento', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'atendimentos.clinica_id', 'documentos.te_documento as cnpj', 'clinicas.tp_prestador',
                     'enderecos.nr_cep as cep', 'enderecos.te_bairro', 'enderecos.te_endereco', 'enderecos.te_complemento', 'cidades.nm_cidade', 'cidades.sg_estado')
-                ->where(['atendimentos.consulta_id' => null, 'atendimentos.cs_status' => 'A'])
-//                 ->limit(10)
-                ->orderby('procedimentos.ds_procedimento', 'asc')
-                ->orderby('atendimentos.id', 'asc')
-                ->get();
-//                 dd($list_exames);
-
-//                 foreach($list_exames as $item) {
-//                     if(sizeof($item->precos) == 0) {
-//                         dd($item);
-//                     }
-//                 }
-                
-                $sheet->setColumnFormat(array(
-                    'I6:I'.(sizeof($list_exames)+6) => '""00"." 000"."000"/"0000-00'
-                ));
-                
-                $sheet->loadView('atendimentos.exames_excel', compact('list_exames', 'cabecalho'));
-	        });
-	    })->export('xls');
+                    ->where(['atendimentos.consulta_id' => null, 'atendimentos.cs_status' => 'A'])
+                    ->limit(2000)
+                    ->offset($i)
+                    ->orderby('procedimentos.ds_procedimento', 'asc')
+                    ->orderby('atendimentos.id', 'asc')
+                    ->get();
+                    //$queries = DB::getQueryLog();
+                    //dd($queries);
+                    //                 dd($list_exames);
+                    
+                    //                 foreach($list_exames as $item) {
+                    //                     if(sizeof($item->precos) == 0) {
+                    //                         dd($item);
+                        //                     }
+                        //                 }
+                        
+                        $sheet->setColumnFormat(array(
+                            'I6:I'.(sizeof($list_exames)+6) => '""00"." 000"."000"/"0000-00'
+                        ));
+                        
+                        $sheet->loadView('atendimentos.exames_excel', compact('list_exames', 'cabecalho'));
+            });
+        })->export('xls');
 	}
 }
