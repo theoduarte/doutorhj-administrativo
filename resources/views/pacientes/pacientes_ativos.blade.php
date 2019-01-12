@@ -88,7 +88,7 @@
 					
 					<div class="row">
 						<div class="form-group col-md-4 offset-md-4">
-                       		<label for="parte_lista" class="text-primary">Selecione a parte q dejesa emitir</label>
+                       		<label for="parte_lista" class="text-primary">Selecione a parte que dejesa emitir</label>
                             <select id="sg_estado" name="parte_lista" class="form-control" required>
                                 <option></option>
                                 @for ($i = 0; $i < $num_arquivos; $i++)
