@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Cidade;
 use App\Endereco;
 use App\Paciente;
+use App\Atendimento;
 
 /**
  * @author Frederico Cruz <frederico.cruz@s1saude.com.br>
@@ -361,7 +362,10 @@ class PacienteController extends Controller
      */
     public function listarPacientesAtivos()
     {
-    	return view('pacientes.pacientes_ativos');
+        $num_atendimento = Atendimento::distinct()->where(['atendimentos.consulta_id' => null, 'atendimentos.cs_status' => 'A'])->count();
+        $num_arquivos = intval(ceil($num_atendimento/2000));
+        
+        return view('pacientes.pacientes_ativos', compact('num_arquivos'));
     }
 
 	/**

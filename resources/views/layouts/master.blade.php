@@ -137,7 +137,7 @@
 	<!-- Top Bar End -->
 	<!-- ========== Left Sidebar Start ========== -->
 	<div class="left side-menu">
-		<div class="sidebar-inner slimscrollleft">
+		<div class="sidebar-inner <!-- slimscrollleft -->">
 			<!--- Divider -->
 			<div id="sidebar-menu">
 				<ul>

@@ -304,7 +304,7 @@
                 <select id="sg_estado" name="sg_estado" class="form-control">
         			<option></option>
                     @foreach ($estados as $uf)
-        				<option value="{{ $uf->sg_estado }}" {{ (!$prestador->enderecos->isEmpty() && $prestador->enderecos->first()->cidade->sg_estado == $uf->sg_estado ? 'selected' : '')}}>{{ $uf->ds_estado }}</option>
+        				<option value="{{ $uf->sg_estado }}" {{ (!$prestador->enderecos->isEmpty() && !is_null($prestador->enderecos->first()->cidade) && $prestador->enderecos->first()->cidade->sg_estado == $uf->sg_estado ? 'selected' : '')}}>{{ $uf->ds_estado }}</option>
                     @endforeach
         		</select>
             </div>
@@ -313,8 +313,8 @@
             <div class="form-group{{ $errors->has('nm_cidade') ? ' has-error' : '' }}">
                 <label for="nm_cidade" class="col-3 control-label">Cidade<span class="text-danger">*</span></label>
 
-                <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->nm_cidade }} @endif" required  maxlength="50">
-                <input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="@if(!$prestador->enderecos->isEmpty()) {{ $prestador->enderecos->first()->cidade->cd_ibge }} @endif">
+                <input id="nm_cidade" type="text" class="form-control" name="nm_cidade" value="@if(!$prestador->enderecos->isEmpty() && !is_null($prestador->enderecos->first()->cidade_id)) {{ $prestador->enderecos->first()->cidade->nm_cidade }} @endif" required  maxlength="50">
+                <input id="cd_cidade_ibge" type="hidden" name="cd_cidade_ibge" value="@if(!$prestador->enderecos->isEmpty() && !is_null($prestador->enderecos->first()->cidade_id)) {{ $prestador->enderecos->first()->cidade->cd_ibge }} @endif">
             </div>
         </div>
         <div class="col-md-1">
