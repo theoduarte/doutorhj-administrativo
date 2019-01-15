@@ -13,10 +13,16 @@ class Clinica extends Model
     public $fillable = ['nm_razao_social', 'nm_fantasia', 'tp_prestador', 'cs_status', 'obs_procedimento', 'responsavel_id'];
     public $sortable = ['id', 'nm_razao_social', 'nm_fantasia', 'tp_prestador', 'cs_status', 'obs_procedimento', 'responsavel_id'];
 
+	const ATIVO   = 'A';
+	const INATIVO = 'I';
 	const TP_CLINICA 		= 'CLI';
 	const TP_LABORATORIO	= 'LAB';
 	const TP_AUTONOMO		= 'AUT';
 
+	protected static $cs_status = array(
+		self::ATIVO   => 'Ativo',
+		self::INATIVO => 'Inativo'
+	);
 	protected static $tp_prestador = [
 		self::TP_CLINICA   		=> 'Clinica',
 		self::TP_LABORATORIO 	=> 'Laboratório',

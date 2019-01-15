@@ -74,7 +74,7 @@ class ClinicaController extends Controller
         });
         
         if(!empty(Request::input('tp_filtro_pre_cadastro')) && Request::input('tp_filtro_pre_cadastro') == 'pre_cadastro'){
-            $prestadores->where(['clinicas.cs_status' => 'I'])->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'))->orderby('clinicas.id', 'desc');
+            $prestadores->where(['clinicas.cs_status' => 'I'])->where('pre_cadastro', true)->orderby('clinicas.id', 'desc');
         } else {
             $prestadores->where(DB::raw('cs_status'), '=', 'A');
         }
@@ -463,8 +463,8 @@ class ClinicaController extends Controller
             //$clinica->contatos()->delete();
     
             foreach ($contatos as $contato) {
-                $contato->ds_contato = '(61) 00000-0000';
-//                 $contato->save();
+//                $contato->ds_contato = '(61) 00000-0000';
+//                $contato->save();
             }
     
             //--desabilita todos os enderecos desse prestador----
@@ -472,49 +472,45 @@ class ClinicaController extends Controller
             $enderecos = $clinica->enderecos;
             //$clinica->enderecos()->delete();
     
-            foreach ($enderecos as $endereco) {
-                $endereco->te_endereco = 'CANCELADO';
-//                 $endereco->save();
-            }
+//            foreach ($enderecos as $endereco) {
+//                $endereco->te_endereco = 'CANCELADO';
+//                $endereco->save();
+//            }
     
             //--desabilita todos os documentos desse prestador----
             $clinica->load('documentos');
             $documentos = $clinica->documentos;
             //$clinica->documentos()->delete();
     
-            foreach ($documentos as $documento) {
-                $documento->te_documento = '11111111111';
-//                 $documento->save();
-            }
+//            foreach ($documentos as $documento) {
+//                $documento->te_documento = '11111111111';
+//                $documento->save();
+//            }
     
             //--desabilita o responsavel por este prestador e o usuario tambem----
             $clinica->load('responsavel');
             $responsavel = $clinica->responsavel;
 
             if (!empty($responsavel)) {
-//                $responsavel->telefone 	= '(61) 00000-0000';
-//                $responsavel->cpf 		= '11111111111';
-//                $responsavel->save();
 				$responsavel->delete();
     
                 $responsavel->load('user');
                 $user_responsavel = $responsavel->user;
     
                 if(!empty($user_responsavel)) {
-                    $user_responsavel->email = 'CANCELADO@comvex.com.br';
+                    $user_responsavel->cs_status = User::INATIVO;
                     $user_responsavel->save();
                 }
             }
     
             //--desabilita o cadastro desse prestador----
             //$clinica->delete();
-            $clinica->cs_status = 'I';
+            $clinica->cs_status = Clinica::INATIVO;
             $clinica->save();
     
             //Atendimento::where('clinica_id', $idClinica)->delete();
     
             # registra log
-            
             $titulo_log = 'Excluir Clínica';
             $tipo_log   = 4;
             
@@ -525,7 +521,6 @@ class ClinicaController extends Controller
             
             $reglog = new RegistroLogController();
             $reglog->registrarLog($titulo_log, $log, $tipo_log);
-            
         } catch (\Exception $e) {
             ########### FINISHIING TRANSACTION ##########
             DB::rollback();
