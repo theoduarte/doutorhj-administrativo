@@ -56,9 +56,10 @@ class AgendamentoController extends Controller
 		$data = Request::get('data') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data')) : '';
 		$data_pagamento = Request::get('data_pagamento') != null ? UtilController::getDataRangeTimePickerToCarbon(Request::get('data_pagamento')) : '';
 
-//  		DB::enableQueryLog();
+//   		DB::enableQueryLog();
  		##################################################################################################################
  		$agendamentos = Agendamento::with(['itempedidos', 'itempedidos.pedido', 'atendimento'])
+ 		    ->distinct('agendamentos.id')
 	 		->join('itempedidos', function ($query) {$query->on('itempedidos.agendamento_id', '=', 'agendamentos.id');})
 	 		->join('pedidos', function ($query) use($data_pagamento) {
 	 				
@@ -127,8 +128,8 @@ class AgendamentoController extends Controller
 			->paginate(20);
 	 	
 	 	
-//  		dd( DB::getQueryLog() );
-// 		dd($agendamentos);
+//   		dd( DB::getQueryLog() );
+//  		dd($agendamentos);
  		##################################################################################################################
  		
 // 		->orderby('dt_pagamento', 'desc')
