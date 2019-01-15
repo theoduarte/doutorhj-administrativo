@@ -74,7 +74,7 @@ class ClinicaController extends Controller
         });
         
         if(!empty(Request::input('tp_filtro_pre_cadastro')) && Request::input('tp_filtro_pre_cadastro') == 'pre_cadastro'){
-            $prestadores->where(['clinicas.cs_status' => 'I'])->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'))->orderby('clinicas.id', 'desc');
+            $prestadores->where(['clinicas.cs_status' => 'I'])->where('pre_cadastro', true)->orderby('clinicas.id', 'desc');
         } else {
             $prestadores->where(DB::raw('cs_status'), '=', 'A');
         }
