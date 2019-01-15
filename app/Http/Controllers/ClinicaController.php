@@ -58,34 +58,47 @@ class ClinicaController extends Controller
      */
     public function index()
     {
-        $prestadores = Clinica::where(function($query){
-            if(!empty(Request::input('nm_busca'))){
-                switch (Request::input('tp_filtro')){
-                    case "nm_razao_social" :
-                        $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                        break;
-                    case "nm_fantasia" :
-                        $query->where(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                        break;
-                    default:
-                        $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                }
-            }
-        });
+//     	DB::enableQueryLog();
+        $prestadores = Clinica::join('clinica_contato', function ($query) {$query->on('clinica_contato.clinica_id', '=', 'clinicas.id');})
+        				->join('contatos', function ($query) {$query->on('clinica_contato.contato_id', '=', 'contatos.id');})
+        				->join('responsavels', function ($query) {$query->on('clinicas.responsavel_id', '=', 'responsavels.id');});
+        
+        if(!empty(Request::input('nm_busca'))){
+        	if(!empty(Request::input('tp_filtro')) && Request::input('tp_filtro') == 'nm_razao_social'){
+        		$prestadores->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+        	} elseif (!empty(Request::input('tp_filtro_nm_fantasia')) && Request::input('tp_filtro_nm_fantasia') == 'nm_fantasia') {
+        		$prestadores->where(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+        	} else {
+        		$prestadores->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+        	}
+        }
+        
+        $uf = Request::input('sg_estado');
+        $prestadores->join('clinica_endereco', function ($query) {$query->on('clinica_endereco.clinica_id', '=', 'clinicas.id');})
+        				->join('enderecos', function ($query) {$query->on('clinica_endereco.endereco_id', '=', 'enderecos.id');})
+        				->join('cidades', function ($query) use ($uf) { if(!empty(Request::input('sg_estado'))){ $query->on('enderecos.cidade_id', '=', 'cidades.id')->on('cidades.sg_estado', '=', DB::raw("'$uf'")); } else { $query->on('enderecos.cidade_id', '=', 'cidades.id'); }});
         
         if(!empty(Request::input('tp_filtro_pre_cadastro')) && Request::input('tp_filtro_pre_cadastro') == 'pre_cadastro'){
             $prestadores->where(['clinicas.cs_status' => 'I'])->where('pre_cadastro', true)->orderby('clinicas.id', 'desc');
         } else {
-            $prestadores->where(DB::raw('cs_status'), '=', 'A');
-        }
+            $prestadores->where(DB::raw('clinicas.cs_status'), '=', 'A');
+        }        
         
+        //$prestadores = $prestadores->select('clinicas.id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.responsavel_id', 'responsavels')->sortable(['id' => 'desc'])->paginate(10);
         $prestadores = $prestadores->sortable(['id' => 'desc'])->paginate(10);
-        $prestadores->load('contatos');
-        $prestadores->load('responsavel');
+//         dd($prestadores);
+//         $prestadores->load('contatos');
+//         $prestadores->load('responsavel');
 
+        $prestadores->load('enderecos');
+//          dd($prestadores);
+//         dd( DB::getQueryLog() );
+        
+        $estados = Estado::orderBy('ds_estado')->select('estados.id', 'estados.sg_estado')->get();
+        
         Request::flash();
 
-        return view('clinicas.index', compact('prestadores'));
+        return view('clinicas.index', compact('prestadores', 'estados'));
     }
 
     /**
