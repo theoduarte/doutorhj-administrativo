@@ -92,7 +92,7 @@
     						<td>{{ sprintf("%04d", $prestador->id) }}</td>
     						<td>{{$prestador->nm_razao_social}}</td>
     						<td>{{$prestador->nm_fantasia}}</td>
-    						<td>{{ $prestador->responsavel->user->name }}</td>
+    						<td>{{ $prestador->nome_responsavel }}</td>
     						<td>{{ $prestador->sg_estado }}</td>
                 	 		<td>{{ $prestador->ds_contato }}</td>
     						<td>

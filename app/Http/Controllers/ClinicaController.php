@@ -61,7 +61,8 @@ class ClinicaController extends Controller
 //     	DB::enableQueryLog();
         $prestadores = Clinica::join('clinica_contato', function ($query) {$query->on('clinica_contato.clinica_id', '=', 'clinicas.id');})
         				->join('contatos', function ($query) {$query->on('clinica_contato.contato_id', '=', 'contatos.id');})
-        				->join('responsavels', function ($query) {$query->on('clinicas.responsavel_id', '=', 'responsavels.id');});
+        				->join('responsavels', function ($query) {$query->on('clinicas.responsavel_id', '=', 'responsavels.id');})
+        				->join('users', function ($query) {$query->on('responsavels.user_id', '=', 'users.id');});
         
         if(!empty(Request::input('nm_busca'))){
         	if(!empty(Request::input('tp_filtro')) && Request::input('tp_filtro') == 'nm_razao_social'){
@@ -84,8 +85,8 @@ class ClinicaController extends Controller
             $prestadores->where(DB::raw('clinicas.cs_status'), '=', 'A');
         }        
         
-        //$prestadores = $prestadores->select('clinicas.id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.responsavel_id', 'responsavels')->sortable(['id' => 'desc'])->paginate(10);
-        $prestadores = $prestadores->sortable(['id' => 'desc'])->paginate(10);
+        $prestadores = $prestadores->select('clinicas.id AS id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.responsavel_id', 'users.name AS nome_responsavel', 'sg_estado', 'contatos.ds_contato')->sortable(['id' => 'desc'])->paginate(10);
+//         $prestadores = $prestadores->sortable(['id' => 'desc'])->paginate(10);
 //         dd($prestadores);
 //         $prestadores->load('contatos');
 //         $prestadores->load('responsavel');
