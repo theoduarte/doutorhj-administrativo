@@ -58,34 +58,48 @@ class ClinicaController extends Controller
      */
     public function index()
     {
-        $prestadores = Clinica::where(function($query){
-            if(!empty(Request::input('nm_busca'))){
-                switch (Request::input('tp_filtro')){
-                    case "nm_razao_social" :
-                        $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                        break;
-                    case "nm_fantasia" :
-                        $query->where(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                        break;
-                    default:
-                        $query->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
-                }
-            }
-        });
+//     	DB::enableQueryLog();
+        $prestadores = Clinica::join('clinica_contato', function ($query) {$query->on('clinica_contato.clinica_id', '=', 'clinicas.id');})
+        				->join('contatos', function ($query) {$query->on('clinica_contato.contato_id', '=', 'contatos.id');})
+        				->join('responsavels', function ($query) {$query->on('clinicas.responsavel_id', '=', 'responsavels.id');})
+        				->join('users', function ($query) {$query->on('responsavels.user_id', '=', 'users.id');});
         
-        if(!empty(Request::input('tp_filtro_pre_cadastro')) && Request::input('tp_filtro_pre_cadastro') == 'pre_cadastro'){
-            $prestadores->where(['clinicas.cs_status' => 'I'])->whereDate('clinicas.created_at', '=', DB::raw('"clinicas"."updated_at"::date'))->orderby('clinicas.id', 'desc');
-        } else {
-            $prestadores->where(DB::raw('cs_status'), '=', 'A');
+        if(!empty(Request::input('nm_busca'))){
+        	if(!empty(Request::input('tp_filtro')) && Request::input('tp_filtro') == 'nm_razao_social'){
+        		$prestadores->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+        	} elseif (!empty(Request::input('tp_filtro_nm_fantasia')) && Request::input('tp_filtro_nm_fantasia') == 'nm_fantasia') {
+        		$prestadores->where(DB::raw('to_str(nm_fantasia)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+        	} else {
+        		$prestadores->where(DB::raw('to_str(nm_razao_social)'), 'like', '%'.UtilController::toStr(Request::input('nm_busca')).'%');
+        	}
         }
         
-        $prestadores = $prestadores->sortable(['id' => 'desc'])->paginate(10);
-        $prestadores->load('contatos');
-        $prestadores->load('responsavel');
+        $uf = Request::input('sg_estado');
+        $prestadores->join('clinica_endereco', function ($query) {$query->on('clinica_endereco.clinica_id', '=', 'clinicas.id');})
+        				->join('enderecos', function ($query) {$query->on('clinica_endereco.endereco_id', '=', 'enderecos.id');})
+        				->join('cidades', function ($query) use ($uf) { if(!empty(Request::input('sg_estado'))){ $query->on('enderecos.cidade_id', '=', 'cidades.id')->on('cidades.sg_estado', '=', DB::raw("'$uf'")); } else { $query->on('enderecos.cidade_id', '=', 'cidades.id'); }});
+        
+        if(!empty(Request::input('tp_filtro_pre_cadastro')) && Request::input('tp_filtro_pre_cadastro') == 'pre_cadastro'){
+            $prestadores->where(['clinicas.cs_status' => 'I'])->where('pre_cadastro', true)->orderby('clinicas.id', 'desc');
+        } else {
+            $prestadores->where(DB::raw('clinicas.cs_status'), '=', 'A');
+        }        
+        
+        $prestadores = $prestadores->select('clinicas.id AS id', 'clinicas.nm_razao_social', 'clinicas.nm_fantasia', 'clinicas.responsavel_id', 'users.name AS nome_responsavel', 'sg_estado', 'contatos.ds_contato')->sortable(['id' => 'desc'])->paginate(10);
+//         $prestadores = $prestadores->sortable(['id' => 'desc'])->paginate(10);
+//         dd($prestadores);
+//         $prestadores->load('contatos');
+//         $prestadores->load('responsavel');
 
+        $prestadores->load('enderecos');
+//          dd($prestadores);
+//         dd( DB::getQueryLog() );
+        
+        $estados = Estado::orderBy('ds_estado')->select('estados.id', 'estados.sg_estado')->get();
+        
         Request::flash();
 
-        return view('clinicas.index', compact('prestadores'));
+        return view('clinicas.index', compact('prestadores', 'estados'));
     }
 
     /**
@@ -463,8 +477,8 @@ class ClinicaController extends Controller
             //$clinica->contatos()->delete();
     
             foreach ($contatos as $contato) {
-                $contato->ds_contato = '(61) 00000-0000';
-//                 $contato->save();
+//                $contato->ds_contato = '(61) 00000-0000';
+//                $contato->save();
             }
     
             //--desabilita todos os enderecos desse prestador----
@@ -472,49 +486,45 @@ class ClinicaController extends Controller
             $enderecos = $clinica->enderecos;
             //$clinica->enderecos()->delete();
     
-            foreach ($enderecos as $endereco) {
-                $endereco->te_endereco = 'CANCELADO';
-//                 $endereco->save();
-            }
+//            foreach ($enderecos as $endereco) {
+//                $endereco->te_endereco = 'CANCELADO';
+//                $endereco->save();
+//            }
     
             //--desabilita todos os documentos desse prestador----
             $clinica->load('documentos');
             $documentos = $clinica->documentos;
             //$clinica->documentos()->delete();
     
-            foreach ($documentos as $documento) {
-                $documento->te_documento = '11111111111';
-//                 $documento->save();
-            }
+//            foreach ($documentos as $documento) {
+//                $documento->te_documento = '11111111111';
+//                $documento->save();
+//            }
     
             //--desabilita o responsavel por este prestador e o usuario tambem----
             $clinica->load('responsavel');
             $responsavel = $clinica->responsavel;
 
             if (!empty($responsavel)) {
-//                $responsavel->telefone 	= '(61) 00000-0000';
-//                $responsavel->cpf 		= '11111111111';
-//                $responsavel->save();
 				$responsavel->delete();
     
                 $responsavel->load('user');
                 $user_responsavel = $responsavel->user;
     
                 if(!empty($user_responsavel)) {
-                    $user_responsavel->email = 'CANCELADO@comvex.com.br';
+                    $user_responsavel->cs_status = User::INATIVO;
                     $user_responsavel->save();
                 }
             }
     
             //--desabilita o cadastro desse prestador----
             //$clinica->delete();
-            $clinica->cs_status = 'I';
+            $clinica->cs_status = Clinica::INATIVO;
             $clinica->save();
     
             //Atendimento::where('clinica_id', $idClinica)->delete();
     
             # registra log
-            
             $titulo_log = 'Excluir Clínica';
             $tipo_log   = 4;
             
@@ -525,7 +535,6 @@ class ClinicaController extends Controller
             
             $reglog = new RegistroLogController();
             $reglog->registrarLog($titulo_log, $log, $tipo_log);
-            
         } catch (\Exception $e) {
             ########### FINISHIING TRANSACTION ##########
             DB::rollback();

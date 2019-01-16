@@ -49,15 +49,28 @@
         				            	</div>
         				            </div>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                 	<div class="row" style="padding-top: 15px;">
-                                		<div style="width: 510px !important;">
+                                		<div style="width: 410px !important;">
                     						<input type="text" class="form-control" id="nm_busca" name="nm_busca" value="{{ old('nm_busca') }}">
                     					</div>
                         				<div class="col-1" >
                         					<button type="submit" class="btn btn-primary" id="btnPesquisar"><i class="fa fa-search"></i> Pesquisar</button>
                         				</div>
                                 	</div>			
+                				</div>
+                				<div class="col-md-1">
+                					<div class="form-inline" style="padding-top: 15px;">
+                						<div class="form-group">
+					                    <label for="sg_estado" style="color: #00b19d;">UF&nbsp;&nbsp;</label>
+					                    <select id="sg_estado" name="sg_estado" class="form-control" onchange="window.location.href='{{str_replace(Request::fullUrl(), 'sg_estado=', '')}}?sg_estado='+$(this).val()">
+					                        <option value="">Todos</option>
+					                        @foreach ($estados as $uf)
+					                            <option value="{{ $uf->sg_estado }}" @if ( old('sg_estado') == $uf->sg_estado) selected="selected" @endif >{{ $uf->sg_estado }}</option>
+					                        @endforeach
+					                    </select>
+					                    </div>
+					                </div>
                 				</div>
             				</div>
                     	</form>
@@ -79,13 +92,9 @@
     						<td>{{ sprintf("%04d", $prestador->id) }}</td>
     						<td>{{$prestador->nm_razao_social}}</td>
     						<td>{{$prestador->nm_fantasia}}</td>
-    						<td>{{ $prestador->responsavel->user->name }}</td>
-    						<td>@if(sizeof($prestador->enderecos) > 0 && isset($prestador->enderecos->first()->cidade)){{ $prestador->enderecos->first()->cidade->sg_estado }} @endif</td>
-                	 		<td>
-                	 			@foreach($prestador->contatos as $contato)
-                	 				{{$contato->ds_contato}}
-                	 			@endforeach
-                	 		</td>
+    						<td>{{ $prestador->nome_responsavel }}</td>
+    						<td>{{ $prestador->sg_estado }}</td>
+                	 		<td>{{ $prestador->ds_contato }}</td>
     						<td>
     							<a href="{{ route('clinicas.show', $prestador->id) }}"    class="btn btn-icon waves-effect btn-primary btn-sm m-b-5" title="Exibir"><i class="mdi mdi-eye"></i></a>
     							<a href="{{ route('clinicas.edit', $prestador->id) }}"    class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar"><i class="mdi mdi-lead-pencil"></i></a>
