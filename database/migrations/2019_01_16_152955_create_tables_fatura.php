@@ -44,26 +44,22 @@ class CreateTablesFatura extends Migration
 		{
 			$table->integer('id', true);
 
-			$table->
+			$table->integer('agendamento_id');
 
+			$table->integer('preco_id');
+			$table->integer('profissional_id');
+			$table->integer('clinica_id');
+			$table->integer('filial_id');
+			$table->integer('consulta_id');#rever
+			$table->integer('procedimento_id');#rever
 
-
-			$table->integer('paciente_id')->nullable();
-			$table->integer('pedido_id')->nullable();
-			$table->integer('profissional_id')->nullable();
-			$table->integer('status_fatura_id');
-			$table->integer('meio_pagamento_id')->nullable();
-			$table->integer('status_pagamento_id')->nullable();
-			$table->integer('tipo_pagamento_id')->nullable();
-			$table->integer('banco_id')->nullable();
-			$table->date('data');
-			$table->string('agencia', 45)->nullable();
-			$table->string('conta_corrente', 45)->nullable();
-			$table->boolean('sem_cobranca')->default(false);
+			$table->string('descricao', 200);
+			$table->integer('quantidade');
+			$table->decimal('valor_unitario');
 			$table->decimal('valor_total_bruto');
-			$table->decimal('desconto_nota');
-			$table->decimal('desconto_total');
-			$table->decimal('valor_total_liquido');
+			$table->decimal('desconto');
+			$table->decimal('valor_total');
+
 
 			$table->timestamp('created_at', 0)->useCurrent()->nullable();
 			$table->integer('created_by');
