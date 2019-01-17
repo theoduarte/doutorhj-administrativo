@@ -90,9 +90,22 @@ class AtendimentoController extends Controller
     		try {
     		
 	    		foreach ($data as $atendimento) {
-	    		    $vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
-	    			$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-	     			//dd($atendimento);
+	    			
+	    		    $vigencia = str_replace('-', '/', $atendimento["data_inicio"]).' - '.str_replace('-', '/', $atendimento["data_fim"]);
+	    		    
+	    		    $vigencia = explode(' - ', $vigencia);
+	    		    
+	    		    $de  = explode(' ', $vigencia[0]);
+	    		    $ate = explode(' ', $vigencia[1]);
+	    		    
+	    		    $de_temp = explode('/', $de[0]);
+	    		    $ate_temp = explode('/', $ate[0]);
+	    		    
+	    		    $de = "$de_temp[0]-$de_temp[1]-$de_temp[2]";
+	    		    $ate = "$ate_temp[0]-$ate_temp[1]-$ate_temp[2]";
+	    		    
+	    			$data_vigencia = ['de' => $de, 'ate' => $ate];
+// 	    			dd($data_vigencia);
 	    			//dd($atendimento["id"]);
 	    			$atendimento_id = $atendimento["﻿id"];
 	    			
@@ -114,6 +127,7 @@ class AtendimentoController extends Controller
 	    				
 	    				//--preco open-------------------------------
 	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
+	    				
 	    				$preco = [];
 	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
@@ -254,14 +268,28 @@ class AtendimentoController extends Controller
     		try {
     	
     			foreach ($data as $atendimento) {
-    	
+    				
+//     				dd($atendimento);
     				$vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
-    				$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-    				//dd($atendimento);
+    				//$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
+    				$vigencia = explode(' - ', $vigencia);
+    					
+    				$de  = explode(' ', $vigencia[0]);
+    				$ate = explode(' ', $vigencia[1]);
+    					
+    				$de_temp = explode('-', $de[0]);
+    				$ate_temp = explode('-', $ate[0]);
+    					
+    				$de = "$de_temp[0]-$de_temp[1]-$de_temp[2]";
+    				$ate = "$ate_temp[0]-$ate_temp[1]-$ate_temp[2]";
+    					
+    				$data_vigencia = ['de' => $de, 'ate' => $ate];
+    				
+    				
     				$atendimento_id = $atendimento["﻿id"];
     				//$atendimento = Atendimento::where(['clinica_id' => $atendimento['clinicaid'], 'consulta_id' => $consulta_id, 'cs_status' => 'A'])->first();
     				$ct_atendimento = Atendimento::findorfail($atendimento_id);
-    	
+    				
     				$procedimento_id = $ct_atendimento->procedimento_id;
     	
     				if(is_null($ct_atendimento)) {
@@ -272,11 +300,12 @@ class AtendimentoController extends Controller
     					$ct_atendimento->cs_status = 'A';
     					$ct_atendimento->save();
     				}
-    				//dd($atendimento);
+//     				dd($atendimento);
     				if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
     					
     					//--preco open-------------------------------
     					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
+//     					dd($ct_preco);
     					$preco = [];
     					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
