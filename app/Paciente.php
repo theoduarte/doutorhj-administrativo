@@ -167,8 +167,10 @@ class Paciente extends Model
 
 	public function getTelefoneAttribute()
 	{
-		$contato = $this->contatos()->where('tp_contato', 'CP')->first();
-		if(!is_null($contato)) return $contato->ds_contato;
+		if(!$this->isDirty()) {
+			$contato = $this->contatos()->where('tp_contato', 'CP')->first();
+			if (!is_null($contato)) return $contato->ds_contato;
+		}
 	}
 
 	public function getEmailAttribute()
@@ -179,8 +181,10 @@ class Paciente extends Model
 
 	public function getCpfAttribute()
 	{
-		$documento = $this->documentos()->where('tp_documento', 'CPF')->first();
-		if(!is_null($documento)) return $documento->te_documento;
+		if(!$this->isDirty()) {
+			$documento = $this->documentos()->where('tp_documento', 'CPF')->first();
+			if(!is_null($documento)) return $documento->te_documento;
+		}
 	}
 
 	public function getPlanoAtivoAttribute()
@@ -250,6 +254,6 @@ class Paciente extends Model
 			}
 		}
 
-		return false;
+		return null;
 	}
 }
