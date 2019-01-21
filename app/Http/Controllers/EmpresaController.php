@@ -100,7 +100,7 @@ class EmpresaController extends Controller
 			$endereco->save();
 
 			$contato1 = new Contato();
-			$contato1->tp_contato = 'CA';
+			$contato1->tp_contato = 'CP';
 			$contato1->ds_contato = $request->input('contato_administrativo');
 			$contato1->save();
 			array_push($arContatos, $contato1->id);
@@ -210,7 +210,7 @@ class EmpresaController extends Controller
 			$endereco->save();
 
 			//--salvar contatos----------------------
-			$contato1 = $model->contatos->where('tp_contato', 'CA')->first();
+			$contato1 = $model->contatos->where('tp_contato', 'CP')->first();
 			$contato1->ds_contato = $request->input('contato_administrativo');
 			$contato1->save();
 

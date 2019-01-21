@@ -467,8 +467,8 @@
     						<div class="col-md-3">
     							<div class="form-inline" >
     								<div class="form-group">
-    									<label for="nr_cnpj" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label>
-    									<input type="hidden" class="filial_tp_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->tp_documento }} @endif">
+    									<label for="nr_cnpj" class="control-label">CNPJ<span class="text-danger">*</span></label>
+    									<input type="hidden" class="filial_tp_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->tp_documento }} @else{{'CNPJ'}}@endif">
 		    		                    <input type="text" class="form-control mascaraCNPJ filial_te_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" onkeyup="$(this).val($(this).val().replace(/[^\d]+/g,''))" >
 		    		                    <input type="hidden" class="fililal_te_documento_no_mask" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" maxlength="30" >
 		    		                    <input type="hidden" class="filial_documento_id" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->id }} @endif">
@@ -687,8 +687,8 @@ function addFilial(input) {
 					<div class="col-md-3"> \
 						<div class="form-inline" > \
 							<div class="form-group"> \
-								<label for="nr_cnpj" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label> \
-								<input type="hidden" class="filial_tp_documento" > \
+								<label for="nr_cnpj" class="control-label">CNPJ<span class="text-danger">*</span></label> \
+								<input type="hidden" class="filial_tp_documento" value="CNPJ" > \
 			                    <input type="text" class="form-control mascaraCNPJ filial_te_documento" > \
 			                    <input type="hidden" class="fililal_te_documento_no_mask" maxlength="30" > \
 			                    <input type="hidden" class="filial_documento_id" > \
@@ -723,6 +723,9 @@ function addFilial(input) {
     	</tr>';
    
 	$('#list-all-filiais').append(content);
+	
+	$('#list-all-filiais').find(".filial_te_documento:last" ).inputmask({ mask: ['99.999.999/9999-99'], keepStatic: true });
+	$('#list-all-filiais').find(".mascaraTelefone:last" ).inputmask({ mask: ["(99) 9999-9999", "(99) 99999-9999"], keepStatic: true });
 
 	$('#list-all-filiais').find(".consultaCepFilial:last" ).blur(function() {
 
@@ -807,7 +810,15 @@ function salvarFilial(input) {
 	var filial_nm_cidade  	 	= ct_element.find('.filial_nm_cidade').val();
 	var filial_cd_cidade_ibge 	= ct_element.find('.filial_cd_cidade_ibge').val();
 	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
+	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
 	var endereco_id 	 		= ct_element.find('.filial_endereco_id').val();
+	var filial_tp_documento 	= ct_element.find('.filial_tp_documento').val();
+	var filial_te_documento 	= ct_element.find('.filial_te_documento').val();
+	var filial_te_doc_no_mask 	= ct_element.find('.fililal_te_documento_no_mask').val();
+	var filial_documento_id		= ct_element.find('.filial_documento_id').val();
+	var filial_tp_contato		= ct_element.find('.filial_tp_contato').val();
+	var filial_ds_contato		= ct_element.find('.filial_ds_contato').val();
+	var filial_contato_id		= ct_element.find('.filial_contato_id').val();
 	var clinica_id 				= $('#clinica_id').val();
 	
     if(nm_nome_fantasia.length == 0) {
@@ -906,6 +917,30 @@ function salvarFilial(input) {
         return false;
     }
 
+    if(filial_te_documento.length == 0) {
+
+    	swal({
+	            title: 'DoutorHoje: Alerta!',
+	            text: "O CNPJ da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_ds_contato.length == 0) {
+
+    	swal({
+	            title: 'DoutorHoje: Alerta!',
+	            text: "O telefone da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
     $(input).find('i').removeClass('mdi mdi-content-save').addClass('fa fa-spin fa-spinner');
 
     var nm_nome_fantasia 	 	= ct_element.find('.nm_nome_fantasia').val();
@@ -940,8 +975,14 @@ function salvarFilial(input) {
 			'filial_nm_cidade': filial_nm_cidade,
 			'filial_cd_cidade_ibge': filial_cd_cidade_ibge,
 			'filial_sg_estado': filial_sg_estado,
+			'filial_tp_documento': filial_tp_documento,
+			'filial_te_documento': filial_te_documento,
+			'filial_tp_contato': filial_tp_contato,
+			'filial_ds_contato': filial_ds_contato,
 			'clinica_id': clinica_id,
 			'endereco_id': endereco_id,
+			'documento_id': filial_documento_id,
+			'contato_id': filial_contato_id,
 			'_token': laravel_token
 		},
 		success: function (result) {

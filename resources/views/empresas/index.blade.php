@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Doutor HJ: Empresas')
+@section('title', 'DoutorHoje: Empresas')
 
 @section('container')
 <div class="container-fluid">
@@ -56,7 +56,7 @@
 					<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
 						<tr>
 							<th>@sortablelink('id', 'Cód.')</th>
-							<th>@sortablelink('cnpj', 'CNPJ')</th>
+							<th style="min-width: 150px;">@sortablelink('cnpj', 'CNPJ')</th>
 							<th>@sortablelink('razao_social', 'Razao Social')</th>
 							<th>@sortablelink('nome_fantasia', 'Nome Fantasia')</th>
 							<th>@sortablelink('tp_empresa_id', 'Tipo de Empresa')</th>
