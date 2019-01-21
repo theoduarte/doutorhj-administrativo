@@ -300,8 +300,8 @@ class ClinicaController extends Controller
         $prestador->load('documentos');
         $prestador->load('filials');
         
-        $list_filials = Filial::with('endereco')->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('eh_matriz','desc')->get();
-
+        $list_filials = Filial::with(['endereco', 'documento', 'contato'])->where('clinica_id', $prestador->id)->where('cs_status', '=', 'A')->orderBy('eh_matriz','desc')->get();
+        
         $documentosclinica = $prestador->documentos;
 
         $user   = User::findorfail($prestador->responsavel->user_id);

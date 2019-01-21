@@ -468,15 +468,10 @@
     							<div class="form-inline" >
     								<div class="form-group">
     									<label for="nr_cnpj" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label>
-    									<input type="hidden" name="tp_documento" value="CNPJ">
-		    		                    <input id="te_documento" type="text" class="form-control mascaraCNPJ" onkeyup="$('#te_documento_no_mask').val($(this).val().replace(/[^\d]+/g,''))" required >
-		    		                    <input type="hidden" id="te_documento_no_mask" name="te_documento" maxlength="30" >
-		    		                    <input type="hidden" id="cnpj_id" name="cnpj_id">
-		    		                    @if ($errors->has('te_documento'))
-		    		                    <span class="help-block text-danger">
-		    		                    	<strong>{{ $errors->first('te_documento') }}</strong>
-		    		                    </span>
-		    		                    @endif
+    									<input type="hidden" class="filial_tp_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->tp_documento }} @endif">
+		    		                    <input type="text" class="form-control mascaraCNPJ filial_te_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" onkeyup="$(this).val($(this).val().replace(/[^\d]+/g,''))" >
+		    		                    <input type="hidden" class="fililal_te_documento_no_mask" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" maxlength="30" >
+		    		                    <input type="hidden" class="filial_documento_id" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->id }} @endif">
                 					</div>
                 				</div>
     						</div>
@@ -484,10 +479,10 @@
     							<div class="form-inline" >
     								<div class="form-group">
     									<label for="tp_contato" class="control-label">Tipo</label>
-    									<select id="tp_contato_{{$obContato->id}}" name="tp_contato_{{$obContato->id}}" class="form-control">
-				        					<option value="FC" @if( $obContato->tp_contato == 'FC' ) selected='selected' @endif >Telefone Comercial</option>
-				        					<option value="CC" @if( $obContato->tp_contato == 'CC' ) selected='selected' @endif >Celular Comercial</option>
-				        					<option value="FX" @if( $obContato->tp_contato == 'FX' ) selected='selected' @endif >FAX</option>
+    									<select class="form-control filial_tp_contato">
+				        					<option value="FC" @if( !is_null($list_filials[$i]->contato) && $list_filials[$i]->contato->tp_contato == 'FC' ) selected='selected' @endif >Telefone Comercial</option>
+				        					<option value="CC" @if( !is_null($list_filials[$i]->contato) && $list_filials[$i]->contato->tp_contato == 'CC' ) selected='selected' @endif >Celular Comercial</option>
+				        					<option value="FX" @if( !is_null($list_filials[$i]->contato) && $list_filials[$i]->contato->tp_contato == 'FX' ) selected='selected' @endif >FAX</option>
 				        				</select>
     								</div>
     							</div>
@@ -496,8 +491,8 @@
     							<div class="form-inline" >
     								<div class="form-group">
     									<label for="tp_contato" class="control-label">Telefone<span class="text-danger">*</span></label>
-    									<input id="ds_contato_{{ $obContato->id }}" type="text" placeholder="" class="form-control mascaraTelefone" name="ds_contato_{{ $obContato->id }}" value="{{ $obContato->ds_contato }}" required >
-				        				<input type="hidden" id="contato_id" name="contato_id" value="{{ $obContato->id }}" >
+    									<input type="text" placeholder="" class="form-control mascaraTelefone filial_ds_contato" value="@if(!is_null($list_filials[$i]->contato)){{ $list_filials[$i]->contato->ds_contato }} @endif" >
+				        				<input type="hidden" class="filial_contato_id" value="@if(!is_null($list_filials[$i]->contato)){{ $list_filials[$i]->contato->id }} @endif" >
     								</div>
     							</div>
     						</div>
@@ -688,6 +683,40 @@ function addFilial(input) {
                         <input type="hidden" class="filial_cd_cidade_ibge" > \
                     </div> \
     			</div> \
+    			<div class="row"> \
+					<div class="col-md-3"> \
+						<div class="form-inline" > \
+							<div class="form-group"> \
+								<label for="nr_cnpj" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label> \
+								<input type="hidden" class="filial_tp_documento" > \
+			                    <input type="text" class="form-control mascaraCNPJ filial_te_documento" > \
+			                    <input type="hidden" class="fililal_te_documento_no_mask" maxlength="30" > \
+			                    <input type="hidden" class="filial_documento_id" > \
+	    					</div> \
+	    				</div> \
+					</div> \
+					<div class="col-md-2"> \
+						<div class="form-inline" > \
+							<div class="form-group"> \
+								<label for="tp_contato" class="control-label">Tipo</label> \
+								<select class="form-control filial_tp_contato"> \
+		        					<option value="FC" >Telefone Comercial</option> \
+		        					<option value="CC" >Celular Comercial</option> \
+		        					<option value="FX" >FAX</option> \
+		        				</select> \
+							</div> \
+						</div> \
+					</div> \
+					<div class="col-md-3"> \
+						<div class="form-inline" > \
+							<div class="form-group"> \
+								<label for="tp_contato" class="control-label">Telefone<span class="text-danger">*</span></label> \
+								<input type="text" placeholder="" class="form-control mascaraTelefone filial_ds_contato" > \
+		        				<input type="hidden" class="filial_contato_id" > \
+							</div> \
+						</div> \
+					</div> \
+				</div> \
     		</td> \
     		<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td> \
     		<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Filial" onclick="removerFilial(this)" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
