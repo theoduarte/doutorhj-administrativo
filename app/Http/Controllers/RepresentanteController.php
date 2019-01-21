@@ -67,7 +67,7 @@ class RepresentanteController extends Controller
 			$empresa = Empresa::findOrFail($dados['empresa_id']);
 
 			if(!$user->status) {
-				if(User::where('email', 'ilike', $dados['email_pessoal'])->where('cs_status', 'A')->first()) {
+				if(User::where('email', 'ilike', $dados['email'])->where('cs_status', 'A')->first()) {
 					DB::rollback();
 					return response()->json([
 						'message' => 'Email de usuário ja cadastrado.',
@@ -78,7 +78,7 @@ class RepresentanteController extends Controller
 
 				$user = new User();
 				$user->name = strtoupper($dados['nm_primario'].' '.$dados['nm_secundario']);
-				$user->email = $dados['email_pessoal'];
+				$user->email = $dados['email'];
 				$user->password = bcrypt($cnpj);
 				$user->tp_user = 'RES';
 				$user->cs_status = 'A';
@@ -87,7 +87,7 @@ class RepresentanteController extends Controller
 			} else {
 				$user = User::findOrFail($user->pessoa->user_id);
 				if(empty($user->email)) {
-					$user->email = $dados['email_pessoal'];
+					$user->email = $dados['email'];
 					$user->save();
 				}
 			}
