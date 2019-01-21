@@ -27,7 +27,7 @@
 					<td>{{$colaborador->id}}</td>
 					<td>{{$colaborador->nm_primario}} {{$colaborador->nm_secundario}}</td>
 					<td>{{$colaborador->documentos()->where('tp_documento', Documento::TP_CPF)->first()->te_documento}}</td>
-					<td>{{$colaborador->contatos()->where('tp_contato', Contato::TP_CEL_PESSOAL)->first()->ds_contato}}</td>
+					<td>{{$colaborador->contatos()->whereIn('tp_contato', [Contato::TP_CEL_PESSOAL, Contato::TP_ADMINISTRATIVO])->first()->ds_contato}}</td>
 					<td>{{$colaborador->plano_ativo->ds_plano}}</td>
 					<td>{{$colaborador->vigencia_ativa->vl_anuidade}}/{{$colaborador->vigencia_ativa->periodicidade}}</td>
 					<td>

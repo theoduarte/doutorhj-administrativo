@@ -161,14 +161,14 @@ class EmpresaController extends Controller
 		$estados = Estado::orderBy('ds_estado')->get();
 		$representantes = $model->representantes()->orderBy('nm_primario')->get();
 		$planos = Plano::where('id', '<>', Plano::OPEN)->pluck('ds_plano', 'id');
-		$colaboradores = $model->pacientes()->with('user')
+		$colaboradores = $model->pacientes()->with(['user', 'contatos'])
 			->where('cs_status', 'A')
 			->whereNull('responsavel_id')
 			->whereHas('user', function($query) {
 				$query->where('cs_status', 'A');
 			})
 			->get();
-
+		
 		$anuidades = $model->anuidades()
 			->whereDate('data_inicio', '<=', date('Y-m-d'))
 			->whereDate('data_fim', '>=', date('Y-m-d'));
