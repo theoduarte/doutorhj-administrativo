@@ -18,7 +18,7 @@ class CreateTablesFatura extends Migration
 			$table->integer('id', true);
 
 			$table->integer('paciente_id')->nullable();
-			$table->integer('pedido_id')->nullable();
+			$table->integer('pedido_id')->nullable();#não pode ser pedido
 			$table->integer('profissional_id')->nullable();
 			$table->integer('status_fatura_id');
 			$table->integer('meio_pagamento_id')->nullable();
@@ -45,6 +45,7 @@ class CreateTablesFatura extends Migration
 			$table->integer('id', true);
 
 			$table->integer('agendamento_id');
+
 
 			$table->integer('preco_id');
 			$table->integer('profissional_id');
