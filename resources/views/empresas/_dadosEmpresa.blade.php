@@ -149,12 +149,12 @@
 <div class="form-row">
 	<div class="col-md-2 form-group{{ $errors->has('contato_financeiro') ? ' has-error' : '' }}">
 		<label for="contato_financeiro" class="control-label">Contato Financeiro<span class="text-danger">*</span></label>
-		<input type="text" id="contato_financeiro" placeholder="" class="form-control mascaraTelefone" name="contato_financeiro" required autofocus value="{{ $model->contatos->where('tp_contato', 'CA')->first()->ds_contato ?? old('contato_financeiro') }}">
+		<input type="text" id="contato_financeiro" placeholder="" class="form-control mascaraTelefone" name="contato_financeiro" required autofocus value="{{ $model->contato_financeiro ?? old('contato_financeiro') }}">
 	</div>
 
 	<div class="col-md-2 form-group{{ $errors->has('contato_administrativo') ? ' has-error' : '' }}">
 		<label for="contato_administrativo" class="control-label">Contato Administrativo<span class="text-danger">*</span></label>
-		<input type="text" id="contato_administrativo" placeholder="" class="form-control mascaraTelefone" name="contato_administrativo" required autofocus value="{{ $model->contatos->where('tp_contato', 'CA')->first()->ds_contato ?? old('contato_administrativo')}}">
+		<input type="text" id="contato_administrativo" placeholder="" class="form-control mascaraTelefone" name="contato_administrativo" required autofocus value="{{ $model->contato_administrativo ?? old('contato_administrativo')}}">
 	</div>
 </div>
 

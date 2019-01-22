@@ -43,7 +43,10 @@ class Empresa extends Model
 	/**
 	 * @var array
 	 */
-	protected $fillable = ['tp_empresa_id', 'endereco_id', 'matriz_id', 'resp_financeiro_id', 'nome_fantasia', 'cnpj', 'inscricao_estadual', 'cs_status', 'vl_max_empresa', 'vl_max_funcionario', 'anuidade', 'desconto', 'created_at', 'updated_at', 'razao_social', 'pre_autorizar', 'mundipagg_token', 'logomarca_path'];
+	protected $fillable = ['tp_empresa_id', 'endereco_id', 'matriz_id', 'resp_financeiro_id', 'nome_fantasia', 'cnpj',
+		'inscricao_estadual', 'cs_status', 'vl_max_empresa', 'vl_max_funcionario', 'anuidade', 'desconto', 'created_at',
+		'updated_at', 'razao_social', 'pre_autorizar', 'mundipagg_token', 'logomarca_path', 'contato_financeiro',
+		'contato_administrativo'];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

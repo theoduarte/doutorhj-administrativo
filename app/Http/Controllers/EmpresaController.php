@@ -99,17 +99,17 @@ class EmpresaController extends Controller
 			$endereco->cidade()->associate($cidade);
 			$endereco->save();
 
-			$contato1 = new Contato();
-			$contato1->tp_contato = 'CP';
-			$contato1->ds_contato = $request->input('contato_administrativo');
-			$contato1->save();
-			array_push($arContatos, $contato1->id);
-
-			$contato2 = new Contato();
-			$contato2->tp_contato = 'CF';
-			$contato2->ds_contato = $request->input('contato_financeiro');
-			$contato2->save();
-			array_push($arContatos, $contato2->id);
+//			$contato1 = new Contato();
+//			$contato1->tp_contato = 'CP';
+//			$contato1->ds_contato = $request->input('contato_administrativo');
+//			$contato1->save();
+//			array_push($arContatos, $contato1->id);
+//
+//			$contato2 = new Contato();
+//			$contato2->tp_contato = 'CF';
+//			$contato2->ds_contato = $request->input('contato_financeiro');
+//			$contato2->save();
+//			array_push($arContatos, $contato2->id);
 
 			$model = new Empresa($dados);
 			$model->endereco_id = $endereco->id;
@@ -210,13 +210,13 @@ class EmpresaController extends Controller
 			$endereco->save();
 
 			//--salvar contatos----------------------
-			$contato1 = $model->contatos->where('tp_contato', 'CP')->first();
-			$contato1->ds_contato = $request->input('contato_administrativo');
-			$contato1->save();
-
-			$contato2 = $model->contatos->where('tp_contato', 'CF')->first();
-			$contato2->ds_contato = $request->input('contato_financeiro');
-			$contato2->save();
+//			$contato1 = $model->contatos->where('tp_contato', 'CP')->first();
+//			$contato1->ds_contato = $request->input('contato_administrativo');
+//			$contato1->save();
+//
+//			$contato2 = $model->contatos->where('tp_contato', 'CF')->first();
+//			$contato2->ds_contato = $request->input('contato_financeiro');
+//			$contato2->save();
 
 			$anuidades = $request->post('anuidades');
 			if(count($anuidades) > 0) {

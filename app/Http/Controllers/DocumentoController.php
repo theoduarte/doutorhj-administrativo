@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contato;
 use App\Documento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,7 @@ class DocumentoController extends Controller
 			$representante = $model->representantes->first();
 			
 			if(!is_null($representante)) {
-				$contato = $representante->contatos->whereIn('tp_contato', ['CP', 'CA'])->first();
+				$contato = $representante->contatos->where('tp_contato', Contato::TP_CEL_PESSOAL)->first();
 				if(!is_null($contato)) {
 					$pessoa = [
 						'email' => $representante->user->email,

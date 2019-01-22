@@ -69,6 +69,7 @@ class EmpresaRequest extends FormRequest
 	 */
 	public function rules()
 	{
+		$id = $this->route('empresa') ?? 0;
 		if ($this->method() == 'PUT') {
 			$logomarca_rule 			= 'image';
 			$anuidades['1']				= 'array';
@@ -98,8 +99,8 @@ class EmpresaRequest extends FormRequest
 			'te_bairro' 				=> 'required|string|max:250',
 			'te_complemento' 			=> 'string|nullable',
 			'cd_cidade_ibge' 			=> 'required|integer',
-			'contato_financeiro' 		=> 'required|celular_com_ddd',
-			'contato_administrativo'	=> 'required|celular_com_ddd',
+			'contato_financeiro' 		=> "required|celular_com_ddd|unique:empresas,contato_financeiro,{$id}|unique:empresas,contato_administrativo,{$id}",
+			'contato_administrativo'	=> "required|celular_com_ddd|unique:empresas,contato_administrativo,{$id}|unique:empresas,contato_financeiro,{$id}",
 			'logomarca'					=> $logomarca_rule,
 			'anuidades'					=> $anuidades['1'],
 			'anuidades.*.data_vigencia'	=> $anuidades['vigencia'],

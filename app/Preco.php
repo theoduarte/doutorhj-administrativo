@@ -77,21 +77,37 @@ class Preco extends Model
 
 	public function setVlNetAttribute($value)
 	{
-		$this->attributes['vl_net'] = UtilController::removeMaskMoney($value);
+		if(!is_null($value))
+			$this->attributes['vl_net'] = UtilController::removeMaskMoney($value);
 	}
 
 	public function setVlComercialAttribute($value)
 	{
-		$this->attributes['vl_comercial'] = UtilController::removeMaskMoney($value);
+		if(!is_null($value))
+			$this->attributes['vl_comercial'] = UtilController::removeMaskMoney($value);
 	}
 
 	public function getVlNetAttribute()
 	{
-		return number_format( $this->attributes['vl_net'],  2, ',', '.');
+		if(!is_null($this->attributes['vl_net']))
+			return number_format($this->attributes['vl_net'],  2, ',', '.');
 	}
 
-	public function getVlComercialAttribute()
+	public function getVlComercialAttribute($val)
 	{
-		return number_format( $this->attributes['vl_comercial'],  2, ',', '.');
+		if(!is_null($this->attributes['vl_comercial']))
+			return number_format($this->attributes['vl_comercial'],  2, ',', '.');
+	}
+
+	public function getVlNetBdAttribute()
+	{
+		if(!is_null($this->attributes['vl_net']))
+			return $this->attributes['vl_net'];
+	}
+
+	public function getVlComercialBdAttribute($val)
+	{
+		if(!is_null($this->attributes['vl_comercial']))
+			return $this->attributes['vl_comercial'];
 	}
 }
