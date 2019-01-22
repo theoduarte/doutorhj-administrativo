@@ -62,13 +62,13 @@
                 				<div class="col-md-1">
                 					<div class="form-inline" style="padding-top: 15px;">
                 						<div class="form-group">
-					                    <label for="sg_estado" style="color: #00b19d;">UF&nbsp;&nbsp;</label>
-					                    <select id="sg_estado" name="sg_estado" class="form-control" onchange="window.location.href='{{str_replace(Request::fullUrl(), 'sg_estado=', '')}}?sg_estado='+$(this).val()">
-					                        <option value="">Todos</option>
-					                        @foreach ($estados as $uf)
-					                            <option value="{{ $uf->sg_estado }}" @if ( old('sg_estado') == $uf->sg_estado) selected="selected" @endif >{{ $uf->sg_estado }}</option>
-					                        @endforeach
-					                    </select>
+						                    <label for="sg_estado" style="color: #00b19d;">UF&nbsp;&nbsp;</label>
+						                    <select id="sg_estado" name="sg_estado" class="form-control" onchange="window.location.href='{{str_replace(Request::fullUrl(), 'sg_estado=', '')}}?sg_estado='+$(this).val()">
+						                        <option value="">Todos</option>
+						                        @foreach ($estados as $uf)
+						                            <option value="{{ $uf->sg_estado }}" @if ( old('sg_estado') == $uf->sg_estado) selected="selected" @endif >{{ $uf->sg_estado }}</option>
+						                        @endforeach
+						                    </select>
 					                    </div>
 					                </div>
                 				</div>

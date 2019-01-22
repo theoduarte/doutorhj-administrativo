@@ -23,11 +23,11 @@ class AtendimentoController extends Controller
         try {
             $action = Route::current();
             $action_name = $action->action['as'];
-            
+
             $this->middleware("cvx:$action_name");
         } catch (\Exception $e) {}
     }
-    
+
     //############# AJAX SERVICES ##################
     /**
      * loadTagPopularList a newly created resource in storage.
@@ -38,22 +38,22 @@ class AtendimentoController extends Controller
     public function loadAtendimentoShow(Request $request)
     {
         $atendimento_id = CVXRequest::post('atendimento_id');
-        
+
         $atendimento = Atendimento::findorfail($atendimento_id);
-        
+
         if($atendimento->procedimento_id != null) {
         	$atendimento->load('procedimento');
         }
-        
+
         if($atendimento->consulta_id != null) {
         	$atendimento->load('consulta');
         }
-        
+
         $atendimento->load('filials');
-        
+
         return response()->json(['status' => true, 'atendimento' => $atendimento->toJson()]);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -63,7 +63,7 @@ class AtendimentoController extends Controller
     {
     	return view('atendimentos.update_precos');
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -72,55 +72,69 @@ class AtendimentoController extends Controller
      */
     public function updatePrecoConsultas(Request $request)
     {
-    	
+
     	if(!empty($request->file('consultas'))) {
     		$consultas = $request->file('consultas');
-    		
+
     		$path = $request->file('consultas')->getRealPath();
-    		 
+
     		//dd($path);
-    		
+
     		$data = UtilController::csvToArray($path, ';');
     		//dd($data);
-    		
+
     		########### STARTING TRANSACTION ############
     		DB::beginTransaction();
     		#############################################
-    		
+
     		try {
-    		
+
 	    		foreach ($data as $atendimento) {
-	    		    $vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
-	    			$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-	     			//dd($atendimento);
+
+	    		    $vigencia = str_replace('-', '/', $atendimento["data_inicio"]).' - '.str_replace('-', '/', $atendimento["data_fim"]);
+
+	    		    $vigencia = explode(' - ', $vigencia);
+
+	    		    $de  = explode(' ', $vigencia[0]);
+	    		    $ate = explode(' ', $vigencia[1]);
+
+	    		    $de_temp = explode('/', $de[0]);
+	    		    $ate_temp = explode('/', $ate[0]);
+
+	    		    $de = "$de_temp[0]-$de_temp[1]-$de_temp[2]";
+	    		    $ate = "$ate_temp[0]-$ate_temp[1]-$ate_temp[2]";
+
+	    			$data_vigencia = ['de' => $de, 'ate' => $ate];
+// 	    			dd($data_vigencia);
 	    			//dd($atendimento["id"]);
-	    			$atendimento_id = $atendimento["﻿id"];
-	    			
+	    			$atendimento_id = $atendimento['id'];
+
 	    			//$atendimento = Atendimento::where(['clinica_id' => $atendimento['clinicaid'], 'consulta_id' => $consulta_id, 'cs_status' => 'A'])->first();
 	    			$ct_atendimento = Atendimento::findorfail($atendimento_id);
-	    			
+
 	    			$consulta_id = $ct_atendimento->consulta_id;
-	    			
+
 	    			if(is_null($ct_atendimento)) {
 	    				$ct_atendimento = new Atendimento();
 	    				$ct_atendimento->clinica_id = $atendimento["clinica_id"];
 	    				$ct_atendimento->consulta_id = $consulta_id;
-	    				$ct_atendimento->ds_preco =  $atendimento["atendimentos"];
+	    				$ct_atendimento->ds_preco =  $atendimento['atendimentos'];
 	    				$ct_atendimento->cs_status = 'A';
 	    				$ct_atendimento->save();
 	    			}
 	    			//dd($atendimento);
-	    			if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
-	    				
+	    			if($atendimento['comercial'] != '' & $atendimento['net'] != '') {
+
 	    				//--preco open-------------------------------
 	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
+
 	    				$preco = [];
 	    				if($ct_preco->isEmpty()) {
 	    					$preco = new Preco();
 	    				} else {
 	    					$preco = $ct_preco->first();
 	    				}
-	    				
+
 	    				$preco->cd_preco = $ct_atendimento->id;
 	    				$preco->atendimento_id = $ct_atendimento->id;
 	    				$preco->plano_id = 1;
@@ -128,10 +142,10 @@ class AtendimentoController extends Controller
 	    				$preco->cs_status = 'A';
 	    				$preco->data_inicio = $data_vigencia['de'];
 	    				$preco->data_fim = $data_vigencia['ate'];
-	    				$preco->vl_comercial = $atendimento["comercial"];
-	    				$preco->vl_net = $atendimento["net"];
+	    				$preco->vl_comercial = $atendimento['comercial'];
+	    				$preco->vl_net = $atendimento['net'];
 	    				$preco->save();
-	    				
+
 	    				//--preco premium-------------------------------
 	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A'])->get();
 	    				$preco = [];
@@ -140,7 +154,7 @@ class AtendimentoController extends Controller
 	    				} else {
 	    					$preco = $ct_preco->first();
 	    				}
-	    				
+
 	    				$preco->cd_preco = $ct_atendimento->id;
 	    				$preco->atendimento_id = $ct_atendimento->id;
 	    				$preco->plano_id = 2;
@@ -148,10 +162,10 @@ class AtendimentoController extends Controller
 	    				$preco->cs_status = 'A';
 	    				$preco->data_inicio = $data_vigencia['de'];
 	    				$preco->data_fim = $data_vigencia['ate'];
-	    				$preco->vl_comercial = $atendimento["premium"];
-	    				$preco->vl_net = $atendimento["net"];
+	    				$preco->vl_comercial = $atendimento['premium'];
+	    				$preco->vl_net = $atendimento['net'];
 	    				$preco->save();
-	    				
+
 	    				//--preco blue-------------------------------
 	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A'])->get();
 	    				$preco = [];
@@ -160,7 +174,7 @@ class AtendimentoController extends Controller
 	    				} else {
 	    					$preco = $ct_preco->first();
 	    				}
-	    				
+
 	    				$preco->cd_preco = $ct_atendimento->id;
 	    				$preco->atendimento_id = $ct_atendimento->id;
 	    				$preco->plano_id = 3;
@@ -168,10 +182,10 @@ class AtendimentoController extends Controller
 	    				$preco->cs_status = 'A';
 	    				$preco->data_inicio = $data_vigencia['de'];
 	    				$preco->data_fim = $data_vigencia['ate'];
-	    				$preco->vl_comercial = $atendimento["blue"];
-	    				$preco->vl_net = $atendimento["net"];
+	    				$preco->vl_comercial = $atendimento['blue'];
+	    				$preco->vl_net = $atendimento['net'];
 	    				$preco->save();
-	    				
+
 	    				//--preco black-------------------------------
 	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A'])->get();
 	    				$preco = [];
@@ -180,7 +194,7 @@ class AtendimentoController extends Controller
 	    				} else {
 	    					$preco = $ct_preco->first();
 	    				}
-	    				
+
 	    				$preco->cd_preco = $ct_atendimento->id;
 	    				$preco->atendimento_id = $ct_atendimento->id;
 	    				$preco->plano_id = 4;
@@ -188,10 +202,10 @@ class AtendimentoController extends Controller
 	    				$preco->cs_status = 'A';
 	    				$preco->data_inicio = $data_vigencia['de'];
 	    				$preco->data_fim = $data_vigencia['ate'];
-	    				$preco->vl_comercial = $atendimento["black"];
-	    				$preco->vl_net = $atendimento["net"]; 
+	    				$preco->vl_comercial = $atendimento['black'];
+	    				$preco->vl_net = $atendimento['net'];
 	    				$preco->save();
-	    				
+
 	    				//--preco plus-------------------------------
 	    				$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A'])->get();
 	    				$preco = [];
@@ -200,7 +214,7 @@ class AtendimentoController extends Controller
 	    				} else {
 	    					$preco = $ct_preco->first();
 	    				}
-	    				
+
 	    				$preco->cd_preco = $ct_atendimento->id;
 	    				$preco->atendimento_id = $ct_atendimento->id;
 	    				$preco->plano_id = 5;
@@ -208,27 +222,28 @@ class AtendimentoController extends Controller
 	    				$preco->cs_status = 'A';
 	    				$preco->data_inicio = $data_vigencia['de'];
 	    				$preco->data_fim = $data_vigencia['ate'];
-	    				$preco->vl_comercial = $atendimento["plus"];
-	    				$preco->vl_net = $atendimento["net"]; 
+	    				$preco->vl_comercial = $atendimento['plus'];
+	    				$preco->vl_net = $atendimento['net'];
 	    				$preco->save();
 	    			}
 	    		}
-	    		
+
     		} catch (\Exception $e) {
 //     			########### FINISHIING TRANSACTION ##########
     			DB::rollback();
 //     			#############################################
-    			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços das Consultas não foram atualizados. Por favor, tente novamente.');
+//     			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços das Consultas não foram atualizados. Por favor, tente novamente.');
+    			return back()->withError($e->getMessage())->withInput();
     		}
-    		
+
      		########### FINISHIING TRANSACTION ##########
     		DB::commit();
     		#############################################
     	}
-    	 
-    	return redirect()->route('atualizar-precos')->with('success', 'Os Preços das Consultas foram atualizadas com sucesso!');
+
+    	return redirect()->route('atualizar-precos')->with('success-alert', 'Os Preços das Consultas foram atualizadas com sucesso!');
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -239,51 +254,65 @@ class AtendimentoController extends Controller
     {
     	if(!empty($request->file('procedimentos'))) {
     		$consultas = $request->file('procedimentos');
-    	
+
     		$path = $request->file('procedimentos')->getRealPath();
-    		 
+
     		//dd($path);
-    	
+
     		$data = UtilController::csvToArray($path, ';');
-    		//dd($data);
-    	
+//     		dd($data);
+
     		########### STARTING TRANSACTION ############
     		DB::beginTransaction();
     		#############################################
-    	
+
     		try {
-    	
+
     			foreach ($data as $atendimento) {
-    	
-    				$vigencia = $atendimento["data_inicio"].' - '.$atendimento["data_fim"];
-    				$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
-    				//dd($atendimento);
-    				$atendimento_id = $atendimento["﻿id"];
+
+//     				dd($atendimento);
+    				$vigencia = $atendimento['data_inicio'].' - '.$atendimento['data_fim'];
+    				//$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($vigencia);
+    				$vigencia = explode(' - ', $vigencia);
+
+    				$de  = explode(' ', $vigencia[0]);
+    				$ate = explode(' ', $vigencia[1]);
+
+    				$de_temp = explode('-', $de[0]);
+    				$ate_temp = explode('-', $ate[0]);
+
+    				$de = "$de_temp[0]-$de_temp[1]-$de_temp[2]";
+    				$ate = "$ate_temp[0]-$ate_temp[1]-$ate_temp[2]";
+
+    				$data_vigencia = ['de' => $de, 'ate' => $ate];
+
+    				$atendimento_id = $atendimento['id'];
+
     				//$atendimento = Atendimento::where(['clinica_id' => $atendimento['clinicaid'], 'consulta_id' => $consulta_id, 'cs_status' => 'A'])->first();
     				$ct_atendimento = Atendimento::findorfail($atendimento_id);
-    	
     				$procedimento_id = $ct_atendimento->procedimento_id;
-    	
+
     				if(is_null($ct_atendimento)) {
     					$ct_atendimento = new Atendimento();
-    					$ct_atendimento->clinica_id = $atendimento["clinica_id"];
+    					$ct_atendimento->clinica_id = $atendimento['clinica_id'];
     					$ct_atendimento->consulta_id = $procedimento_id;
-    					$ct_atendimento->ds_preco =  $atendimento["exames"];
+    					$ct_atendimento->ds_preco =  $atendimento['exames'];
     					$ct_atendimento->cs_status = 'A';
     					$ct_atendimento->save();
     				}
-    				//dd($atendimento);
-    				if($atendimento["comercial"] != '' & $atendimento["net"] != '') {
-    					
+//     				dd($atendimento);
+    				if($atendimento['comercial'] != '' & $atendimento['net'] != '') {
+
     					//--preco open-------------------------------
     					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 1, 'cs_status' => 'A'])->get();
+//     					dd($ct_preco);
     					$preco = [];
     					if($ct_preco->isEmpty()) {
     						$preco = new Preco();
     					} else {
 	    					$preco = $ct_preco->first();
 	    				}
-    					
+
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
     					$preco->plano_id = 1;
@@ -291,10 +320,10 @@ class AtendimentoController extends Controller
     					$preco->cs_status = 'A';
     					$preco->data_inicio = $data_vigencia['de'];
     					$preco->data_fim = $data_vigencia['ate'];
-    					$preco->vl_comercial = $atendimento["comercial"];
-    					$preco->vl_net = $atendimento["net"];
+    					$preco->vl_comercial = $atendimento['comercial'];
+    					$preco->vl_net = $atendimento['net'];
     					$preco->save();
-    					
+
     					//--preco premium-------------------------------
     					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 2, 'cs_status' => 'A'])->get();
     					$preco = [];
@@ -303,7 +332,7 @@ class AtendimentoController extends Controller
     					} else {
 	    					$preco = $ct_preco->first();
 	    				}
-    					
+
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
     					$preco->plano_id = 2;
@@ -311,10 +340,10 @@ class AtendimentoController extends Controller
     					$preco->cs_status = 'A';
     					$preco->data_inicio = $data_vigencia['de'];
     					$preco->data_fim = $data_vigencia['ate'];
-    					$preco->vl_comercial = $atendimento["premium"];
-    					$preco->vl_net = $atendimento["net"];    					 
+    					$preco->vl_comercial = $atendimento['premium'];
+    					$preco->vl_net = $atendimento['net'];
     					$preco->save();
-    					
+
     					//--preco blue-------------------------------
     					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 3, 'cs_status' => 'A'])->get();
     					$preco = [];
@@ -323,7 +352,7 @@ class AtendimentoController extends Controller
     					} else {
 	    					$preco = $ct_preco->first();
 	    				}
-    					
+
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
     					$preco->plano_id = 3;
@@ -331,10 +360,10 @@ class AtendimentoController extends Controller
     					$preco->cs_status = 'A';
     					$preco->data_inicio = $data_vigencia['de'];
     					$preco->data_fim = $data_vigencia['ate'];
-    					$preco->vl_comercial = $atendimento["blue"];
-    					$preco->vl_net = $atendimento["net"];
-    					$preco->save();		
-    		    
+    					$preco->vl_comercial = $atendimento['blue'];
+    					$preco->vl_net = $atendimento['net'];
+    					$preco->save();
+
     					//--preco black-------------------------------
     					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 4, 'cs_status' => 'A'])->get();
     					$preco = [];
@@ -343,7 +372,7 @@ class AtendimentoController extends Controller
     					} else {
 	    					$preco = $ct_preco->first();
 	    				}
-    					
+
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
     					$preco->plano_id = 4;
@@ -351,10 +380,10 @@ class AtendimentoController extends Controller
     					$preco->cs_status = 'A';
     					$preco->data_inicio = $data_vigencia['de'];
     					$preco->data_fim = $data_vigencia['ate'];
-    					$preco->vl_comercial = $atendimento["black"];
-    					$preco->vl_net = $atendimento["net"];
+    					$preco->vl_comercial = $atendimento['black'];
+    					$preco->vl_net = $atendimento['net'];
     					$preco->save();
-    					
+
     					//--preco plus-------------------------------
     					$ct_preco = Preco::where(['atendimento_id' => $ct_atendimento->id, 'plano_id' => 5, 'cs_status' => 'A'])->get();
     					$preco = [];
@@ -363,7 +392,7 @@ class AtendimentoController extends Controller
     					} else {
 	    					$preco = $ct_preco->first();
 	    				}
-    					
+
     					$preco->cd_preco = $ct_atendimento->id;
     					$preco->atendimento_id = $ct_atendimento->id;
     					$preco->plano_id = 5;
@@ -371,41 +400,42 @@ class AtendimentoController extends Controller
     					$preco->cs_status = 'A';
     					$preco->data_inicio = $data_vigencia['de'];
     					$preco->data_fim = $data_vigencia['ate'];
-    					$preco->vl_comercial = $atendimento["plus"];
-    					$preco->vl_net = $atendimento["net"];    						
+    					$preco->vl_comercial = $atendimento['plus'];
+    					$preco->vl_net = $atendimento['net'];
     					$preco->save();
     				}
     			}
-    			 
+
     		} catch (\Exception $e) {
     			########### FINISHIING TRANSACTION ##########
     			DB::rollback();
     			#############################################
-    			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços dos Procedimentos não foram atualizados. Por favor, tente novamente.');
+//     			return redirect()->route('atualizar-precos')->with('error-alert', 'Os Preços dos Procedimentos não foram atualizados. Por favor, tente novamente.');
+    			return back()->withError($e->getMessage())->withInput();
     		}
-    	
+
     		########### FINISHIING TRANSACTION ##########
     		DB::commit();
     		#############################################
     	}
-    
-    	return redirect()->route('atualizar-precos')->with('success', 'Os Preços dos Procedimentos foram atualizados com sucesso!');
+
+    	return redirect()->route('atualizar-precos')->with('success-alert', 'Os Preços dos Procedimentos foram atualizados com sucesso!');
     }
-    
+
     /**
      * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico.
      *
      */
     public function geraListaConsultasXls()
     {
-        
-        
+
+
     	Excel::create('DRHJ_RELATORIO_CONSULTAS_' . date('d-m-Y~H_i_s'), function ($excel) {
     		$excel->sheet('Consultas', function ($sheet) {
-    
+
     			// Font family
     			$sheet->setFontFamily('Comic Sans MS');
-    
+
     			// Set font with ->setStyle()`
     			$sheet->setStyle(array(
     					'font' => array(
@@ -414,9 +444,9 @@ class AtendimentoController extends Controller
     							'bold' => false
     					)
     			));
-    			
+
     			$cabecalho = array('Data' => date('d-m-Y H:i'));
-    			
+
     			$list_consultas = Atendimento::with(['precos', 'precos.plano'])
         			->distinct()
         			->join('clinicas', 			function($join1) { $join1->on('atendimentos.clinica_id', '=', 'clinicas.id')->on('clinicas.cs_status', '=', DB::raw("'A'"));})
@@ -446,12 +476,12 @@ class AtendimentoController extends Controller
         	   $sheet->setColumnFormat(array(
         	       'G6:G'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
         			));
-    
+
     			$sheet->loadView('atendimentos.consultas_excel', compact('list_consultas', 'cabecalho'));
     		});
     	})->export('xls');
     }
-    
+
     /**
      * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico.
      *
@@ -459,13 +489,13 @@ class AtendimentoController extends Controller
     public function geraListaExamesXls()
     {
         $i = CVXRequest::post('parte_lista');
-        
+
         Excel::create('DRHJ_RELATORIO_EXAMES_' . date('d-m-Y~H_i_s').'_parte_'.($i+1), function ($excel) use ($i) {
             $excel->sheet('Procedimentos', function ($sheet) use ($i) {
-                
+
                 // Font family
                 $sheet->setFontFamily('Comic Sans MS');
-                
+
                 // Set font with ->setStyle()`
                 $sheet->setStyle(array(
                     'font' => array(
@@ -474,7 +504,7 @@ class AtendimentoController extends Controller
                         'bold' => false
                     )
                 ));
-                
+
                 $cabecalho = array('Data' => date('d-m-Y H:i'));
                 //DB::enableQueryLog();
                 $list_exames = Atendimento::distinct(['precos', 'precos.plano'])
@@ -498,17 +528,17 @@ class AtendimentoController extends Controller
                     //$queries = DB::getQueryLog();
                     //dd($queries);
                     //                 dd($list_exames);
-                    
+
                     //                 foreach($list_exames as $item) {
                     //                     if(sizeof($item->precos) == 0) {
                     //                         dd($item);
                         //                     }
                         //                 }
-                        
+
                         $sheet->setColumnFormat(array(
                             'I6:I'.(sizeof($list_exames)+6) => '""00"." 000"."000"/"0000-00'
                         ));
-                        
+
                         $sheet->loadView('atendimentos.exames_excel', compact('list_exames', 'cabecalho'));
             });
         })->export('xls');

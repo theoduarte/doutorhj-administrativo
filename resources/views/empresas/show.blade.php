@@ -58,11 +58,11 @@
 						</tr>
 						<tr>
 							<td>Contato Administrativo:</td>
-							<td>{{ $model->contatos->where('tp_contato', 'CA')->first()->ds_contato}}</td>
+							<td>{{ $model->contato_administrativo}}</td>
 						</tr>
 						<tr>
 							<td>Contato Financeiro:</td>
-							<td>{{ $model->contatos->where('tp_contato', 'CF')->first()->ds_contato}}</td>
+							<td>{{ $model->contato_financeiro}}</td>
 						</tr>
 						<tr>
 							<td colspan="2"><h4>Endereço</h4></td>

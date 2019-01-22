@@ -10,6 +10,8 @@ use App\Endereco;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Cidade;
+use App\Documento;
+use App\Contato;
 
 class FilialController extends Controller
 {
@@ -114,10 +116,12 @@ class FilialController extends Controller
      */
     public function addFilialStore(Request $request)
     {
-    	$filial_id = CVXRequest::post('filial_id');
-    	$clinica_id = CVXRequest::post('clinica_id');
-    	$endereco_id = CVXRequest::post('endereco_id');
-    	$clinica = Clinica::findorfail($clinica_id);
+    	$filial_id     = CVXRequest::post('filial_id');
+    	$clinica_id    = CVXRequest::post('clinica_id');
+    	$endereco_id   = CVXRequest::post('endereco_id');
+    	$documento_id  = CVXRequest::post('documento_id');
+    	$contato_id    = CVXRequest::post('contato_id');
+    	$clinica       = Clinica::findorfail($clinica_id);
     	
     	$cd_ibge 			= $request->input('filial_cd_cidade_ibge');
     	$nr_latitude_gps 	= $request->input('filial_nr_latitude');
@@ -129,6 +133,11 @@ class FilialController extends Controller
     	$te_bairro 			= $request->input('filial_te_bairro');
     	$eh_matriz 			= $request->input('filial_eh_matriz');
     	
+    	$tp_documento 		= $request->input('filial_tp_documento');
+    	$te_documento 		= $request->input('filial_te_documento');
+    	$tp_contato 		= $request->input('filial_tp_contato');
+    	$ds_contato 		= $request->input('filial_ds_contato');
+    	
     	$nm_nome_fantasia = $request->input('nm_nome_fantasia');
     	
     	########### STARTING TRANSACTION ############
@@ -138,7 +147,6 @@ class FilialController extends Controller
     	try {
 	    
 	    	# endereco da filial
-	    	
 	    	
 	    	if(isset($endereco_id) && $endereco_id != '') {
 	    		$endereco = Endereco::findorfail($endereco_id);
@@ -161,6 +169,32 @@ class FilialController extends Controller
 	    	
 	    	$endereco_id = $endereco->id;
 	    	
+	    	# documento da filial
+	    	
+	    	if(isset($documento_id) && $documento_id != '') {
+	    	    $documentoCnpj = Documento::findorfail($documento_id);
+	    	} else {
+	    	    $documentoCnpj = new Documento();
+	    	}
+	    	
+	    	# documento da empresa CNPJ
+	    	$documentoCnpj      = new Documento();
+	    	$documentoCnpj->tp_documento = $tp_documento;
+	    	$documentoCnpj->te_documento = UtilController::retiraMascara($te_documento);
+	    	$documentoCnpj->save();
+	    	
+	    	$documento_id = $documentoCnpj->id;
+	    	
+	    	# telefone da empresa
+	    	$arContatos = array();
+	    	
+	    	$contato1             = new Contato();
+	    	$contato1->tp_contato = $tp_contato;
+	    	$contato1->ds_contato = $ds_contato;
+	    	$contato1->save();
+	    	
+	    	$contato_id = $contato1->id;
+	    	
 	    	# atualiza todos as filiais como nao sendo matriz
 	    	if ($eh_matriz == 'S') {
 	    		Filial::where('clinica_id', $clinica_id)->update(['eh_matriz' => 'N']);
@@ -178,6 +212,8 @@ class FilialController extends Controller
 	    	$filial->cs_status			= 'A';
 	    	$filial->clinica_id			= $clinica_id;
 	    	$filial->endereco_id		= $endereco->id;
+	    	$filial->documento_id		= $documento_id;
+	    	$filial->contato_id		    = $contato_id;
 	    	
 	    
 	    	if ($filial->save()) {

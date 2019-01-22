@@ -26,7 +26,7 @@
 
 	<div class="form-group col-md-9">
 		<label for="email">Email<span class="text-danger">*</span></label>
-		<input type="email" id="email" name="email" class="form-control" value="{{$model->email ?? old('email')}}" placeholder="Email" required>
+		<input type="email" id="email" name="email" class="form-control" value="{{$model->user->email ?? old('email')}}" placeholder="Email" required>
 	</div>
 </div>
 
@@ -103,8 +103,20 @@
 					success: function (data) {
 						$('#cvx-cpf-loading').addClass('cvx-no-loading');
 
-						if(data.pessoa != undefined && data.pessoa.email != '') $('#email').val(data.pessoa.email).prop('readonly', true);
-						else $('#email').val('').prop('readonly', false);
+						if(data.pessoa != undefined && data.pessoa.email != '') {
+							$('#email').val(data.pessoa.email);
+							if(data.pessoa.email != data.pessoa.email_corporativo) {
+								$('#email').prop('readonly', true);
+							} else {
+								$('#email').prop('readonly', false);
+							}
+						} else {
+							if(data.pessoa.email != data.pessoa.email_corporativo) {
+								$('#email').val('').prop('readonly', true);
+							} else {
+								$('#email').val('').prop('readonly', false);
+							}
+						}
 
 						if(data.pessoa != undefined && data.pessoa.nm_primario != '') $('#nm_primario').val(data.pessoa.nm_primario).prop('readonly', true);
 						else $('#nm_primario').val('').prop('readonly', false);

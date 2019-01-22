@@ -24,6 +24,16 @@ class Filial extends Model
         return $this->belongsTo('App\Endereco');
     }
     
+    public function documento()
+    {
+    	return $this->belongsTo('App\Documento');
+    }
+    
+    public function contato()
+    {
+    	return $this->belongsTo('App\Contato');
+    }
+    
     public function agendamentos()
     {
         return $this->hasMany('App\Agendamento');

@@ -70,6 +70,11 @@ class Documento extends Model
     {
         return $this->belongsToMany('App\Profissional');
     }
+    
+    public function filials()
+    {
+    	return $this->hasMany('App\Filial');
+    }
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

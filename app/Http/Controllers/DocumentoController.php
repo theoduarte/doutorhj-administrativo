@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contato;
 use App\Documento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,8 +36,9 @@ class DocumentoController extends Controller
 		$model = Documento::where(['tp_documento' => 'CPF', 'te_documento' => $cpfLimpo])->first();
 		if(!is_null($model)) {
 			$representante = $model->representantes->first();
+			
 			if(!is_null($representante)) {
-				$contato = $representante->contatos->where('tp_contato', 'CP')->first();
+				$contato = $representante->contatos->where('tp_contato', Contato::TP_CEL_PESSOAL)->first();
 				if(!is_null($contato)) {
 					$pessoa = [
 						'email' => $representante->user->email,
@@ -50,7 +52,6 @@ class DocumentoController extends Controller
 						'contato_id' => $contato->id,
 						'user_id' => $representante->user_id,
 					];
-
 					return Response()->json(['status' => true, 'pessoa' => $pessoa]);
 				}
 			}

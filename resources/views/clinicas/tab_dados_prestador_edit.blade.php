@@ -462,6 +462,41 @@
                             </div>
                                 			
     					</div>
+    					
+    					<div class="row">
+    						<div class="col-md-3">
+    							<div class="form-inline" >
+    								<div class="form-group">
+    									<label for="nr_cnpj" class="control-label">CNPJ<span class="text-danger">*</span></label>
+    									<input type="hidden" class="filial_tp_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->tp_documento }} @else{{'CNPJ'}}@endif">
+		    		                    <input type="text" class="form-control mascaraCNPJ filial_te_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" onkeyup="$(this).val($(this).val().replace(/[^\d]+/g,''))" >
+		    		                    <input type="hidden" class="fililal_te_documento_no_mask" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" maxlength="30" >
+		    		                    <input type="hidden" class="filial_documento_id" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->id }} @endif">
+                					</div>
+                				</div>
+    						</div>
+    						<div class="col-md-2">
+    							<div class="form-inline" >
+    								<div class="form-group">
+    									<label for="tp_contato" class="control-label">Tipo</label>
+    									<select class="form-control filial_tp_contato">
+				        					<option value="FC" @if( !is_null($list_filials[$i]->contato) && $list_filials[$i]->contato->tp_contato == 'FC' ) selected='selected' @endif >Telefone Comercial</option>
+				        					<option value="CC" @if( !is_null($list_filials[$i]->contato) && $list_filials[$i]->contato->tp_contato == 'CC' ) selected='selected' @endif >Celular Comercial</option>
+				        					<option value="FX" @if( !is_null($list_filials[$i]->contato) && $list_filials[$i]->contato->tp_contato == 'FX' ) selected='selected' @endif >FAX</option>
+				        				</select>
+    								</div>
+    							</div>
+    						</div>
+    						<div class="col-md-3">
+    							<div class="form-inline" >
+    								<div class="form-group">
+    									<label for="tp_contato" class="control-label">Telefone<span class="text-danger">*</span></label>
+    									<input type="text" placeholder="" class="form-control mascaraTelefone filial_ds_contato" value="@if(!is_null($list_filials[$i]->contato)){{ $list_filials[$i]->contato->ds_contato }} @endif" >
+				        				<input type="hidden" class="filial_contato_id" value="@if(!is_null($list_filials[$i]->contato)){{ $list_filials[$i]->contato->id }} @endif" >
+    								</div>
+    							</div>
+    						</div>
+    					</div>
     				</td>
     				<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td>
     				<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Filial" onclick="removerFilial(this)" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td>
@@ -648,12 +683,49 @@ function addFilial(input) {
                         <input type="hidden" class="filial_cd_cidade_ibge" > \
                     </div> \
     			</div> \
+    			<div class="row"> \
+					<div class="col-md-3"> \
+						<div class="form-inline" > \
+							<div class="form-group"> \
+								<label for="nr_cnpj" class="control-label">CNPJ<span class="text-danger">*</span></label> \
+								<input type="hidden" class="filial_tp_documento" value="CNPJ" > \
+			                    <input type="text" class="form-control mascaraCNPJ filial_te_documento" > \
+			                    <input type="hidden" class="fililal_te_documento_no_mask" maxlength="30" > \
+			                    <input type="hidden" class="filial_documento_id" > \
+	    					</div> \
+	    				</div> \
+					</div> \
+					<div class="col-md-2"> \
+						<div class="form-inline" > \
+							<div class="form-group"> \
+								<label for="tp_contato" class="control-label">Tipo</label> \
+								<select class="form-control filial_tp_contato"> \
+		        					<option value="FC" >Telefone Comercial</option> \
+		        					<option value="CC" >Celular Comercial</option> \
+		        					<option value="FX" >FAX</option> \
+		        				</select> \
+							</div> \
+						</div> \
+					</div> \
+					<div class="col-md-3"> \
+						<div class="form-inline" > \
+							<div class="form-group"> \
+								<label for="tp_contato" class="control-label">Telefone<span class="text-danger">*</span></label> \
+								<input type="text" placeholder="" class="form-control mascaraTelefone filial_ds_contato" > \
+		        				<input type="hidden" class="filial_contato_id" > \
+							</div> \
+						</div> \
+					</div> \
+				</div> \
     		</td> \
     		<td><button type="button" class="btn btn-success waves-effect waves-light btn-sm m-b-5" title="Salvar Filial" onclick="salvarFilial(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td> \
     		<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Filial" onclick="removerFilial(this)" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
     	</tr>';
    
 	$('#list-all-filiais').append(content);
+	
+	$('#list-all-filiais').find(".filial_te_documento:last" ).inputmask({ mask: ['99.999.999/9999-99'], keepStatic: true });
+	$('#list-all-filiais').find(".mascaraTelefone:last" ).inputmask({ mask: ["(99) 9999-9999", "(99) 99999-9999"], keepStatic: true });
 
 	$('#list-all-filiais').find(".consultaCepFilial:last" ).blur(function() {
 
@@ -738,7 +810,15 @@ function salvarFilial(input) {
 	var filial_nm_cidade  	 	= ct_element.find('.filial_nm_cidade').val();
 	var filial_cd_cidade_ibge 	= ct_element.find('.filial_cd_cidade_ibge').val();
 	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
+	var filial_sg_estado 		= ct_element.find('.filial_sg_estado').val();
 	var endereco_id 	 		= ct_element.find('.filial_endereco_id').val();
+	var filial_tp_documento 	= ct_element.find('.filial_tp_documento').val();
+	var filial_te_documento 	= ct_element.find('.filial_te_documento').val();
+	var filial_te_doc_no_mask 	= ct_element.find('.fililal_te_documento_no_mask').val();
+	var filial_documento_id		= ct_element.find('.filial_documento_id').val();
+	var filial_tp_contato		= ct_element.find('.filial_tp_contato').val();
+	var filial_ds_contato		= ct_element.find('.filial_ds_contato').val();
+	var filial_contato_id		= ct_element.find('.filial_contato_id').val();
 	var clinica_id 				= $('#clinica_id').val();
 	
     if(nm_nome_fantasia.length == 0) {
@@ -837,6 +917,30 @@ function salvarFilial(input) {
         return false;
     }
 
+    if(filial_te_documento.length == 0) {
+
+    	swal({
+	            title: 'DoutorHoje: Alerta!',
+	            text: "O CNPJ da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(filial_ds_contato.length == 0) {
+
+    	swal({
+	            title: 'DoutorHoje: Alerta!',
+	            text: "O telefone da Filial é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
     $(input).find('i').removeClass('mdi mdi-content-save').addClass('fa fa-spin fa-spinner');
 
     var nm_nome_fantasia 	 	= ct_element.find('.nm_nome_fantasia').val();
@@ -871,8 +975,14 @@ function salvarFilial(input) {
 			'filial_nm_cidade': filial_nm_cidade,
 			'filial_cd_cidade_ibge': filial_cd_cidade_ibge,
 			'filial_sg_estado': filial_sg_estado,
+			'filial_tp_documento': filial_tp_documento,
+			'filial_te_documento': filial_te_documento,
+			'filial_tp_contato': filial_tp_contato,
+			'filial_ds_contato': filial_ds_contato,
 			'clinica_id': clinica_id,
 			'endereco_id': endereco_id,
+			'documento_id': filial_documento_id,
+			'contato_id': filial_contato_id,
 			'_token': laravel_token
 		},
 		success: function (result) {

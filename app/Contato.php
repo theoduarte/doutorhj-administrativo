@@ -62,6 +62,11 @@ class Contato extends Model
     {
         return $this->belongsToMany('App\Empresa');
     }
+    
+    public function filials()
+    {
+    	return $this->hasMany('App\Filial');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
