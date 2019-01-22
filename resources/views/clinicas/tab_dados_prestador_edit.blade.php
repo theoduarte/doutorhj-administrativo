@@ -467,9 +467,9 @@
     						<div class="col-md-3">
     							<div class="form-inline" >
     								<div class="form-group">
-    									<label for="nr_cnpj" class="control-label">CNPJ<span class="text-danger">*</span></label>
-    									<input type="hidden" class="filial_tp_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->tp_documento }} @else{{'CNPJ'}}@endif">
-		    		                    <input type="text" class="form-control mascaraCNPJ filial_te_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" onkeyup="$(this).val($(this).val().replace(/[^\d]+/g,''))" >
+    									<label for="nr_cnpj" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label>
+    									<input type="hidden" class="filial_tp_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->tp_documento }} @else{{'CPF'}}@endif">
+		    		                    <input type="text" class="form-control mascaraCNPJCPF filial_te_documento" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" onkeyup="setTpDocumento(this)" >
 		    		                    <input type="hidden" class="fililal_te_documento_no_mask" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->te_documento }} @endif" maxlength="30" >
 		    		                    <input type="hidden" class="filial_documento_id" value="@if(!is_null($list_filials[$i]->documento)){{ $list_filials[$i]->documento->id }} @endif">
                 					</div>
@@ -687,9 +687,9 @@ function addFilial(input) {
 					<div class="col-md-3"> \
 						<div class="form-inline" > \
 							<div class="form-group"> \
-								<label for="nr_cnpj" class="control-label">CNPJ<span class="text-danger">*</span></label> \
-								<input type="hidden" class="filial_tp_documento" value="CNPJ" > \
-			                    <input type="text" class="form-control mascaraCNPJ filial_te_documento" > \
+								<label for="nr_cnpj" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label> \
+								<input type="hidden" class="filial_tp_documento" value="CPF" > \
+			                    <input type="text" class="form-control mascaraCNPJCPF filial_te_documento" onkeyup="setTpDocumento(this)" > \
 			                    <input type="hidden" class="fililal_te_documento_no_mask" maxlength="30" > \
 			                    <input type="hidden" class="filial_documento_id" > \
 	    					</div> \
@@ -724,7 +724,7 @@ function addFilial(input) {
    
 	$('#list-all-filiais').append(content);
 	
-	$('#list-all-filiais').find(".filial_te_documento:last" ).inputmask({ mask: ['99.999.999/9999-99'], keepStatic: true });
+	$('#list-all-filiais').find(".filial_te_documento:last" ).inputmask({ mask: ['999.999.999-99', '99.999.999/9999-99'], keepStatic: true });
 	$('#list-all-filiais').find(".mascaraTelefone:last" ).inputmask({ mask: ["(99) 9999-9999", "(99) 99999-9999"], keepStatic: true });
 
 	$('#list-all-filiais').find(".consultaCepFilial:last" ).blur(function() {
@@ -1103,5 +1103,18 @@ function removerFilial(input) {
             }
         );
     });
+}
+
+function setTpDocumento(input) {
+
+	var te_documento = $(input).val().replace(/[^\d]+/g,'');
+
+	if(te_documento.length >= 14) {
+ 		$(input).parent().find('label[for="nr_cnpj"]').html('CNPJ<span class="text-danger">*</span>');
+ 		$(input).parent().find('input[class="filial_tp_documento"]').val('CNPJ');
+ 	} else {
+ 		$(input).parent().find('label[for="nr_cnpj"]').html('CPF<span class="text-danger">*</span>');
+ 		$(input).parent().find('input[class="filial_tp_documento"]').val('CPF');
+ 	}
 }
 </script>
