@@ -105,14 +105,6 @@ class Empresa extends Model
 	}
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-	 */
-	public function contatos()
-	{
-		return $this->belongsToMany('App\Contato');
-	}
-
-	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function pacientes()
