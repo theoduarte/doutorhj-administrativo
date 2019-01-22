@@ -64,6 +64,7 @@
 	
     <div class="row">
 		<div class="col-12">
+			<span class="text-primary">{{ sprintf("%02d", $total_consultas) }} Consulta(s) encontrada(s) e {{ sprintf("%02d", sizeof($precoconsultas)) }} Consulta(s) exibida(s)</span>
     		<table id="tblPrecosConsultas" name="tblPrecosConsultas" class="table table-striped table-bordered table-doutorhj">
         		<tr>
 					<th width="12">Id</th>
@@ -114,6 +115,7 @@
     				</tr>
 				@endforeach 
         	</table>
+        	<span id="cvx-consulta-pagination"></span>
         </div>
 	</div>
 </div>
@@ -214,6 +216,17 @@
         		  var profissional_id = ui.item.id;
         		  $('#consulta_profissional_id').val(profissional_id);
         	  }
+        });
+        
+        $('#cvx-consulta-pagination').pagination({
+            items: {{$total_consultas}},
+            itemsOnPage: {{$limit}},
+            hrefTextPrefix: '?page_consulta=',
+            hrefTextSuffix: '&sort_consulta={{$sort_consulta}}&direction_consulta={{$direction_consulta}}',
+            currentPage: {{$ct_page_consulta}},
+            prevText: '<<',
+            nextText: '>>',
+            /* cssStyle: 'light-theme' */
         });
     });
 

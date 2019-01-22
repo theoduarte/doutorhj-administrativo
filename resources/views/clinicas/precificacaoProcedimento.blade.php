@@ -48,6 +48,7 @@
     	<br>
     	<div class="row">
     		<div class="col-12">
+    			<span class="text-primary">{{ sprintf("%02d", $total_procedimentos) }} Procedimento(s) encontrado(s) e {{ sprintf("%02d", sizeof($precoprocedimentos)) }} Procedimento(s) exibido(s)</span>
         		<table id="tblPrecosProcedimentos" name="tblPrecosProcedimentos" class="table table-striped table-bordered table-doutorhj">
             		<tr>
     					<th width="12">Id</th>
@@ -98,6 +99,7 @@
         				</tr>
     				@endforeach 
             	</table>
+            	<span id="cvx-procedimento-pagination"></span>
             </div>
     	</div>
     </form>
@@ -178,6 +180,18 @@
                     $('#descricao_procedimento').val(arProcedimento[2]);
               }
         });
+
+        $('#cvx-procedimento-pagination').pagination({
+            items: {{$total_procedimentos}},
+            itemsOnPage: {{$limit}},
+            hrefTextPrefix: '?page_proced=',
+            hrefTextSuffix: '&sort_proced={{$sort_proced}}&direction_proced={{$direction_proced}}',
+            currentPage: {{$ct_page_proced}},
+            prevText: '<<',
+            nextText: '>>',
+            /* cssStyle: 'light-theme' */
+        });
+        
 
         $('#con-close-modal').find("#filial_profissional").trigger('change.select2');
     });

@@ -293,7 +293,18 @@ class ClinicaController extends Controller
 
         $get_term = CVXRequest::get('search_term');
         $search_term = UtilController::toStr($get_term);
-
+        
+        $sort_proced = CVXRequest::get('sort_proced') != '' ? CVXRequest::get('sort_proced') : 'id';
+        $direction_proced = CVXRequest::get('direction_proced') != '' ? CVXRequest::get('direction_proced') : 'desc';
+        $limit = 10;
+        $page_proced = CVXRequest::get('page_proced') != '' ? intval(CVXRequest::get('page_proced')-1)*10 : 0;
+        $ct_page_proced = CVXRequest::get('page_proced') != '' ? intval(CVXRequest::get('page_proced')) : 1;
+        
+        $sort_consulta = CVXRequest::get('sort_consulta') != '' ? CVXRequest::get('sort_consulta') : 'id';
+        $direction_consulta = CVXRequest::get('direction_consulta') != '' ? CVXRequest::get('direction_consulta') : 'desc';
+        $page_consulta = CVXRequest::get('page_consulta') != '' ? intval(CVXRequest::get('page_consulta')-1)*10 : 0;
+        $ct_page_consulta = CVXRequest::get('page_consulta') != '' ? intval(CVXRequest::get('page_consulta')) : 1;
+        
         $prestador = Clinica::findorfail($idClinica);
         $prestador->load('enderecos');
         $prestador->load('contatos');
@@ -319,12 +330,22 @@ class ClinicaController extends Controller
 
 		$precoprocedimentos = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])
 			->whereNotNull('procedimento_id')
+			->orderby($sort_proced, $direction_proced)
+			->limit($limit)
+			->offset($page_proced)
 			->get();
+		
+		$total_procedimentos = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->whereNotNull('procedimento_id')->count();
 
 		$precoconsultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])
 			->whereNotNull('consulta_id')
+			->orderby($sort_consulta, $direction_consulta)
+			->limit($limit)
+			->offset($page_consulta)
 			->get();
-
+		
+		$total_consultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->whereNotNull('consulta_id')->count();
+		
         $documentoprofissional = [];
 
         if($search_term != '') {
@@ -352,8 +373,9 @@ class ClinicaController extends Controller
         
         return view('clinicas.edit', compact('estados', 'cargos', 'prestador', 'user', 'planos',
             'documentoprofissional', 'precoprocedimentos',
-            'precoconsultas', 'documentosclinica', 'list_profissionals', 'list_especialidades', 'list_filials', 'list_area_atuacaos'));
-    }
+            'precoconsultas', 'documentosclinica', 'list_profissionals', 'list_especialidades', 'list_filials', 'list_area_atuacaos',
+        	'sort_proced', 'direction_proced', 'limit', 'page_proced', 'ct_page_proced', 'total_procedimentos', 'sort_consulta', 'direction_consulta', 'limit', 'page_consulta', 'ct_page_consulta', 'total_consultas'));
+    }	
 
     /**
      * Update the specified resource in storage.
