@@ -54,14 +54,6 @@ class Contato extends Model
     {
         return $this->belongsToMany('App\Clinica');
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function empresas()
-    {
-        return $this->belongsToMany('App\Empresa');
-    }
     
     public function filials()
     {
