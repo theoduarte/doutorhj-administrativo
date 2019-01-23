@@ -464,7 +464,7 @@
     					</div>
     					
     					<div class="row">
-    						<div class="col-md-3">
+    						<div class="col-md-4">
     							<div class="form-inline" >
     								<div class="form-group">
     									<label for="nr_cnpj" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label>
@@ -475,7 +475,7 @@
                 					</div>
                 				</div>
     						</div>
-    						<div class="col-md-2">
+    						<div class="col-md-3">
     							<div class="form-inline" >
     								<div class="form-group">
     									<label for="tp_contato" class="control-label">Tipo</label>
@@ -684,7 +684,7 @@ function addFilial(input) {
                     </div> \
     			</div> \
     			<div class="row"> \
-					<div class="col-md-3"> \
+					<div class="col-md-4"> \
 						<div class="form-inline" > \
 							<div class="form-group"> \
 								<label for="nr_cnpj" class="control-label">CPF / CNPJ<span class="text-danger">*</span></label> \
@@ -695,7 +695,7 @@ function addFilial(input) {
 	    					</div> \
 	    				</div> \
 					</div> \
-					<div class="col-md-2"> \
+					<div class="col-md-3"> \
 						<div class="form-inline" > \
 							<div class="form-group"> \
 								<label for="tp_contato" class="control-label">Tipo</label> \

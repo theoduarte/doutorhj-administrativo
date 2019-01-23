@@ -328,23 +328,33 @@ class ClinicaController extends Controller
 //			->with('precos')
 //			->get();
 
-		$precoprocedimentos = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])
-			->whereNotNull('procedimento_id')
+		$nm_busca_proced = CVXRequest::get('nm_busca_proced');
+		$search_term = UtilController::toStr($nm_busca_proced);
+		
+		//DB::enableQueryLog();
+		$precoprocedimentos = Atendimento::with('procedimento')->where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->whereNotNull('procedimento_id')
+			->where(DB::raw('to_str(ds_preco)'), 'LIKE', '%'.$search_term.'%')
 			->orderby($sort_proced, $direction_proced)
 			->limit($limit)
 			->offset($page_proced)
 			->get();
 		
-		$total_procedimentos = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->whereNotNull('procedimento_id')->count();
-
-		$precoconsultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])
-			->whereNotNull('consulta_id')
+// 		$queries = DB::getQueryLog();
+// 		dd($queries);
+		
+		$total_procedimentos = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->where(DB::raw('to_str(ds_preco)'), 'LIKE', '%'.$search_term.'%')->whereNotNull('procedimento_id')->count();
+		
+		$nm_busca_consulta = CVXRequest::get('nm_busca_consulta');
+		$search_term = UtilController::toStr($nm_busca_consulta);
+		
+		$precoconsultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->whereNotNull('consulta_id')
+			->Where(DB::raw('to_str(ds_preco)'), 'LIKE', '%'.$search_term.'%')
 			->orderby($sort_consulta, $direction_consulta)
 			->limit($limit)
 			->offset($page_consulta)
 			->get();
 		
-		$total_consultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->whereNotNull('consulta_id')->count();
+		$total_consultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->where(DB::raw('to_str(ds_preco)'), 'LIKE', '%'.$search_term.'%')->whereNotNull('consulta_id')->count();
 		
         $documentoprofissional = [];
 
@@ -375,7 +385,7 @@ class ClinicaController extends Controller
             'documentoprofissional', 'precoprocedimentos',
             'precoconsultas', 'documentosclinica', 'list_profissionals', 'list_especialidades', 'list_filials', 'list_area_atuacaos',
         	'sort_proced', 'direction_proced', 'limit', 'page_proced', 'ct_page_proced', 'total_procedimentos', 'sort_consulta', 'direction_consulta', 'limit', 'page_consulta', 'ct_page_consulta', 'total_consultas'));
-    }	
+    }
 
     /**
      * Update the specified resource in storage.
@@ -841,7 +851,7 @@ class ClinicaController extends Controller
     }
 
     /**
-     * precificacaoConsultaStore a newly created resource in storage.
+     * ' a newly created resource in storage.
      *
      * @param  Clinica  $clinica
      * @param  PrecificacaoConsultaRequest  $request
@@ -851,7 +861,7 @@ class ClinicaController extends Controller
     {
 		$data_vigencia = UtilController::getDataRangeTimePickerToCarbon($request->get('data-vigencia'));
 
-//		dd($request->all(), $data_vigencia);
+// 		dd($request->all(), $data_vigencia);
 
         foreach ($request->list_profissional_consulta as $profissionalId) {
 			$atendimento = Atendimento::where([
@@ -874,9 +884,14 @@ class ClinicaController extends Controller
 			$preco = Preco::where(['atendimento_id' => $atendimento->id, 'plano_id' => $request->plano_id, 'cs_status' => 'A'])
 				->where('data_inicio', '<=', date('Y-m-d'))
 				->where('data_fim', '>=', date('Y-m-d'));
-
+// 			dd($atendimento);
 			if($preco->exists()) {
-				$error[] = "Preço {$atendimento->ds_preco} - {$atendimento->profissional->nm_primario}, plano {$preco->first()->plano->ds_plano} já cadastrado";
+				$profissional = Profissional::findorfail($atendimento->profissional_id);
+// 				dd($profissional);
+				$error[] = "Preço {$atendimento->ds_preco} - {$profissional->nm_primario}, plano {$preco->first()->plano->ds_plano} já cadastrado";
+				$mensagem = "Preço ".$atendimento->ds_preco." - ".$profissional->nm_primario.", plano ".$preco->first()->plano->ds_plano." já cadastrado";
+				
+				return redirect()->route('clinicas.edit', $clinica->id)->with('error-alert', $mensagem);
 			} else {
 				$preco = new Preco();
 				$preco->cd_preco = $atendimento->id;
@@ -997,7 +1012,11 @@ class ClinicaController extends Controller
 		$preco = Preco::where(['atendimento_id' => $atendimento->id, 'plano_id' => $request->plano_id, 'cs_status' => 'A']);
 
 		if($preco->exists()) {
-			return redirect()->back()->with('error-alert', 'O plano já está cadastrado. Por favor, tente novamente.');
+// 			return redirect()->back()->with('error-alert', 'O plano já está cadastrado. Por favor, tente novamente.');
+			
+			$mensagem = "O plano já está cadastrado. Por favor, tente novamente.";
+			
+			return redirect()->route('clinicas.edit', $clinica->id)->with('error-alert', $mensagem);
 		}
 
 		$preco = new Preco();

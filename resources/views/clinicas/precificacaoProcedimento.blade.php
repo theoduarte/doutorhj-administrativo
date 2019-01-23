@@ -48,7 +48,26 @@
     	<br>
     	<div class="row">
     		<div class="col-12">
-    			<span class="text-primary">{{ sprintf("%02d", $total_procedimentos) }} Procedimento(s) encontrado(s) e {{ sprintf("%02d", sizeof($precoprocedimentos)) }} Procedimento(s) exibido(s)</span>
+    			<div class="row">
+					<div class="col-md-4">
+						<span class="text-primary">{{ sprintf("%02d", $total_procedimentos) }} Procedimento(s) encontrado(s) e {{ sprintf("%02d", sizeof($precoprocedimentos)) }} Procedimento(s) exibido(s)</span>
+					</div>
+					<div class="col-md-4 offset-md-4">
+						<form id="form-busca-proced" action="{{ route('clinicas.edit', $prestador->id) }}" method="get" enctype="multipart/form-data">
+							<div class="row" style="padding-bottom: 5px;">
+								<div class="col-1" >
+									<a href="{{ route('clinicas.edit', $prestador->id) }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ion-close"></i></a>
+								</div>
+								<div style="width: 395px !important; margin-left: 8px;">
+									<input type="text" class="form-control" id="nm_busca_proced" name="nm_busca_proced" value="@if(!empty($_GET['nm_busca_proced'])){{$_GET['nm_busca_proced']}}@endif">
+								</div>
+								<div class="col-1" >
+									<button type="submit" class="btn btn-primary" id="btn-pesquisar-proced"><i class="fa fa-search"></i> Pesquisar</button>
+								</div>
+		                    </div>
+	                    </form>
+					</div>
+				</div>
         		<table id="tblPrecosProcedimentos" name="tblPrecosProcedimentos" class="table table-striped table-bordered table-doutorhj">
             		<tr>
     					<th width="12">Id</th>
