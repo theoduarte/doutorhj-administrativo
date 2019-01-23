@@ -245,7 +245,7 @@
             currentPage: {{$ct_page_consulta}},
             prevText: '<<',
             nextText: '>>',
-            cssStyle: 'light-theme'
+            cssStyle: 'comvex-theme'
         });
     });
 

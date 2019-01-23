@@ -208,7 +208,7 @@
             currentPage: {{$ct_page_proced}},
             prevText: '<<',
             nextText: '>>',
-            /* cssStyle: 'light-theme' */
+            cssStyle: 'comvex-theme'
         });
         
 
