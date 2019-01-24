@@ -294,13 +294,13 @@ class ClinicaController extends Controller
         $get_term = CVXRequest::get('search_term');
         $search_term = UtilController::toStr($get_term);
         
-        $sort_proced = CVXRequest::get('sort_proced') != '' ? CVXRequest::get('sort_proced') : 'id';
+        $sort_proced = CVXRequest::get('sort_proced') != '' ? CVXRequest::get('sort_proced') : 'atendimentos.id';
         $direction_proced = CVXRequest::get('direction_proced') != '' ? CVXRequest::get('direction_proced') : 'desc';
         $limit = 10;
         $page_proced = CVXRequest::get('page_proced') != '' ? intval(CVXRequest::get('page_proced')-1)*10 : 0;
         $ct_page_proced = CVXRequest::get('page_proced') != '' ? intval(CVXRequest::get('page_proced')) : 1;
         
-        $sort_consulta = CVXRequest::get('sort_consulta') != '' ? CVXRequest::get('sort_consulta') : 'id';
+        $sort_consulta = CVXRequest::get('sort_consulta') != '' ? CVXRequest::get('sort_consulta') : 'atendimentos.id';
         $direction_consulta = CVXRequest::get('direction_consulta') != '' ? CVXRequest::get('direction_consulta') : 'desc';
         $page_consulta = CVXRequest::get('page_consulta') != '' ? intval(CVXRequest::get('page_consulta')-1)*10 : 0;
         $ct_page_consulta = CVXRequest::get('page_consulta') != '' ? intval(CVXRequest::get('page_consulta')) : 1;
@@ -328,32 +328,46 @@ class ClinicaController extends Controller
 //			->with('precos')
 //			->get();
 
+		############# busca por procedimentos com paginacao ##################
 		$nm_busca_proced = CVXRequest::get('nm_busca_proced');
 		$search_term = UtilController::toStr($nm_busca_proced);
 		
-		//DB::enableQueryLog();
+		
 		$precoprocedimentos = Atendimento::with('procedimento')->where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->whereNotNull('procedimento_id')
-			->where(DB::raw('to_str(ds_preco)'), 'LIKE', '%'.$search_term.'%')
 			->orderby($sort_proced, $direction_proced)
 			->limit($limit)
 			->offset($page_proced)
-			->get();
+			->select('atendimentos.id', 'atendimentos.ds_preco', 'atendimentos.cs_status', 'atendimentos.clinica_id', 'atendimentos.consulta_id', 'atendimentos.procedimento_id', 'atendimentos.profissional_id');
 		
-// 		$queries = DB::getQueryLog();
-// 		dd($queries);
+		if(!empty($nm_busca_proced)) {
+		    $precoprocedimentos->join('procedimentos', function($join) use ($search_term) { $join->on('atendimentos.procedimento_id', '=', 'procedimentos.id')->on(function($query) use ($search_term) { $query->where('cd_procedimento', 'LIKE', DB::raw("'%".$search_term."%'"))->orWhere(DB::raw('to_str(atendimentos.ds_preco)'), 'LIKE', '%'.$search_term.'%'); });})
+		                       ->select('atendimentos.id', 'atendimentos.ds_preco', 'atendimentos.cs_status', 'atendimentos.clinica_id', 'atendimentos.consulta_id', 'atendimentos.procedimento_id', 'atendimentos.profissional_id', 'procedimentos.cd_procedimento', 'procedimentos.ds_procedimento', 'procedimentos.grupoprocedimento_id', 'procedimentos.tipoatendimento_id');
+		}
+		
+		$precoprocedimentos = $precoprocedimentos->get();
+
 		
 		$total_procedimentos = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->where(DB::raw('to_str(ds_preco)'), 'LIKE', '%'.$search_term.'%')->whereNotNull('procedimento_id')->count();
 		
+		############# busca por consultas com paginacao ##################
 		$nm_busca_consulta = CVXRequest::get('nm_busca_consulta');
 		$search_term = UtilController::toStr($nm_busca_consulta);
-		
+// 		DB::enableQueryLog();
 		$precoconsultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->whereNotNull('consulta_id')
-			->Where(DB::raw('to_str(ds_preco)'), 'LIKE', '%'.$search_term.'%')
 			->orderby($sort_consulta, $direction_consulta)
 			->limit($limit)
 			->offset($page_consulta)
-			->get();
+			->select('atendimentos.id', 'atendimentos.ds_preco', 'atendimentos.cs_status', 'atendimentos.clinica_id', 'atendimentos.consulta_id', 'atendimentos.procedimento_id', 'atendimentos.profissional_id');
 		
+		if(!empty($nm_busca_consulta)) {
+		    $precoconsultas->join('consultas', function($join) use ($search_term) { $join->on('atendimentos.consulta_id', '=', 'consultas.id')->on(function($query) use ($search_term) { $query->where('cd_consulta', 'LIKE', DB::raw("'%".$search_term."%'"))->orWhere(DB::raw('to_str(atendimentos.ds_preco)'), 'LIKE', '%'.$search_term.'%'); });})
+		                   ->select('atendimentos.id', 'atendimentos.ds_preco', 'atendimentos.cs_status', 'atendimentos.clinica_id', 'atendimentos.consulta_id', 'atendimentos.procedimento_id', 'atendimentos.profissional_id', 'consultas.cd_consulta', 'consultas.ds_consulta', 'consultas.especialidade_id', 'consultas.tipoatendimento_id');
+		}
+		
+		$precoconsultas = $precoconsultas->get();
+// 		$queries = DB::getQueryLog();
+// 		dd($queries);
+// 		dd($precoconsultas);
 		$total_consultas = Atendimento::where(['clinica_id' => $idClinica, 'cs_status' => 'A'])->where(DB::raw('to_str(ds_preco)'), 'LIKE', '%'.$search_term.'%')->whereNotNull('consulta_id')->count();
 		
         $documentoprofissional = [];

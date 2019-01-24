@@ -30,7 +30,7 @@
 					<td>{{$colaborador->contatos()->where('tp_contato', Contato::TP_CEL_PESSOAL)->first()->ds_contato}}</td>
 					<td>{{$colaborador->plano_ativo->ds_plano}}</td>
 					<td>{{$colaborador->vigencia_ativa->vl_anuidade}}/{{$colaborador->vigencia_ativa->periodicidade}}</td>
-					<td>
+					<td style="min-width: 285px;">
 						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-plus" title="Adicionar Dependente" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-account-multiple-plus"></i> Dependente</a>
 						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-edit" title="Editar Colaborador" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-lead-pencil"></i> Editar</a>
 						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Colaborador" href="{{route('pacientes.destroy', $colaborador	->id)}}"><i class="ti-trash"></i> Excluir</a>
@@ -53,7 +53,7 @@
 @push('scripts')
 <script>
 	$(function() {
-		$('#colaboradores .btn-create').on('click', function(e) {
+		$('#colaboradores .btn-plus').on('click', function(e) {
 			e.preventDefault();
 			$('#modalColaborador .modal-body').html('');
 			var url = $(this).attr('href');

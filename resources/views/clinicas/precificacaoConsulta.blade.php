@@ -75,7 +75,7 @@
 								<a href="{{ route('clinicas.edit', $prestador->id) }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ion-close"></i></a>
 							</div>
 							<div style="width: 395px !important; margin-left: 8px;">
-								<input type="text" class="form-control" id="nm_busca_consulta" name="nm_busca_consulta" value="@if(!empty($_GET['nm_busca_consulta'])){{$_GET['nm_busca_consulta']}}@endif">
+								<input type="text" class="form-control" id="nm_busca_consulta" name="nm_busca_consulta" value="@if(!empty($_GET['nm_busca_consulta'])){{$_GET['nm_busca_consulta']}}@endif" placeholder="Digite o código ou nome da consulta" required="required">
 							</div>
 							<div class="col-1" >
 								<button type="submit" class="btn btn-primary" id="btn-pesquisar-consulta"><i class="fa fa-search"></i> Pesquisar</button>
