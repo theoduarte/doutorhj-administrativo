@@ -31,7 +31,7 @@
 					<td>{{$colaborador->plano_ativo->ds_plano}}</td>
 					<td>{{$colaborador->vigencia_ativa->vl_anuidade}}/{{$colaborador->vigencia_ativa->periodicidade}}</td>
 					<td>
-						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-plus" title="Adicionar Dependente" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-account-multiple-plus"></i> Dependente</a>
+						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-plus" title="Adicionar Dependente" href="{{route('pacientes.createDependenteModal', [$colaborador->id, $model->id])}}"><i class="mdi mdi-account-multiple-plus"></i> Dependente</a>
 						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-edit" title="Editar Colaborador" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-lead-pencil"></i> Editar</a>
 						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Colaborador" href="{{route('pacientes.destroy', $colaborador	->id)}}"><i class="ti-trash"></i> Excluir</a>
 					</td>
@@ -44,6 +44,15 @@
 @include('includes.modal', [
 		'entryName' => 'Colaborador',
 		'modalId' => 'modalColaborador',
+		'close' => true,
+		'backdrop' => false,
+		'keyboard' => false,
+		'size' => 'modal-lg',
+	])
+
+@include('includes.modal', [
+		'entryName' => 'Dependente',
+		'modalId' => 'modalDependente',
 		'close' => true,
 		'backdrop' => false,
 		'keyboard' => false,
@@ -69,6 +78,15 @@
 
 			$('#modalColaborador .modal-body').load(url);
 			$('#modalColaborador').modal('show');
+		});
+
+		$('#colaboradores .btn-plus').on('click', function(e) {
+			e.preventDefault();
+			$('#modalDependente .modal-body').html('');
+			var url = $(this).attr('href');
+
+			$('#modalDependente .modal-body').load(url);
+			$('#modalDependente').modal('show');
 		});
 
 		$('#colaboradores .btn-delete').on('click', function(e) {
@@ -105,7 +123,7 @@
 			});
 		});
 
-		$('#modalColaborador').on('hidden.bs.modal', function () {
+		$('#modalColaborador, #modalDependente').on('hidden.bs.modal', function () {
 			reloadShowTab();
 		});
 

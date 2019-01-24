@@ -93,6 +93,10 @@ class Paciente extends Model
 		return $this->hasMany('App\Pedido');
 	}
 
+	public function dependentes() {
+		return $this->hasMany(self::class, 'responsavel_id');
+	}
+
 	public function agendamentos() {
 		return $this->hasMany('App\Agendamento');
 	}
