@@ -16,8 +16,8 @@
 						<td>{{$dep->nm_primario.' '.$dep->nm_secundario}}</td>
 						<td>{{$dep->documentos()->first()->te_documento ?? ''}}</td>
 						<td>{{$dep->contatos()->first()->ds_contato ?? ''}}</td>
-						<td>{{$dep->plano_ativo->ds_plano}}</td>
-						<td>{{$dep->vigencia_ativa->vl_anuidade}}/{{$dep->vigencia_ativa->periodicidade}}</td>
+						<td>{{$dep->plano_ativo->ds_plano ?? ''}}</td>
+						<td>{{$dep->vigencia_ativa->vl_anuidade ?? ''}}/{{$dep->vigencia_ativa->periodicidade ?? ''}}</td>
 					</tr>
 				@endforeach
 			</table>
