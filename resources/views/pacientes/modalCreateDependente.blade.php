@@ -36,6 +36,7 @@
 		'modal' => true,
 	])
 
+	{{--
 	<div class="form-row">
 		<div class="form-group col-4">
 			<label for="anuidade_id" class="control-label">Plano<span class="text-danger">*</span></label>
@@ -56,6 +57,7 @@
 			</select>
 		</div>
 	</div>
+	--}}
 
 	<br>
 	<div class="float-right">
