@@ -61,13 +61,33 @@
     </form>
 	
     <br>
-	
+	<hr>
     <div class="row">
 		<div class="col-12">
+			<div class="row">
+				<div class="col-md-4">
+					<span class="text-primary">{{ sprintf("%02d", $total_consultas) }} Consulta(s) encontrada(s) e {{ sprintf("%02d", sizeof($precoconsultas)) }} Consulta(s) exibida(s)</span>
+				</div>
+				<div class="col-md-4 offset-md-4">
+					<form id="form-busca-consulta" action="{{ route('clinicas.edit', $prestador->id) }}" method="get" >
+						<div class="row" style="padding-bottom: 5px;">
+							<div class="col-1" >
+								<a href="{{ route('clinicas.edit', $prestador->id) }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ion-close"></i></a>
+							</div>
+							<div style="width: 395px !important; margin-left: 8px;">
+								<input type="text" class="form-control" id="nm_busca_consulta" name="nm_busca_consulta" value="@if(!empty($_GET['nm_busca_consulta'])){{$_GET['nm_busca_consulta']}}@endif" placeholder="Digite o código ou nome da consulta" required="required">
+							</div>
+							<div class="col-1" >
+								<button type="submit" class="btn btn-primary" id="btn-pesquisar-consulta"><i class="fa fa-search"></i> Pesquisar</button>
+							</div>
+	                    </div>
+                    </form>
+				</div>
+			</div>
     		<table id="tblPrecosConsultas" name="tblPrecosConsultas" class="table table-striped table-bordered table-doutorhj">
         		<tr>
 					<th width="12">Id</th>
-					<th width="80">Código</th>
+					<th width="100">Código</th>
 					<th width="380">Consulta</th>
 					<th width="300">Profissional</th>
 					<th width="300">Nomes Populares</th>
@@ -114,6 +134,7 @@
     				</tr>
 				@endforeach 
         	</table>
+        	<span id="cvx-consulta-pagination"></span>
         </div>
 	</div>
 </div>
@@ -214,6 +235,17 @@
         		  var profissional_id = ui.item.id;
         		  $('#consulta_profissional_id').val(profissional_id);
         	  }
+        });
+        
+        $('#cvx-consulta-pagination').pagination({
+            items: {{$total_consultas}},
+            itemsOnPage: {{$limit}},
+            hrefTextPrefix: '?page_consulta=',
+            hrefTextSuffix: '&sort_consulta={{$sort_consulta}}&direction_consulta={{$direction_consulta}}',
+            currentPage: {{$ct_page_consulta}},
+            prevText: '<<',
+            nextText: '>>',
+            cssStyle: 'comvex-theme'
         });
     });
 

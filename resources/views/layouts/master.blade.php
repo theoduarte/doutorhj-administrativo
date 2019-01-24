@@ -28,6 +28,8 @@
 		<link href="/libs/multiselect/css/multi-select.css" rel="stylesheet"  type="text/css" />
 		<!-- Select2 CSS -->
 		<link rel="stylesheet" href="/libs/select2/css/select2.min.css" type="text/css" />
+		<!-- Simple Pagination CSS -->
+        <link type="text/css" rel="stylesheet" href="/libs/simple-pagination/simplePagination.css" />
 		<!-- Template theme CSS -->
 		<link rel="stylesheet" href="/libs/comvex-template/css/style_dark.css">
 		<!-- DoutorHJ Reset CSS -->
@@ -44,10 +46,13 @@
 		<script src="/libs/comvex-template/js/bootstrap.min.js"></script>
 		<!-- modernizr script -->
 		<script src="/libs/comvex-template/js/modernizr.min.js"></script>
+		
 		<!-- Sweet Alert Js  -->
 		<script src="/libs/sweet-alert/sweetalert2.min.js"></script>
 		<script src="/libs/comvex-template/pages/jquery.sweet-alert.init.js"></script>
 		<script src="/js/doutorhj.script.js"></script>
+		
+		
 	@endpush
 	@stack('style')
 </head>
@@ -346,6 +351,10 @@
 	
 	<!-- Footable -->	
     <script src="/libs/footable/js/footable.all.min.js"></script>
+    
+    <!-- Simple Pagination js  -->
+    <!-- <script src="/libs/simple-pagination/tests/lib/jquery.min.js"></script> -->
+    <script src="/libs/simple-pagination/jquery.simplePagination.js"></script>
     
 	<script type="text/javascript">
         jQuery(document).ready(function($) {

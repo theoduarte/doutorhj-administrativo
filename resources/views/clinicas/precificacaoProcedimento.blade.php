@@ -45,62 +45,84 @@
 				</div>
 			</div>
 		</div>
-    	<br>
-    	<div class="row">
-    		<div class="col-12">
-        		<table id="tblPrecosProcedimentos" name="tblPrecosProcedimentos" class="table table-striped table-bordered table-doutorhj">
-            		<tr>
-    					<th width="12">Id</th>
-    					<th width="80">Código</th>
-    					<th width="380">Procedimento</th>
-    					<th class="text-left" style="width: 400px;">Locais Disponíveis</th>
-    					<th width="300">Nomes Populares</th>
-						<th>
-							<table class="table">
-								<tr>
-									<th class="text-nowrap">Plano</th>
-									<th class="text-nowrap">Vl. Com.</th>
-									<th class="text-nowrap">Vl. NET</th>
-									<th class="text-nowrap">Vigência</th>
-									<th>Ação</th>
-								</tr>
-							</table>
-						</th>
-    					<th width="10">Ação</th>
-    				</tr>
-        			@foreach( $precoprocedimentos as $atendimento )
-        				<tr id="tr-{{$atendimento->id}}">
-        					<td>{{$atendimento->id}} <input type="hidden" class="procedimento_id" value="{{ $atendimento->procedimento->id }}"></td>
-        					<td class="text-nowrap"><a href="{{ route('procedimentos.show', $atendimento->procedimento->id) }}" title="Exibir" class="btn-link text-primary"><i class="ion-search"></i> {{$atendimento->procedimento->cd_procedimento}}</a></td>
-        					<td>{{$atendimento->ds_preco}}</td>
-        					<td>@if( isset($atendimento->filials) && sizeof($atendimento->filials) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->filials as $filial) <li><i class="mdi mdi-check"></i> @if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA FILIAL SELECIONADA</span>  @endif</td>
-        					<td>@if( isset($atendimento->procedimento->tag_populars) && sizeof($atendimento->procedimento->tag_populars) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->procedimento->tag_populars as $tag) <li><i class="mdi mdi-check"></i> {{ $tag->cs_tag }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="ion-close-circled"></i></span>  @endif</td>
-        					<td>
-								<table class="table">
-									@foreach($atendimento->precos as $preco)
-										<tr>
-											<td>{{$preco->plano->ds_plano}}</td>
-											<td>{{$preco->vl_comercial}}</td>
-											<td>{{$preco->vl_net}}</td>
-											<td>{{$preco->data_inicio->format('d/m/Y')}}<br>{{$preco->data_fim->format('d/m/Y')}}</td>
-											<td class="text-nowrap">
-												<button type="button" class="btn btn-sm btn-default" title="Editar Preço" onclick="loadDataPreco({{$preco->id}})"><i class="mdi mdi-lead-pencil"></i></button>
-												<button type="button" class="btn btn-sm btn-danger" title="Exluir Preço" onclick="delLinhaPreco('{{$preco->id}}', '{{$preco->plano->ds_plano}}')"><i class="ti-trash"></i></button>
-											</td>
-										</tr>
-									@endforeach
-								</table>
-							</td>
-        					<td>
-        						<a onclick="loadDataProcedimento(this, '{{ $atendimento->id }}')" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar Atendimento"><i class="mdi mdi-lead-pencil"></i> Editar</a>
-    	                 		<a onclick="delLinhaProcedimento(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir Atendimento"><i class="ti-trash"></i> Excluir</a>
-        					</td>
-        				</tr>
-    				@endforeach 
-            	</table>
-            </div>
-    	</div>
     </form>
+    <br>
+    <hr>
+	<div class="row">
+		<div class="col-12">
+			<div class="row">
+				<div class="col-md-4">
+					<span class="text-primary">{{ sprintf("%02d", $total_procedimentos) }} Procedimento(s) encontrado(s) e {{ sprintf("%02d", sizeof($precoprocedimentos)) }} Procedimento(s) exibido(s)</span>
+				</div>
+				<div class="col-md-4 offset-md-4">
+					<form id="form-busca-proced" action="{{ route('clinicas.edit', $prestador->id) }}" method="get" enctype="multipart/form-data">
+						<div class="row" style="padding-bottom: 5px;">
+							<div class="col-1" >
+								<a href="{{ route('clinicas.edit', $prestador->id) }}" class="btn btn-icon waves-effect waves-light btn-danger m-b-5" title="Limpar Busca"><i class="ion-close"></i></a>
+							</div>
+							<div style="width: 395px !important; margin-left: 8px;">
+								<input type="text" class="form-control" id="nm_busca_proced" name="nm_busca_proced" value="@if(!empty($_GET['nm_busca_proced'])){{$_GET['nm_busca_proced']}}@endif" placeholder="Digite o código ou nome do procedimento" required="required">
+							</div>
+							<div class="col-1" >
+								<button type="submit" class="btn btn-primary" id="btn-pesquisar-proced"><i class="fa fa-search"></i> Pesquisar</button>
+							</div>
+	                    </div>
+                    </form>
+				</div>
+			</div>
+    		<table id="tblPrecosProcedimentos" name="tblPrecosProcedimentos" class="table table-striped table-bordered table-doutorhj">
+        		<tr>
+					<th width="12">Id</th>
+					<th width="80">Código</th>
+					<th width="380">Procedimento</th>
+					<th class="text-left" style="width: 400px;">Locais Disponíveis</th>
+					<th width="300">Nomes Populares</th>
+					<th>
+						<table class="table">
+							<tr>
+								<th class="text-nowrap">Plano</th>
+								<th class="text-nowrap">Vl. Com.</th>
+								<th class="text-nowrap">Vl. NET</th>
+								<th class="text-nowrap">Vigência</th>
+								<th>Ação</th>
+							</tr>
+						</table>
+					</th>
+					<th width="10">Ação</th>
+				</tr>
+    			@foreach( $precoprocedimentos as $atendimento )
+    				<tr id="tr-{{$atendimento->id}}">
+    					<td>{{$atendimento->id}} <input type="hidden" class="procedimento_id" value="{{ $atendimento->procedimento->id }}"></td>
+    					<td class="text-nowrap"><a href="{{ route('procedimentos.show', $atendimento->procedimento->id) }}" title="Exibir" class="btn-link text-primary"><i class="ion-search"></i> {{$atendimento->procedimento->cd_procedimento}}</a></td>
+    					<td>{{$atendimento->ds_preco}}</td>
+    					<td>@if( isset($atendimento->filials) && sizeof($atendimento->filials) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->filials as $filial) <li><i class="mdi mdi-check"></i> @if($filial->eh_matriz == 'S') (Matriz) @endif {{ $filial->nm_nome_fantasia }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="mdi mdi-close-circle"></i> NENHUMA FILIAL SELECIONADA</span>  @endif</td>
+    					<td>@if( isset($atendimento->procedimento->tag_populars) && sizeof($atendimento->procedimento->tag_populars) > 0 ) <ul class="list-profissional-especialidade">@foreach($atendimento->procedimento->tag_populars as $tag) <li><i class="mdi mdi-check"></i> {{ $tag->cs_tag }}</li> @endforeach</ul> @else <span class="text-danger"> <i class="ion-close-circled"></i></span>  @endif</td>
+    					<td>
+							<table class="table">
+								@foreach($atendimento->precos as $preco)
+									<tr>
+										<td>{{$preco->plano->ds_plano}}</td>
+										<td>{{$preco->vl_comercial}}</td>
+										<td>{{$preco->vl_net}}</td>
+										<td>{{$preco->data_inicio->format('d/m/Y')}}<br>{{$preco->data_fim->format('d/m/Y')}}</td>
+										<td class="text-nowrap">
+											<button type="button" class="btn btn-sm btn-default" title="Editar Preço" onclick="loadDataPreco({{$preco->id}})"><i class="mdi mdi-lead-pencil"></i></button>
+											<button type="button" class="btn btn-sm btn-danger" title="Exluir Preço" onclick="delLinhaPreco('{{$preco->id}}', '{{$preco->plano->ds_plano}}')"><i class="ti-trash"></i></button>
+										</td>
+									</tr>
+								@endforeach
+							</table>
+						</td>
+    					<td>
+    						<a onclick="loadDataProcedimento(this, '{{ $atendimento->id }}')" class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5" title="Editar Atendimento"><i class="mdi mdi-lead-pencil"></i> Editar</a>
+	                 		<a onclick="delLinhaProcedimento(this, '{{ $atendimento->ds_preco }}', '{{ $atendimento->id }}')" class="btn btn-danger waves-effect btn-sm m-b-5" title="Excluir Atendimento"><i class="ti-trash"></i> Excluir</a>
+    					</td>
+    				</tr>
+				@endforeach 
+        	</table>
+        	<span id="cvx-procedimento-pagination"></span>
+        </div>
+	</div>
 </div>
 <div id="profissional-procedimento-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ProfissionalProcedimentoModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
@@ -178,6 +200,18 @@
                     $('#descricao_procedimento').val(arProcedimento[2]);
               }
         });
+
+        $('#cvx-procedimento-pagination').pagination({
+            items: {{$total_procedimentos}},
+            itemsOnPage: {{$limit}},
+            hrefTextPrefix: '?page_proced=',
+            hrefTextSuffix: '&sort_proced={{$sort_proced}}&direction_proced={{$direction_proced}}',
+            currentPage: {{$ct_page_proced}},
+            prevText: '<<',
+            nextText: '>>',
+            cssStyle: 'comvex-theme'
+        });
+        
 
         $('#con-close-modal').find("#filial_profissional").trigger('change.select2');
     });
