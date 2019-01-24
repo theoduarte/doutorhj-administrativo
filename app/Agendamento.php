@@ -89,6 +89,11 @@ class Agendamento extends Model
         return $this->hasMany('App\Itempedido');
     }
     
+    public function corretor()
+    {
+    	return $this->belongsTo('App\Corretor');
+    }
+    
     
     /*
      * Getters and Setters

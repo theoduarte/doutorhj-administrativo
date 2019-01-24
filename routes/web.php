@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('titulacaos','TitulacaoController');
     Route::resource('cupom_descontos','CupomDescontoController');
     Route::resource('checkups','CheckupsController');
+    Route::resource('corretors','CorretorController');
     Route::resource('termos-condicoes','TermosCondicoesController');
     Route::resource('servico_adicionals', 'ServicoAdicionalController');
 	Route::resource('precos', 'PrecoController');
