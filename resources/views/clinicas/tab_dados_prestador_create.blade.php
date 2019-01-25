@@ -23,7 +23,7 @@
         <h4>Dados Cadastrais da Clínica</h4>
         <div class="row">
             <div class="col-sm-12 col-md-10">
-                <div class="form-group{{ $errors->has('nm_razao_social') ? ' has-error' : '' }}">
+                <div class="form-group {{ $errors->has('nm_razao_social') ? ' has-error' : '' }}">
                     <label for="nm_razao_social" class="control-label">Razão Social<span class="text-danger">*</span></label>
                     <div class="">
                         <input type="text" id="nm_razao_social" class="form-control" name="nm_razao_social" value="{{ old('nm_razao_social') }}" required  maxlength="150" autofocus>
