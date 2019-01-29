@@ -884,15 +884,17 @@ class AgendamentoController extends Controller
                 
                 $list_agendamentos->select('agendamentos.id', 'agendamentos.te_ticket', 'agendamentos.dt_atendimento', 'agendamentos.obs_agendamento', 'agendamentos.obs_cancelamento', 'agendamentos.cs_status',
                     'agendamentos.bo_remarcacao', 'agendamentos.clinica_id', 'agendamentos.paciente_id', 'agendamentos.atendimento_id', 'agendamentos.profissional_id', 'agendamentos.convenio_id',
-                    'agendamentos.bo_retorno', 'agendamentos.cupom_id', 'agendamentos.filial_id', 'agendamentos.checkup_id', 'clinicas.nm_razao_social', 'pedidos.dt_pagamento');
+                    'agendamentos.bo_retorno', 'agendamentos.cupom_id', 'agendamentos.filial_id', 'agendamentos.checkup_id', 'clinicas.nm_razao_social', 'pedidos.dt_pagamento', 'agendamentos.created_at AS dt_preco');
 //                 DB::enableQueryLog();
                 $list_agendamentos = $list_agendamentos->get();
 //                 dd( DB::getQueryLog() );
                 foreach ($list_agendamentos as $item) {
                 	$atend_temp = new Atendimento();
-                	$plano_ativo_id = Paciente::getPlanoAtivo($item->paciente_id);
-                	$preco_temp = $atend_temp->getPrecoByAgendamento($plano_ativo_id, $item->atendimento_id, $item->getRawDtAtendimentoAttribute());
                 	
+                	$plano_ativo_id = Paciente::getPlanoAtivo($item->paciente_id);
+                	$dt_preco = !is_null($item->getRawDtAtendimentoAttribute()) ? $item->getRawDtAtendimentoAttribute() : $item->dt_preco; 
+                	$preco_temp = $atend_temp->getPrecoByAgendamento($plano_ativo_id, $item->atendimento_id, $dt_preco);
+
                 	$item->vl_net = !is_null($preco_temp) ? $preco_temp->vl_net : 0;
                 	$item->vl_com = !is_null($preco_temp) ? $preco_temp->vl_comercial : 0;
                 }
