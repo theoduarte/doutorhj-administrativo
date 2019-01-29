@@ -62,7 +62,7 @@
 					@foreach($corretors as $corretor)
 				
 					<tr>
-						<td>{{$corretor->id}}</td>
+						<td>{{sprintf("%04d", $corretor->id)}}</td>
 						<td>{{$corretor->nm_primario.' '.$corretor->nm_secundario}}</td>
 						<td>@if(!empty($corretor->documento)){{$corretor->documento->te_documento}}@endif</td>
 						<td>{{$corretor->email}}</td>

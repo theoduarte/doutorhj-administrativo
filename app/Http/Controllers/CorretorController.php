@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request as CVXRequest;
 use App\Corretor;
+use App\Documento;
+use App\Contato;
+use App\Http\Requests\CorretorsRequest;
 
 class CorretorController extends Controller
 {
@@ -35,7 +38,7 @@ class CorretorController extends Controller
     	$get_term = CVXRequest::get('search_term');
     	$search_term = UtilController::toStr($get_term);
     	 
-    	$corretors = Corretor::with('documento', 'contato')->where(DB::raw('to_str(nm_primario)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(nm_secundario)'), 'LIKE', '%'.$search_term.'%')->sortable()->paginate(10);
+    	$corretors = Corretor::with('documento', 'contato')->where(DB::raw('to_str(nm_primario)'), 'LIKE', '%'.$search_term.'%')->orWhere(DB::raw('to_str(nm_secundario)'), 'LIKE', '%'.$search_term.'%')->where('cs_status', '=', 'A')->sortable()->paginate(10);
     	 
     	return view('corretors.index', compact('corretors'));
     }
@@ -56,11 +59,63 @@ class CorretorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CorretorsRequest $request)
     {
-    	$corretor = Corretor::create($request->all());
-    	 
-    	$corretor->save();
+    	
+    	########### STARTING TRANSACTION ############
+    	DB::beginTransaction();
+    	#############################################
+    	
+    	try {
+    		
+    		# registra o documento do corretor
+    		$cpf 		= UtilController::retiraMascara($request->input('te_documento'));
+    		$documento 	= Documento::where(['te_documento' => $cpf])->first();
+    		
+    		if (empty($documento)) {
+    			$documento = new Documento();
+    		}
+    		
+    		$documento->tp_documento = Documento::TP_CPF;
+    		$documento->te_documento = $cpf;
+    		$documento->save();
+    		$documento_id = $documento->id;
+    		
+    		# registra o contato do corretor
+    		$ds_contato = $request->input('telefone');
+    		$contato 	= Contato::where(['tp_contato' => Contato::TP_CEL_PESSOAL, 'ds_contato' => $ds_contato])->first();
+    		
+    		if (empty($contato)) {
+    			$contato = new Contato();
+    		}
+    		
+    		$contato->tp_contato 	= Contato::TP_CEL_PESSOAL;
+    		$contato->ds_contato 	= $ds_contato;
+    		$contato->save();
+    		$contato_id = $contato->id;
+    		
+    		# salva o corretor
+    		$corretor 					= new Corretor();
+    		$corretor->nm_primario 		= $request->input('nm_primario');
+    		$corretor->nm_secundario 	= $request->input('nm_secundario');
+    		$corretor->dt_nascimento 	= CVXRequest::post('dt_nascimento');
+    		$corretor->email 			= $request->input('email');
+    		$corretor->cs_status 		= 'A';
+    		$corretor->documento_id 	= $documento_id;
+    		$corretor->contato_id 		= $contato_id;
+    		$corretor->save();
+    		
+    	} catch (\Exception $e) {
+    		########### FINISHIING TRANSACTION ##########
+    		DB::rollback();
+    		#############################################
+    		
+    		return redirect()->route('corretors.index')->with('error', 'O Corretor não foi cadastrado. Por favor, tente novamente.');
+    	}
+    	
+    	########### FINISHIING TRANSACTION ##########
+    	DB::commit();
+    	#############################################
     	 
     	return redirect()->route('corretors.index')->with('success', 'O Corretor foi cadastrado com sucesso!');
     }
@@ -73,7 +128,7 @@ class CorretorController extends Controller
      */
     public function show($id)
     {
-    	$corretor = Corretor::findOrFail($id);
+    	$corretor = Corretor::with('documento', 'contato')->findOrFail($id);
     	 
     	return view('corretors.show', compact('corretor'));
     }
@@ -100,9 +155,61 @@ class CorretorController extends Controller
      */
     public function update(Request $request, $id)
     {
-    	$corretor = Corretor::findOrFail($id);
+    	$corretor = Corretor::with('documento', 'contato')->findOrFail($id);
     	 
-    	$corretor->update($request->all());
+    	########### STARTING TRANSACTION ############
+    	DB::beginTransaction();
+    	#############################################
+    	 
+    	try {
+    	
+    		# registra o documento do corretor
+    		$cpf 		= UtilController::retiraMascara($request->input('te_documento'));
+    		$documento 	= Documento::where(['te_documento' => $cpf])->first();
+    	
+    		if (empty($documento)) {
+    			$documento = new Documento();
+    		}
+    	
+    		$documento->tp_documento = Documento::TP_CPF;
+    		$documento->te_documento = $cpf;
+    		$documento->save();
+    		$documento_id = $documento->id;
+    	
+    		# registra o contato do corretor
+    		$ds_contato = $request->input('telefone');
+    		$contato 	= Contato::where(['tp_contato' => Contato::TP_CEL_PESSOAL, 'ds_contato' => $ds_contato])->first();
+    	
+    		if (empty($contato)) {
+    			$contato = new Contato();
+    		}
+    	
+    		$contato->tp_contato 	= Contato::TP_CEL_PESSOAL;
+    		$contato->ds_contato 	= $ds_contato;
+    		$contato->save();
+    		$contato_id = $contato->id;
+    	
+    		# salva o corretor
+    		$corretor->nm_primario 		= $request->input('nm_primario');
+    		$corretor->nm_secundario 	= $request->input('nm_secundario');
+    		$corretor->dt_nascimento 	= CVXRequest::post('dt_nascimento');
+    		$corretor->email 			= $request->input('email');
+    		$corretor->cs_status 		= 'A';
+    		$corretor->documento_id 	= $documento_id;
+    		$corretor->contato_id 		= $contato_id;
+    		$corretor->save();
+    	
+    	} catch (\Exception $e) {
+    		########### FINISHIING TRANSACTION ##########
+    		DB::rollback();
+    		#############################################
+    	
+    		return redirect()->route('corretors.index')->with('error', 'O Corretor não foi cadastrado. Por favor, tente novamente.');
+    	}
+    	 
+    	########### FINISHIING TRANSACTION ##########
+    	DB::commit();
+    	#############################################
     	 
     	return redirect()->route('corretors.index')->with('success', 'O Corretor foi editado com sucesso!');
     }
