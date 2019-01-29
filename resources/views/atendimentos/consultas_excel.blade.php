@@ -74,15 +74,15 @@
                     <td>{{$item_consulta->nm_primario}}</td>
                     <td>{{$item_consulta->nm_secundario}}</td>
                     <td>{{$item_consulta->genero}}</td>
-                    <td>{{$item_consulta->precos->first()->id}}</td>
+                    <td>@if(sizeof($item_consulta->precos) > 0) {{$item_consulta->precos->first()->id}} @endif</td>
                     <td>{{$item_consulta->id}}</td>
-                    <td>{{$item_consulta->precos->first()->tp_preco_id}}</td>
-                    <td>{{$item_consulta->precos->first()->plano->cd_plano}}</td>
-                    <td>{{$item_consulta->precos->first()->plano->ds_plano}}</td>
-                    <td>{{$item_consulta->precos->first()->data_inicio}}</td>
-                    <td>{{$item_consulta->precos->first()->data_fim}}</td>
-                    <td>{{$item_consulta->precos->first()->vl_comercial}}</td>
-                    <td>{{$item_consulta->precos->first()->vl_net}}</td>
+                    <td>@if(sizeof($item_consulta->precos) > 0) {{$item_consulta->precos->first()->tp_preco_id}} @endif</td>
+                    <td>@if(sizeof($item_consulta->precos) > 0) {{$item_consulta->precos->first()->plano->cd_plano}} @endif</td>
+                    <td>@if(sizeof($item_consulta->precos) > 0) {{$item_consulta->precos->first()->plano->ds_plano}} @endif</td>
+                    <td>@if(sizeof($item_consulta->precos) > 0) {{$item_consulta->precos->first()->data_inicio}} @endif</td>
+                    <td>@if(sizeof($item_consulta->precos) > 0) {{$item_consulta->precos->first()->data_fim}} @endif</td>
+                    <td>@if(sizeof($item_consulta->precos) > 0) {{$item_consulta->precos->first()->vl_comercial}} @endif</td>
+                    <td>@if(sizeof($item_consulta->precos) > 0) {{$item_consulta->precos->first()->vl_net}} @endif</td>
                     <td>
                     	@if(!is_null($item_consulta->precos->get(1)))
                     		{{ $item_consulta->precos->get(1)->vl_comercial }}

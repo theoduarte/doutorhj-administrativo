@@ -532,10 +532,13 @@ class PacienteController extends Controller
      */
     public function listarPacientesAtivos()
     {
-        $num_atendimento = Atendimento::distinct()->where(['atendimentos.consulta_id' => null, 'atendimentos.cs_status' => 'A'])->count();
-        $num_arquivos = intval(ceil($num_atendimento/2000));
+    	$num_consultas = Atendimento::distinct()->where(['atendimentos.procedimento_id' => null, 'atendimentos.cs_status' => 'A'])->count();
+    	$num_arquivos_consulta = intval(ceil($num_consultas/2000));
+    	
+        $num_procedimentos = Atendimento::distinct()->where(['atendimentos.consulta_id' => null, 'atendimentos.cs_status' => 'A'])->count();
+        $num_arquivos_proced = intval(ceil($num_procedimentos/2000));
         
-        return view('pacientes.pacientes_ativos', compact('num_arquivos'));
+        return view('pacientes.pacientes_ativos', compact('num_arquivos_proced', 'num_arquivos_consulta'));
     }
 
 	/**

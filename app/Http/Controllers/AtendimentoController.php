@@ -429,9 +429,10 @@ class AtendimentoController extends Controller
     public function geraListaConsultasXls()
     {
 
-
-    	Excel::create('DRHJ_RELATORIO_CONSULTAS_' . date('d-m-Y~H_i_s'), function ($excel) {
-    		$excel->sheet('Consultas', function ($sheet) {
+    	$i = CVXRequest::post('parte_lista');
+    	
+    	Excel::create('DRHJ_RELATORIO_CONSULTAS_' . date('d-m-Y~H_i_s').'_parte_'.($i+1), function ($excel) use ($i) {
+    		$excel->sheet('Consultas', function ($sheet) use ($i) {
 
     			// Font family
     			$sheet->setFontFamily('Comic Sans MS');
@@ -467,6 +468,8 @@ class AtendimentoController extends Controller
         			    //      			 ->selectRaw("at.id, at.ds_preco, (SELECT precos.id FROM precos WHERE precos.atendimento_id = at.id AND precos.plano_id = 1 AND precos.cs_status = 'A' LIMIT 1) as preco_id")
         			//, function($query) {  $query->select('precos.id')->from('precos')->where('precos.atendimento_id','=','at.id')->where('precos.tp_preco_id', '=', 1);}
         			->where(['atendimentos.procedimento_id' => null, 'atendimentos.cs_status' => 'A'])
+        			->limit(2000)
+        			->offset($i*2000)
 //         			->limit(10)
         			->orderby('atendimentos.ds_preco', 'asc')
         			->orderby('atendimentos.id', 'asc')
