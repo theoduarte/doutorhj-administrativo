@@ -491,7 +491,7 @@ class UtilController extends Controller
 						'name' => 'Theo'
 					],
 					[
-						'email' => 'rodrigosilva26@hotmail.com',
+						'email' => 'ralbuquerquesilva@gmail.com',
 						'name' => 'Rodrigo Silva'
 					],
 				];
