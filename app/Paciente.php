@@ -146,8 +146,6 @@ class Paciente extends Model
 		if(isset($this->attributes['dt_nascimento']) && !is_null($this->attributes['dt_nascimento'])) {
 			$date = new Carbon($this->attributes['dt_nascimento']);
 			return $date->format('d/m/Y');
-		} else {
-			return null;
 		}
 	}
 	

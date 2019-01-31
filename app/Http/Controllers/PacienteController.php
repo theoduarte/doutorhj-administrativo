@@ -205,7 +205,7 @@ class PacienteController extends Controller
 			$vigencia->vl_max_consumo   = 0;
 			$vigencia->anuidade_id     	= $dados['anuidade_id'];
 			$vigencia->data_inicio 		= date('Y-m-d H:i:s');
-			$vigencia->periodicidade 	= $dados['pediodicidade'];
+			$vigencia->periodicidade 	= $dados['periodicidade'];
 			$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
 			$vigencia->save();
 		} catch (\Exception $e) {
@@ -350,7 +350,7 @@ class PacienteController extends Controller
 			$vigencia->vl_max_consumo   = 0;
 			$vigencia->anuidade_id     	= $dados['anuidade_id'];
 			$vigencia->data_inicio 		= date('Y-m-d H:i:s');
-			$vigencia->periodicidade 	= $dados['pediodicidade'];
+			$vigencia->periodicidade 	= $dados['periodicidade'];
 			$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
 			$vigencia->save();
 		} catch (\Exception $e) {
@@ -430,7 +430,7 @@ class PacienteController extends Controller
 				$vigencia->vl_max_consumo   = 0;
 				$vigencia->anuidade_id     	= $dados['anuidade_id'];
 				$vigencia->data_inicio 		= date('Y-m-d H:i:s');
-				$vigencia->periodicidade 	= $dados['pediodicidade'];
+				$vigencia->periodicidade 	= $dados['periodicidade'];
 				$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
 				$vigencia->save();
 			}
