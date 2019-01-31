@@ -23,6 +23,7 @@ use App\ItemPedido;
 use App\RegistroLog;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Empresa;
+use App\Preco;
 
 class AgendamentoController extends Controller
 {
@@ -896,11 +897,18 @@ class AgendamentoController extends Controller
                 	$atend_temp = new Atendimento();
                 	
                 	$plano_ativo_id = Paciente::getPlanoAtivo($item->paciente_id);
-                	$dt_preco = !is_null($item->getRawDtAtendimentoAttribute()) ? $item->getRawDtAtendimentoAttribute() : $item->dt_preco; 
+                	$dt_preco = !is_null($item->getRawDtAtendimentoAttribute()) ? $item->getRawDtAtendimentoAttribute() : $item->dt_preco;
+                	
                 	$preco_temp = $atend_temp->getPrecoByAgendamento($plano_ativo_id, $item->atendimento_id, $dt_preco);
-
+                	$status_preco = 'ATUALIZADO';
+                	
+                	if (is_null($preco_temp)) {
+                	    $preco_temp = Preco::where(['atendimento_id' => $item->atendimento_id, 'cs_status' => 'I'])->first();
+                	    $status_preco = !is_null($preco_temp) ? 'INATIVO' : '';
+                	}
                 	$item->vl_net = !is_null($preco_temp) ? $preco_temp->vl_net : 0;
                 	$item->vl_com = !is_null($preco_temp) ? $preco_temp->vl_comercial : 0;
+                	$item->status_preco = $status_preco;
                 	
 //                 	$paciente_id = $item->paciente_id;
 //                 	$empresa_temp = Empresa::join('pacientes', function ($query) use ($paciente_id) { $query->on('empresas.id', '=', 'pacientes.empresa_id')->whereNotNull('pacientes.empresa_id')->where('pacientes.id', $paciente_id); })->first();

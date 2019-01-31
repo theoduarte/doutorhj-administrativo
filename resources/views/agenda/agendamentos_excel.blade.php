@@ -27,6 +27,7 @@
                 <th>Vl. Net</th>
                 <th>Vl. Comercial</th>
                 <th>Empresa</th>
+                <th>Status Preço</th>
     		</tr>
 
     		@foreach( $list_agendamentos as $item_agendamento )
@@ -40,9 +41,10 @@
                     <td>@if(!empty( $item_agendamento->itempedidos->first()->pedido )) {{ $item_agendamento->itempedidos->first()->pedido->dt_pagamento }} @endif</td>
                     <td><span class="@if(empty($item_agendamento->getRawDtAtendimentoAttribute()))  text-danger  @endif">{{ $item_agendamento->dt_atendimento }}</span></td>
                     <td>{{ $item_agendamento->cs_status }}</td>
-                    <td>{{ $item_agendamento->vl_net }}</td>
-                    <td>{{ $item_agendamento->vl_com }}</td>
+                    <td><span style="color: @if($item_agendamento->status_preco == 'INATIVO') #dc3545 @endif;">{{ $item_agendamento->vl_net }}</span></td>
+                    <td><span style="color: @if($item_agendamento->status_preco == 'INATIVO') #dc3545 @endif;">{{ $item_agendamento->vl_com }}</span></td>
                     <td>@if(!is_null($item_agendamento->paciente->empresa_id)){{$item_agendamento->paciente->empresa->nome_fantasia}}@else <span style="color: #dc3545;">não informado</span> @endif</td>
+                    <td><span style="color: @if($item_agendamento->status_preco == 'ATUALIZADO') #3bafda @else #dc3545 @endif;">{{$item_agendamento->status_preco}}</span></td>
 				</tr>
                 
     		@endforeach
