@@ -22,6 +22,7 @@ use App\Atendimento;
 use App\ItemPedido;
 use App\RegistroLog;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Empresa;
 
 class AgendamentoController extends Controller
 {
@@ -840,6 +841,9 @@ class AgendamentoController extends Controller
                     $list_agendamentos->whereIn('agendamentos.cs_status', $status_atendimento);
                 }
                 
+                //-- filtra realizando a remocao dos testes realizados-----------------------------
+                $list_agendamentos->whereNotIn('agendamentos.id', [228,203,247,243,251,357,236,239,204,375,248,260,242,292,293,297,300,210,211,224,227,249,230,237,213,222,238,229,253,234,233,296,220,372,212,368,214,225,235,245,369,246,408,223,121,232,109,100]);
+                
                 //-- filtra por data de atendimento do agendamento----------------------------------------------------------------------------------
                 if (!is_null($startdate_atendimento_xls) && !is_null($enddate_atendimento_xls) && $startdate_atendimento_xls != '' && $enddate_atendimento_xls != '') {
                     
@@ -897,6 +901,10 @@ class AgendamentoController extends Controller
 
                 	$item->vl_net = !is_null($preco_temp) ? $preco_temp->vl_net : 0;
                 	$item->vl_com = !is_null($preco_temp) ? $preco_temp->vl_comercial : 0;
+                	
+//                 	$paciente_id = $item->paciente_id;
+//                 	$empresa_temp = Empresa::join('pacientes', function ($query) use ($paciente_id) { $query->on('empresas.id', '=', 'pacientes.empresa_id')->whereNotNull('pacientes.empresa_id')->where('pacientes.id', $paciente_id); })->first();
+//                 	$item->nome_empresa = sizeof($empresa_temp) > 0 ? $empresa_temp->nome_fantasia : null;
                 }
                 
 //                 dd($list_agendamentos);

@@ -26,6 +26,7 @@
                 <th>Situação</th>
                 <th>Vl. Net</th>
                 <th>Vl. Comercial</th>
+                <th>Empresa</th>
     		</tr>
 
     		@foreach( $list_agendamentos as $item_agendamento )
@@ -41,6 +42,7 @@
                     <td>{{ $item_agendamento->cs_status }}</td>
                     <td>{{ $item_agendamento->vl_net }}</td>
                     <td>{{ $item_agendamento->vl_com }}</td>
+                    <td>@if(!is_null($item_agendamento->paciente->empresa_id)){{$item_agendamento->paciente->empresa->nome_fantasia}}@else <span style="color: #dc3545;">não informado</span> @endif</td>
 				</tr>
                 
     		@endforeach
