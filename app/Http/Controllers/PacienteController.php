@@ -205,7 +205,7 @@ class PacienteController extends Controller
 			$vigencia->vl_max_consumo   = 0;
 			$vigencia->anuidade_id     	= $dados['anuidade_id'];
 			$vigencia->data_inicio 		= date('Y-m-d H:i:s');
-			$vigencia->periodicidade 	= $dados['pediodicidade'];
+			$vigencia->periodicidade 	= $dados['periodicidade'];
 			$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
 			$vigencia->save();
 		} catch (\Exception $e) {
@@ -344,15 +344,15 @@ class PacienteController extends Controller
 			Paciente::where(['responsavel_id' => $paciente->id, 'cs_status' => 'A'])->update(['empresa_id' => $paciente->empresa_id]);
 
 			# dados do vigencia do paciente
-//			$vigencia           		= new VigenciaPaciente();
-//			$vigencia->paciente_id 		= $paciente->id;
-//			$vigencia->cobertura_ativa  = true;
-//			$vigencia->vl_max_consumo   = 0;
-//			$vigencia->anuidade_id     	= $dados['anuidade_id'];
-//			$vigencia->data_inicio 		= date('Y-m-d H:i:s');
-//			$vigencia->periodicidade 	= $dados['pediodicidade'];
-//			$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
-//			$vigencia->save();
+			$vigencia           		= new VigenciaPaciente();
+			$vigencia->paciente_id 		= $paciente->id;
+			$vigencia->cobertura_ativa  = true;
+			$vigencia->vl_max_consumo   = 0;
+			$vigencia->anuidade_id     	= $dados['anuidade_id'];
+			$vigencia->data_inicio 		= date('Y-m-d H:i:s');
+			$vigencia->periodicidade 	= $dados['periodicidade'];
+			$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
+			$vigencia->save();
 		} catch (\Exception $e) {
 			########### FINISHIING TRANSACTION ##########
 			DB::rollback();
@@ -430,7 +430,7 @@ class PacienteController extends Controller
 				$vigencia->vl_max_consumo   = 0;
 				$vigencia->anuidade_id     	= $dados['anuidade_id'];
 				$vigencia->data_inicio 		= date('Y-m-d H:i:s');
-				$vigencia->periodicidade 	= $dados['pediodicidade'];
+				$vigencia->periodicidade 	= $dados['periodicidade'];
 				$vigencia->data_fim 		= date('Y-m-d H:i:s', strtotime("+1 year", strtotime($vigencia->data_inicio)));
 				$vigencia->save();
 			}
