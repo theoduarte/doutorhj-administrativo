@@ -27,6 +27,44 @@
 	<div class="row">
 		<div class="col-sm-6">
 			<div class="widget-simple-chart text-left card-box">
+				<form action="{{ route('pacientes-detalhado-xls') }}" method="post" enctype="multipart/form-data">
+				
+					{!! csrf_field() !!}
+					
+					<div class="row">
+						<div class="form-group col-md-3 offset-md-3">
+                       		<label for="parte_lista" class="text-primary">Selecione o mês INICIO</label>
+                       		<input type="text" class="input-mes-inicio form-control cvx-datepicker col-md-8" name="mes_inicio">
+                        </div>
+                        <div class="form-group col-md-3">
+                       		<label for="parte_lista" class="text-primary">Selecione o mês FIM</label>
+                       		<input type="text" class="input-mes-fim form-control cvx-datepicker col-md-8" name="mes_fim">
+                        </div>
+					</div>
+					
+					<div class="form-group text-center m-b-0">
+						<button type="submit" class="btn btn-secondary btn-lg waves-effect waves-light" ><i class="mdi mdi-cloud-print-outline"></i> Gerar Lista Detalhada de Pacientes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="widget-simple-chart text-left card-box">
+				<form action="{{ route('consultas-xls') }}" method="post" enctype="multipart/form-data">
+				
+					{!! csrf_field() !!}
+					
+					<div class="form-group text-center m-b-0">
+						<button type="submit" class="btn btn-success btn-lg waves-effect waves-light" ><i class="mdi mdi-file-excel"></i> Gerar Lista de Consultas</button>
+					</div>
+				</form>
+			</div>
+		</div>	
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="widget-simple-chart text-left card-box">
 				<form action="{{ route('pacientes-ativos-xls') }}" method="post" enctype="multipart/form-data">
 				
 					{!! csrf_field() !!}
@@ -125,6 +163,31 @@
             $('.inlineCheckbox').click(function(){
 				$('#inlineCheckboxTodos').prop('checked', false);
 			});
+
+            var startDate = new Date();
+            var FromEndDate = new Date();
+
+            jQuery('.input-mes-inicio').datepicker({
+                autoclose: true,
+                minViewMode: 1,
+                format: 'M/yyyy',
+                language: 'pt-BR'
+            }).on('changeDate', function(selected){
+                    startDate = new Date(selected.date.valueOf());
+                    startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+                    $('.input-mes-fim').datepicker('setStartDate', startDate);
+                }); 
+
+            jQuery('.input-mes-fim').datepicker({
+                autoclose: true,
+                minViewMode: 1,
+                format: 'M/yyyy',
+                language: 'pt-BR'
+            }).on('changeDate', function(selected){
+                    FromEndDate = new Date(selected.date.valueOf());
+                    FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+                    $('.input-mes-inicio').datepicker('setEndDate', FromEndDate);
+                });
         });
 	</script>
 @endpush

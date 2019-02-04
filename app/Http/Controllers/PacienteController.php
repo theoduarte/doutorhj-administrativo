@@ -9,6 +9,7 @@ use App\Empresa;
 use App\Http\Requests\ColaboradorRequest;
 use App\Http\Requests\DependenteRequest;
 use App\Http\Requests\PacientesRequest;
+use Illuminate\Support\Facades\Request as CVXRequest;
 use App\User;
 use App\VigenciaPaciente;
 use Illuminate\Support\Facades\DB;
@@ -648,6 +649,102 @@ class PacienteController extends Controller
 //     			));
 
     			$sheet->loadView('pacientes.pacientes_ativos_excel', compact('list_pacientes', 'cabecalho'));
+    		});
+    	})->export('xls');
+    }
+    
+    /**
+     * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico numa lista detalhada.
+     *
+     */
+    public function geraListaPacientesDetalhadoXls()
+    {
+    	
+    	$data_inicio = CVXRequest::post('mes_inicio');
+    	$data_fim 	= CVXRequest::post('mes_fim');
+    	
+    	$data_mes_inicio = explode('/', $data_inicio);
+    	$data_mes_fim = explode('/', $data_fim);
+    	
+    	$mes_inicio = UtilController::getNumMesByNome($data_mes_inicio[0]);
+    	$mes_fim = UtilController::getNumMesByNome($data_mes_fim[0]);
+
+    	$dateBegin = date('Y-m-01 00:00:00', strtotime($data_mes_inicio[1].'-'.$mes_inicio.'-01 00:00:00'));
+    	$dateEnd = date('Y-m-t 00:00:00', strtotime($data_mes_fim[1].'-'.$mes_fim.'-28 00:00:00'));
+    	
+    	dd($dateEnd);
+    	Excel::create('DRHJ_RELATORIO_PACIENTES_DETALHADO_' . date('d-m-Y~H_i_s'), function ($excel) use ($mes_inicio, $mes_fim) {
+    		$excel->sheet('Pacientes', function ($sheet) use ($mes_inicio, $mes_fim) {
+    
+    			// Font family
+    			$sheet->setFontFamily('Comic Sans MS');
+    
+    			// Set font with ->setStyle()`
+    			$sheet->setStyle(array(
+    					'font' => array(
+    							'name' => 'Calibri',
+    							'size' => 12,
+    							'bold' => false
+    					)
+    			));
+    
+    			$cabecalho = array('Data' => date('d-m-Y H:i'));
+    
+    			$list_pacientes = Paciente::distinct()
+    			->leftJoin('users',					function($join1) { $join1->on('pacientes.user_id', '=', 'users.id');})
+    			->leftJoin('documento_paciente',	function($join2) { $join2->on('documento_paciente.paciente_id', '=', 'pacientes.id');})
+    			->leftJoin('documentos',			function($join3) { $join3->on('documentos.id', '=', 'documento_paciente.documento_id');})
+    			->leftJoin('contato_paciente',		function($join4) { $join4->on('contato_paciente.paciente_id', '=', 'pacientes.id');})
+    			->leftJoin('contatos',				function($join5) { $join5->on('contatos.id', '=', 'contato_paciente.contato_id');})
+    			->leftJoin('empresas',				function($join6) { $join6->on('empresas.id', '=', 'pacientes.empresa_id');})
+    			->select('pacientes.id', 'pacientes.nm_primario as nome', 'pacientes.nm_secundario as sobrenome', 'pacientes.cs_sexo as genero', 'pacientes.dt_nascimento as data_nascimento', 'documentos.tp_documento as tipo_documento',
+    					'documentos.te_documento as nr_documento', 'users.email as email_paciente', 'contatos.ds_contato as celular', 'pacientes.created_at as data_criacao_registro', 'pacientes.updated_at as data_ultimo_acesso', 'pacientes.responsavel_id',
+    					'empresas.nome_fantasia')
+    					->where(['pacientes.cs_status' => 'A'])
+    					//     			->limit(10)
+    			->orderby('pacientes.nm_primario', 'asc')
+    			->get();
+    			 
+    			foreach ($list_pacientes as $item) {
+    				$plano_id = Paciente::getPlanoAtivo($item->id);
+    				switch ($plano_id) {
+    					case 2:
+    						$item->nome_plano = 'Premium';
+    						break;
+    						 
+    					case 3:
+    						$item->nome_plano = 'Blue';
+    						break;
+    						 
+    					case 4:
+    						$item->nome_plano = 'Black';
+    						break;
+    						 
+    					case 5:
+    						$item->nome_plano = 'Plus';
+    						break;
+    						 
+    					default:
+    						$item->nome_plano = 'Open';
+    						break;
+    				}
+    			}
+    			
+    			$list_items = DB::table('pacientes')
+    								->select(DB::raw("date_trunc('day', created_at)::date AS 'data'") , DB::raw('count(*) AS "num_pacientes"'))
+    								->whereDate('pacientes.created_at', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('pacientes.created_at', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)))
+    								->groupBy(DB::raw("1"))
+    								->orderBy(DB::raw("1"))
+    								->get();
+    			dd($list_items);
+    			//     			dd($list_pacientes);
+    			 
+    
+    			//     			$sheet->setColumnFormat(array(
+    			//     					'F6:F'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
+    			//     			));
+    
+    			$sheet->loadView('pacientes.pacientes_detalhado_excel', compact('list_pacientes', 'cabecalho'));
     		});
     	})->export('xls');
     }
