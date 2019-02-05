@@ -167,7 +167,7 @@ class EmpresaController extends Controller
 			->whereHas('user', function($query) {
 				$query->where('cs_status', 'A');
 			})
-			->get();
+			->paginate(10, ['*'], 'colaboradores');
 		
 		$anuidades = $model->anuidades()
 			->whereDate('data_inicio', '<=', date('Y-m-d'))
