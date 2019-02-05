@@ -34,11 +34,11 @@
 					<div class="row">
 						<div class="form-group col-md-3 offset-md-3">
                        		<label for="parte_lista" class="text-primary">Selecione o mês INICIO</label>
-                       		<input type="text" class="input-mes-inicio form-control cvx-datepicker col-md-8" name="mes_inicio">
+                       		<input type="text" class="input-mes-inicio form-control cvx-datepicker col-md-8" name="mes_inicio" autocomplete="off">
                         </div>
                         <div class="form-group col-md-3">
                        		<label for="parte_lista" class="text-primary">Selecione o mês FIM</label>
-                       		<input type="text" class="input-mes-fim form-control cvx-datepicker col-md-8" name="mes_fim">
+                       		<input type="text" class="input-mes-fim form-control cvx-datepicker col-md-8" name="mes_fim" autocomplete="off">
                         </div>
 					</div>
 					
