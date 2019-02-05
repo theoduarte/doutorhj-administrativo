@@ -111,7 +111,7 @@
 								$('#email').prop('readonly', false);
 							}
 						} else {
-							if(data.pessoa.email != data.pessoa.email_corporativo) {
+							if(data.pessoa != undefined && data.pessoa.email != '' && data.pessoa.email != data.pessoa.email_corporativo) {
 								$('#email').val('').prop('readonly', true);
 							} else {
 								$('#email').val('').prop('readonly', false);
