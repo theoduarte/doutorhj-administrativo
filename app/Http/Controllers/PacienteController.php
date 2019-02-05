@@ -670,7 +670,7 @@ class PacienteController extends Controller
     	$mes_fim = UtilController::getNumMesByNome($data_mes_fim[0]);
 
     	$dateBegin = date('Y-m-01 00:00:00', strtotime($data_mes_inicio[1].'-'.$mes_inicio.'-01 00:00:00'));
-    	$dateEnd = date('Y-m-t 00:00:00', strtotime($data_mes_fim[1].'-'.$mes_fim.'-28 00:00:00'));
+    	$dateEnd = date('Y-m-t 23:59:59', strtotime($data_mes_fim[1].'-'.$mes_fim.'-28 00:00:00'));
 
     	Excel::create('DRHJ_RELATORIO_PACIENTES_DETALHADO_' . date('d-m-Y~H_i_s'), function ($excel) use ($dateBegin, $dateEnd) {
     		$excel->sheet('Pacientes', function ($sheet) use ($dateBegin, $dateEnd) {
@@ -730,31 +730,22 @@ class PacienteController extends Controller
     			}
 //     			DB::enableQueryLog();
     			$list_items = DB::table('pacientes')
-    								->select(DB::raw("date_trunc('day', created_at)::date AS data") , DB::raw("count(*) AS num_pacientes"))
-    								->whereDate('pacientes.created_at', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('pacientes.created_at', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)))
-    								->groupBy(DB::raw("1"))
-    								->orderBy(DB::raw("1"))
+    								->select(DB::raw("DATE(d) AS data") , DB::raw("COUNT(pacientes.id) AS num_pacientes"))
+    								->from(DB::raw("generate_series(date_trunc('day', (TO_DATE('$dateEnd', 'YYYY-MM-DD HH24:MI:SS')))::date - ('$dateEnd'::date - '$dateBegin'::date),date_trunc('day', (TO_DATE('$dateEnd', 'YYYY-MM-DD HH24:MI:SS')))::date, '1 day') d"))
+    								->leftJoin('pacientes', function($join) { $join->on(DB::raw("DATE(pacientes.created_at)"), '=', 'd');})
+    								->groupBy(DB::raw("data"))
+    								->orderBy(DB::raw("data"))
     								->get();
-//     								select
-//     								TO_DATE('01-03-2014', 'DD-MM-YYYY') + g.i,
-//     								count( case (TO_DATE('01-03-2014', 'DD-MM-YYYY') + g.i) between created_at and coalesce(deleted_at, TO_DATE('01-03-2014', 'DD-MM-YYYY') + g.i)
-//     								    when true then 1
-//     								    else null
-//     								    end)
-//     								    from generate_series(0, TO_DATE('01-04-2014', 'DD-MM-YYYY') - TO_DATE('01-03-2014', 'DD-MM-YYYY')) as g(i)
-//     								    left join myTable on true
-//     								    group by 1
-//     								    order by 1;
+    								
 //     			dd( DB::getQueryLog() );
-    			dd($list_items);
+//     			dd($list_items);
     			//     			dd($list_pacientes);
-    			 
     
     			//     			$sheet->setColumnFormat(array(
     			//     					'F6:F'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
     			//     			));
     
-    			$sheet->loadView('pacientes.pacientes_detalhado_excel', compact('list_pacientes', 'cabecalho'));
+    			$sheet->loadView('pacientes.pacientes_detalhado_excel', compact('list_pacientes', 'list_items', 'cabecalho'));
     		});
     	})->export('xls');
     }

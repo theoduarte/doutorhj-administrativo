@@ -55,7 +55,7 @@
 					{!! csrf_field() !!}
 					
 					<div class="form-group text-center m-b-0">
-						<button type="submit" class="btn btn-success btn-lg waves-effect waves-light" ><i class="mdi mdi-file-excel"></i> Gerar Lista de Consultas</button>
+						<button type="submit" class="btn btn-secondary btn-lg waves-effect waves-light" disabled="disabled"><i class="mdi mdi-file-excel"></i> Gerar Lista de Consultas</button>
 					</div>
 				</form>
 			</div>
