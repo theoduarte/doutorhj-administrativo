@@ -175,7 +175,81 @@
 		<input type="text" id="vl_max_funcionario" placeholder="" class="form-control mascaraMonetariaZero" name="vl_max_funcionario" maxlength="15" value="{{ $model->vl_max_funcionario ?? old('vl_max_funcionario') }}">
 	</div>
 </div>
+<hr>
+<div class="row">
+	<div class="col-md-10">
+		<h4 class="header-title m-t-0 m-b-30">Campanhas de Vendas</h4>
+	</div>
+    <div class="col-md-2 text-right" style="margin-bottom: 10px;">
+    	<button type="button" class="btn btn-outline-success btn-rounded btn-sm w-md waves-effect waves-light" onclick="addCampanha(this)"><i class="mdi mdi-cart-plus"></i> Adicionar Campanha</button>
+    </div>
+</div>
 
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-striped table-bordered table-doutorhj" data-page-size="7">
+			<tr>
+				<th style="width: 30px; text-align: center;">#</th>
+				<th style="text-align: center;" data-toggle="tooltip" data-placement="top" title="URL de acesso a campanha">URL da Campanha</th>
+				<th>
+					<div class="row">
+						<div class="col-md-3">
+							<label for="campanha_data_inicio" class="control-label"><strong>Data Início</strong><span class="text-danger">*</span></label>
+						</div>
+						<div class="col-md-3">
+							<label for="campanha_data_fim" class="control-label"><strong>Data Fim</strong><span class="text-danger">*</span></label>
+    					</div>
+    					<div class="col-md-3">
+    						<label for="campanha_cs_status" class="control-label"><strong>Status</strong><span class="text-danger">*</span></label>
+    					</div>
+    					<div class="col-md-3">
+							<label for="campanha_plano_id" class="control-label"><strong>Plano</strong><span class="text-danger">*</span></label>
+    					</div>
+    				</div>
+    			</th>
+    			<th style="width: 20px; text-align: center;">(+)</th>
+    			<th style="width: 20px; text-align: center;">(-)</th>
+    		</tr>
+    		<tbody id="list-all-campanhas">
+    			@for ($i = 0; $i < sizeof($list_campanhas); $i++)
+    			<tr>
+    				<td class="num_campanha text-center">{{$i+1}}</td>
+    				<td data-toggle="tooltip" data-placement="top" title="URL de acesso a campanha" class="text-center">
+    					<input type="text" class="form-control campanha_url" value="{{ $list_campanhas[$i]->url_param }}" maxlength="50" style="min-width: 600px;">
+    					<input type="hidden" class="campanha_id" value="{{ $list_campanhas[$i]->id }}">
+    				</td>
+    				<td>
+    					<div class="row">
+    						<div class="col-md-3">
+    							<input type="text" class="form-control campanha_data_inicio" value="{{ $list_campanhas[$i]->data_inicio }}" >
+    						</div>
+    						<div class="col-md-3">
+    							<input type="text" class="form-control campanha_data_fim" value="{{ $list_campanhas[$i]->data_fim }}">
+    						</div>
+    						<div class="col-md-3">
+    							<select class="form-control campanha_cs_status">
+		        					<option value="A" @if( $list_campanhas[$i]->cs_status == 'A' ) selected='selected' @endif >Ativo</option>
+		        					<option value="I" @if( $list_campanhas[$i]->cs_status == 'I' ) selected='selected' @endif >Inativo</option>
+		        				</select>
+    						</div>
+    						<div class="col-md-3">
+    							<select class="form-control campanha_plano_id">
+    								@foreach($planos as $id => $ds_plano):
+		        					<option value="{{$id}}" @if( !is_null($id) && $id == $list_campanhas[$i]->plano_id ) selected='selected' @endif >{{$ds_plano}}</option>
+		        					@endforeach
+		        				</select>
+    						</div>
+    					</div>
+    				</td>
+    				<td><button type="button" class="btn btn-primary waves-effect waves-light btn-sm m-b-5" title="Salvar Campanha" onclick="salvarCampanha(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td>
+    				<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Campanha" onclick="removerCampanha(this)" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td>
+    			</tr>
+    			@endfor
+    		</tbody>
+    	</table>
+    </div>
+</div>
+<hr>
 <div class="form-row" style="padding-top: 30px;">
 	<div class="col-md-12">
 		<div class="form-group text-right m-b-0">
@@ -184,3 +258,234 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+$(document).ready(function () {
+	
+	$('.campanha_data_inicio').datetimepicker({
+	    format: 'DD/MM/YYYY HH:mm',
+	});
+
+	$('.campanha_data_fim').datetimepicker({
+	    format: 'DD/MM/YYYY HH:mm',
+	});
+	
+});
+
+function addCampanha(input) {
+
+  	var num_elements = $('#list-all-campanhas tr').length;
+  	num_elements++;
+
+  	var content = '<tr> \
+  	  		<td class="num_campanha">'+num_elements+'</td> \
+	  	  	<td data-toggle="tooltip" data-placement="top" title="URL de acesso a campanha" class="text-center"> \
+				<input type="text" class="form-control campanha_url" maxlength="50" style="min-width: 600px;"> \
+				<input type="hidden" class="campanha_id"> \
+			</td> \
+			<td> \
+				<div class="row"> \
+					<div class="col-md-3"> \
+						<input type="text" class="form-control campanha_data_inicio" > \
+					</div> \
+					<div class="col-md-3"> \
+						<input type="text" class="form-control  campanha_data_fim" > \
+					</div> \
+					<div class="col-md-3"> \
+						<select class="form-control campanha_cs_status"> \
+							<option value="A" >Ativo</option> \
+							<option value="I" >Inativo</option> \
+						</select> \
+					</div> \
+					<div class="col-md-3"> \
+						<select class="form-control campanha_plano_id"> \
+						@foreach($planos as $id => $ds_plano): \
+        					<option value="{{$id}}" @if( !is_null($id) && $id == 5 	) selected="selected" @endif >{{$ds_plano}}</option> \
+        				@endforeach \
+    				</select> \
+					</div> \
+				</div> \
+			</td> \
+			<td><button type="button" class="btn btn-primary waves-effect waves-light btn-sm m-b-5" title="Salvar Campanha" onclick="salvarCampanha(this)" style="margin-top: 2px;"><i class="mdi mdi-content-save"></i></button></td> \
+			<td><button type="button" class="btn btn-danger waves-effect waves-light btn-sm m-b-5" title="Remover Campanha" onclick="removerCampanha(this)" style="margin-top: 2px;"><i class="ion-trash-a"></i></button></td> \
+    	</tr>';
+   
+	$('#list-all-campanhas').append(content);
+	
+ 	$('#list-all-campanhas').find(".campanha_data_inicio:last" ).datetimepicker({
+	    format: 'DD/MM/YYYY HH:mm',
+	});
+
+ 	$('#list-all-campanhas').find(".campanha_data_fim:last" ).datetimepicker({
+ 		format: 'DD/MM/YYYY HH:mm',
+	});
+}
+
+function salvarCampanha(input) {
+
+	var ct_element = $(input).parent().parent();
+
+	var campanha_id 	 		= ct_element.find('.campanha_id').val();
+	var url_campanha 	 		= ct_element.find('.campanha_url').val();
+	var data_inicio 	 		= ct_element.find('.campanha_data_inicio').val();
+	var data_fim 	 			= ct_element.find('.campanha_data_fim').val();
+	var cs_status 			 	= ct_element.find('.campanha_cs_status').val();
+	var plano_id 	 			= ct_element.find('.campanha_plano_id').val();
+	var empresa_id 				= $('#empresa_id').val();
+	
+    if(url_campanha.length == 0) {
+
+    	swal({
+	            title: 'DoutorHoje: Alerta!',
+	            text: "A URL da Campanha é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    if(data_inicio.length == 0) {
+
+    	swal({
+	            title: 'DoutorHoje: Alerta!',
+	            text: "A Data Início da Campanha é campo obrigatório!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+        return false;
+    }
+
+    $(input).find('i').removeClass('mdi mdi-content-save').addClass('fa fa-spin fa-spinner');
+    
+    jQuery.ajax({
+		type: 'POST',
+	  	url: '/add-campanha',
+	  	data: {
+		  	'campanha_id': campanha_id,
+			'url_campanha': url_campanha,
+			'data_inicio': data_inicio,
+			'data_fim': data_fim,
+			'cs_status': cs_status,
+			'plano_id': plano_id,
+			'empresa_id': empresa_id,
+			'_token': laravel_token
+		},
+		success: function (result) {
+
+			if( result.status) {
+				var campanha_id = result.campanha_id;
+
+				ct_element.find('.campanha_id').val(campanha_id)
+				
+				swal({
+                    title: 'DoutorHoje',
+                    text: result.mensagem,
+                    type: 'success',
+                    confirmButtonClass: 'btn btn-confirm mt-2',
+                    confirmButtonText: 'OK'
+                }).then(function () {
+                    window.location.reload(false); 
+                });
+				
+			} else {
+				$.Notification.notify('error','top right', 'DoutorHoje', result.mensagem);
+			}
+
+			$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('mdi mdi-content-save');
+        },
+        error: function (result) {
+        	$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('mdi mdi-content-save');
+        	$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+        }
+	});
+}
+
+function removerCampanha(input) {
+
+	var url_campanha = $(input).parent().parent().find('input.campanha_url').val();
+	var ct_element = $(input).parent().parent();
+	var campanha_id = ct_element.find('.campanha_id').val();
+
+	if(campanha_id.length == 0) {
+
+    	swal({
+	            title: 'DoutorHoje: Alerta!',
+	            text: "Nenhuma Campanha foi selecionada!",
+	            type: 'warning',
+	            confirmButtonClass: 'btn btn-confirm mt-2'
+	        }
+	    );
+
+    	$(input).parent().parent().remove();
+        return false;
+    }
+	
+	var mensagem = 'Tem certeza que deseja remover a Campanha: '+url_campanha;
+    swal({
+        title: mensagem,
+        text: "O Registro será removido da lista",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-confirm mt-2',
+        cancelButtonClass: 'btn btn-cancel ml-2 mt-2',
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Cancelar'
+    }).then(function () {
+
+    	$(input).find('i').removeClass('ion-trash-a').addClass('fa fa-spin fa-spinner');
+
+    	jQuery.ajax({
+    		type: 'POST',
+    	  	url: '/delete-campanha',
+    	  	data: {
+    		  	'campanha_id': campanha_id,
+    			'_token': laravel_token
+    		},
+    		success: function (result) {
+
+    			if( result.status) {
+    				
+    				swal({
+                        title: 'DoutorHoje',
+                        text: result.mensagem,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-confirm mt-2',
+                        confirmButtonText: 'OK'
+                    }).then(function () {
+                        window.location.reload(false); 
+                    });
+    				
+    			} else {
+    				$.Notification.notify('error','top right', 'DoutorHoje', result.mensagem);
+    			}
+
+    			$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('ion-trash-a');
+            },
+            error: function (result) {
+            	$(input).find('i').removeClass('fa fa-spin fa-spinner').addClass('ion-trash-a');
+            	$.Notification.notify('error','top right', 'DrHoje', 'Falha na operação!');
+            }
+    	});
+
+    	$(input).parent().parent().css('background-color', '#ffbfbf');
+		$(input).parent().parent().fadeOut(400, function(){
+	    	$(input).parent().parent().remove();
+	
+	    	var i = 1;
+	
+	    	$('.num_campanha').each(function(index){
+	        	$(this).html(index+1);
+	        });
+	    });
+    	
+        swal({
+                title: 'Concluído !',
+                text: "A Campanha foi excluída com sucesso",
+                type: 'success',
+                confirmButtonClass: 'btn btn-confirm mt-2'
+            }
+        );
+    });
+}
+</script>

@@ -39,7 +39,10 @@
 		<!-- Datapicker -->
 		<link href="/libs/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 		<link href="/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="/css/google.loader.css">		
+		<link rel="stylesheet" href="/css/google.loader.css">
+		
+		<!-- Datatimepicker -->
+		<link href="/libs/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">		
 		
 		<script src="/libs/comvex-template/js/jquery.min.js"></script>
 		<script src="/libs/comvex-template/js/popper.min.js"></script>
@@ -340,6 +343,7 @@
 	<script type="text/javascript" src="/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	<script type="text/javascript" src="/libs/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js"></script>
 	<script type="text/javascript" src="/libs/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript" src="/js/jquery.maskMoney.min.js"></script>
 	<!-- Custom main Js -->
 	<script src="/libs/comvex-template/js/jquery.core.js"></script>

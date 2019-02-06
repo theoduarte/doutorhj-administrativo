@@ -155,6 +155,36 @@ ul.list-profissional-especialidade li {
     color: #fff;
 }
 
+.bootstrap-datetimepicker-widget .datepicker-days {
+	display: block !important;
+}
+
+.datepicker table tr td.today {
+    background-color: #5a6268 !important;
+    background-image: -webkit-linear-gradient(top,#5a6268,#5a6268) !important;
+    color: #fff !important;
+}
+
+.datepicker table tr td.active {
+	background-image: -webkit-linear-gradient(top,#3bafda,#3bafda) !important;
+	background-image: -webkit-linear-gradient(top,#08c,#04c);
+}
+
+.bootstrap-datetimepicker-widget ul.list-unstyled table tbody tr:nth-of-type(odd) {
+    background-color: #fff !important;
+}
+
+.bootstrap-datetimepicker-widget ul.list-unstyled table thead tr th.picker-switch {
+	text-align: center !important;
+}
+
+.bootstrap-datetimepicker-widget ul.list-unstyled table tbody tr td.old, .bootstrap-datetimepicker-widget ul.list-unstyled table tbody tr td.new {
+	background-color: rgba(0,0,0,.05) !important;
+}
+
+picker-switch
+	
+
 @media screen and (max-width:520px) {
     ul.list-profissional-especialidade li#three {
         clear:left;

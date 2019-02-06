@@ -16,8 +16,8 @@ class CreateCampanhaVendasTable extends Migration
         Schema::create('campanha_vendas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('url_param', 50);
-            $table->text('ds_campanha');
-            $table->timestamp('data_inicio');
+            $table->text('ds_campanha')->nullable();
+            $table->timestamp('data_inicio')->nullable();
             $table->timestamp('data_fim');
             $table->char('cs_status', 1)->nullable('A')->comment('A=>Ativo I=>Inativo');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
@@ -32,6 +32,6 @@ class CreateCampanhaVendasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('campanha_vendas');
+    	Schema::dropIfExists('campanha_vendas');
     }
 }

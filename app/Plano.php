@@ -63,6 +63,11 @@ class Plano extends Model
     {
         return $this->hasMany('App\Preco');
     }
+    
+    public function campanha_vendas()
+    {
+    	return $this->hasMany('App\CampanhaVenda');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

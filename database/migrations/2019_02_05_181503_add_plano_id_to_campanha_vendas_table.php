@@ -13,7 +13,14 @@ class AddPlanoIdToCampanhaVendasTable extends Migration
      */
     public function up()
     {
-        //
+    	Schema::table('campanha_vendas', function (Blueprint $table) {
+    		$table->integer('plano_id')
+    		->unsigned()
+    		->nullable()
+    		->after('empresa_id');
+    		 
+    		$table->foreign('plano_id')->references('id')->on('planos');
+    	});
     }
 
     /**
@@ -23,6 +30,9 @@ class AddPlanoIdToCampanhaVendasTable extends Migration
      */
     public function down()
     {
-        //
+    	Schema::table('campanha_vendas', function (Blueprint $table) {
+    		$table->dropForeign('campanhavendas_plano_id_foreign');
+    		$table->dropColumn('plano_id');
+    	});
     }
 }
