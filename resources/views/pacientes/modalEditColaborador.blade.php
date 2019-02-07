@@ -26,8 +26,8 @@
 		</div>
 
 		<div class="form-group col-4">
-			<label for="pediodicidade" class="control-label">Periodicidade<span class="text-danger">*</span></label>
-			<select id="pediodicidade" class="form-control" name="pediodicidade" required autofocus>
+			<label for="periodicidade" class="control-label">Periodicidade<span class="text-danger">*</span></label>
+			<select id="periodicidade" class="form-control" name="periodicidade" required autofocus>
 
 			</select>
 		</div>
@@ -87,16 +87,16 @@
 		var anuidadeAno = Number($(element).find(':selected').attr('anuidadeAno'));
 		var anuidadeMes = Number($(element).find(':selected').attr('anuidadeMes'));
 
-		$('#pediodicidade option').remove();
+		$('#periodicidade option').remove();
 		if(isento) {
-			$('#pediodicidade').append(new Option('Isento', 'isento'));
+			$('#periodicidade').append(new Option('Isento', 'isento'));
 		} else if(anuidadeAno != 0 && anuidadeMes == 0) {
-			$('#pediodicidade').append(new Option('R$ '+anuidadeAno.toLocaleString('pt-BR', { minimumFractionDigits: 2})+'/Ano', 'anual'));
+			$('#periodicidade').append(new Option('R$ '+anuidadeAno.toLocaleString('pt-BR', { minimumFractionDigits: 2})+'/Ano', 'anual'));
 		} else if(anuidadeMes != 0 && anuidadeAno == 0) {
-			$('#pediodicidade').append(new Option('R$ '+anuidadeMes.toLocaleString('pt-BR', { minimumFractionDigits: 2})+'/Mes', 'mensal'));
+			$('#periodicidade').append(new Option('R$ '+anuidadeMes.toLocaleString('pt-BR', { minimumFractionDigits: 2})+'/Mes', 'mensal'));
 		} else {
-			$('#pediodicidade').append(new Option('R$ '+anuidadeAno.toLocaleString('pt-BR', { minimumFractionDigits: 2})+'/Ano', 'anual'));
-			$('#pediodicidade').append(new Option('R$ '+anuidadeMes.toLocaleString('pt-BR', { minimumFractionDigits: 2})+'/Mes', 'mensal'));
+			$('#periodicidade').append(new Option('R$ '+anuidadeAno.toLocaleString('pt-BR', { minimumFractionDigits: 2})+'/Ano', 'anual'));
+			$('#periodicidade').append(new Option('R$ '+anuidadeMes.toLocaleString('pt-BR', { minimumFractionDigits: 2})+'/Mes', 'mensal'));
 		}
 	}
 </script>
