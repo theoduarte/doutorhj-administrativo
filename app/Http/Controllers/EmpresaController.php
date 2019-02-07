@@ -120,8 +120,6 @@ class EmpresaController extends Controller
 				$model->logomarca_path = URL::to("/storage/{$logo_path}");
 				$model->save();
 			}
-
-			$model->contatos()->sync($arContatos);
 		} catch (\Exception $e) {
 			DB::rollback();
 			return redirect()->route('empresas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
