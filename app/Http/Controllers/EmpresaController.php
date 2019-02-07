@@ -121,8 +121,6 @@ class EmpresaController extends Controller
 				$model->logomarca_path = URL::to("/storage/{$logo_path}");
 				$model->save();
 			}
-
-			$model->contatos()->sync($arContatos);
 		} catch (\Exception $e) {
 			DB::rollback();
 			return redirect()->route('empresas.index')->with('error-alert', 'Erro ao cadastrar a empresa. Por favor, tente novamente.');
@@ -170,8 +168,8 @@ class EmpresaController extends Controller
 			->whereHas('user', function($query) {
 				$query->where('cs_status', 'A');
 			})
-			->get();
-		
+			->paginate(10, ['*'], 'colaboradores');
+
 		$anuidades = $model->anuidades()
 			->whereDate('data_inicio', '<=', date('Y-m-d'))
 			->whereDate('data_fim', '>=', date('Y-m-d'));

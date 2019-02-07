@@ -127,6 +127,21 @@ class Empresa extends Model
 		if(isset($this->attributes['cnpj'])) return UtilController::mask($this->attributes['cnpj'], '##.###.###/####-##');
 	}
 
+	public static function getVigenciaAtiva($paciente_id)
+	{
+		$anuidades =
+		$vigenciaPac = VigenciaPaciente::where(['paciente_id' => $paciente_id])
+			->where(function($query) {
+				$query->whereDate('data_inicio', '<=', date('Y-m-d H:i:s'))
+					->whereDate('data_fim', '>=', date('Y-m-d H:i:s'))
+					->orWhere(DB::raw('cobertura_ativa'), '=', true);
+			})
+			->orderBy('id', 'DESC')
+			->first();
+
+		return $vigenciaPac;
+	}
+
 	public function setAnuidadeAttribute($value)
 	{
 		if(!is_null($value)) $this->attributes['anuidade'] = UtilController::removeMaskMoney($value);

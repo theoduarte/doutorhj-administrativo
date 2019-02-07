@@ -52,7 +52,7 @@ class VigenciaPaciente extends Model
 	public function getVlAnuidadeAttribute()
 	{
 		if($this->periodicidade == 'anual') $perioVl = 'vl_anuidade_ano';
-		if($this->periodicidade == 'mensal') $perioVl = 'vl_anuidade_mes';
+		elseif($this->periodicidade == 'mensal') $perioVl = 'vl_anuidade_mes';
 		else return 0;
 
 		return $this->anuidade->$perioVl;
