@@ -165,9 +165,6 @@ class EmpresaController extends Controller
 		$colaboradores = $model->pacientes()->with(['user', 'contatos'])
 			->where('cs_status', 'A')
 			->whereNull('responsavel_id')
-			->whereHas('user', function($query) {
-				$query->where('cs_status', 'A');
-			})
 			->paginate(10, ['*'], 'colaboradores');
 
 		$anuidades = $model->anuidades()
