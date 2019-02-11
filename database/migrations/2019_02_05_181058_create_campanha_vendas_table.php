@@ -18,7 +18,7 @@ class CreateCampanhaVendasTable extends Migration
             $table->string('url_param', 50);
             $table->text('ds_campanha')->nullable();
             $table->timestamp('data_inicio')->nullable();
-            $table->timestamp('data_fim');
+            $table->timestamp('data_fim')->nullable();
             $table->char('cs_status', 1)->nullable('A')->comment('A=>Ativo I=>Inativo');
             $table->timestamp('created_at')->default(DB::raw('NOW()'));
             $table->timestamp('updated_at')->default(DB::raw('NOW()'));

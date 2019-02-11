@@ -31,7 +31,7 @@ class AddPlanoIdToCampanhaVendasTable extends Migration
     public function down()
     {
     	Schema::table('campanha_vendas', function (Blueprint $table) {
-    		$table->dropForeign('campanhavendas_plano_id_foreign');
+    		$table->dropForeign('campanha_vendas_plano_id_foreign');
     		$table->dropColumn('plano_id');
     	});
     }
