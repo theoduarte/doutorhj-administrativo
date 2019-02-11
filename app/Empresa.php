@@ -111,6 +111,11 @@ class Empresa extends Model
 	{
 		return $this->hasMany('App\Paciente');
 	}
+	
+	public function campanha_vendas()
+	{
+		return $this->hasMany('App\CampanhaVenda');
+	}
 
 	public function setCnpjAttribute($value)
 	{

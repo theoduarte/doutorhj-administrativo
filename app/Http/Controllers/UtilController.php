@@ -420,6 +420,33 @@ class UtilController extends Controller
 	{
 		return sprintf('%06d', rand(0, 999999));
 	}
+	
+	/**
+	 * retorna o numero do mes de acordo com o nome abreviado
+	 * Ex.: Jan => 01, Fev => 02,...
+	 *
+	 */
+	public static function getNumMesByNome($monthname)
+	{
+		$mes = '01';
+		
+		switch ($monthname) {
+			case "Jan":   $mes = '01';   break;
+			case "Fev":   $mes = '02';   break;
+			case "Mar":   $mes = '03';   break;
+			case "Abr":   $mes = '04';   break;
+			case "Mai":   $mes = '05';   break;
+			case "Jun":   $mes = '06';   break;
+			case "Jul":   $mes = '07';   break;
+			case "Ago":	  $mes = '08';	 break;
+			case "Set":   $mes = '09';   break;
+			case "Out":   $mes = '10';   break;
+			case "Nov":   $mes = '11';   break;
+			case "Dez":   $mes = '12';   break;
+		}
+		
+		return $mes;
+	}
 
 	/**
 	 * sendSms method

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\File;
+use App\CampanhaVenda;
 
 class EmpresaController extends Controller
 {
@@ -159,12 +160,11 @@ class EmpresaController extends Controller
 		$estados = Estado::orderBy('ds_estado')->get();
 		$representantes = $model->representantes()->orderBy('nm_primario')->get();
 		$planos = Plano::where('id', '<>', Plano::OPEN)->pluck('ds_plano', 'id');
+		$list_campanhas = CampanhaVenda::where(['empresa_id' => $id, 'cs_status' => 'A'])->get();
+		
 		$colaboradores = $model->pacientes()->with(['user', 'contatos'])
 			->where('cs_status', 'A')
 			->whereNull('responsavel_id')
-			->whereHas('user', function($query) {
-				$query->where('cs_status', 'A');
-			})
 			->paginate(10, ['*'], 'colaboradores');
 
 		$anuidades = $model->anuidades()
@@ -178,7 +178,7 @@ class EmpresaController extends Controller
 		else
 			$anuidade_conf = 'warning';
 
-		return view('empresas.edit', compact('model', 'tipoEmpresas', 'estados', 'representantes', 'planos', 'anuidade_conf', 'colaboradores'));
+		return view('empresas.edit', compact('model', 'tipoEmpresas', 'estados', 'representantes', 'planos', 'anuidade_conf', 'colaboradores', 'list_campanhas'));
 	}
 
 	/**

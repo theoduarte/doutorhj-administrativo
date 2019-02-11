@@ -247,7 +247,7 @@ class Paciente extends Model
 
 	public static function getPacienteByUserId($user_id)
 	{
-		$user = User::where('id', $user_id)->where('cs_status', 'A')->first();
+		$user = User::where('id', $user_id)->first();
 
 		if(!is_null($user)) {
 			$paciente = $user->paciente()->where('cs_status', 'A')->whereNull('responsavel_id')->first();

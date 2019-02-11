@@ -129,8 +129,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('lista-consultas-xls', 'AtendimentoController@geraListaConsultasXls')->name('consultas-xls');
     Route::post('lista-exames-xls', 'AtendimentoController@geraListaExamesXls')->name('exames-xls');
     Route::post('lista-pacientes-ativos-xls', 'PacienteController@geraListaPacientesAtivosXls')->name('pacientes-ativos-xls');
+    Route::post('lista-pacientes-detalhado-xls', 'PacienteController@geraListaPacientesDetalhadoXls')->name('pacientes-detalhado-xls');
     Route::post('lista-agenda-xls', 'AgendamentoController@geraListaAgendaXls')->name('agenda-xls');
     Route::post('lista-prestadores-ativos-xls', 'ClinicaController@geraListaPrestadoresAtivosXls')->name('prestadores-ativos-xls');
+    
+    Route::post('add-campanha', 'CampanhaVendaController@addCampanhaStore')->name('adicionar-campanha');
+    Route::post('delete-campanha', 'CampanhaVendaController@deleteCampanhaDestroy')->name('excluir-campanha');
 });
 
 Route::get('consulta-cep/cep/{cep}', 'Controller@consultaCep')->name('cep');
