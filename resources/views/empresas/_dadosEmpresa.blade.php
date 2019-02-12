@@ -176,6 +176,7 @@
 	</div>
 </div>
 <hr>
+@if(!is_null($model->id))
 <div class="row">
 	<div class="col-md-10">
 		<h4 class="header-title m-t-0 m-b-30">Campanhas de Vendas</h4>
@@ -250,6 +251,7 @@
     </div>
 </div>
 <hr>
+@endif
 <div class="form-row" style="padding-top: 30px;">
 	<div class="col-md-12">
 		<div class="form-group text-right m-b-0">

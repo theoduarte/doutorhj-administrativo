@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Empresas')
+@section('title', 'DoutorHoje: Empresas')
 
 @section('container')
 <div class="container-fluid">

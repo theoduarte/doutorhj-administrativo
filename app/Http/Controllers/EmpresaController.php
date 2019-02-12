@@ -77,8 +77,10 @@ class EmpresaController extends Controller
 
 		$tipoEmpresas = TipoEmpresa::pluck('descricao', 'id');
 		$estados = Estado::orderBy('ds_estado')->get();
+		$planos = Plano::where('id', '<>', Plano::OPEN)->pluck('ds_plano', 'id');
+		$list_campanhas = [];
 
-		return view('empresas.create', compact('model', 'tipoEmpresas', 'estados'));
+		return view('empresas.create', compact('model', 'tipoEmpresas', 'estados', 'list_campanhas', 'planos'));
 	}
 
 	/**
