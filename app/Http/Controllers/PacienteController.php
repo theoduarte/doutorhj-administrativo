@@ -162,6 +162,24 @@ class PacienteController extends Controller
 				$documento = Documento::findOrFail($dadosPaciente->pessoa->documento_id);
 				$contato = Contato::findOrFail($dadosPaciente->pessoa->contato_id);
 
+				$vigencias = $paciente->vigenciaPacientes()->with(['anuidade'])
+					->whereHas('anuidade', function($query) use($dados) {
+						$query->where('empresa_id', $dados['empresa_id']);
+					})
+					->where(function($query) {
+						$query->where('data_inicio', '<=', date('Y-m-d H:i:s'))
+							->where('data_fim', '>=', date('Y-m-d H:i:s'))
+							->orWhere(DB::raw('cobertura_ativa'), '=', true);
+					});
+
+				/** Colaborador já cadastrado na empresa **/
+				if($vigencias->exists()) {
+					DB::rollback();
+					return response()->json([
+						'message' => 'Colaborador já cadastrado na empresa.',
+					], 401);
+				}
+
 				if($user) {
 					$user->email = $dados['email'];
 					$user->save();
@@ -183,18 +201,13 @@ class PacienteController extends Controller
 				if(!$paciente->contatos->contains($contato->id)) $paciente->contatos()->attach($contato->id);
 			}
 
-			if(!is_null($paciente->empresa_id)) {
-				DB::rollback();
-				return response()->json([
-					'message' => 'Paciente ja vinculado a empresa '.$paciente->empresa->razao_social,
-				], 500);
+			if(is_null($paciente->empresa_id)) {
+				$paciente->empresa_id = $dados['empresa_id'];
+				$paciente->save();
 			}
 
-			$paciente->empresa_id = $dados['empresa_id'];
-			$paciente->save();
-
 			/** Desativa todas as vigencias do paciente */
-			VigenciaPaciente::where('paciente_id', $paciente->id)->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i:s')]);
+			//VigenciaPaciente::where('paciente_id', $paciente->id)->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i:s')]);
 
 			/** Seta a empresa nos dependentes ativos do paciente */
 			Paciente::where(['responsavel_id' => $paciente->id, 'cs_status' => 'A'])->update(['empresa_id' => $paciente->empresa_id]);
@@ -328,18 +341,16 @@ class PacienteController extends Controller
 				if(!$paciente->contatos->contains($contato->id)) $paciente->contatos()->attach($contato->id);
 			}
 
-			if(!is_null($paciente->empresa_id)) {
-				DB::rollback();
-				return response()->json([
-					'message' => 'Paciente ja vinculado a empresa '.$paciente->empresa->razao_social,
-				], 500);
+			if(is_null($paciente->empresa_id)) {
+				$paciente->empresa_id = $dados['empresa_id'];
+				$paciente->save();
 			}
 
 			$paciente->empresa_id = $dados['empresa_id'];
 			$paciente->save();
 
 			/** Desativa todas as vigencias do paciente */
-			VigenciaPaciente::where('paciente_id', $paciente->id)->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i:s')]);
+			//VigenciaPaciente::where('paciente_id', $paciente->id)->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i:s')]);
 
 			/** Seta a empresa nos dependentes ativos do paciente */
 			Paciente::where(['responsavel_id' => $paciente->id, 'cs_status' => 'A'])->update(['empresa_id' => $paciente->empresa_id]);
@@ -519,7 +530,7 @@ class PacienteController extends Controller
             DB::commit();
 
             return redirect()->route('home', ['nome' => $request->input('nm_primario')]);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
 
             throw new \Exception($e->getCode().'-'.$e->getMessage());
@@ -541,6 +552,27 @@ class PacienteController extends Controller
         
         return view('pacientes.pacientes_ativos', compact('num_arquivos_proced', 'num_arquivos_consulta'));
     }
+
+	public function destroyColaborador($id, $idEmpresa)
+	{
+		$paciente = Paciente::findOrFail($id);
+		$empresa = Empresa::findOrFail($idEmpresa);
+
+		/** Desativa todas as vigencias do paciente na empresa */
+		VigenciaPaciente::with('anuidade')
+			->where('paciente_id', $paciente->id)
+			->where(function($query) {
+				$query->where('data_inicio', '<=', date('Y-m-d H:i:s'))
+					->where('data_fim', '>=', date('Y-m-d H:i:s'))
+					->orWhere(DB::raw('cobertura_ativa'), '=', true);
+			})
+			->whereHas('anuidade', function($query) use($empresa) {
+				$query->where('empresa_id', $empresa->id);
+			})
+			->update(['cobertura_ativa' => false, 'data_fim' => date('Y-m-d H:i')]);
+
+		return redirect()->back()->with('success', 'O Colaborador excluído com sucesso!');
+	}
 
 	/**
 	 * Remove the specified resource from storage.
@@ -568,7 +600,7 @@ class PacienteController extends Controller
 			$vigencia = $dependente->vigencia_ativa;
 			if(!is_null($vigencia)) {
 				$vigencia->cobertura_ativa = false;
-				$vigencia->data_fim = date('Y-m-d H:i:s');
+				$vigencia->data_fim = date('Y-m-d H:i');
 				if(!$vigencia->save()) {
 					DB::rollBack();
 					return redirect()->back()->withErrors('O Colaborador não foi excluído. Por favor, tente novamente.')->withInput();
@@ -579,7 +611,7 @@ class PacienteController extends Controller
 		$vigencia = $paciente->vigencia_ativa;
 		if(!is_null($vigencia)) {
 			$vigencia->cobertura_ativa = false;
-			$vigencia->data_fim = date('Y-m-d H:i:s');
+			$vigencia->data_fim = date('Y-m-d H:i');
 			if(!$vigencia->save()) {
 				DB::rollBack();
 				return redirect()->back()->withErrors('O Colaborador não foi excluído. Por favor, tente novamente.');

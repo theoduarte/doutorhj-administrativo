@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('pacientes/{id}/editColaboradorModal', 'PacienteController@editColaboradorModal')->name('pacientes.editColaboradorModal');
 	Route::get('pacientes/{idTitular}/createDependenteModal/{idEmpresa}', 'PacienteController@createDependenteModal')->name('pacientes.createDependenteModal');
 	Route::post('pacientes/{idTitular}/storeDependente', 'PacienteController@storeDependente')->name('pacientes.storeDependente');
+	Route::delete('pacientes/{idPaciente}/empresas/{idEmpresa}', 'PacienteController@destroyColaborador')->name('pacientes.destroyColaborador');
 
     Route::get('checkups-configure/{checkup}','CheckupsController@configure')->name('checkups.configure');
     Route::get('get-active-clinicas-by-especialidade','CheckupsController@getClinicasByEspecidalide')->name('get-active-clinicas-by-especialidade');

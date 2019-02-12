@@ -9,6 +9,7 @@ use App\Empresa;
 use App\Endereco;
 use App\Estado;
 use App\Http\Requests\EmpresaRequest;
+use App\Paciente;
 use App\Plano;
 use App\Repositories\FileRepository;
 use App\TipoEmpresa;
@@ -161,10 +162,18 @@ class EmpresaController extends Controller
 		$representantes = $model->representantes()->orderBy('nm_primario')->get();
 		$planos = Plano::where('id', '<>', Plano::OPEN)->pluck('ds_plano', 'id');
 		$list_campanhas = CampanhaVenda::where(['empresa_id' => $id, 'cs_status' => 'A'])->get();
-		
-		$colaboradores = $model->pacientes()->with(['user', 'contatos'])
+		$colaboradores = Paciente::with(['user', 'contatos', 'vigenciaPacientes.anuidade'])
 			->where('cs_status', 'A')
 			->whereNull('responsavel_id')
+			->whereHas('vigenciaPacientes', function($query) use($model) {
+				$query->whereHas('anuidade', function($query) use($model) {
+					$query->where('empresa_id', $model->id);
+				})->where(function($query) {
+					$query->where('data_inicio', '<=', date('Y-m-d H:i:s'))
+						->where('data_fim', '>=', date('Y-m-d H:i:s'))
+						->orWhere(DB::raw('cobertura_ativa'), '=', true);
+				});
+			})
 			->paginate(10, ['*'], 'colaboradores');
 
 		$anuidades = $model->anuidades()
