@@ -28,18 +28,26 @@
 				<th width="10">Ação</th>
 			</tr>
 			@foreach($colaboradores as $colaborador)
+				<?php $vigencias = $colaborador->getVigenciasDisponiveis($model->id)?>
 				<tr>
 					<td>{{$colaborador->id}}</td>
 					<td>{{$colaborador->nm_primario}} {{$colaborador->nm_secundario}}</td>
 					<td>{{$colaborador->documentos()->where('tp_documento', Documento::TP_CPF)->first()->te_documento}}</td>
 					<td>{{$colaborador->contatos()->where('tp_contato', Contato::TP_CEL_PESSOAL)->first()->ds_contato}}</td>
-					<td>{{$colaborador->plano_ativo->ds_plano}}</td>
-					<td>{{$colaborador->vigencia_ativa->vl_anuidade}}/{{$colaborador->vigencia_ativa->periodicidade}}</td>
-
+					<td>
+						@foreach($vigencias as $vigencia)
+							{{$vigencia->anuidade->plano->ds_plano}}<br>
+						@endforeach
+					</td>
+					<td>
+						@foreach($vigencias as $vigencia)
+							{{$vigencia->vl_anuidade}}/{{$vigencia->periodicidade}}<br>
+						@endforeach
+					</td>
 					<td style="min-width: 285px;">
 						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-plus" title="Adicionar Dependente" href="{{route('pacientes.createDependenteModal', [$colaborador->id, $model->id])}}"><i class="mdi mdi-account-multiple-plus"></i> Dependente</a>
 						<a class="btn btn-icon waves-effect btn-secondary btn-sm m-b-5 btn-edit" title="Editar Colaborador" href="{{route('pacientes.editColaboradorModal', $colaborador->id)}}"><i class="mdi mdi-lead-pencil"></i> Editar</a>
-						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Colaborador" href="{{route('pacientes.destroy', $colaborador	->id)}}"><i class="ti-trash"></i> Excluir</a>
+						<a class="btn btn-danger waves-effect btn-sm m-b-5 btn-delete" title="Excluir Colaborador" href="{{route('pacientes.destroyColaborador', [$colaborador->id, $model->id])}}"><i class="ti-trash"></i> Excluir</a>
 					</td>
 				</tr>
 			@endforeach

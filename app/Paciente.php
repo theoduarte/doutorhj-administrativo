@@ -125,6 +125,13 @@ class Paciente extends Model
 		return $this->hasMany('App\VigenciaPaciente');
 	}
 
+	public function vigenciasAtivas() {
+		return $this->hasMany('App\VigenciaPaciente')
+			->where('data_inicio', '<=', date('Y-m-d H:i:s'))
+			->where('data_fim', '>=', date('Y-m-d H:i:s'))
+			->orWhere(DB::raw('cobertura_ativa'), '=', true);
+	}
+
 	public function vouchers() {
 		return $this->hasMany('App\Voucher');
 	}
@@ -220,6 +227,24 @@ class Paciente extends Model
 			})
 			->orderBy('id', 'DESC')
 			->first();
+
+		return $vigenciaPac;
+	}
+
+	public function getVigenciasDisponiveis($empresa_id)
+	{
+		$vigenciaPac = VigenciaPaciente::with(['anuidade'])
+			->where(['paciente_id' => $this->id])
+			->whereHas('anuidade', function($query) use($empresa_id) {
+				$query->where('empresa_id', $empresa_id);
+			})
+			->where(function($query) {
+				$query->where('data_inicio', '<=', date('Y-m-d H:i:s'))
+					->where('data_fim', '>=', date('Y-m-d H:i:s'))
+					->orWhere(DB::raw('cobertura_ativa'), '=', true);
+			})
+			->orderBy('id', 'DESC')
+			->get();
 
 		return $vigenciaPac;
 	}
