@@ -83,6 +83,11 @@ class Agendamento extends Model
     {
         return $this->belongsTo('App\Filial');
     }
+
+	public function vigenciaPaciente()
+	{
+		return $this->belongsTo('App\VigenciaPaciente');
+	}
     
     public function itempedidos()
     {
