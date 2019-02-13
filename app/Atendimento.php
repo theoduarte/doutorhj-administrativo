@@ -123,35 +123,39 @@ class Atendimento extends Model
 	{
 		$agendamento = Agendamento::findOrFail($data['agendamento_id']);
 		$paciente = new Paciente();
-		$plano_id = $paciente->getPlanoAtivo($agendamento->paciente_id);
+		$plano_id = $agendamento->vigenciaPaciente->anuidade->plano_id;
 
         $atendimentos =  $this::where(function ($query) use ($data) {
-            $query->where('cs_status','A')->get();
+				$query->where('cs_status','A')->get();
 
-            if ( !empty($data['clinica_id']) ) {
-                $query->where('clinica_id', $data['clinica_id'])->get();
-            }
+				if ( !empty($data['clinica_id']) ) {
+					$query->where('clinica_id', $data['clinica_id'])->get();
+				}
 
-            if ( !empty($data['consulta_id']) ) {
-                $query->where('consulta_id', $data['consulta_id'])->get();
-            }
+				if ( !empty($data['consulta_id']) ) {
+					$query->where('consulta_id', $data['consulta_id'])->get();
+				}
 
-            if ( !empty($data['especialidade']) ) {
-                $query->where('consulta_id', $data['especialidade'])->get();
-            }
+				if ( !empty($data['especialidade']) ) {
+					$query->where('consulta_id', $data['especialidade'])->get();
+				}
 
-            if ( !empty($data['profissional_id']) ) {
+				if ( !empty($data['profissional_id']) ) {
 
-                if (is_array($data['profissional_id']) ) {
-                    $query->whereIn('profissional_id', $data['profissional_id'])->get();
-                }
-                else {
-                    $query->where('profissional_id', $data['profissional_id'])->get();
-                }
-            }
-        })->with('precoAtivo')->whereHas('precoAtivo', function($query) use ($plano_id) {
-			$query->where('plano_id', '=', $plano_id);
-		})->first();
+					if (is_array($data['profissional_id']) ) {
+						$query->whereIn('profissional_id', $data['profissional_id'])->get();
+					}
+					else {
+						$query->where('profissional_id', $data['profissional_id'])->get();
+					}
+				}
+			})
+			->with(['precoAtivo' => function($query) use($plano_id) {
+				$query->where('plano_id', $plano_id);
+			}])
+			->whereHas('precoAtivo', function($query) use ($plano_id) {
+				$query->where('plano_id', '=', $plano_id);
+			})->first();
 
         return !empty($atendimentos) ? $atendimentos->toArray() : [];
     }
