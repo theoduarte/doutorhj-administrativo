@@ -704,6 +704,8 @@ class PacienteController extends Controller
      */
     public function geraListaPacientesDetalhadoXls()
     {
+    	setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+    	date_default_timezone_set('America/Sao_Paulo');
     	
     	$data_inicio = CVXRequest::post('mes_inicio');
     	$data_fim 	= CVXRequest::post('mes_fim');
@@ -773,6 +775,7 @@ class PacienteController extends Controller
     						break;
     				}
     			}
+    			//--tabela por numero de pacientes por dia--------------------------------
 //     			DB::enableQueryLog();
     			$list_items = DB::table('pacientes')
     								->select(DB::raw("DATE(d) AS data") , DB::raw("COUNT(pacientes.id) AS num_pacientes"))
@@ -783,6 +786,79 @@ class PacienteController extends Controller
     								->get();
     								
 //     			dd( DB::getQueryLog() );
+    			
+    			//--tabela com totalizacao do numero de pacientes por mes--------------------------------
+    			$list_items_por_ano = [];
+    			$list_items_por_ano_temp = [];
+    			$ano_inicio = date('Y', strtotime($dateBegin));
+    			$ano_fim = date('Y', strtotime($dateEnd));
+    			
+    			for ($ct_ano = $ano_inicio; $ct_ano <= $ano_fim; $ct_ano++) {
+//     					DB::enableQueryLog();
+    				$list_items_por_ano_temp = DB::table('pacientes')
+	    				->select(DB::raw("to_char(created_at, 'YYYY-MM') AS data") , DB::raw("COUNT(pacientes.id) AS num_pacientes"))
+	    				->from(DB::raw("pacientes"))
+	    				->where(DB::raw("EXTRACT(YEAR FROM created_at)"), "=", $ct_ano)
+	    				->groupBy(DB::raw("data"))
+	    				->orderBy(DB::raw("data"))
+	    				->get();
+    				
+	    			$total_pacientes = 0;
+	    			for($i = 1; $i <= 12; $i++) {
+	    				$tem_item_ano = false;
+	    				foreach ($list_items_por_ano_temp as $item) {
+	    					
+	    					if($item->data == $ct_ano.'-'.sprintf("%02d", $i)) {
+	    						$item_ano = $item;
+	    						$tem_item_ano = true;
+	    					}
+	    				}
+	    				
+	    				if (!$tem_item_ano) {
+	    					$item_ano = new \stdClass();
+	    					$item_ano->data = $ct_ano.'-'.sprintf("%02d", $i);
+	    					$item_ano->num_pacientes = 0;
+	    					$list_items_por_ano_temp->splice($i-1, 0, [$item_ano]);
+	    				}
+	    				
+	    				$total_pacientes = $total_pacientes+$list_items_por_ano_temp[$i-1]->num_pacientes;
+	    			}
+	    			
+	    			$item_total = new \stdClass();
+	    			$item_total->data = 'Total';
+	    			$item_total->num_pacientes = $total_pacientes;
+	    			$list_items_por_ano_temp->push($item_total);
+// 	    				dd( DB::getQueryLog() );
+					array_push($list_items_por_ano, $list_items_por_ano_temp);
+    			}
+    			$list_items_total = collect([]);
+    			for ($i = 1; $i <= 13; $i++) {
+    				$total_pacientes_por_mes = 0;
+    				for($ct_ano = 0; $ct_ano < sizeof($list_items_por_ano); $ct_ano++) {
+    					$total_pacientes_por_mes = $total_pacientes_por_mes+$list_items_por_ano[$ct_ano][$i-1]->num_pacientes;
+    				}
+    				
+    				$item_total_ano = new \stdClass();
+    				$item_total_ano->num_mes = sprintf("%02d", $i);
+    				$item_total_ano->nome_mes = $i < 13 ? ucfirst(strftime('%B', strtotime('2018-'.sprintf("%02d", $i).'-01 00:00:00'))) : 'Total';
+    				$item_total_ano->num_pacientes = $total_pacientes_por_mes;
+    				
+    				$list_items_total->push($item_total_ano);
+    			}
+    			array_push($list_items_por_ano, $list_items_total);
+    			
+    			//--tabela por numero de pacientes por dia--------------------------------
+    			//     			DB::enableQueryLog();
+    			$list_num_pacientes_por_empresa = DB::table('empresas')
+	    			->select('empresas.id', 'empresas.nome_fantasia', 'empresas.razao_social', DB::raw("COUNT(pacientes.id) AS num_pacientes"))
+	    			->from(DB::raw("empresas"))
+	    			->join('pacientes', function($join) { $join->on('pacientes.empresa_id', '=', 'empresas.id');})
+	    			->groupBy(DB::raw("empresas.id"))
+	    			->orderBy('nome_fantasia', 'asc')
+	    			->get();
+    			
+    			//     			dd( DB::getQueryLog() );
+    			dd($list_num_pacientes_por_empresa);
 //     			dd($list_items);
     			//     			dd($list_pacientes);
     

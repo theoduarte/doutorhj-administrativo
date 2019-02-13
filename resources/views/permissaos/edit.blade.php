@@ -21,7 +21,7 @@
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
 			<div class="card-box">
-				<h4 class="header-title m-t-0">Editar Menu</h4>
+				<h4 class="header-title m-t-0">Editar Permissão</h4>
 				<!-- <p class="text-muted font-14 m-b-20">
 				Parsley is a javascript form validation library. It helps you provide your users with feedback on their form submission before sending it to your server.
 				</p> -->
