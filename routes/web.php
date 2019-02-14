@@ -131,6 +131,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('lista-exames-xls', 'AtendimentoController@geraListaExamesXls')->name('exames-xls');
     Route::post('lista-pacientes-ativos-xls', 'PacienteController@geraListaPacientesAtivosXls')->name('pacientes-ativos-xls');
     Route::post('lista-pacientes-detalhado-xls', 'PacienteController@geraListaPacientesDetalhadoXls')->name('pacientes-detalhado-xls');
+    Route::post('lista-agendamentos-detalhado-xls', 'PacienteController@geraListaAgendamentoDetalhadoXls')->name('agendamento-detalhado-xls');
     Route::post('lista-agenda-xls', 'AgendamentoController@geraListaAgendaXls')->name('agenda-xls');
     Route::post('lista-prestadores-ativos-xls', 'ClinicaController@geraListaPrestadoresAtivosXls')->name('prestadores-ativos-xls');
     

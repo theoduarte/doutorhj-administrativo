@@ -19,6 +19,7 @@ use App\Cidade;
 use App\Endereco;
 use App\Paciente;
 use App\Atendimento;
+use App\Agendamento;
 
 /**
  * @author Frederico Cruz <frederico.cruz@s1saude.com.br>
@@ -736,7 +737,7 @@ class PacienteController extends Controller
     
     			$cabecalho = array('Data' => date('d-m-Y H:i'));
     
-    			$list_pacientes = Paciente::distinct()
+    			/* $list_pacientes = Paciente::distinct()
     			->leftJoin('users',					function($join1) { $join1->on('pacientes.user_id', '=', 'users.id');})
     			->leftJoin('documento_paciente',	function($join2) { $join2->on('documento_paciente.paciente_id', '=', 'pacientes.id');})
     			->leftJoin('documentos',			function($join3) { $join3->on('documentos.id', '=', 'documento_paciente.documento_id');})
@@ -774,7 +775,7 @@ class PacienteController extends Controller
     						$item->nome_plano = 'Open';
     						break;
     				}
-    			}
+    			} */
     			//--tabela por numero de pacientes por dia--------------------------------
 //     			DB::enableQueryLog();
     			$list_items = DB::table('pacientes')
@@ -839,7 +840,7 @@ class PacienteController extends Controller
     				}
     				
     				$item_total_ano = new \stdClass();
-    				$item_total_ano->num_mes = sprintf("%02d", $i);
+    				$item_total_ano->data = sprintf("%02d", $i);
     				$item_total_ano->nome_mes = $i < 13 ? ucfirst(strftime('%B', strtotime('2018-'.sprintf("%02d", $i).'-01 00:00:00'))) : 'Total';
     				$item_total_ano->num_pacientes = $total_pacientes_por_mes;
     				
@@ -858,15 +859,109 @@ class PacienteController extends Controller
 	    			->get();
     			
     			//     			dd( DB::getQueryLog() );
-    			dd($list_num_pacientes_por_empresa);
+//     			dd($list_items_por_ano);
 //     			dd($list_items);
     			//     			dd($list_pacientes);
     
     			//     			$sheet->setColumnFormat(array(
     			//     					'F6:F'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
     			//     			));
+	    			
+    			$sheet->loadView('pacientes.pacientes_detalhado_excel', compact('list_num_pacientes_por_empresa', 'list_items', 'list_items_por_ano', 'cabecalho', 'dateBegin', 'dateEnd'));
+    		});
+    	})->export('xls');
+    }
     
-    			$sheet->loadView('pacientes.pacientes_detalhado_excel', compact('list_pacientes', 'list_items', 'cabecalho'));
+    /**
+     * Gera relatório Xls a partir de parâmetros de consulta do fluxo básico numa lista de agendamentos.
+     *
+     */
+    public function geraListaAgendamentoDetalhadoXls()
+    {
+    	setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+    	date_default_timezone_set('America/Sao_Paulo');
+    	 
+    	$data_inicio = CVXRequest::post('mes_inicio');
+    	$data_fim 	= CVXRequest::post('mes_fim');
+    	 
+    	$data_mes_inicio = explode('/', $data_inicio);
+    	$data_mes_fim = explode('/', $data_fim);
+    	 
+    	$mes_inicio = UtilController::getNumMesByNome($data_mes_inicio[0]);
+    	$mes_fim = UtilController::getNumMesByNome($data_mes_fim[0]);
+    
+    	$dateBegin = date('Y-m-01 00:00:00', strtotime($data_mes_inicio[1].'-'.$mes_inicio.'-01 00:00:00'));
+    	$dateEnd = date('Y-m-t 23:59:59', strtotime($data_mes_fim[1].'-'.$mes_fim.'-28 00:00:00'));
+    
+    	Excel::create('DRHJ_RELATORIO_AGENDAMENTOS_' . date('d-m-Y~H_i_s'), function ($excel) use ($dateBegin, $dateEnd) {
+    		$excel->sheet('Pacientes', function ($sheet) use ($dateBegin, $dateEnd) {
+    
+    			// Font family
+    			$sheet->setFontFamily('Comic Sans MS');
+    
+    			// Set font with ->setStyle()`
+    			$sheet->setStyle(array(
+    					'font' => array(
+    							'name' => 'Calibri',
+    							'size' => 12,
+    							'bold' => false
+    					)
+    			));
+    
+    			$cabecalho = array('Data' => date('d-m-Y H:i'));
+//     			DB::enableQueryLog();
+    			$list_agendamentos = Agendamento::with(['itempedidos', 'itempedidos.pedido', 'atendimento', 'paciente', 'paciente.documentos', 'paciente.empresa'])
+	    			->distinct('agendamentos.id')
+	    			->join('itempedidos', function ($query) {$query->on('itempedidos.agendamento_id', '=', 'agendamentos.id');})
+	    			->join('pedidos', function ($query) use($dateBegin, $dateEnd) {
+	    			
+	    				$query->on('pedidos.id', '=', 'itempedidos.pedido_id')->whereDate('pedidos.dt_pagamento', '>=', date('Y-m-d H:i:s', strtotime($dateBegin)))->whereDate('pedidos.dt_pagamento', '<=', date('Y-m-d H:i:s', strtotime($dateEnd)));
+	    			
+	    			})
+	    			->join('clinicas', 		function ($query) {$query->on('clinicas.id', '=', 'agendamentos.clinica_id');})
+    				->select('agendamentos.id', 'agendamentos.te_ticket', 'agendamentos.dt_atendimento', 'agendamentos.obs_agendamento', 'agendamentos.obs_cancelamento', 'agendamentos.cs_status',
+	    					'agendamentos.bo_remarcacao', 'agendamentos.clinica_id', 'agendamentos.paciente_id', 'agendamentos.atendimento_id', 'agendamentos.profissional_id', 'agendamentos.convenio_id',
+	    					'agendamentos.bo_retorno', 'agendamentos.cupom_id', 'agendamentos.filial_id', 'agendamentos.checkup_id', 'clinicas.nm_razao_social', 'pedidos.dt_pagamento', 'agendamentos.vigencia_paciente_id')
+	    			->get();
+	    			
+	    		foreach ($list_agendamentos as $item) {
+	    			$plano_id = $item->paciente->getPlanoAtivo($item->paciente->id);
+	    			$item->plano_id = $plano_id;
+	    			switch ($plano_id) {
+	    				case 2:
+	    					$item->nm_plano = 'Premium';
+	    					break;
+	    				case 3:
+	    					$item->nm_plano = 'Blue';
+	    					break;
+	    				case 4:
+	    					$item->nm_plano = 'Black';
+	    					break;
+    					case 5:
+    						$item->nm_plano = 'Plus';
+    						break;
+	    				default:
+	    					$item->nm_plano = 'Open';
+	    			}
+	    			
+	    			if (!is_null($item->atendimento->precoAtivo)) {
+	    				$vl_com = str_replace(',', '.', $item->atendimento->precoAtivo->vl_comercial);
+	    				$vl_net = str_replace(',', '.', $item->atendimento->precoAtivo->vl_net);
+	    				$vl_over = number_format(($vl_com-$vl_net)/$vl_com, 2)*100;
+	    				
+	    			} else {
+	    				$item->vl_over = 0;
+	    			}
+	    			
+	    		}
+	    			
+// 	    		dd( DB::getQueryLog() );
+// 	    		dd($list_agendamentos);
+    			//     			$sheet->setColumnFormat(array(
+    			//     					'F6:F'.(sizeof($list_consultas)+6) => '""00"." 000"."000"/"0000-00'
+    			//     			));
+    
+    			$sheet->loadView('pacientes.agendamento_detalhado_excel', compact('list_agendamentos', 'cabecalho', 'dateBegin', 'dateEnd'));
     		});
     	})->export('xls');
     }
